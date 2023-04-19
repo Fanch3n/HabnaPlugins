@@ -621,3 +621,15 @@ function ShowHideBadgeOfDishonour()
 	end
 	BOD[ "Ctr" ]:SetVisible( ShowBadgeOfDishonour );
 end
+
+function ShowHideDelvingWrit()
+	ShowDelvingWrit = not ShowDelvingWrit;
+	settings.DelvingWrit.V = ShowDelvingWrit;
+	settings.DelvingWrit.W = string.format( "%.0f", _G.DWWhere );
+	SaveSettings( false );
+	ImportCtr( "DW" );
+	if ShowDelvingWrit then
+		DW[ "Ctr" ]:SetBackColor( Turbine.UI.Color( DWbcAlpha, DWbcRed, DWbcGreen, DWbcBlue ) );
+	end
+	DW[ "Ctr" ]:SetVisible( ShowDelvingWrit );
+end

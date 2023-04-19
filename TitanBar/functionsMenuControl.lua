@@ -48,6 +48,7 @@ function UnloadControl( value )
 		if ShowAncientScript then _G.ASWhere = 3; ShowHideAncientScript(); end
 		if ShowBadgeOfTaste then _G.BOTWhere = 3; ShowHideBadgeOfTaste(); end
 		if ShowBadgeOfDishonour then _G.BODWhere = 3; ShowHideBadgeOfDishonour(); end
+		if ShowDelvingWrit then _G.DWWhere = 3; ShowHideDelvingWrit(); end
 		elseif value == "this" then
 			if _G.sFromCtr == "WI" then ShowHideWallet();
 			elseif _G.sFromCtr == "Money" then _G.MIWhere = 3; ShowHideMoney();
@@ -90,6 +91,7 @@ function UnloadControl( value )
 			elseif _G.sFromCtr == "AS" then _G.ASWhere = 3; ShowHideAncientScript();
 			elseif _G.sFromCtr == "BOT" then _G.BOTWhere = 3; ShowHideBadgeOfTaste();
 			elseif _G.sFromCtr == "BOD" then _G.BODWhere = 3; ShowHideBadgeOfDishonour();
+			elseif _G.sFromCtr == "DW" then _G.DWWhere = 3; ShowHideDelvingWrit();
 			end
 		end
 
@@ -146,6 +148,7 @@ function BGColor( cmd, value )
 		elseif _G.sFromCtr == "AS" then tA, tR, tG, tB = ASbcAlpha, ASbcRed, ASbcGreen, ASbcBlue;
 		elseif _G.sFromCtr == "BOT" then tA, tR, tG, tB = BOTbcAlpha, BOTbcRed, BOTbcGreen, BOTbcBlue;
 		elseif _G.sFromCtr == "BOD" then tA, tR, tG, tB = BODbcAlpha, BODbcRed, BODbcGreen, BODbcBlue;
+		elseif _G.sFromCtr == "DW" then tA, tR, tG, tB = DWbcAlpha, DWbcRed, DWbcGreen, DWbcBlue;
 		end
 	end
 	
@@ -232,6 +235,8 @@ function BGColor( cmd, value )
 		if ShowBadgeOfTaste then BOT[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
 		BODbcAlpha, BODbcRed, BODbcGreen, BODbcBlue = tA, tR, tG, tB;
 		if ShowBadgeOfDishonour then BOD[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
+		DWbcAlpha, DWbcRed, DWbcGreen, DWbcBlue = tA, tR, tG, tB;
+		if ShowDelvingWrit then DW[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
 	elseif value == "all" then
 		BGColor( cmd, "ctr" );
 		BGColor( cmd, "TitanBar" );
@@ -359,6 +364,9 @@ function BGColor( cmd, value )
 		elseif _G.sFromCtr == "BOD" then
 			BODbcAlpha, BODbcRed, BODbcGreen, BODbcBlue = tA, tR, tG, tB;
 			BOD[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) );
+		elseif _G.sFromCtr == "DW" then
+			DWbcAlpha, DWbcRed, DWbcGreen, DWbcBlue = tA, tR, tG, tB;
+			DW[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) );
 		end
 	elseif value == "TitanBar" then
 		bcAlpha, bcRed, bcGreen, bcBlue = tA, tR, tG, tB;

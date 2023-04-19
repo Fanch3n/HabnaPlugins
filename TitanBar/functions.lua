@@ -350,6 +350,11 @@ function ShowToolTipWin( ToShow )
 		h = 65;
 		if not TBTop then y = h; end
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["BODh"], L["EIt2"], L["EIt3"] );
+	elseif ToShow == "DW" then -- Delving Writs
+		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
+		h = 65;
+		if not TBTop then y = h; end
+		TTW = createToolTipWin( x, y, w, h, bblTo, L["DWh"], L["EIt2"], L["EIt3"] );
 	end
 
 	_G.ToolTipWin:SetPosition( mouseX - _G.ToolTipWin.xOffset, mouseY - 
@@ -690,6 +695,15 @@ function UpdateBadgeOfDishonour()
 		BOD[ "Lbl" ]:SetText( GetCurrency( L[ "MBOD" ] ) );
 		BOD[ "Lbl" ]:SetSize( BOD[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
 		AjustIcon( "BOD" );
+	end
+end
+--**^
+--**v Update Delving Writs currency on TitanBar v**
+function UpdateDelvingWrit()
+	if _G.DWWhere == 1 then
+		DW[ "Lbl" ]:SetText( GetCurrency( L[ "MDW" ] ) );
+		DW[ "Lbl" ]:SetSize( DW[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
+		AjustIcon( "DW" );
 	end
 end
 --**^
@@ -1047,6 +1061,7 @@ function ChangeColor(tColor)
 		if ShowAncientScript then AS[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowBadgeOfTaste then BOT[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowBadgeOfDishonour then BOD[ "Ctr" ]:SetBackColor( tColor ); end
+		if ShowDelvingWrit then DW[ "Ctr" ]:SetBackColor( tColor ); end
 	else
 		if sFrom == "TitanBar" then TB["win"]:SetBackColor( tColor ); end
 		if sFrom == "WI" then WI[ "Ctr" ]:SetBackColor( tColor ); end
@@ -1090,6 +1105,7 @@ function ChangeColor(tColor)
 		if sFrom == "AS" then AS[ "Ctr" ]:SetBackColor( tColor ); end
 		if sFrom == "BOT" then BOT[ "Ctr" ]:SetBackColor( tColor ); end
 		if sFrom == "BOD" then BOD[ "Ctr" ]:SetBackColor( tColor ); end
+		if sFrom == "DW" then DW[ "Ctr" ]:SetBackColor( tColor ); end
 	end
 end
 --**^
@@ -1388,6 +1404,12 @@ function AjustIcon(str)
 		BOD[ "Ctr" ]:SetSize( BOD[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
 		BOD[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
 		BOD[ "Icon" ]:SetStretchMode( 3 );
+	elseif str == "DW" then
+		DW[ "Icon" ]:SetStretchMode( 1 );
+		DW[ "Icon" ]:SetPosition(DW[ "Lbl" ]:GetLeft()+DW[ "Lbl" ]:GetWidth()+3,Y);
+		DW[ "Ctr" ]:SetSize( DW[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
+		DW[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
+		DW[ "Icon" ]:SetStretchMode( 3 );
 	end
 end
 

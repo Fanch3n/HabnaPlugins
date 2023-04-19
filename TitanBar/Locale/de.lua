@@ -122,6 +122,9 @@ L[ "MBOT" ] = "Abzeichen des Geschmacks";
 L[ "BOTh" ] = "Eure Abzeichen des Geschmacks";
 L[ "MBOD" ] = "Abzeichen der Schande";
 L[ "BODh" ] = "Eure Abzeichen der Schande";
+-- Delving Writs control
+L[ "MDW" ] = "Delving Writs";
+L[ "DWh" ] = "Eure Delving Writs";
 
 -- Control Menu
 L[ "MCU" ] = "entfernen ...";

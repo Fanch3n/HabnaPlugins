@@ -424,6 +424,12 @@ function ImportCtr( value )
             BOD[ "Ctr" ]:SetPosition( _G.BODLocX, _G.BODLocY );
         end
         if _G.BODWhere ~= 3 then UpdateBadgeOfDishonour(); end
+    elseif value == "DW" then --Delving Writs
+        if _G.DWWhere == 1 then
+            import (AppCtrD.."DelvingWrit");
+            DW[ "Ctr" ]:SetPosition( _G.DWLocX, _G.DWLocY );
+        end
+        if _G.DWWhere ~= 3 then UpdateDelvingWrit(); end
 	elseif value == "RP" then --Reputation Points
         RPGR = { ['default'] = {
             [0] = 10000, [1] = 10000, [2] = 20000, [3] = 25000, [4] = 30000,
@@ -1158,6 +1164,7 @@ function UpdateCurrency( str )
 	if str == L[ "MAS" ] and ShowAncientScript then UpdateAncientScript(); end
     if str == L[ "MBOT" ] and ShowBadgeOfTaste then UpdateBadgeOfTaste(); end
     if str == L[ "MBOD" ] and ShowBadgeOfDishonour then UpdateBadgeOfDishonour(); end
+    if str == L[ "MDW" ] and ShowDelvingWrits then UpdateDelvingWrits(); end
 end
 
 function GetCurrency( str )

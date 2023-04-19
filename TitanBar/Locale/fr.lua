@@ -123,6 +123,9 @@ L[ "MBOT" ] = "M�daille du go�t";
 L[ "BOTh" ] = "Ce sont vos M�dailles du go�t";
 L[ "MBOD" ] = "M�daille de la honte";
 L[ "BODh" ] = "Ce sont vos M�dailles de la honte";
+-- Delving Writs control
+L[ "MDW" ] = "Delving Writ";
+L[ "DWh" ] = "These are your Delving Writs";
 
 
 -- Control Menu

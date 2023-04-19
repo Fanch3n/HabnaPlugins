@@ -328,6 +328,10 @@ function frmWalletWindow()
 			_G.LPWhere = SelIndex; settings.LOTROPoints.W = string.format("%.0f", SelIndex);
 			if SelIndex == 1 then if not ShowLOTROPoints then ShowHideLOTROPoints(); end
 			else if ShowLOTROPoints then ShowHideLOTROPoints(); end end
+		elseif wcur == L["MDW"] then
+			_G.LPWhere = SelIndex; settings.DelvingWrit.W = string.format("%.0f", SelIndex);
+			if SelIndex == 1 then if not ShowDelvingWrit then ShowHideDelvingWrit(); end
+			else if ShowDelvingWrit then ShowHideDelvingWrit(); end end
 
 			local parsed_text = WItxtLOTROPTS:GetText();
 
@@ -411,6 +415,7 @@ function RefreshWIListBox()
 				elseif wcur == L["MAS"] then tw = _G.ASWhere; -- Ancient Script
 				elseif wcur == L["MBOT"] then tw = _G.BOTWhere; -- Badge of Taste
 				elseif wcur == L["MBOD"] then tw = _G.BODWhere; -- Badge of Dishonour
+				elseif wcur == L["MDW"] then tw = _G.DWWhere; -- Delving Writs
 				end
 				for k, v in pairs(WICBO) do if k == tonumber(tw) then WIDD:SetSelection(k); end end
 

@@ -102,6 +102,7 @@ function frmBackground()
 	if sFrom == "AS" then curSelAlpha = ASbcAlpha; curSelRed = ASbcRed; curSelGreen = ASbcGreen; curSelBlue = ASbcBlue; end
 	if sFrom == "BOT" then curSelAlpha = BOTbcAlpha; curSelRed = BOTbcRed; curSelGreen = BOTbcGreen; curSelBlue = BOTbcBlue; end
 	if sFrom == "BOD" then curSelAlpha = BODbcAlpha; curSelRed = BODbcRed; curSelGreen = BODbcGreen; curSelBlue = BODbcBlue; end
+	if sFrom == "DW" then curSelAlpha = DWbcAlpha; curSelRed = DWbcRed; curSelGreen = DWbcGreen; curSelBlue = DWbcBlue; end
 	curAlpha, curColor.R, curColor.G, curColor.B = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
 	curSelColor:SetBackColor( Turbine.UI.Color( curSelAlpha, curSelRed, curSelGreen, curSelBlue ) );
 	-- **^
@@ -370,6 +371,7 @@ function UpdateBCvariable()
 		ASbcAlpha, ASbcRed, ASbcGreen, ASbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
 		BOTbcAlpha, BOTbcRed, BOTbcGreen, BOTbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
 		BODbcAlpha, BODbcRed, BODbcGreen, BODbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
+		DWbcAlpha, DWbcRed, DWbcGreen, DWbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
 
 	else
 		if sFrom == "TitanBar" then bcAlpha = curSelAlpha; bcRed = curSelRed; bcGreen = curSelGreen; bcBlue = curSelBlue; end
@@ -414,5 +416,6 @@ function UpdateBCvariable()
 		if sFrom == "AS" then ASbcAlpha = curSelAlpha; ASbcRed = curSelRed; ASbcGreen = curSelGreen; ASbcBlue = curSelBlue; end
 		if sFrom == "BOT" then BOTbcAlpha = curSelAlpha; BOTbcRed = curSelRed; BOTbcGreen = curSelGreen; BOTbcBlue = curSelBlue; end
 		if sFrom == "BOD" then BODbcAlpha = curSelAlpha; BODbcRed = curSelRed; BODbcGreen = curSelGreen; BODbcBlue = curSelBlue; end
+		if sFrom == "DW" then DWbcAlpha = curSelAlpha; DWbcRed = curSelRed; DWbcGreen = curSelGreen; DWbcBlue = curSelBlue; end
 	end
 end

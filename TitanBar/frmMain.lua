@@ -186,6 +186,7 @@ function frmMain()
 			if _G.ASWhere ~= 3 then ImportCtr( "AS" ); end
 			if _G.BOTWhere ~= 3 then ImportCtr( "BOT" ); end
 			if _G.BODWhere ~= 3 then ImportCtr( "BOD" ); end
+			if _G.DWWhere ~= 3 then ImportCtr( "DW" ); end
 		end
 	else
 		-- Disable infos not useful in Monster Play
@@ -202,6 +203,7 @@ function frmMain()
 		ShowSpringLeaf = false;
 		ShowMidsummerToken = false;
 		ShowAncientScript = false;
+		ShowDelvingWrit = false;
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
 			if ShowWallet then ImportCtr( "WI" ); end
 			if _G.CPWhere ~= 3 then ImportCtr( "CP" ); end
@@ -341,6 +343,7 @@ function frmMain()
 				if _G.ASWhere ~= 3 then ImportCtr( "AS" ); end
 				if _G.BOTWhere ~= 3 then ImportCtr( "BOT" ); end
 				if _G.BODWhere ~= 3 then ImportCtr( "BOD" ); end
+				if _G.DWWhere ~= 3 then ImportCtr( "DW" ); end
 			end
 
 			screenWidth, screenHeight = Turbine.UI.Display.GetSize();

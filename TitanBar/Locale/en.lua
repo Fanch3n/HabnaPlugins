@@ -123,6 +123,9 @@ L[ "MBOT" ] = "Badge of Taste";
 L[ "BOTh" ] = "These are your Badges of Taste";
 L[ "MBOD" ] = "Badge of Dishonour";
 L[ "BODh" ] = "These are your Badges of Dishonour";
+-- Delving Writs control
+L[ "MDW" ] = "Delving Writ";
+L[ "DWh" ] = "These are your Delving Writs";
 
 -- Control Menu
 L[ "MCU" ] = "Unload ...";

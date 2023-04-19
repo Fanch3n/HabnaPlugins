@@ -944,44 +944,64 @@ function LoadSettings()-- I'm confused as to what most of this is... Most of the
 	_G.ASWhere = tonumber(settings.AncientScript.W);
 	if _G.ASWhere == 3 and ShowAncientScript then _G.ASWhere = 1; settings.AncientScript.W = string.format("%.0f", _G.ASWhere); end
 
-    if settings.BadgeOfTaste == nil then settings.BadgeOfTaste = {}; end
-    if settings.BadgeOfTaste.V == nil then settings.BadgeOfTaste.V = false; end
-    if settings.BadgeOfTaste.A == nil then settings.BadgeOfTaste.A = string.format("%.3f", tA); end
-    if settings.BadgeOfTaste.R == nil then settings.BadgeOfTaste.R = string.format("%.3f", tR); end
-    if settings.BadgeOfTaste.G == nil then settings.BadgeOfTaste.G = string.format("%.3f", tG); end
-    if settings.BadgeOfTaste.B == nil then settings.BadgeOfTaste.B = string.format("%.3f", tB); end
-    if settings.BadgeOfTaste.X == nil then settings.BadgeOfTaste.X = string.format("%.0f", tX); end
-    if settings.BadgeOfTaste.Y == nil then settings.BadgeOfTaste.Y = string.format("%.0f", tY); end
-    if settings.BadgeOfTaste.W == nil then settings.BadgeOfTaste.W = string.format("%.0f", tW); end
-    ShowBadgeOfTaste = settings.BadgeOfTaste.V;
-    BOTbcAlpha = tonumber(settings.BadgeOfTaste.A);
-    BOTbcRed = tonumber(settings.BadgeOfTaste.R);
-    BOTbcGreen = tonumber(settings.BadgeOfTaste.G);
-    BOTbcBlue = tonumber(settings.BadgeOfTaste.B);
-    _G.BOTLocX = tonumber(settings.BadgeOfTaste.X);
-    _G.BOTLocY = tonumber(settings.BadgeOfTaste.Y);
-    _G.BOTWhere = tonumber(settings.BadgeOfTaste.W);
-    if _G.BOTWhere == 3 and ShowBadgeOfTaste then _G.BOTWhere = 1; settings.BadgeOfTaste.W = string.format("%.0f", _G.BOTWhere); end
-    
-    if settings.BadgeOfDishonour == nil then settings.BadgeOfDishonour = {}; end
-    if settings.BadgeOfDishonour.V == nil then settings.BadgeOfDishonour.V = false; end
-    if settings.BadgeOfDishonour.A == nil then settings.BadgeOfDishonour.A = string.format("%.3f", tA); end
-    if settings.BadgeOfDishonour.R == nil then settings.BadgeOfDishonour.R = string.format("%.3f", tR); end
-    if settings.BadgeOfDishonour.G == nil then settings.BadgeOfDishonour.G = string.format("%.3f", tG); end
-    if settings.BadgeOfDishonour.B == nil then settings.BadgeOfDishonour.B = string.format("%.3f", tB); end
-    if settings.BadgeOfDishonour.X == nil then settings.BadgeOfDishonour.X = string.format("%.0f", tX); end
-    if settings.BadgeOfDishonour.Y == nil then settings.BadgeOfDishonour.Y = string.format("%.0f", tY); end
-    if settings.BadgeOfDishonour.W == nil then settings.BadgeOfDishonour.W = string.format("%.0f", tW); end
-    ShowBadgeOfDishonour = settings.BadgeOfDishonour.V;
-    BODbcAlpha = tonumber(settings.BadgeOfDishonour.A);
-    BODbcRed = tonumber(settings.BadgeOfDishonour.R);
-    BODbcGreen = tonumber(settings.BadgeOfDishonour.G);
-    BODbcBlue = tonumber(settings.BadgeOfDishonour.B);
-    _G.BODLocX = tonumber(settings.BadgeOfDishonour.X);
-    _G.BODLocY = tonumber(settings.BadgeOfDishonour.Y);
-    _G.BODWhere = tonumber(settings.BadgeOfDishonour.W);
-    if _G.BODWhere == 3 and ShowBadgeOfDishonour then _G.BODWhere = 1; settings.BadgeOfDishonour.W = string.format("%.0f", _G.BODWhere); end
-    
+	if settings.BadgeOfTaste == nil then settings.BadgeOfTaste = {}; end
+	if settings.BadgeOfTaste.V == nil then settings.BadgeOfTaste.V = false; end
+	if settings.BadgeOfTaste.A == nil then settings.BadgeOfTaste.A = string.format("%.3f", tA); end
+	if settings.BadgeOfTaste.R == nil then settings.BadgeOfTaste.R = string.format("%.3f", tR); end
+	if settings.BadgeOfTaste.G == nil then settings.BadgeOfTaste.G = string.format("%.3f", tG); end
+	if settings.BadgeOfTaste.B == nil then settings.BadgeOfTaste.B = string.format("%.3f", tB); end
+	if settings.BadgeOfTaste.X == nil then settings.BadgeOfTaste.X = string.format("%.0f", tX); end
+	if settings.BadgeOfTaste.Y == nil then settings.BadgeOfTaste.Y = string.format("%.0f", tY); end
+	if settings.BadgeOfTaste.W == nil then settings.BadgeOfTaste.W = string.format("%.0f", tW); end
+	ShowBadgeOfTaste = settings.BadgeOfTaste.V;
+	BOTbcAlpha = tonumber(settings.BadgeOfTaste.A);
+	BOTbcRed = tonumber(settings.BadgeOfTaste.R);
+	BOTbcGreen = tonumber(settings.BadgeOfTaste.G);
+	BOTbcBlue = tonumber(settings.BadgeOfTaste.B);
+	_G.BOTLocX = tonumber(settings.BadgeOfTaste.X);
+	_G.BOTLocY = tonumber(settings.BadgeOfTaste.Y);
+	_G.BOTWhere = tonumber(settings.BadgeOfTaste.W);
+	if _G.BOTWhere == 3 and ShowBadgeOfTaste then _G.BOTWhere = 1; settings.BadgeOfTaste.W = string.format("%.0f", _G.BOTWhere); end
+	
+	if settings.BadgeOfDishonour == nil then settings.BadgeOfDishonour = {}; end
+	if settings.BadgeOfDishonour.V == nil then settings.BadgeOfDishonour.V = false; end
+	if settings.BadgeOfDishonour.A == nil then settings.BadgeOfDishonour.A = string.format("%.3f", tA); end
+	if settings.BadgeOfDishonour.R == nil then settings.BadgeOfDishonour.R = string.format("%.3f", tR); end
+	if settings.BadgeOfDishonour.G == nil then settings.BadgeOfDishonour.G = string.format("%.3f", tG); end
+	if settings.BadgeOfDishonour.B == nil then settings.BadgeOfDishonour.B = string.format("%.3f", tB); end
+	if settings.BadgeOfDishonour.X == nil then settings.BadgeOfDishonour.X = string.format("%.0f", tX); end
+	if settings.BadgeOfDishonour.Y == nil then settings.BadgeOfDishonour.Y = string.format("%.0f", tY); end
+	if settings.BadgeOfDishonour.W == nil then settings.BadgeOfDishonour.W = string.format("%.0f", tW); end
+	ShowBadgeOfDishonour = settings.BadgeOfDishonour.V;
+	BODbcAlpha = tonumber(settings.BadgeOfDishonour.A);
+	BODbcRed = tonumber(settings.BadgeOfDishonour.R);
+	BODbcGreen = tonumber(settings.BadgeOfDishonour.G);
+	BODbcBlue = tonumber(settings.BadgeOfDishonour.B);
+	_G.BODLocX = tonumber(settings.BadgeOfDishonour.X);
+	_G.BODLocY = tonumber(settings.BadgeOfDishonour.Y);
+	_G.BODWhere = tonumber(settings.BadgeOfDishonour.W);
+	if _G.BODWhere == 3 and ShowBadgeOfDishonour then _G.BODWhere = 1; settings.BadgeOfDishonour.W = string.format("%.0f", _G.BODWhere); end
+	
+	if settings.DelvingWrit == nil then settings.DelvingWrit = {}; end
+	if settings.DelvingWrit.V == nil then settings.DelvingWrit.V = false; end
+	if settings.DelvingWrit.A == nil then settings.DelvingWrit.A = string.format("%.3f", tA); end
+	if settings.DelvingWrit.R == nil then settings.DelvingWrit.R = string.format("%.3f", tR); end
+	if settings.DelvingWrit.G == nil then settings.DelvingWrit.G = string.format("%.3f", tG); end
+	if settings.DelvingWrit.B == nil then settings.DelvingWrit.B = string.format("%.3f", tB); end
+	if settings.DelvingWrit.X == nil then settings.DelvingWrit.X = string.format("%.0f", tX); end
+	if settings.DelvingWrit.Y == nil then settings.DelvingWrit.Y = string.format("%.0f", tY); end
+	if settings.DelvingWrit.W == nil then settings.DelvingWrit.W = string.format("%.0f", tW); end
+	ShowDelvingWrit = settings.DelvingWrit.V;
+	DWbcAlpha = tonumber(settings.DelvingWrit.A);
+	DWbcRed = tonumber(settings.DelvingWrit.R);
+	DWbcGreen = tonumber(settings.DelvingWrit.G);
+	DWbcBlue = tonumber(settings.DelvingWrit.B);
+	_G.DWLocX = tonumber(settings.DelvingWrit.X);
+	_G.DWLocY = tonumber(settings.DelvingWrit.Y);
+	_G.DWWhere = tonumber(settings.DelvingWrit.W);
+	if _G.DWWhere == 3 and ShowDelvingWrit then _G.DWWhere = 1; settings.DelvingWrit.W = string.format("%.0f", _G.DWWhere); end
+	
+
 	SaveSettings( false );
 	
 	--if settings.TitanBar.W ~= screenWidth then ReplaceCtr(); end --Replace control if screen width as changed
@@ -1460,16 +1480,25 @@ function SaveSettings(str)
 		settings.BadgeOfTaste.Y = string.format("%.0f", _G.BOTLocY);
 		settings.BadgeOfTaste.W = string.format("%.0f", _G.BOTWhere);
 
-        settings.BadgeOfDishonour = {};
-        settings.BadgeOfDishonour.V = ShowBadgeOfDishonour;
-        settings.BadgeOfDishonour.A = string.format("%.3f", BODbcAlpha);
-        settings.BadgeOfDishonour.R = string.format("%.3f", BODbcRed);
-        settings.BadgeOfDishonour.G = string.format("%.3f", BODbcGreen);
-        settings.BadgeOfDishonour.B = string.format("%.3f", BODbcBlue);
-        settings.BadgeOfDishonour.X = string.format("%.0f", _G.BODLocX);
-        settings.BadgeOfDishonour.Y = string.format("%.0f", _G.BODLocY);
-        settings.BadgeOfDishonour.W = string.format("%.0f", _G.BODWhere);
+		settings.BadgeOfDishonour = {};
+		settings.BadgeOfDishonour.V = ShowBadgeOfDishonour;
+		settings.BadgeOfDishonour.A = string.format("%.3f", BODbcAlpha);
+		settings.BadgeOfDishonour.R = string.format("%.3f", BODbcRed);
+		settings.BadgeOfDishonour.G = string.format("%.3f", BODbcGreen);
+		settings.BadgeOfDishonour.B = string.format("%.3f", BODbcBlue);
+		settings.BadgeOfDishonour.X = string.format("%.0f", _G.BODLocX);
+		settings.BadgeOfDishonour.Y = string.format("%.0f", _G.BODLocY);
+		settings.BadgeOfDishonour.W = string.format("%.0f", _G.BODWhere);
 
+		settings.DelvingWrit = {};
+		settings.DelvingWrit.V = ShowDelvingWrit;
+		settings.DelvingWrit.A = string.format("%.3f", DWbcAlpha);
+		settings.DelvingWrit.R = string.format("%.3f", DWbcRed);
+		settings.DelvingWrit.G = string.format("%.3f", DWbcGreen);
+		settings.DelvingWrit.B = string.format("%.3f", DWbcBlue);
+		settings.DelvingWrit.X = string.format("%.0f", _G.DWLocX);
+		settings.DelvingWrit.Y = string.format("%.0f", _G.DWLocY);
+		settings.DelvingWrit.W = string.format("%.0f", _G.DWWhere);
 	end
 	
 	if GLocale == "de" then Turbine.PluginData.Save( Turbine.DataScope.Character, "TitanBarSettingsDE", settings ); end
@@ -1526,8 +1555,9 @@ function ResetSettings()
 	ShowSpringLeaf, SPLbcAlpha, SPLbcRed, SPLbcGreen, SPLbcBlue, _G.SPLLocX, _G.SPLLocY, _G.SPLWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Spring Leaf Control	
 	ShowMidsummerToken, MSTbcAlpha, MSTbcRed, MSTbcGreen, MSTbcBlue, _G.MSTLocX, _G.MSTLocY, _G.MSTWhere = false, tA, tR, tG, tB, tX, tY, tW; --for  Midsummer Token Control
 	ShowAncientScript, ASbcAlpha, ASbcRed, ASbcGreen, ASbcBlue, _G.ASLocX, _G.ASLocY, _G.ASWhere = false, tA, tR, tG, tB, tX, tY, tW; --for  Ancient Script Control
-    ShowBadgeOfTaste, BOTbcAlpha, BOTbcRed, BOTbcGreen, BOTbcBlue, _G.BOTLocX, _G.BOTLocY, _G.BOTWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Badge of Taste Control 
-    ShowBadgeOfDishonour, BODbcAlpha, BODbcRed, BODbcGreen, BODbcBlue, _G.BODLocX, _G.BODLocY, _G.BODWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Badge of Dishonour Control 
+	ShowBadgeOfTaste, BOTbcAlpha, BOTbcRed, BOTbcGreen, BOTbcBlue, _G.BOTLocX, _G.BOTLocY, _G.BOTWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Badge of Taste Control 
+	ShowBadgeOfDishonour, BODbcAlpha, BODbcRed, BODbcGreen, BODbcBlue, _G.BODLocX, _G.BODLocY, _G.BODWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Badge of Dishonour Control 
+	ShowDelvingWrit, DWbcAlpha, DWbcRed, DWbcGreen, DWbcBlue, _G.DWLocX, _G.DWLocY, _G.DWWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Delving Writs Control 
 
 	SaveSettings( true ); --True: Get & save all settings table to file. / False: only save settings table to file.
 	ReloadTitanBar();
@@ -1736,15 +1766,15 @@ function ReplaceCtr()
 	settings.AncientScript.X = string.format("%.0f", _G.ASLocX);
 	if ShowAncientScript and _G.ASWhere == 1 then AS[ "Ctr" ]:SetPosition( _G.ASLocX, _G.ASLocY ); end
 
-    oldLocX = settings.BadgeOfTaste.X / oldScreenWidth;
-    _G.BOTLocX = oldLocX * screenWidth;
-    settings.BadgeOfTaste.X = string.format("%.0f", _G.BOTLocX);
-    if ShowBadgeOfTaste and _G.BOTWhere == 1 then BOT[ "Ctr" ]:SetPosition( _G.BOTLocX, _G.BOTLocY ); end
+	oldLocX = settings.BadgeOfTaste.X / oldScreenWidth;
+	_G.BOTLocX = oldLocX * screenWidth;
+	settings.BadgeOfTaste.X = string.format("%.0f", _G.BOTLocX);
+	if ShowBadgeOfTaste and _G.BOTWhere == 1 then BOT[ "Ctr" ]:SetPosition( _G.BOTLocX, _G.BOTLocY ); end
 
-    oldLocX = settings.BadgeOfDishonour.X / oldScreenWidth;
-    _G.BODLocX = oldLocX * screenWidth;
-    settings.BadgeOfDishonour.X = string.format("%.0f", _G.BODLocX);
-    if ShowBadgeOfDishonour and _G.BODWhere == 1 then BOD[ "Ctr" ]:SetPosition( _G.BODLocX, _G.BODLocY ); end
+	oldLocX = settings.DelvingWrit.X / oldScreenWidth;
+	_G.DWLocX = oldLocX * screenWidth;
+	settings.DelvingWrit.X = string.format("%.0f", _G.DWLocX);
+	if ShowDelvingWrit and _G.DWWhere == 1 then DW[ "Ctr" ]:SetPosition( _G.DWLocX, _G.DWLocY ); end
 	
 	SaveSettings( false );
 	write( L["TBSSCD"] );
