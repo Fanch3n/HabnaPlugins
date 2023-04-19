@@ -68,7 +68,7 @@ _G.WalletItem = {
 	AncientScript = { Icon = 0x41212E84 },
 	BadgeOfTaste = { Icon = 0x41002B2C },
 	BadgeOfDishonour = { Icon = 0x410D4316 },
-	DelvingWrit = { Icon = 0x410D4316 }
+	DelvingWrit = { Icon = 0x412204D8 }
 };
 
 _G.DurabilitySlotsBG = { 0x41007eed, 0x41007ef6, 0x41007ef7, 0x41007eef, 0x41007eee, 0x41007ee9, 0x41007ef0, 0x41007ef9, 0x41007ef8,

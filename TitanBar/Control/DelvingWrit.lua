@@ -90,9 +90,9 @@ DW["Lbl"].MouseUp = function( sender, args )
 	DW["Ctr"]:SetZOrder( 2 );
 	dragging = false;
 	_G.DWLocX = DW["Ctr"]:GetLeft();
-	settings.SpringLeaf.X = string.format("%.0f", _G.DWLocX);
+	settings.DelvingWrit.X = string.format("%.0f", _G.DWLocX);
 	_G.DWLocY = DW["Ctr"]:GetTop();
-	settings.SpringLeaf.Y = string.format("%.0f", _G.DWLocY);
+	settings.DelvingWrit.Y = string.format("%.0f", _G.DWLocY);
 	SaveSettings( false );
 end
 --**^
