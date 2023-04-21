@@ -42,54 +42,15 @@ function ImportCtr( value )
         else
             RemoveCallback(PlayerAtt, "DestinyPointsChanged");
         end
-    elseif value == "SP" then --Shards
-        if _G.SPWhere == 1 then
-            import (AppCtrD.."Shards");
-            SP[ "Ctr" ]:SetPosition( _G.SPLocX, _G.SPLocY );
+    elseif value == "SP" or value == "SM" or value == "MC" or value == "YT" or value == "HT" or value == "MP" or value == "SL" or value == "CP" or value == "ASP" or value == "SOM" or value == "CSGP" or value == "GGB" or value == "FOS" or value == "MOE" or value == "FFT" or value == "FFAT" or value == "SPL" or value == "MST" or value == "BOD" or value == "DW" or value == "AS" or value=="BOT" or value == "BB" or value == "LAT" or value == "EOE" then
+        if _G[value.."Where"] == 1 then
+            import (AppCtrD.."CurrencyLogic");
+            createCurrencyTable(value)
+            _G[value][ "Ctr" ]:SetPosition(_G[value.."LocX"], _G[value.."LocY"]);
         end
-        if _G.SPWhere ~= 3 then UpdateShards(); end
-    elseif value == "SM" then --Skirmish Marks
-        if _G.SMWhere == 1 then
-            import (AppCtrD.."SkirmishMarks");
-            SM[ "Ctr" ]:SetPosition( _G.SMLocX, _G.SMLocY );
+        if _G[value.."Where"] ~= 3 then
+            UpdateCurrencyDisplay(value)
         end
-        if _G.SMWhere ~= 3 then UpdateMarks(); end
-    elseif value == "MC" then --Mithril Coins
-        if _G.MCWhere == 1 then
-            import (AppCtrD.."MithrilCoins");
-            MC[ "Ctr" ]:SetPosition( _G.MCLocX, _G.MCLocY );
-        end
-        if _G.MCWhere ~= 3 then UpdateMithril(); end
-    elseif value == "YT" then --Yule Tokens
-        if _G.YTWhere == 1 then
-            import (AppCtrD.."YuleToken");
-            YT[ "Ctr" ]:SetPosition( _G.YTLocX, _G.YTLocY );
-        end
-        if _G.YTWhere ~= 3 then UpdateYuleToken(); end
-    elseif value == "HT" then --Tokens of Hytbold
-        if _G.HTWhere == 1 then
-            import (AppCtrD.."TokensOfHytbold");
-            HT[ "Ctr" ]:SetPosition( _G.HTLocX, _G.HTLocY );
-        end
-        if _G.HTWhere ~= 3 then UpdateHytboldTokens(); end
-    elseif value == "MP" then --Medallions
-        if _G.MPWhere == 1 then
-            import (AppCtrD.."Medallions");
-            MP[ "Ctr" ]:SetPosition( _G.MPLocX, _G.MPLocY );
-        end
-        if _G.MPWhere ~= 3 then UpdateMedallions(); end
-    elseif value == "SL" then --Seals
-        if _G.SLWhere == 1 then
-            import (AppCtrD.."Seals");
-            SL[ "Ctr" ]:SetPosition( _G.SLLocX, _G.SLLocY );
-        end
-        if _G.SLWhere ~= 3 then UpdateSeals(); end
-    elseif value == "CP" then --Commendations
-        if _G.CPWhere == 1 then
-            import (AppCtrD.."Commendations");
-            CP[ "Ctr" ]:SetPosition( _G.CPLocX, _G.CPLocY );
-        end
-        if _G.CPWhere ~= 3 then UpdateCommendations(); end
     elseif value == "BI" then --Backpack Infos
         import (AppCtrD.."BagInfos");
         --import (AppCtrD.."BagInfosToolTip");
@@ -328,108 +289,6 @@ function ImportCtr( value )
             );
         UpdateSharedStorage();
         SS[ "Ctr" ]:SetPosition( _G.SSLocX, _G.SSLocY );
-    elseif value == "ASP" then --Amroth Silver Piece
-        if _G.ASPWhere == 1 then
-            import (AppCtrD.."AmrothSilverPiece");
-            ASP[ "Ctr" ]:SetPosition( _G.ASPLocX, _G.ASPLocY );
-        end
-        if _G.ASPWhere ~= 3 then UpdateAmrothSilverPiece(); end
-    elseif value == "SOM" then --Stars of Merit
-        if _G.SOMWhere == 1 then
-            import (AppCtrD.."StarsofMerit");
-            SOM[ "Ctr" ]:SetPosition( _G.SOMLocX, _G.SOMLocY );
-        end
-        if _G.SOMWhere ~= 3 then UpdateStarsofMerit(); end
-    elseif value == "CGSP" then --Central Gondor Silver Piece
-        if _G.CGSPWhere == 1 then
-            import (AppCtrD.."CentralGondorSilverPiece");
-            CGSP[ "Ctr" ]:SetPosition( _G.CGSPLocX, _G.CGSPLocY );
-        end
-        if _G.CGSPWhere ~= 3 then UpdateCentralGondorSilverPiece(); end
-    elseif value == "GGB" then --Gift giver's Brand
-        if _G.GGBWhere == 1 then
-            import (AppCtrD.."GiftgiversBrand");
-            GGB[ "Ctr" ]:SetPosition( _G.GGBLocX, _G.GGBLocY );
-        end
-        if _G.GGBWhere ~= 3 then UpdateGiftgiversBrand(); end
-    elseif value == "BB" then --Bingo Badge
-        if _G.BBWhere == 1 then
-            import (AppCtrD.."BingoBadge");
-            BB[ "Ctr" ]:SetPosition( _G.BBLocX, _G.BBLocY );
-        end
-        if _G.BBWhere ~= 3 then UpdateBingoBadge(); end
-    elseif value == "LAT" then --Anniversary Token
-        if _G.LATWhere == 1 then
-            import (AppCtrD.."AnniversaryToken");
-            LAT[ "Ctr" ]:SetPosition( _G.LATLocX, _G.LATLocY );
-        end
-        if _G.LATWhere ~= 3 then UpdateAnniversaryToken(); end
-	elseif value == "MOE" then --Motes of Enchantment
-        if _G.MOEWhere == 1 then
-            import (AppCtrD.."MotesOfEnchantment");
-            MOE[ "Ctr" ]:SetPosition( _G.MOELocX, _G.MOELocY );
-        end
-        if _G.MOEWhere ~= 3 then UpdateMotesOfEnchantment(); end	
-	elseif value == "EOE" then --Embers of Enchantment
-        if _G.EOEWhere == 1 then
-            import (AppCtrD.."EmbersOfEnchantment");
-            EOE[ "Ctr" ]:SetPosition( _G.EOELocX, _G.EOELocY );
-        end
-        if _G.EOEWhere ~= 3 then UpdateEmbersOfEnchantment(); end
-	elseif value == "FOS" then --Figments of Splendour
-        if _G.FOSWhere == 1 then
-            import (AppCtrD.."FigmentsOfSplendour");
-            FOS[ "Ctr" ]:SetPosition( _G.FOSLocX, _G.FOSLocY );
-        end
-        if _G.FOSWhere ~= 3 then UpdateFigmentsOfSplendour(); end
-	elseif value == "FFT" then --Fall Festival Tokens
-        if _G.FFTWhere == 1 then
-            import (AppCtrD.."FallFestivalToken");
-            FFT[ "Ctr" ]:SetPosition( _G.FFTLocX, _G.FFTLocY );
-        end
-        if _G.FFTWhere ~= 3 then UpdateFallFestivalToken(); end
-	elseif value == "FFAT" then --Farmers Faire Tokens
-        if _G.FFATWhere == 1 then
-            import (AppCtrD.."FarmersFaireToken");
-            FFAT[ "Ctr" ]:SetPosition( _G.FFATLocX, _G.FFATLocY );
-        end
-        if _G.FFATWhere ~= 3 then UpdateFarmersFaireToken(); end
-	elseif value == "SPL" then --Spring Leaves
-        if _G.SPLWhere == 1 then
-            import (AppCtrD.."SpringLeaf");
-            SPL[ "Ctr" ]:SetPosition( _G.SPLLocX, _G.SPLLocY );
-        end
-        if _G.SPLWhere ~= 3 then UpdateSpringLeaf(); end	
-	elseif value == "MST" then --Midsummer Tokens
-        if _G.MSTWhere == 1 then
-            import (AppCtrD.."MidsummerToken");
-            MST[ "Ctr" ]:SetPosition( _G.MSTLocX, _G.MSTLocY );
-        end
-        if _G.MSTWhere ~= 3 then UpdateMidsummerToken(); end
-	elseif value == "AS" then --Ancient Script
-        if _G.ASWhere == 1 then
-            import (AppCtrD.."AncientScript");
-            AS[ "Ctr" ]:SetPosition( _G.ASLocX, _G.ASLocY );
-        end
-        if _G.ASWhere ~= 3 then UpdateAncientScript(); end	
-    elseif value == "BOT" then --Badge of Taste
-        if _G.BOTWhere == 1 then
-            import (AppCtrD.."BadgeOfTaste");
-            BOT[ "Ctr" ]:SetPosition( _G.BOTLocX, _G.BOTLocY );
-        end
-        if _G.BOTWhere ~= 3 then UpdateBadgeOfTaste(); end
-    elseif value == "BOD" then --Badge of Dishonour
-        if _G.BODWhere == 1 then
-            import (AppCtrD.."BadgeOfDishonour");
-            BOD[ "Ctr" ]:SetPosition( _G.BODLocX, _G.BODLocY );
-        end
-        if _G.BODWhere ~= 3 then UpdateBadgeOfDishonour(); end
-    elseif value == "DW" then --Delving Writs
-        if _G.DWWhere == 1 then
-            import (AppCtrD.."DelvingWrit");
-            DW[ "Ctr" ]:SetPosition( _G.DWLocX, _G.DWLocY );
-        end
-        if _G.DWWhere ~= 3 then UpdateDelvingWrit(); end
 	elseif value == "RP" then --Reputation Points
         RPGR = { ['default'] = {
             [0] = 10000, [1] = 10000, [2] = 20000, [3] = 25000, [4] = 30000,
@@ -1140,31 +999,31 @@ function SavePlayerLOTROPoints()
 end
 
 function UpdateCurrency( str )
-    if str == L[ "MSP" ] and ShowShards then UpdateShards(); end
-    if str == L[ "MSM" ] and ShowSkirmishMarks then UpdateMarks(); end
-    if str == L[ "MMP" ] and ShowMedallions then UpdateMedallions(); end
-    if str == L[ "MSL" ] and ShowSeals then UpdateSeals(); end
-    if str == L[ "MCP" ] and ShowCommendations then UpdateCommendations(); end
-    if str == L[ "MMC" ] and ShowMithril then UpdateMithril(); end
-    if str == L[ "MYT" ] and ShowYuleToken then UpdateYuleToken(); end
-    if str == L[ "MHT" ] and ShowHytboldTokens then UpdateHytboldTokens(); end
-    if str == L[ "MASP" ] and ShowAmrothSilverPiece then UpdateAmrothSilverPiece(); end
-    if str == L[ "MSOM" ] and ShowStarsofMerit then UpdateStarsofMerit(); end
-    if str == L[ "MCGSP" ] and ShowCentralGondorSilverPiece then UpdateCentralGondorSilverPiece(); end
-    if str == L[ "MGGB" ] and ShowGiftgiversBrand then UpdateGiftgiversBrand(); end
-    if str == L[ "MBB" ] and ShowBingoBadge then UpdateBingoBadge(); end
-    if str == L[ "MLAT" ] and ShowAnniversaryToken then UpdateAnniversaryToken(); end
-	if str == L[ "MMOE" ] and ShowMotesOfEnchantment then UpdateMotesOfEnchantment(); end
-	if str == L[ "MEOE" ] and ShowEmbersOfEnchantment then UpdateEmbersOfEnchantment(); end
-	if str == L[ "MFOS" ] and ShowFigmentsOfSplendour then UpdateFigmentsOfSplendour(); end
-	if str == L[ "MFFT" ] and ShowFallFestivalToken then UpdateFallFestivalToken(); end
-	if str == L[ "MFFAT" ] and ShowFarmersFaireToken then UpdateFarmersFaireToken(); end
-	if str == L[ "MSPL" ] and ShowSpringLeaf then UpdateSpringLeaf(); end
-	if str == L[ "MMST" ] and ShowMidsummerToken then UpdateMidsummerToken(); end
-	if str == L[ "MAS" ] and ShowAncientScript then UpdateAncientScript(); end
-    if str == L[ "MBOT" ] and ShowBadgeOfTaste then UpdateBadgeOfTaste(); end
-    if str == L[ "MBOD" ] and ShowBadgeOfDishonour then UpdateBadgeOfDishonour(); end
-    if str == L[ "MDW" ] and ShowDelvingWrits then UpdateDelvingWrits(); end
+    if str == L[ "MSP" ] and ShowShards then UpdateCurrencyDisplay("SP"); end
+    if str == L[ "MSM" ] and ShowSkirmishMarks then UpdateCurrencyDisplay("SM"); end
+    if str == L[ "MMP" ] and ShowMedallions then UpdateCurrencyDisplay("MP"); end
+    if str == L[ "MSL" ] and ShowSeals then UpdateCurrencyDisplay("SL"); end
+    if str == L[ "MCP" ] and ShowCommendations then UpdateCurrencyDisplay("CP"); end
+    if str == L[ "MMC" ] and ShowMithril then UpdateCurrencyDisplay("MC"); end
+    if str == L[ "MYT" ] and ShowYuleToken then UpdateCurrencyDisplay("YT"); end
+    if str == L[ "MHT" ] and ShowHytboldTokens then UpdateCurrencyDisplay("HT"); end
+    if str == L[ "MASP" ] and ShowAmrothSilverPiece then UpdateCurrencyDisplay("ASP"); end
+    if str == L[ "MSOM" ] and ShowStarsofMerit then UpdateCurrencyDisplay("SOM"); end
+    if str == L[ "MCGSP" ] and ShowCentralGondorSilverPiece then UpdateCurrencyDisplay("CGSP"); end
+    if str == L[ "MGGB" ] and ShowGiftgiversBrand then UpdateCurrencyDisplay("GGB"); end
+    if str == L[ "MBB" ] and ShowBingoBadge then UpdateCurrencyDisplay("BB"); end
+    if str == L[ "MLAT" ] and ShowAnniversaryToken then UpdateCurrencyDisplay("LAT"); end
+	if str == L[ "MMOE" ] and ShowMotesOfEnchantment then UpdateCurrencyDisplay("MOE"); end
+	if str == L[ "MEOE" ] and ShowEmbersOfEnchantment then UpdateCurrencyDisplay("EOE"); end
+	if str == L[ "MFOS" ] and ShowFigmentsOfSplendour then UpdateCurrencyDisplay("FOS"); end
+	if str == L[ "MFFT" ] and ShowFallFestivalToken then UpdateCurrencyDisplay("FFT"); end
+	if str == L[ "MFFAT" ] and ShowFarmersFaireToken then UpdateCurrencyDisplay("FFAT"); end
+	if str == L[ "MSPL" ] and ShowSpringLeaf then UpdateCurrencyDisplay("SPL"); end
+	if str == L[ "MMST" ] and ShowMidsummerToken then UpdateCurrencyDisplay("MST"); end
+	if str == L[ "MAS" ] and ShowAncientScript then UpdateCurrencyDisplay("AS"); end
+    if str == L[ "MBOT" ] and ShowBadgeOfTaste then UpdateCurrencyDisplay("BOT"); end
+    if str == L[ "MBOD" ] and ShowBadgeOfDishonour then UpdateCurrencyDisplay("BOD"); end
+    if str == L[ "MDW" ] and ShowDelvingWrits then UpdateCurrencyDisplay("DW"); end
 end
 
 function GetCurrency( str )

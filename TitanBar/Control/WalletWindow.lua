@@ -257,7 +257,7 @@ function frmWalletWindow()
 			if SelIndex == 1 then if not ShowSeals then ShowHideSeals(); end
 			else if ShowSeals then ShowHideSeals(); end end
 		elseif wcur == L["MCP"] then
-			_G.CPWhere = SelIndex; settings.Commendations.W = string.format("%.0f", SelIndex);
+			_G.CPWhere = SelIndex; settings.Commendation.W = string.format("%.0f", SelIndex);
 			if SelIndex == 1 then if not ShowCommendations then ShowHideCommendations(); end
 			else if ShowCommendations then ShowHideCommendations(); end end
 		elseif wcur == L["MASP"] then
@@ -324,14 +324,14 @@ function frmWalletWindow()
 		    _G.BODWhere = SelIndex; settings.BadgeOfDishonour.W = string.format("%.0f", SelIndex);
 		    if SelIndex == 1 then if not ShowBadgeOfDishonour then ShowHideBadgeOfDishonour(); end
 		    else if ShowBadgeOfDishonour then ShowHideBadgeOfDishonour(); end end
+		elseif wcur == L["MDW"] then
+			_G.DWWhere = SelIndex; settings.DelvingWrit.W = string.format("%.0f", SelIndex);
+			if SelIndex == 1 then if not ShowDelvingWrit then ShowHideDelvingWrit(); end
+			else if ShowDelvingWrit then ShowHideDelvingWrit(); end end
 		elseif wcur == L["MLP"] then
 			_G.LPWhere = SelIndex; settings.LOTROPoints.W = string.format("%.0f", SelIndex);
 			if SelIndex == 1 then if not ShowLOTROPoints then ShowHideLOTROPoints(); end
 			else if ShowLOTROPoints then ShowHideLOTROPoints(); end end
-		elseif wcur == L["MDW"] then
-			_G.LPWhere = SelIndex; settings.DelvingWrit.W = string.format("%.0f", SelIndex);
-			if SelIndex == 1 then if not ShowDelvingWrit then ShowHideDelvingWrit(); end
-			else if ShowDelvingWrit then ShowHideDelvingWrit(); end end
 
 			local parsed_text = WItxtLOTROPTS:GetText();
 

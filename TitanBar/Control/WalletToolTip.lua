@@ -40,13 +40,13 @@ function RefreshWITTListBox()
 		wttcur = MenuItem[WalletOrder[i]];
 		if wttcur == L["MGSC"] then ttw = _G.MIWhere;
 		elseif wttcur == L["MDP"] then ttw = _G.DPWhere; CtrIconCodeIs=WalletItem.DestinyPoints.Icon; CtrQteIs=PlayerAtt:GetDestinyPoints();
-		elseif wttcur == L["MSP"] then ttw = _G.SPWhere; CtrIconCodeIs=WalletItem.Shard.Icon; CtrQteIs=GetCurrency( L[ "MSP" ] );
+		elseif wttcur == L["MSP"] then ttw = _G.SPWhere; CtrIconCodeIs=WalletItem.Shards.Icon; CtrQteIs=GetCurrency( L[ "MSP" ] );
 		elseif wttcur == L["MSM"] then ttw = _G.SMWhere; CtrIconCodeIs=WalletItem.Mark.Icon; CtrQteIs=GetCurrency( L[ "MSM" ] );
-		elseif wttcur == L["MMC"] then ttw = _G.MCWhere; CtrIconCodeIs=WalletItem.Mithril.Icon; CtrQteIs=GetCurrency( L[ "MMC" ] );
+		elseif wttcur == L["MMC"] then ttw = _G.MCWhere; CtrIconCodeIs=WalletItem.MithrilCoins.Icon; CtrQteIs=GetCurrency( L[ "MMC" ] );
 		elseif wttcur == L["MYT"] then ttw = _G.YTWhere; CtrIconCodeIs=WalletItem.YuleToken.Icon; CtrQteIs=GetCurrency( L[ "MYT" ] );
 		elseif wttcur == L["MHT"] then ttw = _G.HTWhere; CtrIconCodeIs=WalletItem.TokensOfHytbold.Icon; CtrQteIs=GetCurrency( L[ "MHT" ] );
-		elseif wttcur == L["MMP"] then ttw = _G.MPWhere; CtrIconCodeIs=WalletItem.Medallion.Icon; CtrQteIs=GetCurrency( L[ "MMP" ] );
-		elseif wttcur == L["MSL"] then ttw = _G.SLWhere; CtrIconCodeIs=WalletItem.Seal.Icon; CtrQteIs=GetCurrency( L[ "MSL" ] );
+		elseif wttcur == L["MMP"] then ttw = _G.MPWhere; CtrIconCodeIs=WalletItem.Medallions.Icon; CtrQteIs=GetCurrency( L[ "MMP" ] );
+		elseif wttcur == L["MSL"] then ttw = _G.SLWhere; CtrIconCodeIs=WalletItem.Seals.Icon; CtrQteIs=GetCurrency( L[ "MSL" ] );
 		elseif wttcur == L["MCP"] then ttw = _G.CPWhere; CtrIconCodeIs=WalletItem.Commendation.Icon; CtrQteIs=GetCurrency( L[ "MCP" ] );
 		elseif wttcur == L["MLP"] then ttw = _G.LPWhere; CtrIconCodeIs=WalletItem.LOTROPTS.Icon; CtrQteIs=_G.LOTROPTS;
 		elseif wttcur == L["MASP"] then ttw = _G.ASPWhere; CtrIconCodeIs=WalletItem.AmrothSilverPiece.Icon; CtrQteIs=GetCurrency( L[ "MASP" ] );

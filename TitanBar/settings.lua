@@ -321,24 +321,24 @@ function LoadSettings()-- I'm confused as to what most of this is... Most of the
 	if _G.SLWhere == 3 and ShowSeals then _G.SLWhere = 1; settings.Seals.W = string.format("%.0f", _G.SLWhere); end --Remove after Oct, 15th 2013
 
 
-	if settings.Commendations == nil then settings.Commendations = {}; end
-	if settings.Commendations.V == nil then settings.Commendations.V = false; end
-	if settings.Commendations.A == nil then settings.Commendations.A = string.format("%.3f", tA); end
-	if settings.Commendations.R == nil then settings.Commendations.R = string.format("%.3f", tR); end
-	if settings.Commendations.G == nil then settings.Commendations.G = string.format("%.3f", tG); end
-	if settings.Commendations.B == nil then settings.Commendations.B = string.format("%.3f", tB); end
-	if settings.Commendations.X == nil then settings.Commendations.X = string.format("%.0f", tX); end
-	if settings.Commendations.Y == nil then settings.Commendations.Y = string.format("%.0f", tY); end
-	if settings.Commendations.W == nil then settings.Commendations.W = string.format("%.0f", tW); end
-	ShowCommendations = settings.Commendations.V;
-	CPbcAlpha = tonumber(settings.Commendations.A);
-	CPbcRed = tonumber(settings.Commendations.R);
-	CPbcGreen = tonumber(settings.Commendations.G);
-	CPbcBlue = tonumber(settings.Commendations.B);
-	_G.CPLocX = tonumber(settings.Commendations.X);
-	_G.CPLocY = tonumber(settings.Commendations.Y);
-	_G.CPWhere = tonumber(settings.Commendations.W);
-	if _G.CPWhere == 3 and ShowCommendations then _G.CPWhere = 1; settings.Commendations.W = string.format("%.0f", _G.CPWhere); end --Remove after Oct, 15th 2013
+	if settings.Commendation == nil then settings.Commendation = {}; end
+	if settings.Commendation.V == nil then settings.Commendation.V = false; end
+	if settings.Commendation.A == nil then settings.Commendation.A = string.format("%.3f", tA); end
+	if settings.Commendation.R == nil then settings.Commendation.R = string.format("%.3f", tR); end
+	if settings.Commendation.G == nil then settings.Commendation.G = string.format("%.3f", tG); end
+	if settings.Commendation.B == nil then settings.Commendation.B = string.format("%.3f", tB); end
+	if settings.Commendation.X == nil then settings.Commendation.X = string.format("%.0f", tX); end
+	if settings.Commendation.Y == nil then settings.Commendation.Y = string.format("%.0f", tY); end
+	if settings.Commendation.W == nil then settings.Commendation.W = string.format("%.0f", tW); end
+	ShowCommendations = settings.Commendation.V;
+	CPbcAlpha = tonumber(settings.Commendation.A);
+	CPbcRed = tonumber(settings.Commendation.R);
+	CPbcGreen = tonumber(settings.Commendation.G);
+	CPbcBlue = tonumber(settings.Commendation.B);
+	_G.CPLocX = tonumber(settings.Commendation.X);
+	_G.CPLocY = tonumber(settings.Commendation.Y);
+	_G.CPWhere = tonumber(settings.Commendation.W);
+	if _G.CPWhere == 3 and ShowCommendations then _G.CPWhere = 1; settings.Commendation.W = string.format("%.0f", _G.CPWhere); end --Remove after Oct, 15th 2013
 
 
 	if settings.LOTROPoints == nil then settings.LOTROPoints = {}; end
@@ -1151,15 +1151,15 @@ function SaveSettings(str)
 		settings.Seals.Y = string.format("%.0f", _G.SLLocY);
 		settings.Seals.W = string.format("%.0f", _G.SLWhere);
 
-		settings.Commendations = {};
-		settings.Commendations.V = ShowCommendations;
-		settings.Commendations.A = string.format("%.3f", CPbcAlpha);
-		settings.Commendations.R = string.format("%.3f", CPbcRed);
-		settings.Commendations.G = string.format("%.3f", CPbcGreen);
-		settings.Commendations.B = string.format("%.3f", CPbcBlue);
-		settings.Commendations.X = string.format("%.0f", _G.CPLocX);
-		settings.Commendations.Y = string.format("%.0f", _G.CPLocY);
-		settings.Commendations.W = string.format("%.0f", _G.CPWhere);
+		settings.Commendation = {};
+		settings.Commendation.V = ShowCommendations;
+		settings.Commendation.A = string.format("%.3f", CPbcAlpha);
+		settings.Commendation.R = string.format("%.3f", CPbcRed);
+		settings.Commendation.G = string.format("%.3f", CPbcGreen);
+		settings.Commendation.B = string.format("%.3f", CPbcBlue);
+		settings.Commendation.X = string.format("%.0f", _G.CPLocX);
+		settings.Commendation.Y = string.format("%.0f", _G.CPLocY);
+		settings.Commendation.W = string.format("%.0f", _G.CPWhere);
 
 		settings.LOTROPoints = {};
 		settings.LOTROPoints.V = ShowLOTROPoints;
@@ -1621,9 +1621,9 @@ function ReplaceCtr()
 	settings.Seals.X = string.format("%.0f", _G.SLLocX);
 	if ShowSeals and _G.SLWhere == 1 then SL[ "Ctr" ]:SetPosition( _G.SLLocX, _G.SLLocY ); end
 
-	oldLocX = settings.Commendations.X / oldScreenWidth;
+	oldLocX = settings.Commendation.X / oldScreenWidth;
 	_G.CPLocX = oldLocX * screenWidth;
-	settings.Commendations.X = string.format("%.0f", _G.CPLocX);
+	settings.Commendation.X = string.format("%.0f", _G.CPLocX);
 	if ShowCommendations and _G.CPWhere == 1 then CP[ "Ctr" ]:SetPosition( _G.CPLocX, _G.CPLocY ); end
 
 	oldLocX = settings.BagInfos.X / oldScreenWidth;

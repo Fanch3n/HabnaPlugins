@@ -146,8 +146,8 @@ end
 -- **v Show/Hide Commendations v**
 function ShowHideCommendations()
 	ShowCommendations = not ShowCommendations;
-	settings.Commendations.V = ShowCommendations;
-	settings.Commendations.W = string.format("%.0f", _G.CPWhere);
+	settings.Commendation.V = ShowCommendations;
+	settings.Commendation.W = string.format("%.0f", _G.CPWhere);
 	SaveSettings( false );
 	ImportCtr( "CP" );
 	if ShowCommendations then
