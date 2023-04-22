@@ -554,9 +554,9 @@ L[ "Captain" ] = "Capitaine";
 L[ "Champion" ] = "Champion";
 L[ "Guardian" ] = "Gardien";
 L[ "Hunter" ] = "Chasseur";
-L[ "Lore-Master" ] = "Ma\195\174tre du savoir";
+L[ "LoreMaster" ] = "Ma\195\174tre du savoir";
 L[ "Minstrel" ] = "M\195\169nestrel";
-L[ "Rune-Keeper" ] = "Gardien des runes";
+L[ "RuneKeeper" ] = "Gardien des runes";
 L[ "Warden" ] = "Sentinelle";
 L[ "Brawler" ] = "Bagarreur";
 

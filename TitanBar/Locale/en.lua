@@ -553,9 +553,9 @@ L[ "Captain" ] = "Captain";
 L[ "Champion" ] = "Champion";
 L[ "Guardian" ] = "Guardian";
 L[ "Hunter" ] = "Hunter";
-L[ "Lore-Master" ] = "Lore-Master";
+L[ "LoreMaster" ] = "Lore-Master";
 L[ "Minstrel" ] = "Minstrel";
-L[ "Rune-Keeper" ] = "Rune-Keeper";
+L[ "RuneKeeper" ] = "Rune-Keeper";
 L[ "Warden" ] = "Warden";
 L[ "Brawler" ] = "Brawler";
 

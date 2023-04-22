@@ -552,9 +552,9 @@ L[ "Captain" ] = "Hauptmann";
 L[ "Champion" ] = "Waffenmeister";
 L[ "Guardian" ] = "W\195\164chter";
 L[ "Hunter" ] = "J\195\164ger";
-L[ "Lore-Master" ] = "Kundiger";
+L[ "LoreMaster" ] = "Kundiger";
 L[ "Minstrel" ] = "Barde";
-L[ "Rune-Keeper" ] = "Runenbewahrer";
+L[ "RuneKeeper" ] = "Runenbewahrer";
 L[ "Warden" ] = "H\195\188ter";
 L[ "Brawler" ] = "Schl\195\164ger";
 

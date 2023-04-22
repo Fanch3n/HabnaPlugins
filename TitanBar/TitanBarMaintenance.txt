@@ -49,10 +49,8 @@ Add a new currency:
 -- Search for "WalletOrder" and add the next number to the array
 -- Search for "PlayerAlign == 1" and add the abbreviation to the MenuItem array. The position in that array defines the order in which the currencies are listed.
 
-- Add currency file in control directory
--- Copy an existing currency file (I mostly use "AnniversaryToken.lua")
--- Change the name of the file to the name of the new currency (as defined in the localization file, first abbreviation, no spaces between words).
--- Replace everything which is connected to the old currency (abbreviation, name, comments) with the new one (I use the replace all function of Notepad++).
+- Add currency to CurrencyLogic file in control directory
+-- just add abbreviation and name to the mapping table
 
 - Add currency in 'TBressources.lua'
 -- or more correctly: Add the image of the currency

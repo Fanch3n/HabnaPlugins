@@ -60,49 +60,23 @@ function frmBackground()
 	curSelColor:SetPosition( 1, 1 );
 	
 	-- Set backcolor window setting to currently control color
-	if sFrom == "TitanBar" then curSelAlpha = bcAlpha; curSelRed = bcRed; curSelGreen = bcGreen; curSelBlue = bcBlue; end
-	if sFrom == "WI" then curSelAlpha = WIbcAlpha; curSelRed = WIbcRed; curSelGreen = WIbcGreen; curSelBlue = WIbcBlue; end
-	if sFrom == "Money" then curSelAlpha = MIbcAlpha; curSelRed = MIbcRed; curSelGreen = MIbcGreen; curSelBlue = MIbcBlue; end
-	if sFrom == "DP" then curSelAlpha = DPbcAlpha; curSelRed = DPbcRed; curSelGreen = DPbcGreen; curSelBlue = DPbcBlue; end
-	if sFrom == "SP" then curSelAlpha = SPbcAlpha; curSelRed = SPbcRed; curSelGreen = SPbcGreen; curSelBlue = SPbcBlue; end
-	if sFrom == "SM" then curSelAlpha = SMbcAlpha; curSelRed = SMbcRed; curSelGreen = SMbcGreen; curSelBlue = SMbcBlue; end
-	if sFrom == "MC" then curSelAlpha = MCbcAlpha; curSelRed = MCbcRed; curSelGreen = MCbcGreen; curSelBlue = MCbcBlue; end
-	if sFrom == "YT" then curSelAlpha = YTbcAlpha; curSelRed = YTbcRed; curSelGreen = YTbcGreen; curSelBlue = YTbcBlue; end
-	if sFrom == "HT" then curSelAlpha = HTbcAlpha; curSelRed = HTbcRed; curSelGreen = HTbcGreen; curSelBlue = HTbcBlue; end
-	if sFrom == "MP" then curSelAlpha = MPbcAlpha; curSelRed = MPbcRed; curSelGreen = MPbcGreen; curSelBlue = MPbcBlue; end
-	if sFrom == "SL" then curSelAlpha = SLbcAlpha; curSelRed = SLbcRed; curSelGreen = SLbcGreen; curSelBlue = SLbcBlue; end
-	if sFrom == "CP" then curSelAlpha = CPbcAlpha; curSelRed = CPbcRed; curSelGreen = CPbcGreen; curSelBlue = CPbcBlue; end
-	if sFrom == "BI" then curSelAlpha = BIbcAlpha; curSelRed = BIbcRed; curSelGreen = BIbcGreen; curSelBlue = BIbcBlue; end
-	if sFrom == "PI" then curSelAlpha = PIbcAlpha; curSelRed = PIbcRed; curSelGreen = PIbcGreen; curSelBlue = PIbcBlue; end
-	if sFrom == "EI" then curSelAlpha = EIbcAlpha; curSelRed = EIbcRed; curSelGreen = EIbcGreen; curSelBlue = EIbcBlue; end
-	if sFrom == "DI" then curSelAlpha = DIbcAlpha; curSelRed = DIbcRed; curSelGreen = DIbcGreen; curSelBlue = DIbcBlue; end
-	if sFrom == "TI" then curSelAlpha = TIbcAlpha; curSelRed = TIbcRed; curSelGreen = TIbcGreen; curSelBlue = TIbcBlue; end
-	if sFrom == "IF" then curSelAlpha = IFbcAlpha; curSelRed = IFbcRed; curSelGreen = IFbcGreen; curSelBlue = IFbcBlue; end
-	if sFrom == "VT" then curSelAlpha = VTbcAlpha; curSelRed = VTbcRed; curSelGreen = VTbcGreen; curSelBlue = VTbcBlue; end
-	if sFrom == "SS" then curSelAlpha = SSbcAlpha; curSelRed = SSbcRed; curSelGreen = SSbcGreen; curSelBlue = SSbcBlue; end
-	if sFrom == "BK" then curSelAlpha = BKbcAlpha; curSelRed = BKbcRed; curSelGreen = BKbcGreen; curSelBlue = BKbcBlue; end
-	if sFrom == "DN" then curSelAlpha = DNbcAlpha; curSelRed = DNbcRed; curSelGreen = DNbcGreen; curSelBlue = DNbcBlue; end
-	if sFrom == "RP" then curSelAlpha = RPbcAlpha; curSelRed = RPbcRed; curSelGreen = RPbcGreen; curSelBlue = RPbcBlue; end
-	if sFrom == "LP" then curSelAlpha = LPbcAlpha; curSelRed = LPbcRed; curSelGreen = LPbcGreen; curSelBlue = LPbcBlue; end
-	if sFrom == "PL" then curSelAlpha = PLbcAlpha; curSelRed = PLbcRed; curSelGreen = PLbcGreen; curSelBlue = PLbcBlue; end
-	if sFrom == "GT" then curSelAlpha = GTbcAlpha; curSelRed = GTbcRed; curSelGreen = GTbcGreen; curSelBlue = GTbcBlue; end
-	if sFrom == "ASP" then curSelAlpha =ASPbcAlpha; curSelRed = ASPbcRed; curSelGreen = ASPbcGreen; curSelBlue = ASPbcBlue; end
-	if sFrom == "SOM" then curSelAlpha =SOMbcAlpha; curSelRed = SOMbcRed; curSelGreen = SOMbcGreen; curSelBlue = SOMbcBlue; end
-	if sFrom == "CGSP" then curSelAlpha = CGSPbcAlpha; curSelRed = CGSPbcRed; curSelGreen = CGSPbcGreen; curSelBlue = CGSPbcBlue; end
-	if sFrom == "GGB" then curSelAlpha = GGBbcAlpha; curSelRed = GGBbcRed; curSelGreen = GGBbcGreen; curSelBlue = GGBbcBlue; end
-	if sFrom == "BB" then curSelAlpha = BBbcAlpha; curSelRed = BBbcRed; curSelGreen = BBbcGreen; curSelBlue = BBbcBlue; end
-	if sFrom == "LAT" then curSelAlpha = LATbcAlpha; curSelRed = LATbcRed; curSelGreen = LATbcGreen; curSelBlue = LATbcBlue; end
-	if sFrom == "MOE" then curSelAlpha = MOEbcAlpha; curSelRed = MOEbcRed; curSelGreen = MOEbcGreen; curSelBlue = MOEbcBlue; end
-	if sFrom == "EOE" then curSelAlpha = EOEbcAlpha; curSelRed = EOEbcRed; curSelGreen = EOEbcGreen; curSelBlue = EOEbcBlue; end
-	if sFrom == "FOS" then curSelAlpha = FOSbcAlpha; curSelRed = FOSbcRed; curSelGreen = FOSbcGreen; curSelBlue = FOSbcBlue; end
-	if sFrom == "FFT" then curSelAlpha = FFTbcAlpha; curSelRed = FFTbcRed; curSelGreen = FFTbcGreen; curSelBlue = FFTbcBlue; end
-	if sFrom == "FFAT" then curSelAlpha = FFATbcAlpha; curSelRed = FFATbcRed; curSelGreen = FFATbcGreen; curSelBlue = FFATbcBlue; end
-	if sFrom == "SPL" then curSelAlpha = SPLbcAlpha; curSelRed = SPLbcRed; curSelGreen = SPLbcGreen; curSelBlue = SPLbcBlue; end
-	if sFrom == "MST" then curSelAlpha = MSTbcAlpha; curSelRed = MSTbcRed; curSelGreen = MSTbcGreen; curSelBlue = MSTbcBlue; end
-	if sFrom == "AS" then curSelAlpha = ASbcAlpha; curSelRed = ASbcRed; curSelGreen = ASbcGreen; curSelBlue = ASbcBlue; end
-	if sFrom == "BOT" then curSelAlpha = BOTbcAlpha; curSelRed = BOTbcRed; curSelGreen = BOTbcGreen; curSelBlue = BOTbcBlue; end
-	if sFrom == "BOD" then curSelAlpha = BODbcAlpha; curSelRed = BODbcRed; curSelGreen = BODbcGreen; curSelBlue = BODbcBlue; end
-	if sFrom == "DW" then curSelAlpha = DWbcAlpha; curSelRed = DWbcRed; curSelGreen = DWbcGreen; curSelBlue = DWbcBlue; end
+	if sFrom == "TitanBar" then
+		curSelAlpha = bcAlpha
+		curSelRed = bcRed
+		curSelGreen = bcGreen
+		curSelBlue = bcBlue
+	elseif sFrom == "Money" then
+		curSelAlpha = MIbcAlpha
+		curSelRed = MIbcRed
+		curSelGreen = MIbcGreen
+		curSelBlue = MIbcBlue
+	else
+		curSelAlpha = _G[sFrom .. "bcAlpha"]
+		curSelRed = _G[sFrom .. "bcRed"]
+		curSelGreen = _G[sFrom .. "bcGreen"]
+		curSelBlue = _G[sFrom .. "bcBlue"]
+	end
+	
 	curAlpha, curColor.R, curColor.G, curColor.B = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
 	curSelColor:SetBackColor( Turbine.UI.Color( curSelAlpha, curSelRed, curSelGreen, curSelBlue ) );
 	-- **^

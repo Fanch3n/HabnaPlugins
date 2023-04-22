@@ -128,7 +128,7 @@ function get_percentage(Attribute,R,L,PenName,PenFactor)
     local Capped = 0;
     
     if SName == "PhyMit" or SName == "TacMit" then -- is dependant on armour type
-        if PlayerClassIs == _G.L["Lore-Master"] or PlayerClassIs == _G.L["Minstrel"] or PlayerClassIs == _G.L["Rune-Keeper"] then
+        if PlayerClassIs == _G.L["LoreMaster"] or PlayerClassIs == _G.L["Minstrel"] or PlayerClassIs == _G.L["Rune-Keeper"] then
             SName = SName.."L";
         elseif PlayerClassIs == _G.L["Burglar"] or PlayerClassIs == _G.L["Hunter"] or PlayerClassIs == _G.L["Warden"] then
             SName = SName.."M";

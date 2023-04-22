@@ -2,6 +2,35 @@
 -- Written By Habna
 -- rewritten by many
 
+local DragAndHoldInTooltip = {
+	DP = true,
+	SP = true,
+	SM = true,
+	MC = true,
+	YT = true,
+	HT = true,
+	MP = true,
+	SL = true,
+	CP = true,
+	PL = true,
+	ASP = true,
+	SOM = true,
+	CGSP = true,
+	GGB = true,
+	BB = true,
+	LAT = true,
+	MOE = true,
+	EOE = true,
+	FOS = true,
+	FFT = true,
+	FFAT = true,
+	SPL = true,
+	MST = true,
+	AS = true,
+	BOT = true,
+	DW = true,
+	BOD = true
+}
 
 function AddCallback(object, event, callback)
     if (object[event] == nil) then
@@ -167,68 +196,11 @@ function ShowToolTipWin( ToShow )
 		else w = 305; end
 	end
 
-	if ToShow == "DP" then -- Destiny points
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["DPh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "BI" then -- Bag Infos
+	if ToShow == "BI" then -- Bag Infos
 		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
 		h = 80;
 		if not TBTop then y = h; end
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["MBI"], L["EIt1"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "SP" then -- Shards
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["SPh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "SM" then -- Skirmish marks
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["SMh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "MC" then -- Mithril Coins
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MCh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "YT" then -- Yule Tokens
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["YTh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "HT" then -- Tokens of Hytbold
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["HTh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "MP" then -- Medallions
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MPh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "SL" then -- Seals
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["SLh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "CP" then -- Commendations
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["CPh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "PL" then -- Player Location
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["PLh"], L["EIt2"], 
-            L["EIt3"] );
 	elseif ToShow == "GT" then -- Game Time
 		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
 		h = 80;
@@ -265,96 +237,13 @@ function ShowToolTipWin( ToShow )
 		if not TBTop then y = h; end
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["LPh"], L["EIt1"], 
             L["EIt2"], L["EIt3"] );
-	elseif ToShow == "ASP" then -- Amroth Silver Piece
+	elseif DragAndHoldInTooltip[ToShow] then
 		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
 		h = 65;
 		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["ASPh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "SOM" then -- Stars of Merit
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["SOMh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "CGSP" then -- Central Gondor Silver Piece
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w+30, h, bblTo, L["CGSPh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "GGB" then -- Gift giver's Brand
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["GGBh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "BB" then -- Bingo Badge
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["BBh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "LAT" then -- Anniversary Token
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["LATh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "MOE" then -- Motes of Enchantment
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MOEh"], L["EIt2"], L["EIt3"] );	
-	elseif ToShow == "EOE" then -- Embers of Enchantment
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["EOEh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "FOS" then -- Figments of Splendour
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["FOSh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "FFT" then -- Fall Festival Tokens
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["FFTh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "FFAT" then -- Farmers Faire Token
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["FFATh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "SPL" then -- Spring Leaves
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["SPLh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "MST" then -- Midsummer Tokens
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MSTh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "AS" then -- Ancient Script
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["ASh"], L["EIt2"], L["EIt3"] );			
-	elseif ToShow == "BOT" then -- Badge of Taste
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["BOTh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "BOD" then -- Badge of Dishonour
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["BODh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "DW" then -- Delving Writs
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["DWh"], L["EIt2"], L["EIt3"] );
+		TTW = createToolTipWin( x, y, w, h, bblTo, L[ToShow .. "h"], L["EIt2"], L["EIt3"] );
+	else
+		write(ToShow .. " not recognized for Tooltip creation, add in functions.lua")
 	end
 
 	_G.ToolTipWin:SetPosition( mouseX - _G.ToolTipWin.xOffset, mouseY - 
@@ -537,81 +426,47 @@ function UpdateBackpackInfos()
 	AjustIcon( "BI" );
 end
 --**^
+
+local PlayerRaceMap = {
+	[0]   = "", -- undefined
+	[7]   = "", -- Monster Player
+	[23]  = "Man",
+	[65]  = "Elf",
+	[73]  = "Dwarf",
+	[81]  = "Hobbit",
+	[114] = "Beorning",
+	[117] = "HighElf",
+	[120] = "StoutAxe"
+}
+
+local PlayerClassMap = {
+	[23] = "Guardian",
+	[24] = "Captain",
+	[31] = "Minstrel",
+	[40] = "Burglar",
+	[52] = "Warleader",
+	[71] = "Reaver",
+	[126]= "Stalker",
+	[127]= "Weaver",
+	[128]= "Defiler",
+	[162]= "Hunter",
+	[172]= "Champion",
+	[179]= "Blackarrow",
+	[185]= "LoreMaster",
+	[193]= "RuneKeeper",
+	[194]= "Warden",
+	[214]= "Beorning",
+	[215]= "Brawler"
+}
+
 --**v Update player infos on TitanBar v**
 function UpdatePlayersInfos()
-	PlayerRaceIs = Player:GetRace();
+	PlayerRaceIs = L[PlayerRaceMap[Player:GetRace()]];
 	
-	--Free people race
-	if PlayerRaceIs == 0 then PlayerRaceIs = ""; -- Undefined
-	elseif PlayerRaceIs == 65 then PlayerRaceIs = L[ "Elf" ];
-	elseif PlayerRaceIs == 23 then PlayerRaceIs = L[ "Man" ];
-	elseif PlayerRaceIs == 73 then PlayerRaceIs = L[ "Dwarf" ];
-	elseif PlayerRaceIs == 81 then PlayerRaceIs = L[ "Hobbit" ];
-	elseif PlayerRaceIs == 114 then PlayerRaceIs = L[ "Beorning" ];
-	elseif PlayerRaceIs == 117 then PlayerRaceIs = L[ "HighElf" ];
-	elseif PlayerRaceIs == 120 then PlayerRaceIs = L[ "StoutAxe" ];
-
-	--Monster play race
-	elseif PlayerRaceIs == 7 then PlayerRaceIs = ""; end
-	
-	PlayerClassIs = Player:GetClass();
-	
-	--Free People Class
-	if PlayerClassIs == 23 then 
-        PlayerClassIs = L["Guardian"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Guardian;
-	elseif PlayerClassIs == 24 then 
-        PlayerClassIs = L["Captain"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Captain;
-	elseif PlayerClassIs == 31 then 
-        PlayerClassIs = L["Minstrel"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Minstrel;
-	elseif PlayerClassIs == 40 then 
-        PlayerClassIs = L["Burglar"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Burglar;
-	elseif PlayerClassIs == 162 then 
-        PlayerClassIs = L["Hunter"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Hunter;
-	elseif PlayerClassIs == 172 then 
-        PlayerClassIs = L["Champion"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Champion;
-	elseif PlayerClassIs == 185 then 
-        PlayerClassIs = L["Lore-Master"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.LoreMaster;
-	elseif PlayerClassIs == 193 then 
-        PlayerClassIs = L["Rune-Keeper"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.RuneKeeper;
-	elseif PlayerClassIs == 194 then 
-        PlayerClassIs = L["Warden"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Warden;
-	elseif PlayerClassIs == 214 then 
-        PlayerClassIs = L["Beorning"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Beorning;
-	elseif PlayerClassIs == 215 then 
-        PlayerClassIs = L["Brawler"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Brawler;	
-	
-	--Monster Play Class
-	elseif PlayerClassIs == 52 then 
-        PlayerClassIs = L["Warleader"]; 
-        PlayerIconCodeIs = resources.MonsterIconCode.Warleader;
-	elseif PlayerClassIs == 71 then 
-        PlayerClassIs = L["Reaver"]; 
-        PlayerIconCodeIs = resources.MonsterIconCode.Reaver;
-	elseif PlayerClassIs == 126 then 
-        PlayerClassIs = L["Stalker"]; 
-        PlayerIconCodeIs = resources.MonsterIconCode.Stalker;
-	elseif PlayerClassIs == 127 then 
-        PlayerClassIs = L["Weaver"]; 
-        PlayerIconCodeIs = resources.MonsterIconCode.Weaver;
-	elseif PlayerClassIs == 128 then 
-        PlayerClassIs = L["Defiler"]; 
-        PlayerIconCodeIs = resources.MonsterIconCode.Defiler;
-	elseif PlayerClassIs == 179 then 
-        PlayerClassIs = L["Blackarrow"]; 
-        PlayerIconCodeIs = resources.MonsterIconCode.Blackarrow; 
-	end
-	
+	PlayerClassIs = PlayerClassMap[Player:GetClass()];
+	PlayerIconCodeIs = resources.PlayerIconCode[PlayerClassIs]
+	PlayerClassIs = L[PlayerClassIs]
+		
 	PI[ "Icon" ]:SetBackground( PlayerIconCodeIs );
 	
 	PI["Lvl"]:SetText( Player:GetLevel() );
