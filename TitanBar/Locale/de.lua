@@ -49,82 +49,82 @@ L[ "MReputation" ] = "Ruf";
 L[ "MLP" ] = "HdRO-Punkte";
 L[ "LPh" ] = "Eure HdRO-Punkte";
 -- Mithril Coins control
-L[ "MMC" ] = "Mithril-M\195\188nze";
-L[ "MCh" ] = "Eure Mithril-M\195\188nzen";
+L[ "MMithrilCoins" ] = "Mithril-M\195\188nze";
+L[ "MithrilCoinsh" ] = "Eure Mithril-M\195\188nzen";
 -- Yule Tokens control
-L[ "MYT" ] = "Julfest-M\195\188nze";
-L[ "YTh" ] = "Eure Julfest-M\195\188nzen";
+L[ "MYuleToken" ] = "Julfest-M\195\188nze";
+L[ "YuleTokenh" ] = "Eure Julfest-M\195\188nzen";
 -- Anniversary Tokens control
-L[ "MLAT" ] = "Jubil\195\164umsm\195\188nze";
-L[ "LATh" ] = "Eure Jubil\195\164umsm\195\188nzen";
+L[ "MAnniversaryToken" ] = "Jubil\195\164umsm\195\188nze";
+L[ "AnniversaryTokenh" ] = "Eure Jubil\195\164umsm\195\188nzen";
 -- Bingo Badge control
-L[ "MBB" ] = "Bingo-Abzeichen";
-L[ "BBh" ] = "Eure Bingo-Abzeichen";
+L[ "MBingoBadge" ] = "Bingo-Abzeichen";
+L[ "BingoBadgeh" ] = "Eure Bingo-Abzeichen";
 -- Skirmish marks control
-L[ "MSM" ] = "Zeichen";
-L[ "SMh" ] = "Eure Scharm\195\188tzel-Zeichen";
+L[ "MSkirmishMarks" ] = "Zeichen";
+L[ "SkirmishMarksh" ] = "Eure Scharm\195\188tzel-Zeichen";
 -- Destiny Points control
 L[ "MDP" ] = "Schicksalspunkte";
 L[ "DPh" ] = "Eure Schicksalspunkte";
 -- Shards control
-L[ "MSP" ] = "Scherbe";
-L[ "SPh" ] = "Eure Scherben";
+L[ "MShards" ] = "Scherbe";
+L[ "Shardsh" ] = "Eure Scherben";
 -- Tokens of Hytbold control
-L[ "MHT" ] = "M\195\188nze von Hytbold";
-L[ "HTh" ] = "Eure M\195\188nzen von Hytbold";
+L[ "MTokensOfHytbold" ] = "M\195\188nze von Hytbold";
+L[ "TokensOfHytboldh" ] = "Eure M\195\188nzen von Hytbold";
 -- Medallions control
-L[ "MMP" ] = "Medaillon";
-L[ "MPh" ] = "Eure Medallions";
+L[ "MMedallions" ] = "Medaillon";
+L[ "Medallionsh" ] = "Eure Medallions";
 -- Seals control
-L[ "MSL" ] = "Siegel";
-L[ "SLh" ] = "Eure Siegel";
+L[ "MSeals" ] = "Siegel";
+L[ "Sealsh" ] = "Eure Siegel";
 -- Commendations control
-L[ "MCP" ] = "Anerkennung";
-L[ "CPh" ] = "Eure Anerkennung";
+L[ "MCommendation" ] = "Anerkennung";
+L[ "Commendationh" ] = "Eure Anerkennung";
 -- Amroth Silver Piece control
-L[ "MASP" ] = "Amroth-Silberst\195\188ck";
-L[ "ASPh" ] = "Eure Amroth-Silberst\195\188cke";
+L[ "MAmrothSilverPiece" ] = "Amroth-Silberst\195\188ck";
+L[ "AmrothSilverPieceh" ] = "Eure Amroth-Silberst\195\188cke";
 -- Stars of Merit control
-L[ "MSOM" ] = "Stern des Verdienst";
-L[ "SOMh" ] = "Eure Sterne des Verdienst";
+L[ "MStarsofMerit" ] = "Stern des Verdienst";
+L[ "StarsofMerith" ] = "Eure Sterne des Verdienst";
 -- Central Gondor Silver Piece control
-L[ "MCGSP" ] = "Zentralgondorisches Silberst\195\188ck";
-L[ "CGSPh" ] = "Eure Zentralgondorischen Silberst\195\188cke";
+L[ "MCentralGondorSilverPiece" ] = "Zentralgondorisches Silberst\195\188ck";
+L[ "CentralGondorSilverPieceh" ] = "Eure Zentralgondorischen Silberst\195\188cke";
 -- Gift giver's Brand control
-L[ "MGGB" ] = "Zeichen des Schenkenden";
-L[ "GGBh" ] = "Eure Zeichen des Schenkenden";
+L[ "MGiftgiversBrand" ] = "Zeichen des Schenkenden";
+L[ "GiftgiversBrandh" ] = "Eure Zeichen des Schenkenden";
 -- Motes of Enchantment control
-L[ "MMOE" ] = "Aschepartikel der Verzauberung";
-L[ "MOEh" ] = "Eure Aschepartikel der Verzauberung";
+L[ "MMotesOfEnchantment" ] = "Aschepartikel der Verzauberung";
+L[ "MotesOfEnchantmenth" ] = "Eure Aschepartikel der Verzauberung";
 -- Embers of Enchantment control
-L[ "MEOE" ] = "Asche der Verzauberung";
-L[ "EOEh" ] = "Eure Asche der Verzauberung";
+L[ "MEmbersOfEnchantment" ] = "Asche der Verzauberung";
+L[ "EmbersOfEnchantmenth" ] = "Eure Asche der Verzauberung";
 -- Figments of Splendour control
-L[ "MFOS" ] = "Prachtst\195\188ck des Glanzes";
-L[ "FOSh" ] = "Eure Prachtst\195\188cke des Glanzes";
+L[ "MFigmentsOfSplendour" ] = "Prachtst\195\188ck des Glanzes";
+L[ "FigmentsOfSplendourh" ] = "Eure Prachtst\195\188cke des Glanzes";
 -- Fall Festival Tokens control
-L[ "MFFT" ] = "Herbstfest-Medaille";
-L[ "FFTh" ] = "Eure Herbstfest-Medaillen";
+L[ "MFallFestivalToken" ] = "Herbstfest-Medaille";
+L[ "FallFestivalTokenh" ] = "Eure Herbstfest-Medaillen";
 -- Farmers Faire Tokens control
-L[ "MFFAT" ] = "Bauernfest-M\195\188nze";
-L[ "FFATh" ] = "Eure Bauernfest-M\195\188nzen";
+L[ "MFarmersFaireToken" ] = "Bauernfest-M\195\188nze";
+L[ "FarmersFaireTokenh" ] = "Eure Bauernfest-M\195\188nzen";
 -- Spring Leaves control
-L[ "MSPL" ] = "Fr\195\188hlingsblatt";
-L[ "FSPLh" ] = "Eure Fr\195\188hlingsbl\195\164tter";
+L[ "MSpringLeaf" ] = "Fr\195\188hlingsblatt";
+L[ "FSpringLeafh" ] = "Eure Fr\195\188hlingsbl\195\164tter";
 -- Midsummer Tokens control
-L[ "MMST" ] = "Mittsommer-Marke";
-L[ "MSTh" ] = "Eure Mittsommer-Marken";
+L[ "MMidsummerToken" ] = "Mittsommer-Marke";
+L[ "MidsummerTokenh" ] = "Eure Mittsommer-Marken";
 -- Ancient Script control
-L[ "MAS" ] = "Uralte Schrift";
-L[ "ASh" ] = "Eure Uralte Schriften";
+L[ "MAncientScript" ] = "Uralte Schrift";
+L[ "AncientScripth" ] = "Eure Uralte Schriften";
 -- Inn League / Ale Association control
-L[ "MBOT" ] = "Abzeichen des Geschmacks";
-L[ "BOTh" ] = "Eure Abzeichen des Geschmacks";
-L[ "MBOD" ] = "Abzeichen der Schande";
-L[ "BODh" ] = "Eure Abzeichen der Schande";
+L[ "MBadgeOfTaste" ] = "Abzeichen des Geschmacks";
+L[ "BadgeOfTasteh" ] = "Eure Abzeichen des Geschmacks";
+L[ "MBadgeOfDishonour" ] = "Abzeichen der Schande";
+L[ "BadgeOfDishonourh" ] = "Eure Abzeichen der Schande";
 -- Delving Writs control
-L[ "MDW" ] = "Delving Writs";
-L[ "DWh" ] = "Eure Delving Writs";
+L[ "MDelvingWrit" ] = "Delving Writs";
+L[ "DelvingWrith" ] = "Eure Delving Writs";
 
 -- Control Menu
 L[ "MCU" ] = "entfernen ...";

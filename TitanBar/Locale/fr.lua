@@ -50,82 +50,82 @@ L[ "MReputation" ] = "R\195\169putation";
 L[ "MLP" ] = "Points LOTRO";
 L[ "LPh" ] = "Ce sont vos points LOTRO";
 -- Mithril Coins control
-L[ "MMC" ] = "Pi\195\168ce de mithril";
-L[ "MCh" ] = "Ce sont vos Pi\195\168ces de mithril";
+L[ "MMithrilCoins" ] = "Pi\195\168ce de mithril";
+L[ "MithrilCoinsh" ] = "Ce sont vos Pi\195\168ces de mithril";
 -- Yule Tokens control
-L[ "MYT" ] = "Jeton du festival de Yule";
-L[ "YTh" ] = "Ce sont vos Jetons du festival de Yule";
+L[ "MYuleToken" ] = "Jeton du festival de Yule";
+L[ "YuleTokenh" ] = "Ce sont vos Jetons du festival de Yule";
 -- Anniversary Tokens control
-L[ "MLAT" ] = "Jeton d'anniversaire";
-L[ "LATh" ] = "Ce sont vos Jetons d'anniversaire";
+L[ "MAnniversaryToken" ] = "Jeton d'anniversaire";
+L[ "AnniversaryTokenh" ] = "Ce sont vos Jetons d'anniversaire";
 -- Bingo Badge control
-L[ "MBB" ] = "Insigne de Bingo";
-L[ "BBh" ] = "These are your Insignes de Bingo";
+L[ "MBingoBadge" ] = "Insigne de Bingo";
+L[ "BingoBadgeh" ] = "These are your Insignes de Bingo";
 -- Skirmish marks control
-L[ "MSM" ] = "Marque";
-L[ "SMh" ] = "Ce sont vos marques d'escarmouches";
+L[ "MSkirmishMarks" ] = "Marque";
+L[ "SkirmishMarksh" ] = "Ce sont vos marques d'escarmouches";
 -- Destiny Points control
 L[ "MDP" ] = "Points destin\195\169e";
 L[ "DPh" ] = "Ce sont vos points destin\195\169e";
 -- Shards control
-L[ "MSP" ] = "Eclat";
-L[ "SPh" ] = "Ce sont vos Eclats";
+L[ "MShards" ] = "Eclat";
+L[ "Shardsh" ] = "Ce sont vos Eclats";
 -- Tokens of Hytbold control
-L[ "MHT" ] = "Jeton d'Hytbold";
-L[ "HTh" ] = "Ce sont vos Jetons d'Hytbold";
+L[ "MTokensOfHytbold" ] = "Jeton d'Hytbold";
+L[ "TokensOfHytboldh" ] = "Ce sont vos Jetons d'Hytbold";
 -- Medallions control
-L[ "MMP" ] = "M\195\169daillon";
-L[ "MPh" ] = "Ce sont vos m\195\169daillons";
+L[ "MMedallions" ] = "M\195\169daillon";
+L[ "Medallionsh" ] = "Ce sont vos m\195\169daillons";
 -- Seals control
-L[ "MSL" ] = "Sceau";
-L[ "SLh" ] = "Ce sont vos sceaux";
+L[ "MSeals" ] = "Sceau";
+L[ "Sealsh" ] = "Ce sont vos sceaux";
 -- Commendations control
-L[ "MCP" ] = "Citation";
-L[ "CPh" ] = "Ce sont vos Citations";
+L[ "MCommendation" ] = "Citation";
+L[ "Commendationh" ] = "Ce sont vos Citations";
 -- Amroth Silver Piece control
-L[ "MASP" ] = "Pi\195\168ce d'argent d'Amroth";
-L[ "ASPh" ] = "Ce sont vos Pi\195\168ces d'argent d'Amroth";
+L[ "MAmrothSilverPiece" ] = "Pi\195\168ce d'argent d'Amroth";
+L[ "AmrothSilverPieceh" ] = "Ce sont vos Pi\195\168ces d'argent d'Amroth";
 -- Stars of Merit control
-L[ "MSOM" ] = "\195\137toile du m\195\169rite";
-L[ "SOMh" ] = "Ce sont vos \195\137toiles du m\195\169rite";
+L[ "MStarsofMerit" ] = "\195\137toile du m\195\169rite";
+L[ "StarsofMerith" ] = "Ce sont vos \195\137toiles du m\195\169rite";
 -- Central Gondor Silver Piece control
-L[ "MCGSP" ] = "Pi\195\168ce d'argent du Gondor central";
-L[ "CGSPh" ] = "Ce sont vos Pi\195\168ces d'argent du gondor Central";
+L[ "MCentralGondorSilverPiece" ] = "Pi\195\168ce d'argent du Gondor central";
+L[ "CentralGondorSilverPieceh" ] = "Ce sont vos Pi\195\168ces d'argent du gondor Central";
 -- Gift giver's Brand control
-L[ "MGGB" ] = "Marque du Donateur";
-L[ "GGBh" ] = "Ce sont vos Marques du Donateur";
+L[ "MGiftgiversBrand" ] = "Marque du Donateur";
+L[ "GiftgiversBrandh" ] = "Ce sont vos Marques du Donateur";
 -- Motes of Enchantment control
-L[ "MMOE" ] = "Grain d\226\128\153enchantement";
-L[ "MOEh" ] = "Ce sont vos Grains d'Enchantement";
+L[ "MMotesOfEnchantment" ] = "Grain d\226\128\153enchantement";
+L[ "MotesOfEnchantmenth" ] = "Ce sont vos Grains d'Enchantement";
 -- Embers of Enchantment control
-L[ "MEOE" ] = "Braise d\226\128\153enchantement";
-L[ "EOEh" ] = "Ce sont vos Braises d'Enchantement";
+L[ "MEmbersOfEnchantment" ] = "Braise d\226\128\153enchantement";
+L[ "EmbersOfEnchantmenth" ] = "Ce sont vos Braises d'Enchantement";
 -- Figments of Splendour control
-L[ "MFOS" ] = "Mirage de splendeur";
-L[ "FOSh" ] = "Ce sont vos Mirages de Splendour";
+L[ "MFigmentsOfSplendour" ] = "Mirage de splendeur";
+L[ "FigmentsOfSplendourh" ] = "Ce sont vos Mirages de Splendour";
 -- Fall Festival Tokens control
-L[ "MFFT" ] = "Jeton du festival d'automne";
-L[ "FFTh" ] = "Ce sont vos Jetons du Festival d'Automne";
+L[ "MFallFestivalToken" ] = "Jeton du festival d'automne";
+L[ "FallFestivalTokenh" ] = "Ce sont vos Jetons du Festival d'Automne";
 -- Farmers Faire Tokens control
-L[ "MFFAT" ] = "Jeton de la Foire des fermiers";
-L[ "FFATh" ] = "Ce sont vos Jetons de la Foire des Fermiers";
+L[ "MFarmersFaireToken" ] = "Jeton de la Foire des fermiers";
+L[ "FarmersFaireTokenh" ] = "Ce sont vos Jetons de la Foire des Fermiers";
 -- Spring Leaves control
-L[ "MSPL" ] = "Feuille de printemps";
-L[ "SPLh" ] = "Ce sont vos Feuille de Printemps";
+L[ "MSpringLeaf" ] = "Feuille de printemps";
+L[ "SpringLeafh" ] = "Ce sont vos Feuille de Printemps";
 -- Midsummer Tokens control
-L[ "MMST" ] = "Jeton du solstice d'\195\169t\195\169";
-L[ "MSTh" ] = "Ce sont vos Jetons du solstice d'�t�";
+L[ "MMidsummerToken" ] = "Jeton du solstice d'\195\169t\195\169";
+L[ "MidsummerTokenh" ] = "Ce sont vos Jetons du solstice d'�t�";
 -- Ancient Script control
-L[ "MAS" ] = "\195\137criture ancienne";
-L[ "ASh" ] = "Ce sont vos \195\137criture ancienne";
+L[ "MAncientScript" ] = "\195\137criture ancienne";
+L[ "AncientScripth" ] = "Ce sont vos \195\137criture ancienne";
 -- Inn League / Ale Association control
-L[ "MBOT" ] = "M�daille du go�t";
-L[ "BOTh" ] = "Ce sont vos M�dailles du go�t";
-L[ "MBOD" ] = "M�daille de la honte";
-L[ "BODh" ] = "Ce sont vos M�dailles de la honte";
+L[ "MBadgeOfTaste" ] = "M�daille du go�t";
+L[ "BadgeOfTasteh" ] = "Ce sont vos M�dailles du go�t";
+L[ "MBadgeOfDishonour" ] = "M�daille de la honte";
+L[ "BadgeOfDishonourh" ] = "Ce sont vos M�dailles de la honte";
 -- Delving Writs control
-L[ "MDW" ] = "Delving Writ";
-L[ "DWh" ] = "These are your Delving Writs";
+L[ "MDelvingWrit" ] = "Delving Writ";
+L[ "DelvingWrith" ] = "These are your Delving Writs";
 
 
 -- Control Menu

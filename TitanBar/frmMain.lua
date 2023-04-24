@@ -162,31 +162,11 @@ function frmMain()
 
 	if PlayerAlign == 1 then
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
-			if _G.SPWhere ~= 3 then ImportCtr( "SP" ); end
-			if _G.SMWhere ~= 3 then ImportCtr( "SM" ); end
-			if _G.MCWhere ~= 3 then ImportCtr( "MC" ); end
-			if _G.YTWhere ~= 3 then ImportCtr( "YT" ); end
-			if _G.HTWhere ~= 3 then ImportCtr( "HT" ); end
-			if _G.MPWhere ~= 3 then ImportCtr( "MP" ); end
-			if _G.SLWhere ~= 3 then ImportCtr( "SL" ); end
-			if _G.CPWhere ~= 3 then ImportCtr( "CP" ); end
-			if _G.ASPWhere ~= 3 then ImportCtr( "ASP" ); end
-			if _G.SOMWhere ~= 3 then ImportCtr( "SOM" ); end
-			if _G.CGSPWhere ~= 3 then ImportCtr( "CGSP" ); end
-			if _G.GGBWhere ~= 3 then ImportCtr( "GGB" ); end
-			if _G.BBWhere ~= 3 then ImportCtr( "BB" ); end
-			if _G.LATWhere ~= 3 then ImportCtr( "LAT" ); end
-			if _G.MOEWhere ~= 3 then ImportCtr( "MOE" ); end
-			if _G.EOEWhere ~= 3 then ImportCtr( "EOE" ); end
-			if _G.FOSWhere ~= 3 then ImportCtr( "FOS" ); end
-			if _G.FFTWhere ~= 3 then ImportCtr( "FFT" ); end
-			if _G.FFATWhere ~= 3 then ImportCtr( "FFAT" ); end
-			if _G.SPLWhere ~= 3 then ImportCtr( "SPL" ); end
-			if _G.MSTWhere ~= 3 then ImportCtr( "MST" ); end
-			if _G.ASWhere ~= 3 then ImportCtr( "AS" ); end
-			if _G.BOTWhere ~= 3 then ImportCtr( "BOT" ); end
-			if _G.BODWhere ~= 3 then ImportCtr( "BOD" ); end
-			if _G.DWWhere ~= 3 then ImportCtr( "DW" ); end
+				for k,v in pairs(currenciesList) do
+					if _G.CurrencyData[k] == nil then _G.CurrencyData[k] = {} end
+					if _G.CurrencyData[k].Where == nil then _G.CurrencyData[k].Where = 3 end
+					if _G.CurrencyData[k].Where ~= 3 then ImportCtr(k); end
+				end
 		end
 	else
 		-- Disable infos not useful in Monster Play
@@ -203,7 +183,7 @@ function frmMain()
 		ShowSpringLeaf = false;
 		ShowMidsummerToken = false;
 		ShowAncientScript = false;
-		ShowDelvingWrit = false;
+		_G.CurrencyData["DelvingWrit"].IsVisible = false;
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
 			if ShowWallet then ImportCtr( "WI" ); end
 			if _G.CPWhere ~= 3 then ImportCtr( "CP" ); end
@@ -319,31 +299,9 @@ function frmMain()
 			--Detect if wallet size has changed
 			if PlayerWallet:GetSize() ~= PlayerWalletSize then -- Until I find the size changed event or something similar in wallet
 				LoadPlayerWallet();
-				if _G.SPWhere ~= 3 then ImportCtr( "SP" ); end
-				if _G.SMWhere ~= 3 then ImportCtr( "SM" ); end
-				if _G.MCWhere ~= 3 then ImportCtr( "MC" ); end
-				if _G.YTWhere ~= 3 then ImportCtr( "YT" ); end
-				if _G.HTWhere ~= 3 then ImportCtr( "HT" ); end
-				if _G.MPWhere ~= 3 then ImportCtr( "MP" ); end
-				if _G.SLWhere ~= 3 then ImportCtr( "SL" ); end
-				if _G.LPWhere ~= 3 then ImportCtr( "CP" ); end
-				if _G.ASPWhere ~= 3 then ImportCtr( "ASP" ); end
-				if _G.SOMWhere ~= 3 then ImportCtr( "SOM" ); end
-				if _G.CGSPWhere ~= 3 then ImportCtr( "CGSP" ); end
-				if _G.GGBWhere ~= 3 then ImportCtr( "GGB" ); end
-				if _G.BBWhere ~= 3 then ImportCtr( "BB" ); end
-				if _G.LATWhere ~= 3 then ImportCtr( "LAT" ); end
-				if _G.MOEWhere ~= 3 then ImportCtr( "MOE" ); end
-				if _G.EOEWhere ~= 3 then ImportCtr( "EOE" ); end
-				if _G.FOSWhere ~= 3 then ImportCtr( "FOS" ); end
-				if _G.FFTWhere ~= 3 then ImportCtr( "FFT" ); end
-				if _G.FFATWhere ~= 3 then ImportCtr( "FFAT" ); end
-				if _G.SPLWhere ~= 3 then ImportCtr( "SPL" ); end
-				if _G.MSTWhere ~= 3 then ImportCtr( "MST" ); end
-				if _G.ASWhere ~= 3 then ImportCtr( "AS" ); end
-				if _G.BOTWhere ~= 3 then ImportCtr( "BOT" ); end
-				if _G.BODWhere ~= 3 then ImportCtr( "BOD" ); end
-				if _G.DWWhere ~= 3 then ImportCtr( "DW" ); end
+				for k,v in pairs(currenciesList) do
+					if _G.CurrencyData[k].Where ~= 3 then ImportCtr(k); end
+				end				
 			end
 
 			screenWidth, screenHeight = Turbine.UI.Display.GetSize();

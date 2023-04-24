@@ -42,15 +42,6 @@ function ImportCtr( value )
         else
             RemoveCallback(PlayerAtt, "DestinyPointsChanged");
         end
-    elseif value == "SP" or value == "SM" or value == "MC" or value == "YT" or value == "HT" or value == "MP" or value == "SL" or value == "CP" or value == "ASP" or value == "SOM" or value == "CSGP" or value == "GGB" or value == "FOS" or value == "MOE" or value == "FFT" or value == "FFAT" or value == "SPL" or value == "MST" or value == "BOD" or value == "DW" or value == "AS" or value=="BOT" or value == "BB" or value == "LAT" or value == "EOE" then
-        if _G[value.."Where"] == 1 then
-            import (AppCtrD.."CurrencyLogic");
-            createCurrencyTable(value)
-            _G[value][ "Ctr" ]:SetPosition(_G[value.."LocX"], _G[value.."LocY"]);
-        end
-        if _G[value.."Where"] ~= 3 then
-            UpdateCurrencyDisplay(value)
-        end
     elseif value == "BI" then --Backpack Infos
         import (AppCtrD.."BagInfos");
         --import (AppCtrD.."BagInfosToolTip");
@@ -419,6 +410,14 @@ function ImportCtr( value )
             end);
         UpdateReputation();
         RP[ "Ctr" ]:SetPosition( _G.RPLocX, _G.RPLocY );
+    else
+        if _G.CurrencyData[value].Where == 1 then
+            createCurrencyTable(value)
+            _G.CurrencyData[value].Ctr:SetPosition(_G.CurrencyData[value].LocX, _G.CurrencyData[value].LocY)
+        end
+        if _G.CurrencyData[value].Where ~= 3 then
+            UpdateCurrencyDisplay(value)
+        end
     end
 end
 
@@ -998,7 +997,8 @@ function SavePlayerLOTROPoints()
         Turbine.DataScope.Account, "TitanBarLOTROPoints", PlayerLOTROPoints);
 end
 
-function UpdateCurrency( str )
+function UpdateCurrency( str ) -- TODO
+    write("FIX UpdateCurrency:" .. str)
     if str == L[ "MSP" ] and ShowShards then UpdateCurrencyDisplay("SP"); end
     if str == L[ "MSM" ] and ShowSkirmishMarks then UpdateCurrencyDisplay("SM"); end
     if str == L[ "MMP" ] and ShowMedallions then UpdateCurrencyDisplay("MP"); end
@@ -1023,7 +1023,7 @@ function UpdateCurrency( str )
 	if str == L[ "MAS" ] and ShowAncientScript then UpdateCurrencyDisplay("AS"); end
     if str == L[ "MBOT" ] and ShowBadgeOfTaste then UpdateCurrencyDisplay("BOT"); end
     if str == L[ "MBOD" ] and ShowBadgeOfDishonour then UpdateCurrencyDisplay("BOD"); end
-    if str == L[ "MDW" ] and ShowDelvingWrits then UpdateCurrencyDisplay("DW"); end
+    if str == L[ "MDelvingWrit" ] and _G.CurrencyData["DelvingWrit"].IsVisible then UpdateCurrencyDisplay("DelvingWrit"); end
 end
 
 function GetCurrency( str )

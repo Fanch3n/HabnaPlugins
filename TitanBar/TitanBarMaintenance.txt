@@ -49,9 +49,6 @@ Add a new currency:
 -- Search for "WalletOrder" and add the next number to the array
 -- Search for "PlayerAlign == 1" and add the abbreviation to the MenuItem array. The position in that array defines the order in which the currencies are listed.
 
-- Add currency to CurrencyLogic file in control directory
--- just add abbreviation and name to the mapping table
-
 - Add currency in 'TBressources.lua'
 -- or more correctly: Add the image of the currency
 -- Search for "_G.WalletItem"
