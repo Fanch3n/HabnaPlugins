@@ -71,7 +71,7 @@ function LoadSettings()-- I'm confused as to what most of this is... Most of the
 	settings.Options.V = nil; --Remove after oct, 15th 2013
 	if settings.Options.L == nil then settings.Options.L = string.format("%.0f", tL); end --X position of options window
 	if settings.Options.T == nil then settings.Options.T = string.format("%.0f", tT); end --Y position of options window
-	if settings.Options.H == nil then settings.Options.H = L["OPAHC"]; end --Auto hide option (Default is: Only in combat)
+	if settings.Options.H == nil then settings.Options.H = L["OPAHD"]; end --Auto hide option (Default is: Disabled)
 	if settings.Options.I == nil then settings.Options.I = string.format("%.0f", 32); end --Icon size (Default is: 32)
 	OPWLeft = tonumber(settings.Options.L);
 	OPWTop = tonumber(settings.Options.T);
@@ -840,9 +840,8 @@ function SetSettings(currencyName)
 end
 
 -- **v Reset All Settings v**
-function ResetSettings() -- TODO FIX
+function ResetSettings()
 	write( L["TBR"] );
-	write("ResetSettings")
 	TBLocale = "en";
 	
 	if GLocale == "en" then tA, tR, tG, tB, tX, tY, tW = 0.3, 0.3, 0.3, 0.3, 0, 0, 3;
@@ -853,14 +852,6 @@ function ResetSettings() -- TODO FIX
 	ShowWallet, WIbcAlpha, WIbcRed, WIbcGreen, WIbcBlue, _G.WILocX, _G.WILocY = false, tA, tR, tG, tB, tX, tY; --for Wallet Control
 	ShowMoney, _G.STM, _G.SSS, _G.STS, MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue, _G.MILocX, _G.MILocY, _G.MIWhere = true, false, true, true, tA, tR, tG, tB, 400, tY, 1; --for Money Control
 	ShowDestinyPoints, DPbcAlpha, DPbcRed, DPbcGreen, DPbcBlue, _G.DPLocX, _G.DPLocY, _G.DPWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Destiny points Control
-	ShowShards, SPbcAlpha, SPbcRed, SPbcGreen, SPbcBlue, _G.SPLocX, _G.SPLocY, _G.SPWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Shards Control
-	ShowSkirmishMarks, SMbcAlpha, SMbcRed, SMbcGreen, SMbcBlue, _G.SMLocX, _G.SMLocY, _G.SMWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Skirmish marks Control
-	ShowMithrilCoins, MCbcAlpha, MCbcRed, MCbcGreen, MCbcBlue, _G.MCLocX, _G.MCLocY, _G.MCWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Mithril Coins Control
-	ShowYuleToken, YTbcAlpha, YTbcRed, YTbcGreen, YTbcBlue, _G.TLocX, _G.YTLocY, _G.YTWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Yule Tokens Control
-	ShowHytboldTokens, HTbcAlpha, HTbcRed, HTbcGreen, HTbcBlue, _G.HTLocX, _G.HTLocY, _G.HTWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Tokens of Hytbold Control
-	ShowMedallions, MPbcAlpha, MPbcRed, MPbcGreen, MPbcBlue, _G.MPLocX, _G.MPLocY, _G.MPWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Medallions Control
-	ShowCommendations, CPbcAlpha, CPbcRed, CPbcGreen, CPbcBlue, _G.CPLocX, _G.CPLocY, _G.CPWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Commendations Control
-	ShowSeals, SLbcAlpha, SLbcRed, SLbcGreen, SLbcBlue, _G.SLLocX, _G.SLLocY, _G.SLWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Seal Control
 	ShowBagInfos, _G.BIUsed, _G.BIMax, BIbcAlpha, BIbcRed, BIbcGreen, BIbcBlue, _G.BILocX, _G.BILocY = true, true, true, tA, tR, tG, tB, tX, tY; --for Bag info Control
 	ShowEquipInfos, EIbcAlpha, EIbcRed, EIbcGreen, EIbcBlue, _G.EILocX, _G.EILocY = true, tA, tR, tG, tB, 75, tY; --for Equipment infos Control
 	ShowDurabilityInfos, DIIcon, DIText, DIbcAlpha, DIbcRed, DIbcGreen, DIbcBlue, _G.DILocX, _G.DILocY = true, true, true, tA, tR, tG, tB, 145, tY; --for Durability infos Control
@@ -874,33 +865,25 @@ function ResetSettings() -- TODO FIX
 	ShowReputation, RPbcAlpha, RPbcRed, RPbcGreen, RPbcBlue, _G.RPLocX, _G.RPLocY = false, tA, tR, tG, tB, tX, tY --for Reputation Control
 	ShowLOTROPoints, LPbcAlpha, LPbcRed, LPbcGreen, LPbcBlue, _G.LPLocX, _G.LPLocY, _G.LPWhere = false, tA, tR, tG, tB, tX, tY, tW; --for LOTRO points Control
 	ShowPlayerLoc, PLbcAlpha, PLbcRed, PLbcGreen, PLbcBlue, _G.PLLocX, _G.PLLocX = true, tA, tR, tG, tB, screenWidth - 205, tY; --for Player Location Control
-	ShowGameTime, _G.Clock24h, _G.ShowST, _G.ShowBT, GTbcAlpha, GTbcRed, GTbcGreen, GTbcBlue, _G.GTLocX, _G.GTLocX = true, false, false, false, tA, tR, tG, tB, screenWidth - 60, tY --for Game time Control
-	ShowAmrothSilverPiece, ASPbcAlpha, ASPbcRed, ASPbcGreen, ASPbcBlue, _G.ASPLocX, _G.ASPLocY, _G.ASPWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Amroth Silver Piece Control
-	ShowStarsofMerit, SOMbcAlpha, SOMbcRed, SOMbcGreen, SOMbcBlue, _G.SOMLocX, _G.SOMLocY, _G.SOMWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Stars of Merit Control
-	ShowCentralGondorSilverPiece, CGSPbcAlpha, CGSPbcRed, CGSPbcGreen, CGSPbcBlue, _G.CGSPLocX, _G.CGSPLocY, _G.CGSPWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Central Gondor Silver Piece Control
-	ShowGiftgiversBrand, GGBbcAlpha, GGBbcRed, GGBbcGreen, GGBbcBlue, _G.GGBLocX, _G.GGBLocY, _G.GGBWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Gift giver's Brand Control
-	ShowBingoBadge, BBbcAlpha, BBbcRed, BBbcGreen, BBbcBlue, _G.BBLocX, _G.BBLocY, _G.BBWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Bingo Badge Control
-	ShowAnniversaryToken, LATbcAlpha, LATbcRed, LATbcGreen, LATbcBlue, _G.LATLocX, _G.LATLocY, _G.LATWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Anniversary Token Control
-	ShowMotesOfEnchantment, MOEbcAlpha, MOEbcRed, MOEbcGreen, MOEbcBlue, _G.MOELocX, _G.MOELocY, _G.MOEWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Motes of Enchantment Control
-	ShowEmbersOfEnchantment, EOEbcAlpha, EOEbcRed, EOEbcGreen, EOEbcBlue, _G.EOELocX, _G.EOELocY, _G.EOEWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Embers of Enchantment Control
-	ShowFigmentsOfSplendour, FOSbcAlpha, FOSbcRed, FOSbcGreen, FOSbcBlue, _G.FOSLocX, _G.FOSLocY, _G.FOSWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Figments of Splendour Control
-	ShowFallFestivalToken, FFTbcAlpha, FFTbcRed, FFTbcGreen, FFTbcBlue, _G.FFTLocX, _G.FFTLocY, _G.FFTWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Fall Festival Tokens Control	
-	ShowFarmersFaireToken, FFATbcAlpha, FFATbcRed, FFATbcGreen, FFATbcBlue, _G.FFATLocX, _G.FFATLocY, _G.FFATWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Farmers Festival Token Control
-	ShowSpringLeaf, SPLbcAlpha, SPLbcRed, SPLbcGreen, SPLbcBlue, _G.SPLLocX, _G.SPLLocY, _G.SPLWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Spring Leaf Control	
-	ShowMidsummerToken, MSTbcAlpha, MSTbcRed, MSTbcGreen, MSTbcBlue, _G.MSTLocX, _G.MSTLocY, _G.MSTWhere = false, tA, tR, tG, tB, tX, tY, tW; --for  Midsummer Token Control
-	ShowAncientScript, ASbcAlpha, ASbcRed, ASbcGreen, ASbcBlue, _G.ASLocX, _G.ASLocY, _G.ASWhere = false, tA, tR, tG, tB, tX, tY, tW; --for  Ancient Script Control
-	ShowBadgeOfTaste, BOTbcAlpha, BOTbcRed, BOTbcGreen, BOTbcBlue, _G.BOTLocX, _G.BOTLocY, _G.BOTWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Badge of Taste Control 
-	ShowBadgeOfDishonour, BODbcAlpha, BODbcRed, BODbcGreen, BODbcBlue, _G.BODLocX, _G.BODLocY, _G.BODWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Badge of Dishonour Control 
-	_G.CurrencyData["DelvingWrit"].IsVisible, _G.CurrencyData["DelvingWrit"].bcAlpha, _G.CurrencyData["DelvingWrit"].bcRed, _G.CurrencyData["DelvingWrit"].bcGreen, _G.CurrencyData["DelvingWrit"].bcBlue, _G.CurrencyData["DelvingWrit"].LocX, _G.CurrencyData["DelvingWrit"].LocY, _G.CurrencyData["DelvingWrit"].Where = false, tA, tR, tG, tB, tX, tY, tW; --for Delving Writs Control 
-
+	
+	for k,v in pairs(currenciesList) do
+		_G.CurrencyData[k].IsVisible = false
+		_G.CurrencyData[k].bcAlpha = tA
+		_G.CurrencyData[k].bcRed = tR
+		_G.CurrencyData[k].bcGreen = tG
+		_G.CurrencyData[k].bcBlue = tB
+		_G.CurrencyData[k].LocX = tX
+		_G.CurrencyData[k].LocY = tY
+		_G.CurrencyData[k].Where = tW
+	end
+		
 	SaveSettings( true ); --True: Get & save all settings table to file. / False: only save settings table to file.
 	ReloadTitanBar();
 end
 -- **^
 
-function ReplaceCtr() -- TODO FIX
+function ReplaceCtr()
 	write( L["TBSSCS"] );
-	write("ReplaceCtr")
 	TB["win"]:SetSize( screenWidth, TBHeight );
 	local oldScreenWidth = settings.TitanBar.W;
 	TBWidth = screenWidth;
@@ -920,46 +903,6 @@ function ReplaceCtr() -- TODO FIX
 	_G.DPLocX = oldLocX * screenWidth;
 	settings.DestinyPoints.X = string.format("%.0f", _G.DPLocX);
 	if ShowDestinyPoints and _G.DPWhere == 1 then DP[ "Ctr" ]:SetPosition( _G.DPLocX, _G.DPLocY ); end
-
-	oldLocX = settings.Shards.X / oldScreenWidth;
-	_G.SPLocX = oldLocX * screenWidth;
-	settings.Shards.X = string.format("%.0f", _G.SPLocX);
-	if ShowShards and _G.SPWhere == 1 then SP[ "Ctr" ]:SetPosition( _G.SPLocX, _G.SPLocY ); end
-
-	oldLocX = settings.SkirmishMarks.X / oldScreenWidth;
-	_G.SMLocX = oldLocX * screenWidth;
-	settings.SkirmishMarks.X = string.format("%.0f", _G.SMLocX);
-	if ShowSkirmishMarks and _G.SMWhere == 1 then SM[ "Ctr" ]:SetPosition( _G.SMLocX, _G.SMLocY ); end
-	
-	oldLocX = settings.MithrilCoins.X / oldScreenWidth;
-	_G.MCLocX = oldLocX * screenWidth;
-	settings.MithrilCoins.X = string.format("%.0f", _G.MCLocX);
-	if ShowMithrilCoins and _G.MCWhere == 1 then MC[ "Ctr" ]:SetPosition( _G.MCLocX, _G.MCLocY ); end
-	
-	oldLocX = settings.YuleToken.X / oldScreenWidth;
-	_G.YTLocX = oldLocX * screenWidth;
-	settings.YuleToken.X = string.format("%.0f", _G.YTLocX);
-	if ShowYuleToken and _G.YTWhere == 1 then YT[ "Ctr" ]:SetPosition( _G.YTLocX, _G.YTLocY ); end
-
-	ldLocX = settings.HytboldTokens.X / oldScreenWidth;
-	_G.HTLocX = oldLocX * screenWidth;
-	settings.HytboldTokens.X = string.format("%.0f", _G.HTLocX);
-	if ShowHytboldTokens and _G.HTWhere == 1 then HT[ "Ctr" ]:SetPosition( _G.HTLocX, _G.HTLocY ); end
-	
-	oldLocX = settings.Medallions.X / oldScreenWidth;
-	_G.MPLocX = oldLocX * screenWidth;
-	settings.Medallions.X = string.format("%.0f", _G.MPLocX);
-	if ShowMedallions and _G.MPWhere == 1 then MP[ "Ctr" ]:SetPosition( _G.MPLocX, _G.MPLocY ); end
-
-	oldLocX = settings.Seals.X / oldScreenWidth;
-	_G.SLLocX = oldLocX * screenWidth;
-	settings.Seals.X = string.format("%.0f", _G.SLLocX);
-	if ShowSeals and _G.SLWhere == 1 then SL[ "Ctr" ]:SetPosition( _G.SLLocX, _G.SLLocY ); end
-
-	oldLocX = settings.Commendation.X / oldScreenWidth;
-	_G.CPLocX = oldLocX * screenWidth;
-	settings.Commendation.X = string.format("%.0f", _G.CPLocX);
-	if ShowCommendations and _G.CPWhere == 1 then CP[ "Ctr" ]:SetPosition( _G.CPLocX, _G.CPLocY ); end
 
 	oldLocX = settings.BagInfos.X / oldScreenWidth;
 	_G.BILocX = oldLocX * screenWidth;
@@ -1031,86 +974,16 @@ function ReplaceCtr() -- TODO FIX
 	settings.GameTime.X = string.format("%.0f", _G.GTLocX);
 	if ShowGameTime then GT[ "Ctr" ]:SetPosition( _G.GTLocX, _G.GTLocY ); end
 	
-	oldLocX = settings.AmrothSilverPiece.X / oldScreenWidth;
-	_G.ASPLocX = oldLocX * screenWidth;
-	settings.AmrothSilverPiece.X = string.format("%.0f", _G.ASPLocX);
-	if ShowAmrothSilverPiece and _G.ASPWhere == 1 then ASP[ "Ctr" ]:SetPosition( _G.ASPLocX, _G.ASPLocY ); end
-	
-	oldLocX = settings.StarsofMerit.X / oldScreenWidth;
-	_G.SOMLocX = oldLocX * screenWidth;
-	settings.StarsofMerit.X = string.format("%.0f", _G.SOMLocX);
-	if ShowStarsofMerit and _G.SOMWhere == 1 then SOM[ "Ctr" ]:SetPosition( _G.SOMLocX, _G.SOMLocY ); end
-	
-	oldLocX = settings.CentralGondorSilverPiece.X / oldScreenWidth;
-	_G.CGSPLocX = oldLocX * screenWidth;
-	settings.CentralGondorSilverPiece.X = string.format("%.0f", _G.CGSPLocX);
-	if ShowCentralGondorSilverPiece and _G.CGSPWhere == 1 then CGSP[ "Ctr" ]:SetPosition( _G.CGSPLocX, _G.CGSPLocY ); end
-	
-	oldLocX = settings.GiftgiversBrand.X / oldScreenWidth;
-	_G.GGBLocX = oldLocX * screenWidth;
-	settings.GiftgiversBrand.X = string.format("%.0f", _G.GGBLocX);
-	if ShowGiftgiversBrand and _G.GGBWhere == 1 then GGB[ "Ctr" ]:SetPosition( _G.GGBLocX, _G.GGBLocY ); end
-	
-	oldLocX = settings.BingoBadge.X / oldScreenWidth;
-	_G.BBLocX = oldLocX * screenWidth;
-	settings.BingoBadge.X = string.format("%.0f", _G.BBLocX);
-	if ShowBingoBadge and _G.BBWhere == 1 then BB[ "Ctr" ]:SetPosition( _G.BBLocX, _G.BBLocY ); end
-	
-	oldLocX = settings.AnniversaryToken.X / oldScreenWidth;
-	_G.LATLocX = oldLocX * screenWidth;
-	settings.AnniversaryToken.X = string.format("%.0f", _G.LATLocX);
-	if ShowAnniversaryToken and _G.LATWhere == 1 then LAT[ "Ctr" ]:SetPosition( _G.LATLocX, _G.LATLocY ); end
-	
-	oldLocX = settings.MotesOfEnchantment.X / oldScreenWidth;
-	_G.MOELocX = oldLocX * screenWidth;
-	settings.MotesOfEnchantment.X = string.format("%.0f", _G.MOELocX);
-	if ShowMotesOfEnchantment and _G.MOEWhere == 1 then MOE[ "Ctr" ]:SetPosition( _G.MOELocX, _G.MOELocY ); end
-	
-	oldLocX = settings.EmbersOfEnchantment.X / oldScreenWidth;
-	_G.EOELocX = oldLocX * screenWidth;
-	settings.EmbersOfEnchantment.X = string.format("%.0f", _G.EOELocX);
-	if ShowEmbersOfEnchantment and _G.EOEWhere == 1 then EOE[ "Ctr" ]:SetPosition( _G.EOELocX, _G.EOELocY ); end
-	
-	oldLocX = settings.FigmentsOfSplendour.X / oldScreenWidth;
-	_G.FOSLocX = oldLocX * screenWidth;
-	settings.FigmentsOfSplendour.X = string.format("%.0f", _G.FOSLocX);
-	if ShowFigmentsOfSplendour and _G.FOSWhere == 1 then FOS[ "Ctr" ]:SetPosition( _G.FOSLocX, _G.FOSLocY ); end
-	
-	oldLocX = settings.FallFestivalToken.X / oldScreenWidth;
-	_G.FFTLocX = oldLocX * screenWidth;
-	settings.FallFestivalToken.X = string.format("%.0f", _G.FFTLocX);
-	if ShowFallFestivalToken and _G.FFTWhere == 1 then FFT[ "Ctr" ]:SetPosition( _G.FFTLocX, _G.FFTLocY ); end
-	
-	oldLocX = settings.FarmersFaireToken.X / oldScreenWidth;
-	_G.FFATLocX = oldLocX * screenWidth;
-	settings.FarmersFaireToken.X = string.format("%.0f", _G.FFATLocX);
-	if ShowFarmersFaireToken and _G.FFATWhere == 1 then FFAT[ "Ctr" ]:SetPosition( _G.FFATLocX, _G.FFATLocY ); end
-	
-	oldLocX = settings.SpringLeaf.X / oldScreenWidth;
-	_G.SPLLocX = oldLocX * screenWidth;
-	settings.SpringLeaf.X = string.format("%.0f", _G.SPLLocX);
-	if ShowSpringLeaf and _G.SPLWhere == 1 then SPL[ "Ctr" ]:SetPosition( _G.SPLLocX, _G.SPLLocY ); end
-	
-	oldLocX = settings.MidsummerToken.X / oldScreenWidth;
-	_G.MSTLocX = oldLocX * screenWidth;
-	settings.MidsummerToken.X = string.format("%.0f", _G.MSTLocX);
-	if ShowMidsummerToken and _G.MSTWhere == 1 then MST[ "Ctr" ]:SetPosition( _G.MSTLocX, _G.MSTLocY ); end
-	
-	oldLocX = settings.AncientScript.X / oldScreenWidth;
-	_G.ASLocX = oldLocX * screenWidth;
-	settings.AncientScript.X = string.format("%.0f", _G.ASLocX);
-	if ShowAncientScript and _G.ASWhere == 1 then AS[ "Ctr" ]:SetPosition( _G.ASLocX, _G.ASLocY ); end
+	for k,v in pairs(currenciesList) do
+		oldLocX = settings[k].X / oldScreenWidth
+		_G.CurrencyData[k].LocX = oldLocX * screenWidth
+		settings[k].X = string.format("%.0f", _G.CurrencyData[k].LocX)
+		if _G.CurrencyName[k].IsVisible and _G.CurrencyData[k].Where == 1 then
+			_G.CurrencyData[k].Ctr:SetPosition(_G.CurrencyData[k].LocX, _G.CurrencyData[k].LocY)
+		end
+	end
 
-	oldLocX = settings.BadgeOfTaste.X / oldScreenWidth;
-	_G.BOTLocX = oldLocX * screenWidth;
-	settings.BadgeOfTaste.X = string.format("%.0f", _G.BOTLocX);
-	if ShowBadgeOfTaste and _G.BOTWhere == 1 then BOT[ "Ctr" ]:SetPosition( _G.BOTLocX, _G.BOTLocY ); end
 
-	oldLocX = settings.DelvingWrit.X / oldScreenWidth;
-	_G.CurrencyData["DelvingWrit"].LocX = oldLocX * screenWidth;
-	settings.DelvingWrit.X = string.format("%.0f", _G.CurrencyData["DelvingWrit"].LocX);
-	if _G.CurrencyName["DelvingWrit"].IsVisible and _G.CurrencyData["DelvingWrit"].Where == 1 then DelvingWrit[ "Ctr" ]:SetPosition( _G.CurrencyData["DelvingWrit"].LocX, _G.CurrencyData["DelvingWrit"].LocY ); end
-	
 	SaveSettings( false );
 	write( L["TBSSCD"] );
 end

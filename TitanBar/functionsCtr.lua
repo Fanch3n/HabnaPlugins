@@ -997,33 +997,41 @@ function SavePlayerLOTROPoints()
         Turbine.DataScope.Account, "TitanBarLOTROPoints", PlayerLOTROPoints);
 end
 
-function UpdateCurrency( str ) -- TODO
-    write("FIX UpdateCurrency:" .. str)
-    if str == L[ "MSP" ] and ShowShards then UpdateCurrencyDisplay("SP"); end
-    if str == L[ "MSM" ] and ShowSkirmishMarks then UpdateCurrencyDisplay("SM"); end
-    if str == L[ "MMP" ] and ShowMedallions then UpdateCurrencyDisplay("MP"); end
-    if str == L[ "MSL" ] and ShowSeals then UpdateCurrencyDisplay("SL"); end
-    if str == L[ "MCP" ] and ShowCommendations then UpdateCurrencyDisplay("CP"); end
-    if str == L[ "MMC" ] and ShowMithril then UpdateCurrencyDisplay("MC"); end
-    if str == L[ "MYT" ] and ShowYuleToken then UpdateCurrencyDisplay("YT"); end
-    if str == L[ "MHT" ] and ShowHytboldTokens then UpdateCurrencyDisplay("HT"); end
-    if str == L[ "MASP" ] and ShowAmrothSilverPiece then UpdateCurrencyDisplay("ASP"); end
-    if str == L[ "MSOM" ] and ShowStarsofMerit then UpdateCurrencyDisplay("SOM"); end
-    if str == L[ "MCGSP" ] and ShowCentralGondorSilverPiece then UpdateCurrencyDisplay("CGSP"); end
-    if str == L[ "MGGB" ] and ShowGiftgiversBrand then UpdateCurrencyDisplay("GGB"); end
-    if str == L[ "MBB" ] and ShowBingoBadge then UpdateCurrencyDisplay("BB"); end
-    if str == L[ "MLAT" ] and ShowAnniversaryToken then UpdateCurrencyDisplay("LAT"); end
-	if str == L[ "MMOE" ] and ShowMotesOfEnchantment then UpdateCurrencyDisplay("MOE"); end
-	if str == L[ "MEOE" ] and ShowEmbersOfEnchantment then UpdateCurrencyDisplay("EOE"); end
-	if str == L[ "MFOS" ] and ShowFigmentsOfSplendour then UpdateCurrencyDisplay("FOS"); end
-	if str == L[ "MFFT" ] and ShowFallFestivalToken then UpdateCurrencyDisplay("FFT"); end
-	if str == L[ "MFFAT" ] and ShowFarmersFaireToken then UpdateCurrencyDisplay("FFAT"); end
-	if str == L[ "MSPL" ] and ShowSpringLeaf then UpdateCurrencyDisplay("SPL"); end
-	if str == L[ "MMST" ] and ShowMidsummerToken then UpdateCurrencyDisplay("MST"); end
-	if str == L[ "MAS" ] and ShowAncientScript then UpdateCurrencyDisplay("AS"); end
-    if str == L[ "MBOT" ] and ShowBadgeOfTaste then UpdateCurrencyDisplay("BOT"); end
-    if str == L[ "MBOD" ] and ShowBadgeOfDishonour then UpdateCurrencyDisplay("BOD"); end
-    if str == L[ "MDelvingWrit" ] and _G.CurrencyData["DelvingWrit"].IsVisible then UpdateCurrencyDisplay("DelvingWrit"); end
+function UpdateCurrency(str) -- TODO loop can probably go
+    for currency, _ in pairs(currenciesList) do
+        -- write("Visible:"..tostring(_G.CurrencyData[currency].IsVisible))
+        if str == L["M" .. currency] and _G.CurrencyData[currency].IsVisible then
+            UpdateCurrencyDisplay(currency)
+        end
+    end
+end
+
+function SetCurrencyToZero(str)
+    for currency, _ in pairs(currenciesList) do
+        if str == L["M" .. currency] and _G.CurrencyData[currency].IsVisible then
+            if _G.CurrencyData[currency].IsVisible then
+                if _G.CurrencyData[currency].Where == 1 then
+                    _G.CurrencyData[currency].Lbl:SetText("0");
+                    _G.CurrencyData[currency].Lbl:SetSize(_G.CurrencyData[currency].Lbl:GetTextLength() * NM, CTRHeight );
+                    AjustIcon(currency);
+                end
+            end
+        end
+    end
+end
+
+function SetCurrencyFromZero(str, amount)
+    for currency, _ in pairs(currenciesList) do
+        if str == L["M" .. currency] and _G.CurrencyData[currency].IsVisible then
+            if _G.CurrencyData[currency].IsVisible then
+                if _G.CurrencyData[currency].Where == 1 then
+                    _G.CurrencyData[currency].Lbl:SetText(amount);
+                    _G.CurrencyData[currency].Lbl:SetSize(_G.CurrencyData[currency].Lbl:GetTextLength() * NM, CTRHeight );
+                    AjustIcon(currency);
+                end
+            end
+        end
+    end
 end
 
 function GetCurrency( str )

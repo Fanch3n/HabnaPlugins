@@ -170,6 +170,7 @@ function frmMain()
 		end
 	else
 		-- Disable infos not useful in Monster Play
+		-- TODO FIX
 		ShowDurabilityInfos, ShowEquipInfos, ShowDestinyPoints, ShowShards = false, false, false, false;
 		ShowYuleToken, ShowSkirmishMarks, ShowHytboldTokens, ShowMedallions = false, false, false, false;
 		ShowSeals, ShowVault, ShowSharedStorage, ShowAmrothSilverPiece = false, false, false, false;
@@ -223,6 +224,23 @@ function frmMain()
 		AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) ItemUnEquippedTimer:SetWantsUpdates( true ); end); --Workaround
 		--AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) if ShowEquipInfos then GetEquipmentInfos(); UpdateEquipsInfos(); end if ShowDurabilityInfos then GetEquipmentInfos(); UpdateDurabilityInfos(); end end);
 	end
+
+	AddCallback(
+		PlayerWallet,
+		"ItemAdded",
+		function(sender, args)
+			LoadPlayerWallet()
+			SetCurrencyFromZero(args["Item"]:GetName(), args["Item"]:GetQuantity())
+		end
+	)
+
+	AddCallback(
+		PlayerWallet,
+		"ItemRemoved",
+		function(sender, args)
+			SetCurrencyToZero(args["Item"]:GetName())
+		end
+	)
 	
 	--**v Workaround for the ItemUnequipped that fires before the equipment was updated (Turbine API issue) v**
 	ItemUnEquippedTimer = Turbine.UI.Control();
@@ -296,14 +314,6 @@ function frmMain()
 		end
 		
 		if (oldsecond ~= currentsecond) then
-			--Detect if wallet size has changed
-			if PlayerWallet:GetSize() ~= PlayerWalletSize then -- Until I find the size changed event or something similar in wallet
-				LoadPlayerWallet();
-				for k,v in pairs(currenciesList) do
-					if _G.CurrencyData[k].Where ~= 3 then ImportCtr(k); end
-				end				
-			end
-
 			screenWidth, screenHeight = Turbine.UI.Display.GetSize();
 			if TBWidth ~= screenWidth then ReplaceCtr(); end --Replace control if screen width has changed
 

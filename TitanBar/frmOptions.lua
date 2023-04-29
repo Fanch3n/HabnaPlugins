@@ -2,7 +2,8 @@
 -- written by Habna
 -- rewritten by many
 
-
+-- TODO FIX
+write("frmOptions.lua")
 local WalletControls = { };
 if WI ~= nil then WalletControls[ "WI" ] = { ShowHide = ShowWallet, Control = WI[ "Ctr" ] }; end
 if MI ~= nil then WalletControls[ "MI" ] = { ShowHide = ShowMoney, Control = MI[ "Ctr" ] }; end

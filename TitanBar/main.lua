@@ -65,6 +65,12 @@ else GLocale = "en";
 end
 --**^
 
+Position = {
+	TITANBAR = 1,
+	TOOLTIP = 2,
+	NONE = 3
+}
+
 currenciesList = {
 	DelvingWrit = true,
 	BadgeOfDishonour = true,
