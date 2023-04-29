@@ -170,24 +170,22 @@ function frmMain()
 		end
 	else
 		-- Disable infos not useful in Monster Play
-		-- TODO FIX
-		ShowDurabilityInfos, ShowEquipInfos, ShowDestinyPoints, ShowShards = false, false, false, false;
-		ShowYuleToken, ShowSkirmishMarks, ShowHytboldTokens, ShowMedallions = false, false, false, false;
-		ShowSeals, ShowVault, ShowSharedStorage, ShowAmrothSilverPiece = false, false, false, false;
-		ShowStarsofMerit, ShowCentralGondorSilverPiece, ShowGiftgiversBrand = false, false, false;
-		ShowBingoBadge, ShowAnniversaryToken, ShowReputation = false, false, false;
-		ShowMotesOfEnchantment = false;
-		ShowEmbersOfEnchantment = false;
-		ShowFigmentsOfSplendour = false;
-		ShowFallFestivalToken = false;
-		ShowFarmersFaireToken = false;
-		ShowSpringLeaf = false;
-		ShowMidsummerToken = false;
-		ShowAncientScript = false;
-		_G.CurrencyData["DelvingWrit"].IsVisible = false;
+		local currencyNotUsefulInMonsterPlay = {"Shards", "YuleToken", "SkirmishMarks", "TokensOfHytbold",
+			"Medallions", "Seals", "AmrothSilverPiece", "StarsofMerit", "CentralGondorSilverPiece",
+			"GiftgiversBrand", "BingoBadge", "AnniversaryToken", "MotesOfEnchantment", "EmbersOfEnchantment",
+			"FigmentsOfSplendour", "FallFestivalToken", "FarmersFaireToken", "SpringLeaf", "MidsummerToken",
+			"AncientScript", "DelvingWrit"}
+		ShowDurabilityInfos, ShowEquipInfos, ShowDestinyPoints = false, false, false
+		ShowVault, ShowSharedStorage = false, false
+		ShowReputation = false
+
+		for cur in currencyNotUsefulInMonsterPlay do
+			_G.CurrencyData[cur].IsVisible = false
+		end
+
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
 			if ShowWallet then ImportCtr( "WI" ); end
-			if _G.CPWhere ~= 3 then ImportCtr( "CP" ); end
+			if _G.CurrencyData["Commendation"].Where ~= 3 then ImportCtr("Commendation"); end
 			if _G.LPWhere ~= 3 then ImportCtr( "LP" ); end
 		end
 	end
@@ -260,14 +258,25 @@ function frmMain()
 	AllTimer = Turbine.UI.Control();
 	AllTimer:SetWantsUpdates( true );
 	
-	if ShowEquipInfos or ShowDurabilityInfos then OneTimer:SetWantsUpdates( true ); AllTimer:SetWantsUpdates( false ); NumSec = 0; Interval = 2; end
-	if TBReloaded then OneTimer:SetWantsUpdates( false ); settings.TitanBar.Z = false; settings.TitanBar.ZT = "TB"; SaveSettings( false ); end --TitanBar was reloaded
+	if ShowEquipInfos or ShowDurabilityInfos then
+		OneTimer:SetWantsUpdates( true )
+		AllTimer:SetWantsUpdates( false )
+		NumSec = 0
+		Interval = 2
+	end
+	if TBReloaded then
+		OneTimer:SetWantsUpdates( false )
+		settings.TitanBar.Z = false
+		settings.TitanBar.ZT = "TB"
+		SaveSettings( false )
+	end --TitanBar was reloaded
 
 	OneTimer.Update = function( sender, args )
 		local currentdate = Turbine.Engine.GetDate();
 		local currentsecond = currentdate.Second;
-		if _G.Debug then max = 6; else max = 24; end
-		if NumSec < max then -- Run for 24 secs.
+		local max = 24
+		if _G.Debug then max = 6 end
+		if NumSec < max then -- Run for 24 secs. -- TODO why?
 			if (oldsecond ~= currentsecond) then
 				if Interval == 0 then
 					if ShowEquipInfos or ShowDurabilityInfos then GetEquipmentInfos();

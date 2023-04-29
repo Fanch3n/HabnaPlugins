@@ -221,15 +221,15 @@ function frmWalletWindow()
 		--Where-> 1: On TitanBar / 2: In wallet control tooltip / 3: Don't show
 		if wcur == L["MGSC"] then
 			_G.MIWhere = SelIndex; settings.Money.W = string.format("%.0f", SelIndex);
-			if SelIndex == 1 then if not ShowMoney then ShowHideMoney(); end
+			if SelIndex == Position.TITANBAR then if not ShowMoney then ShowHideMoney(); end
 			else if ShowMoney then ShowHideMoney(); end end
 		elseif wcur == L["MDP"] then
 			_G.DPWhere = SelIndex; settings.DestinyPoints.W = string.format("%.0f", SelIndex);
-			if SelIndex == 1 then if not ShowDestinyPoints then ShowHideDestinyPoints(); end
+			if SelIndex == Position.TITANBAR then if not ShowDestinyPoints then ShowHideDestinyPoints(); end
 			else if ShowDestinyPoints then ShowHideDestinyPoints(); end end
 		elseif wcur == L["MLP"] then
 			_G.LPWhere = SelIndex; settings.LOTROPoints.W = string.format("%.0f", SelIndex);
-			if SelIndex == 1 then
+			if SelIndex == Position.TITANBAR then
 				if not ShowLOTROPoints then
 					ShowHideLOTROPoints()
 				end
@@ -251,7 +251,7 @@ function frmWalletWindow()
 			end
 			
 			_G.LOTROPTS = WItxtLOTROPTS:GetText();
-			if _G.LPWhere == 1 then
+			if _G.LPWhere == Position.TITANBAR then
 				UpdateLOTROPoints()
 			end
 			SavePlayerLOTROPoints();
@@ -259,7 +259,7 @@ function frmWalletWindow()
 			local cur = _G.CurrencyLangMap[wcur]
 			_G.CurrencyData[cur].Where = SelIndex
 			settings[cur].W = string.format("%.0f", SelIndex)
-			if SelIndex == 1 then
+			if SelIndex == Position.TITANBAR then
 				if not _G.CurrencyData[cur].IsVisible then
 					ShowHideCurrency(cur)
 				end

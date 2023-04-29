@@ -150,7 +150,7 @@ L[ "BWBlack" ] = "Black";
 L[ "BWTrans" ] = "Transparent";
 
 -- Wallet infos window
-L[ "WIt" ] = "Right click a currency name to get it's settings";
+L[ "WIt" ] = "Right click a currency name to get its settings";
 L[ "WIot" ] = "On TitanBar";
 L[ "WIiw" ] = "In tooltip";
 L[ "WIds" ] = "Don't show";
@@ -207,7 +207,7 @@ L[ "NextT" ] = "Show next time";
 L[ "TAjustL" ] = "Timer seed";
 
 -- Reputation window
-L[ "RPt" ] = "select / unselect a faction\nright click to get it's settings";
+L[ "RPt" ] = "select / unselect a faction\nright click to get its settings";
 L[ "RPnf" ] = "You track no faction!\nLeft click to see the faction list.";
 L[ "RPPHMaxHide" ] = "Hide factions at maximum reputation";
 

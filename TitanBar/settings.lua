@@ -972,7 +972,7 @@ function ReplaceCtr()
 		oldLocX = settings[k].X / oldScreenWidth
 		_G.CurrencyData[k].LocX = oldLocX * screenWidth
 		settings[k].X = string.format("%.0f", _G.CurrencyData[k].LocX)
-		if _G.CurrencyName[k].IsVisible and _G.CurrencyData[k].Where == 1 then
+		if _G.CurrencyData[k].IsVisible and _G.CurrencyData[k].Where == 1 then
 			_G.CurrencyData[k].Ctr:SetPosition(_G.CurrencyData[k].LocX, _G.CurrencyData[k].LocY)
 		end
 	end

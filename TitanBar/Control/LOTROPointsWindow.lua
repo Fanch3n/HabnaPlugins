@@ -20,6 +20,7 @@ function frmLOTROPointsWindow()
 			_G.wLP:SetVisible( not _G.wLP:IsVisible() );
 		elseif ( args.Action == 162 ) then --Enter key was pressed
 			buttonSave.Click( sender, args );
+			_G.wLP:Close()
 		end
 	end
 
