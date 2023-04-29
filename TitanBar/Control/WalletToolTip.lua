@@ -32,7 +32,6 @@ function ShowWIToolTip()
 end
 
 function RefreshWITTListBox()
-	write("RefresbWITTListBox")
 	WITTListBox:ClearItems();
 	WITTPosY, totWidth = 0, 0;
 	local bFound = false;

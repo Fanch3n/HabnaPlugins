@@ -12,7 +12,6 @@ function LoadSettings()-- I'm confused as to what most of this is... Most of the
 	elseif GLocale == "fr" then
 		settings = Turbine.PluginData.Load( Turbine.DataScope.Character, "TitanBarSettingsFR" );
 	end
-	write("LoadSettings() in settings.lua")
 	tA, tR, tG, tB, tX, tY, tW = 0.3, 0.3, 0.3, 0.3, 0, 0, 3; --Default alpha, red, green, blue, X, Y pos of control, Show where
 	tL, tT = 100, 100; --Default position of control window
 
@@ -534,14 +533,11 @@ end
 -- **^
 
 function LoadSettingsForCurrency(name)
-	write("LoadSettingsForCurrency" .. name)
 	if _G.CurrencyData == nil then
 		_G.CurrencyData = {}
-		write("_G.CurrencyData was nil")
 	end
 	if _G.CurrencyData[name] == nil then
 		_G.CurrencyData[name] = {}
-		write("_G.CurrencyData["..name.."] was nil")
 	end
 	_G.CurrencyData[name].IsVisible = settings[name].V;
 	_G.CurrencyData[name].bcAlpha = tonumber(settings[name].A);
@@ -559,7 +555,6 @@ function LoadSettingsForCurrency(name)
 end
 
 function CreateSettingsForCurrency(name)
-	write("CreateSettingsForCurrency" .. name)
 	tA, tR, tG, tB, tX, tY, tW = 0.3, 0.3, 0.3, 0.3, 0, 0, 3; --Default alpha, red, green, blue, X, Y pos of control, Show where
 	if settings[name] == nil then settings[name] = {} end
 	if settings[name].V == nil then settings[name].V = false; end
@@ -574,7 +569,6 @@ end
 
 -- **v Save settings v**
 function SaveSettings(str)
-	write("SaveSettings("..tostring(str)..")")
 	if str then --True: get all variable and save settings
 		settings = {};
 		settings.TitanBar = {};

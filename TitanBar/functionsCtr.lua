@@ -999,7 +999,6 @@ end
 
 function UpdateCurrency(str) -- TODO loop can probably go
     for currency, _ in pairs(currenciesList) do
-        -- write("Visible:"..tostring(_G.CurrencyData[currency].IsVisible))
         if str == L["M" .. currency] and _G.CurrencyData[currency].IsVisible then
             UpdateCurrencyDisplay(currency)
         end

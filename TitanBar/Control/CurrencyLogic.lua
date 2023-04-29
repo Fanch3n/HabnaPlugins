@@ -1,6 +1,5 @@
 -- Create tables in _G
 _G.createCurrencyTable = function(currencyName)
-	write("creating control for "..currencyName)
 	_G.CurrencyData[currencyName].Ctr = Turbine.UI.Control()
 	_G.CurrencyData[currencyName].Ctr:SetParent(TB.win)
 	_G.CurrencyData[currencyName].Ctr:SetMouseVisible(false)
