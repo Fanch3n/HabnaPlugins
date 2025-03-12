@@ -338,7 +338,8 @@ function ShowHideCurrency(currency)
 	settings[currency].W = string.format( "%.0f", _G.CurrencyData[currency].Where);
 	SaveSettings( false );
 	ImportCtr(currency);
-	write("ShowHideCurrency:"..currency)
+	
+	if _G.Debug then write("ShowHideCurrency:"..currency); end
 	if _G.CurrencyData[currency].IsVisible then
 		_G.CurrencyData[currency].Ctr:SetBackColor(Turbine.UI.Color(
 			_G.CurrencyData[currency].bcAlpha,

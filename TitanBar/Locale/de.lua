@@ -122,9 +122,24 @@ L[ "MBadgeOfTaste" ] = "Abzeichen des Geschmacks";
 L[ "BadgeOfTasteh" ] = "Eure Abzeichen des Geschmacks";
 L[ "MBadgeOfDishonour" ] = "Abzeichen der Schande";
 L[ "BadgeOfDishonourh" ] = "Eure Abzeichen der Schande";
--- Delving Writs control
-L[ "MDelvingWrit" ] = "Delving Writs";
-L[ "DelvingWrith" ] = "Eure Delving Writs";
+-- Delving Writs
+L[ "MDelvingWrit" ] = "Erkunder-Schriftstück";
+L[ "DelvingWrith" ] = "Eure Erkunder-Schriftstücke";
+-- Cold-iron Tokens
+L[ "MColdIronToken" ] = "Kalte Eisenmarke";
+L[ "ColdIronTokenh" ] = "Eure Kalte Eisenmarken";
+-- Token of Heroism
+L[ "MTokenOfHeroism" ] = "Marke des Heldentums";
+L[ "TokenOfHeroismh" ] = "Eure Marken des Heldentums";
+-- Hero's Mark
+L[ "MHerosMark" ] = "Heldenmarke";
+L[ "HerosMarkh" ] = "Eure Heldenmarken";
+-- Medallion of Moria
+L[ "MMedallionOfMoria" ] = "Medaillon von Moria";
+L[ "MedallionOfMoriah" ] = "Eure Medaillons von Moria";
+-- Medallion of Lothlórien
+L[ "MMedallionOfLothlorien" ] = "Medaillon von Lothlórien";
+L[ "MedallionOfLothlorienh" ] = "Eure Medaillons von Lothlórien";
 
 -- Control Menu
 L[ "MCU" ] = "entfernen ...";

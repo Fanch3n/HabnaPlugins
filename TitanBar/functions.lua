@@ -29,7 +29,12 @@ local DragAndHoldInTooltip = { --same behaviour for drag and hold
 	AncientScript = true,
 	BadgeOfTaste = true,
 	DelvingWrit = true,
-	BadgeOfDishonour = true
+	BadgeOfDishonour = true,
+	ColdIronToken = true,
+	HerosMark = true,
+	TokenOfHeroism = true,
+	MedallionOfMoria = true,
+	MedallionOfLothlorien = true
 }
 
 function AddCallback(object, event, callback)

@@ -174,7 +174,8 @@ function frmMain()
 			"Medallions", "Seals", "AmrothSilverPiece", "StarsofMerit", "CentralGondorSilverPiece",
 			"GiftgiversBrand", "BingoBadge", "AnniversaryToken", "MotesOfEnchantment", "EmbersOfEnchantment",
 			"FigmentsOfSplendour", "FallFestivalToken", "FarmersFaireToken", "SpringLeaf", "MidsummerToken",
-			"AncientScript", "DelvingWrit"}
+			"AncientScript", "DelvingWrit", "ColdIronToken", "MedallionOfMoriah", "MedallionOfLothlorien",
+			"HerosMark", "TokenOfHeroism"}
 		ShowDurabilityInfos, ShowEquipInfos, ShowDestinyPoints = false, false, false
 		ShowVault, ShowSharedStorage = false, false
 		ShowReputation = false

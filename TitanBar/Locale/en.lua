@@ -123,9 +123,24 @@ L[ "MBadgeOfTaste" ] = "Badge of Taste";
 L[ "BadgeOfTasteh" ] = "These are your Badges of Taste";
 L[ "MBadgeOfDishonour" ] = "Badge of Dishonour";
 L[ "BadgeOfDishonourh" ] = "These are your Badges of Dishonour";
--- Delving Writs control
+-- Delving Writs
 L[ "MDelvingWrit" ] = "Delving Writ";
 L[ "DelvingWrith" ] = "These are your Delving Writs";
+-- Cold-iron Tokens
+L[ "MColdIronToken" ] = "Cold-iron Token";
+L[ "ColdIronTokenh" ] = "Your Cold-iron Tokens";
+-- Token of Heroism
+L[ "MTokenOfHeroism" ] = "Token of Heroism";
+L[ "TokenOfHeroismh" ] = "Your Tokens of Heroism";
+-- Hero's Mark
+L[ "MHerosMark" ] = "Hero's Mark";
+L[ "HerosMarkh" ] = "Your Hero's Marks";
+-- Medallion of Moria
+L[ "MMedallionOfMoria" ] = "Medallion of Moria";
+L[ "MedallionOfMoriah" ] = "Your Medallions of Moria";
+-- Medallion of Lothlórien
+L[ "MMedallionOfLothlorien" ] = "Medallion of Lothlórien";
+L[ "MedallionOfLothlorienh" ] = "Your Medallions of Lothlórien";
 
 -- Control Menu
 L[ "MCU" ] = "Unload ...";

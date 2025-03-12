@@ -16,7 +16,7 @@ AppLocaleD = AppDirD.."Locale.";
 
 Version = Plugins["TitanBar"]:GetVersion();--> ** TitanBar current version **
 _G.TB = {};
-WalletOrder = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28 };
+WalletOrder = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33 };
 windowOpen = true;
 _G.Debug = false;-- True will enable some functions when I'm debugging
 
@@ -96,7 +96,12 @@ currenciesList = {
 	YuleToken = true,
 	MithrilCoins = true,
 	SkirmishMarks = true,
-	Shards = true
+	Shards = true,
+	ColdIronToken = true,
+	TokenOfHeroism = true,
+	HerosMark = true,
+	MedallionOfMoria = true,
+	MedallionOfLothlorien = true
 }
 
 import (AppDirD.."TBresources");
@@ -134,7 +139,8 @@ if PlayerAlign == 1 then
 	-- Item Advancement
 	L["MShards"],
 	-- Other   
-    L["MAmrothSilverPiece"], L["MBingoBadge"], L["MCentralGondorSilverPiece"], L["MGiftgiversBrand"], L["MTokensOfHytbold"],
+    L["MAmrothSilverPiece"], L["MBingoBadge"], L["MCentralGondorSilverPiece"], L["MGiftgiversBrand"], L["MTokensOfHytbold"], L["MColdIronToken"],
+		L["MMedallionOfMoria"], L["MMedallionOfLothlorien"], L["MTokenOfHeroism"],L["MHerosMark"]
 	};
 else MenuItem = { L["MCommendation"], L["MLP"] }; end
 
@@ -168,7 +174,12 @@ _G.CurrencyLangMap = { -- TODO clean this up
 	[L["MBingoBadge"]] = "BingoBadge",
 	[L["MCentralGondorSilverPiece"]] = "CentralGondorSilverPiece",
 	[L["MGiftgiversBrand"]] = "GiftgiversBrand",
-	[L["MTokensOfHytbold"]] = "TokensOfHytbold"
+	[L["MTokensOfHytbold"]] = "TokensOfHytbold",
+	[L["MColdIronToken"]] = "ColdIronToken",
+	[L["MTokenOfHeroism"]] = "TokenOfHeroism",
+	[L["MHerosMark"]] = "HerosMark",
+	[L["MMedallionOfMoria"]] = "MedallionOfMoria",
+	[L["MMedallionOfLothlorien"]] = "MedallionOfLothlorien"
 }
 
 function TitanBarCommand:Execute( command, arguments )

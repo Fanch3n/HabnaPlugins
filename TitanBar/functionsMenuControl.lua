@@ -6,7 +6,7 @@
 --**v Functions for the menu of control v**
 --**v Unload control v**
 function UnloadControl( value )
-	write("UnloadControl "..value)
+	if _G.Debug then write("UnloadControl "..value); end
 	if value == "ctr" then
 		if ShowWallet then ShowHideWallet(); end
 		if ShowMoney then _G.MIWhere = 3; ShowHideMoney(); end
@@ -64,7 +64,7 @@ end
 
 --**v Match/Reset/Apply back color v**
 function BGColor( cmd, value )
-	write("BGColor cmd: "..cmd..", value: "..value)
+	if _G.Debug then write("BGColor cmd: "..cmd..", value: "..value); end
 	if cmd == "reset" then
 		if GLocale == "en" then tA, tR, tG, tB = 0.3, 0.3, 0.3, 0.3;
 		else tA, tR, tG, tB = tonumber("0,3"), tonumber("0,3"), tonumber("0,3"), tonumber("0,3"); end
