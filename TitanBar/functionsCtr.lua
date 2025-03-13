@@ -1033,12 +1033,12 @@ function SetCurrencyFromZero(str, amount)
     end
 end
 
-function GetCurrency( str )
+function GetCurrency( localizedCurrencyName )
     CurQuantity = 0;
 
     for k,v in pairs( PlayerCurrency ) do
-        if k == str then
-            CurQuantity = PlayerCurrency[ str ]:GetQuantity();
+        if k == localizedCurrencyName then
+            CurQuantity = PlayerCurrency[ localizedCurrencyName ]:GetQuantity();
             break
         end
     end

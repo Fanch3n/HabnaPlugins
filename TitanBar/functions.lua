@@ -195,6 +195,7 @@ function ShowToolTipWin( ToShow )
 	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
 	
 	w = 350;
+	-- TODO doesn't work anymore, other workaround possibly needed
 	if TBLocale == "fr" then w = 315;
 	elseif TBLocale == "de" then
 		if ToShow == "DI" then w = 225; 

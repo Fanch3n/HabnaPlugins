@@ -57,12 +57,8 @@ Add a new currency:
 -- Replace the name in the last entry with the new currency
 -- Replace the hex value with the new icon value. (If you don't know the value scroll down to "HelloWorld-Plugin".
 
-For each point after this: Search through the files and every time the existing currencies are listed, add the new currency.
-- Add currency in 'functions.lua', in 'functionsCtr.lua', 'functionsMenuControl.lua, & in 'functionsMenu.lua'
-- Add currency in 'settings.lua'
+- Add currency in 'functions.lua'
 - Add currency in 'frmOptions.lua' & 'frmMain.lua'
-- Add currency in 'background.lua'
-- Add currency in 'WalletToolTip.lua' & 'WalletWindow.lua' (control directory)
 
 
 To add a new control (from Technical_13):

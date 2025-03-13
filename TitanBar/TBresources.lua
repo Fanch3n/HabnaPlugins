@@ -69,11 +69,11 @@ _G.WalletItem = {
 	BadgeOfTaste = { Icon = 0x41002B2C },
 	BadgeOfDishonour = { Icon = 0x410D4316 },
 	DelvingWrit = { Icon = 0x412204D8 },
-	MedallionOfMoria = { Icon = 0x41130E6C },
-	MedallionOfLothlorien = { Icon = 0x41130E6D },
-	HerosMark = { Icon = 0x41231839 },
-	TokenOfHeroism = { Icon = 0x41231839 },
-	ColdIronToken = { Icon = 0x4125E429 }
+	MedallionOfMoria = { Icon = 0x4110182C },
+	MedallionOfLothlorien = { Icon = 0x41101829 },
+	HerosMark = { Icon = 0x41231838 },
+	TokenOfHeroism = { Icon = 0x41231838 },
+	ColdIronToken = { Icon = 0x4125E425 }
 };
 
 _G.DurabilitySlotsBG = { 0x41007eed, 0x41007ef6, 0x41007ef7, 0x41007eef, 0x41007eee, 0x41007ee9, 0x41007ef0, 0x41007ef9, 0x41007ef8,
