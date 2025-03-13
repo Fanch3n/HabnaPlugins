@@ -514,7 +514,11 @@ L[ "DevHit" ] = "Dev. hit";
 L[ "DevMag" ] = "Dev. mag.";
 L[ "CritDef" ] = "Crit. defence";
 L[ "Partial" ] = "partial";
-L[ "Capped" ] = "Values in YELLOW are CAPPED.";
+L[ "PartMit" ] = "part.mit.";
+L[ "Capped1" ] = "Yellow - capped";
+L[ "Capped2" ] = "Orange - T2 capped";
+L[ "Capped3" ] = "Red - T3+ capped";
+L[ "Capped4" ] = "Purple - Enh III capped";
 
 -- Money Infos control
 L[ "MGh" ] = "Quantity of gold";
@@ -553,34 +557,45 @@ L[ "GTh" ] = "Real/Server Time";
 -- Chat message
 L[ "TBR" ] = "TitanBar: All my settings are set back to default";
 
--- Character Race
-L[ "Elf" ] = "Elf";
-L[ "Man" ] = "Man";
-L[ "Dwarf" ] = "Dwarf";
-L[ "Hobbit" ] = "Hobbit";
-L[ "Beorning" ] = "Beorning";
-L[ "HighElf" ] = "High Elf";
-L[ "StoutAxe" ] = "Stout-axe";
+-- Player Race names: 'PR' + Race Id
+-- Add appropriate Race Id entry for new/unknown races.
+-- Unlisted Race Id's show up in the Player infos tooltip.
+L[ "PR65" ] = "Elf";
+L[ "PR23" ] = "Man";
+L[ "PR73" ] = "Dwarf";
+L[ "PR81" ] = "Hobbit";
+L[ "PR114" ] = "Beorning";
+L[ "PR117" ] = "High Elf";
+L[ "PR120" ] = "Stout-axe";
+L[ "PR125" ] = "River Hobbit";
+L[ "PR7" ] = "Orc";
+L[ "PR6" ] = "Uruk";
+L[ "PR12" ] = "Spider";
+L[ "PR66" ] = "Warg";
+L[ "PR27" ] = "Critter";
 
--- Free People Class
-L[ "Burglar" ] = "Burglar";
-L[ "Captain" ] = "Captain";
-L[ "Champion" ] = "Champion";
-L[ "Guardian" ] = "Guardian";
-L[ "Hunter" ] = "Hunter";
-L[ "LoreMaster" ] = "Lore-Master";
-L[ "Minstrel" ] = "Minstrel";
-L[ "RuneKeeper" ] = "Rune-Keeper";
-L[ "Warden" ] = "Warden";
-L[ "Brawler" ] = "Brawler";
-
--- Monster Play Class
-L[ "Reaver" ] = "Reaver";
-L[ "Weaver" ] = "Weaver";
-L[ "Blackarrow" ] = "Blackarrow";
-L[ "Warleader" ] = "Warleader";
-L[ "Stalker" ] = "Stalker";
-L[ "Defiler" ] = "Defiler";
+-- Player Class names: 'PC' + Class Id
+-- Add appropriate Class Id entry for new/unknown classes.
+-- Unlisted Class Id's show up in the Player infos tooltip.
+L[ "PC40" ] = "Burglar";
+L[ "PC24" ] = "Captain";
+L[ "PC172" ] = "Champion";
+L[ "PC23" ] = "Guardian";
+L[ "PC162" ] = "Hunter";
+L[ "PC185" ] = "Lore-Master";
+L[ "PC31" ] = "Minstrel";
+L[ "PC193" ] = "Rune-Keeper";
+L[ "PC194" ] = "Warden";
+L[ "PC214" ] = "Beorning";
+L[ "PC215" ] = "Brawler";
+L[ "PC216" ] = "Mariner";
+L[ "PC71" ] = "Reaver";
+L[ "PC127" ] = "Weaver";
+L[ "PC179" ] = "Blackarrow";
+L[ "PC52" ] = "Warleader";
+L[ "PC126" ] = "Stalker";
+L[ "PC128" ] = "Defiler";
+L[ "PC192" ] = "Chicken";
 
 -- Durability
 L[ "D" ] = "Durability";

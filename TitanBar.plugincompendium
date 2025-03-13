@@ -11,5 +11,8 @@
     <descriptor>HabnaPlugins\TitanBarReloader.plugin</descriptor>
     <descriptor>HabnaPlugins\TitanBarUnloader.plugin</descriptor>
   </Descriptors>
-  <Dependencies />
+  <Dependencies>
+    <dependency>0</dependency>
+    <dependency>1022</dependency>
+  </Dependencies>
 </PluginConfig>

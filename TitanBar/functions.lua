@@ -433,56 +433,35 @@ function UpdateBackpackInfos()
 end
 --**^
 
-local PlayerRaceMap = {
-	[0]   = "", -- undefined
-	[7]   = "", -- Monster Player
-	[23]  = "Man",
-	[65]  = "Elf",
-	[73]  = "Dwarf",
-	[81]  = "Hobbit",
-	[114] = "Beorning",
-	[117] = "HighElf",
-	[120] = "StoutAxe"
-}
-
-local PlayerClassMap = {
-	[23] = "Guardian",
-	[24] = "Captain",
-	[31] = "Minstrel",
-	[40] = "Burglar",
-	[52] = "Warleader",
-	[71] = "Reaver",
-	[126]= "Stalker",
-	[127]= "Weaver",
-	[128]= "Defiler",
-	[162]= "Hunter",
-	[172]= "Champion",
-	[179]= "Blackarrow",
-	[185]= "LoreMaster",
-	[193]= "RuneKeeper",
-	[194]= "Warden",
-	[214]= "Beorning",
-	[215]= "Brawler"
-}
-
 --**v Update player infos on TitanBar v**
 function UpdatePlayersInfos()
-	PlayerRaceIs = L[PlayerRaceMap[Player:GetRace()]];
-	
-	PlayerClassIs = PlayerClassMap[Player:GetClass()];
-	PlayerIconCodeIs = resources.PlayerIconCode[PlayerClassIs]
-	PlayerClassIs = L[PlayerClassIs]
-		
-	PI[ "Icon" ]:SetBackground( PlayerIconCodeIs );
-	
-	PI["Lvl"]:SetText( Player:GetLevel() );
-	PI["Lvl"]:SetSize( PI["Lvl"]:GetTextLength() * NM+1, CTRHeight ); 
-	PI["Name"]:SetPosition( PI["Lvl"]:GetLeft() + PI["Lvl"]:GetWidth() + 5, 0 );
-	--PI["Name"]:SetText( "OneVeryLongCharacterName" ); --Debug purpose
-	PI["Name"]:SetText( Player:GetName() );
-	PI["Name"]:SetSize( PI["Name"]:GetTextLength() * TM, CTRHeight ); 
+	--Race
+	PlayerRaceIdIs = Player:GetRace();
+	local PlayerRaceIsLkey = "PR"..PlayerRaceIdIs
+	PlayerRaceIs = L[PlayerRaceIsLkey]
+	if not PlayerRaceIs then
+		PlayerRaceIs = PlayerRaceIsLkey -- show the expected localization key if not found
+	end
 
-	AjustIcon( "PI" );
+	--Class
+	PlayerClassIdIs = Player:GetClass()
+	local PlayerClassIsLkey = "PC"..PlayerClassIdIs
+	PlayerClassIs = L[PlayerClassIsLkey]
+	if not PlayerClassIs then
+		PlayerClassIs = PlayerClassIsLkey -- show the expected localization key if not found
+	end
+
+	--Update visuale
+	PI[ "Icon" ]:SetBackground(resources.PlayerIconCode[PlayerClassIdIs]) -- if class icon is unknown in the resource then background image is set to nil: nothing visible
+	
+	PI["Lvl"]:SetText(Player:GetLevel())
+	PI["Lvl"]:SetSize(PI["Lvl"]:GetTextLength() * NM+1, CTRHeight)
+	PI["Name"]:SetPosition(PI["Lvl"]:GetLeft() + PI["Lvl"]:GetWidth() + 5, 0)
+	--PI["Name"]:SetText("OneVeryLongCharacterName") --Debug purpose
+	PI["Name"]:SetText(Player:GetName())
+	PI["Name"]:SetSize(PI["Name"]:GetTextLength() * TM, CTRHeight);
+
+	AjustIcon("PI");
 end
 --**^
 

@@ -19,6 +19,7 @@ L[ "ButDel" ] = "Infos dieser Art l\195\182schen";
 -- TitanBar Menu
 L[ "MBag" ] = "Zeige Geldbeutel";
 L[ "MGSC" ] = "Verm\195\182gen"; -- (Gold, Silber, Kupfer)
+L[ "MBI" ] = "Rucksack Infos";
 L[ "MPI" ] = "Spieler Infos";
 L[ "MEI" ] = "Ausr\195\188stung Infos";
 L[ "MDI" ] = "Haltbarkeit Infos";
@@ -96,9 +97,13 @@ L[ "GiftgiversBrandh" ] = "Eure Zeichen des Schenkenden";
 -- Motes of Enchantment control
 L[ "MMotesOfEnchantment" ] = "Aschepartikel der Verzauberung";
 L[ "MotesOfEnchantmenth" ] = "Eure Aschepartikel der Verzauberung";
+L[ "MMotesOfEnchantment" ] = "Staub der Verzauberung";
+L[ "MotesOfEnchantmenth" ] = "Eure Staub der Verzauberung";
 -- Embers of Enchantment control
 L[ "MEmbersOfEnchantment" ] = "Asche der Verzauberung";
 L[ "EmbersOfEnchantmenth" ] = "Eure Asche der Verzauberung";
+L[ "MEmbersOfEnchantment" ] = "Funken der Verzauberung";
+L[ "EmbersOfEnchantmenth" ] = "Eure Funken der Verzauberung";
 -- Figments of Splendour control
 L[ "MFigmentsOfSplendour" ] = "Prachtst\195\188ck des Glanzes";
 L[ "FigmentsOfSplendourh" ] = "Eure Prachtst\195\188cke des Glanzes";
@@ -513,7 +518,11 @@ L[ "DevHit" ] = "Verw\195\188stet";
 L[ "DevMag" ] = "Dev. mag.";
 L[ "CritDef" ] = "Krit. Vert.";
 L[ "Partial" ] = "Teilweise";
-L[ "Capped" ] = "Werte in GELB sind am CAP.";
+L[ "PartMit" ] = "Teil. Min.";
+L[ "Capped1" ] = "Gelb - gekappt";
+L[ "Capped2" ] = "Orange - T2 gekappt";
+L[ "Capped3" ] = "Rot - T3+ gekappt";
+L[ "Capped4" ] = "Lila - Enh III gekappt";
 
 -- Money Infos control
 L[ "MGh" ] = "Menge der Goldm\195\188nzen";
@@ -552,34 +561,45 @@ L[ "GTh" ] = "Lokale/Server Zeit";
 -- Chat message
 L[ "TBR" ] = "TitanBar: Alle Einstellungen wurden zur\195\188ck auf die Standardwerte gesetzt";
 
--- Character Race
-L[ "Elf" ] = "Elb";
-L[ "Man" ] = "Mensch";
-L[ "Dwarf" ] = "Zwerg";
-L[ "Hobbit" ] = "Hobbit";
-L[ "Beorning" ] = "Beorninger";
-L[ "HighElf" ] = "Hochelb";
-L[ "StoutAxe" ] = "Stark-Axt";
+-- Player Race names: 'PR' + Race Id
+-- Add appropriate Race Id entry for new/unknown races.
+-- Unlisted Race Id's show up in the Player infos tooltip.
+L[ "PR65" ] = "Elb";
+L[ "PR23" ] = "Mensch";
+L[ "PR73" ] = "Zwerg";
+L[ "PR81" ] = "Hobbit";
+L[ "PR114" ] = "Beorninger";
+L[ "PR117" ] = "Hochelb";
+L[ "PR120" ] = "Stark-Axt";
+L[ "PR125" ] = "Fluss-Hobbit";
+L[ "PR7" ] = "Orc";
+L[ "PR6" ] = "Uruk";
+L[ "PR12" ] = "Spider";
+L[ "PR66" ] = "Warg";
+L[ "PR27" ] = "Critter";
 
--- Free People Class
-L[ "Burglar" ] = "Schurke";
-L[ "Captain" ] = "Hauptmann";
-L[ "Champion" ] = "Waffenmeister";
-L[ "Guardian" ] = "W\195\164chter";
-L[ "Hunter" ] = "J\195\164ger";
-L[ "LoreMaster" ] = "Kundiger";
-L[ "Minstrel" ] = "Barde";
-L[ "RuneKeeper" ] = "Runenbewahrer";
-L[ "Warden" ] = "H\195\188ter";
-L[ "Brawler" ] = "Schl\195\164ger";
-
--- Monster Play Class
-L[ "Reaver" ] = "Schnitter";
-L[ "Weaver" ] = "Weberspinne";
-L[ "Blackarrow" ] = "Schwarzpfeil";
-L[ "Warleader" ] = "Kriegsanf\195\188hrer";
-L[ "Stalker" ] = "Pirscher";
-L[ "Defiler" ] = "Saboteur";
+-- Player Class names: 'PC' + Class Id
+-- Add appropriate Class Id entry for new/unknown classes.
+-- Unlisted Class Id's show up in the Player infos tooltip.
+L[ "PC40" ] = "Schurke";
+L[ "PC24" ] = "Hauptmann";
+L[ "PC172" ] = "Waffenmeister";
+L[ "PC23" ] = "W\195\164chter";
+L[ "PC162" ] = "J\195\164ger";
+L[ "PC185" ] = "Kundiger";
+L[ "PC31" ] = "Barde";
+L[ "PC193" ] = "Runenbewahrer";
+L[ "PC194" ] = "H\195\188ter";
+L[ "PC214" ] = "Beorning";
+L[ "PC215" ] = "Schl\195\164ger";
+L[ "PC216" ] = "Seefahrer";
+L[ "PC71" ] = "Schnitter";
+L[ "PC127" ] = "Weberspinne";
+L[ "PC179" ] = "Schwarzpfeil";
+L[ "PC52" ] = "Kriegsanf\195\188hrer";
+L[ "PC126" ] = "Pirscher";
+L[ "PC128" ] = "Saboteur";
+L[ "PC192" ] = "H\195\188hn";
 
 -- Durability
 L[ "D" ] = "Haltbarkeit";

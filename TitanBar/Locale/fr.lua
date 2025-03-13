@@ -514,7 +514,11 @@ L[ "DevHit" ] = "Dev. hit";
 L[ "DevMag" ] = "Dev. mag.";
 L[ "CritDef" ] = "Crit. defence";
 L[ "Partial" ] = "partial";
-L[ "Capped" ] = "Valeurs en JAUNE sont PLAFONN\195\137S.";
+L[ "PartMit" ] = "red.part.";
+L[ "Capped1" ] = "Jaune - coiff\195\169";
+L[ "Capped2" ] = "Orange - T2 coiff\195\169";
+L[ "Capped3" ] = "Rouge - T3+ coiff\195\169";
+L[ "Capped4" ] = "Violet - Enh III coiff\195\169";
 
 -- Money Infos control
 L[ "MGh" ] = "Quantit\195\169 de pi\195\168ces d'or";
@@ -553,34 +557,45 @@ L[ "GTh" ] = "Temps actuel/serveur";
 -- Chat message
 L[ "TBR" ] = "TitanBar: Tous les param\195\168tres on \195\169t\195\169 restaur\195\169 par default";
 
--- Character Race
-L[ "Elf" ] = "Elfe";
-L[ "Man" ] = "Homme";
-L[ "Dwarf" ] = "Nain";
-L[ "Hobbit" ] = "Hobbit";
-L[ "Beorning" ] = "Beornide";
-L[ "HighElf" ] = "Haut Elfe";-- Thanks F0urEyes#3544 on Discord
-L[ "StoutAxe" ] = "Nain Hache robuste";
+-- Player Race names: 'PR' + Race Id
+-- Add appropriate Race Id entry for new/unknown races.
+-- Unlisted Race Id's show up in the Player infos tooltip.
+L[ "PR65" ] = "Elfe";
+L[ "PR23" ] = "Homme";
+L[ "PR73" ] = "Nain";
+L[ "PR81" ] = "Hobbit";
+L[ "PR114" ] = "Beornide";
+L[ "PR117" ] = "Haut Elfe";-- Thanks F0urEyes#3544 on Discord
+L[ "PR120" ] = "Nain Hache robuste";
+L[ "PR125" ] = "Hobbit des Rivi\195\168res";
+L[ "PR7" ] = "Orc";
+L[ "PR6" ] = "Uruk";
+L[ "PR12" ] = "Spider";
+L[ "PR66" ] = "Warg";
+L[ "PR27" ] = "Critter";
 
--- Free People Class
-L[ "Burglar" ] = "Cambrioleur";
-L[ "Captain" ] = "Capitaine";
-L[ "Champion" ] = "Champion";
-L[ "Guardian" ] = "Gardien";
-L[ "Hunter" ] = "Chasseur";
-L[ "LoreMaster" ] = "Ma\195\174tre du savoir";
-L[ "Minstrel" ] = "M\195\169nestrel";
-L[ "RuneKeeper" ] = "Gardien des runes";
-L[ "Warden" ] = "Sentinelle";
-L[ "Brawler" ] = "Bagarreur";
-
--- Monster Play Class
-L[ "Reaver" ] = "Reaver";
-L[ "Weaver" ] = "Weaver";
-L[ "Blackarrow" ] = "Blackarrow";
-L[ "Warleader" ] = "Warleader";
-L[ "Stalker" ] = "Stalker";
-L[ "Defiler" ] = "Defiler";
+-- Player Class names: 'PC' + Class Id
+-- Add appropriate Class Id entry for new/unknown classes.
+-- Unlisted Class Id's show up in the Player infos tooltip.
+L[ "PC40" ] = "Cambrioleur";
+L[ "PC24" ] = "Capitaine";
+L[ "PC172" ] = "Champion";
+L[ "PC23" ] = "Gardien";
+L[ "PC162" ] = "Chasseur";
+L[ "PC185" ] = "Ma\195\174tre du savoir";
+L[ "PC31" ] = "M\195\169nestrel";
+L[ "PC193" ] = "Gardien des runes";
+L[ "PC194" ] = "Sentinelle";
+L[ "PC214" ] = "Beorning";
+L[ "PC215" ] = "Bagarreur";
+L[ "PC216" ] = "Marin";
+L[ "PC71" ] = "Reaver";
+L[ "PC127" ] = "Weaver";
+L[ "PC179" ] = "Blackarrow";
+L[ "PC52" ] = "Warleader";
+L[ "PC126" ] = "Stalker";
+L[ "PC128" ] = "Defiler";
+L[ "PC192" ] = "Poulet";
 
 -- Durability
 L[ "D" ] = "Durabilit\195\169";
