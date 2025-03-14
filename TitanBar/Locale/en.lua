@@ -51,7 +51,7 @@ L[ "MLP" ] = "LOTRO points";
 L[ "LPh" ] = "These are your LOTRO points";
 -- Mithril Coins control
 L[ "MMithrilCoins" ] = "Mithril Coin";
-L[ "MithrilCoinsh" ] = "These are your Mitril coins";
+L[ "MithrilCoinsh" ] = "These are your Mithril Coins";
 -- Yule Tokens control
 L[ "MYuleToken" ] = "Yule Festival Token";
 L[ "YuleTokenh" ] = "These are your Yule Festival Tokens";
@@ -86,8 +86,8 @@ L[ "Commendationh" ] = "These are your Commendations";
 L[ "MAmrothSilverPiece" ] = "Amroth Silver Piece";
 L[ "AmrothSilverPieceh" ] = "These are your Amroth Silver Pieces";
 -- Stars of Merit control
-L[ "MStarsofMerit" ] = "Star of Merit";
-L[ "StarsofMerith" ] = "These are your Stars of Merit";
+L[ "MStarsOfMerit" ] = "Star of Merit";
+L[ "StarsOfMerith" ] = "These are your Stars of Merit";
 -- Central Gondor Silver Piece control
 L[ "MCentralGondorSilverPiece" ] = "Central Gondor Silver Piece";
 L[ "CentralGondorSilverPieceh" ] = "These are your Central Gondor Silver Pieces";

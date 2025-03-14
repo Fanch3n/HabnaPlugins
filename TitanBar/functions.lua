@@ -4,9 +4,9 @@
 
 local DragAndHoldInTooltip = { --same behaviour for drag and hold
 	DP = true,
-	ShardsSP = true,
+	Shards = true,
 	SkirmishMarks = true,
-	MC = true,
+	MithrilCoins = true,
 	YuleToken = true,
 	TokensOfHytbold = true,
 	Medallions = true,
@@ -14,7 +14,7 @@ local DragAndHoldInTooltip = { --same behaviour for drag and hold
 	Commendation = true,
 	PL = true,
 	AmrothSilverPiece = true,
-	StarsofMerit = true,
+	StarsOfMerit = true,
 	CentralGondorSilverPiece = true,
 	GiftgiversBrand = true,
 	BingoBadge = true,
@@ -727,7 +727,7 @@ function Player:InCombatChanged(sender, args)
 	if TBAutoHide == L["OPAHC"] then AutoHideCtr:SetWantsUpdates( true ); end
 end
 
-function AjustIcon(str)	
+function AjustIcon(str)
 	--if TBHeight > 30 then CTRHeight = 30; end 
     --Stop ajusting icon size if TitanBar height is > 30px
 	--CTRHeight=TBHeight;

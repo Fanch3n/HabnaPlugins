@@ -2,20 +2,18 @@
 -- written by Habna
 -- rewritten by many
 
--- TODO FIX
 if _G.Debug then write("frmOptions.lua"); end
+
+local currencies = {"Shards", "SkirmishMarks", "MithrilCoins", "YuleToken", "TokensOfHytbold", "Medallions",
+										"Seals", "Commendation", "AmrothSilverPiece", "StarsOfMerit", "CentralGondorSilverPiece",
+										"GiftGiversBrand", "BingoBadge", "AnniversaryToken", "MotesOfEnchantment", "EmbersOfEnchantment",
+										"FigmentsOfSplendour", "FallFestivalToken", "FarmersFaireToken", "SpringLeaf", "MidsummerToken",
+										"AncientScript", "BadgeOfTaste", "BadgeOfDishonour", "ColdIronToken", "MedallionOfMoria",
+										"MedallionOfLothlorien", "TokenOfHeroism", "HerosMark", "DelvingWrit"}
 local WalletControls = { };
 if WI ~= nil then WalletControls[ "WI" ] = { ShowHide = ShowWallet, Control = WI[ "Ctr" ] }; end
 if MI ~= nil then WalletControls[ "MI" ] = { ShowHide = ShowMoney, Control = MI[ "Ctr" ] }; end
 if DP ~= nil then WalletControls[ "DP" ] = { ShowHide = ShowDestinyPoints, Control = DP[ "Ctr" ] }; end
-if SP ~= nil then WalletControls[ "SP" ] = { ShowHide = ShowShards, Control = SP[ "Ctr" ] }; end
-if SM ~= nil then WalletControls[ "SM" ] = { ShowHide = ShowSkirmishMarks, Control = SM[ "Ctr" ] }; end
-if MC ~= nil then WalletControls[ "MC" ] = { ShowHide = ShowMithrilCoins, Control = MC[ "Ctr" ] }; end
-if YT ~= nil then WalletControls[ "YT" ] = { ShowHide = ShowYuleToken, Control = YT[ "Ctr" ] }; end
-if HT ~= nil then WalletControls[ "HT" ] = { ShowHide = ShowHytboldTokens, Control = HT[ "Ctr" ] }; end
-if MP ~= nil then WalletControls[ "MP" ] = { ShowHide = ShowMedallions, Control = MP[ "Ctr" ] }; end
-if SL ~= nil then WalletControls[ "SL" ] = { ShowHide = ShowSeals, Control = SL[ "Ctr" ] }; end
-if CP ~= nil then WalletControls[ "CP" ] = { ShowHide = ShowCommendations, Control = CP[ "Ctr" ] }; end
 if BI ~= nil then WalletControls[ "BI" ] = { ShowHide = ShowBagInfos, Control = BI[ "Ctr" ] }; end
 if PI ~= nil then WalletControls[ "PI" ] = { ShowHide = ShowPlayerInfos, Control = PI[ "Ctr" ] }; end
 if EI ~= nil then WalletControls[ "EI" ] = { ShowHide = ShowEquipInfos, Control = EI[ "Ctr" ] }; end
@@ -28,28 +26,16 @@ if SS ~= nil then WalletControls[ "SS" ] = { ShowHide = ShowSharedStorage, Contr
 if DN ~= nil then WalletControls[ "DN" ] = { ShowHide = ShowDayNight, Control = DN[ "Ctr" ] }; end
 if RP ~= nil then WalletControls[ "RP" ] = { ShowHide = ShowReputation, Control = RP[ "Ctr" ] }; end
 if LP ~= nil then WalletControls[ "LP" ] = { ShowHide = ShowLOTROPoints, Control = LP[ "Ctr" ] }; end
-if ASP ~= nil then WalletControls[ "ASP" ] = { ShowHide = ShowAmrothSilverPiece, Control = ASP[ "Ctr" ] }; end
-if SOM ~= nil then WalletControls[ "SOM" ] = { ShowHide = ShowStarsofMerit, Control = SOM[ "Ctr" ] }; end
-if CGSP ~= nil then WalletControls[ "CGSP" ] = { ShowHide = ShowCentralGondorSilverPiece, Control = CGSP[ "Ctr" ] }; end
-if GGB ~= nil then WalletControls[ "GGB" ] = { ShowHide = ShowGiftgiversBrand, Control = GGB[ "Ctr" ] }; end
-if BB ~= nil then WalletControls[ "BB" ] = { ShowHide = ShowBingoBadge, Control = BB[ "Ctr" ] }; end
-if LAT ~= nil then WalletControls[ "LAT" ] = { ShowHide = ShowAnniversaryToken, Control = LAT[ "Ctr" ] }; end
-if MOE ~= nil then WalletControls[ "MOE" ] = { ShowHide = ShowMotesOfEnchantment, Control = MOE[ "Ctr" ] }; end
-if EOE ~= nil then WalletControls[ "EOE" ] = { ShowHide = ShowEmbersOfEnchantment, Control = EOE[ "Ctr" ] }; end
-if FOS ~= nil then WalletControls[ "FOS" ] = { ShowHide = ShowFigmentsOfSplendour, Control = FOS[ "Ctr" ] }; end
-if FFT ~= nil then WalletControls[ "FFT" ] = { ShowHide = ShowFallFestivalToken, Control = FFT[ "Ctr" ] }; end
-if FFAT ~= nil then WalletControls[ "FFAT" ] = { ShowHide = ShowFarmersFaireToken, Control = FFAT[ "Ctr" ] }; end
-if SPL ~= nil then WalletControls[ "SPL" ] = { ShowHide = ShowSpringLeaf, Control = SPL[ "Ctr" ] }; end
-if MST ~= nil then WalletControls[ "MST" ] = { ShowHide = ShowMidsummerToken, Control = MST[ "Ctr" ] }; end
-if AS ~= nil then WalletControls[ "AS" ] = { ShowHide = ShowAncientScript, Control = AS[ "Ctr" ] }; end
-if BOT ~= nil then WalletControls[ "BOT" ] = { ShowHide = ShowBadgeOfTaste, Control = BOT[ "Ctr" ] }; end
-if BOD ~= nil then WalletControls[ "BOD" ] = { ShowHide = ShowBadgeOfDishonour, Control = BOD[ "Ctr" ] }; end
-if DelvingWrit ~= nil then WalletControls[ "DelvingWrit" ] = { ShowHide = _G.CurrencyData["DelvingWrit"].IsVisible, Control = DelvingWrit[ "Ctr" ] }; end
-if ColdIronToken ~= nil then WalletControls[ "ColdIronToken" ] = { ShowHide = _G.CurrencyData["ColdIronToken"].IsVisible, Control = ColdIronToken[ "Ctr" ] }; end
-if MedallionOfMoria ~= nil then WalletControls[ "MedallionOfMoria" ] = { ShowHide = _G.CurrencyData["MedallionOfMoria"].IsVisible, Control = MedallionOfMoria[ "Ctr" ] }; end
-if MedallionOfLothlorien ~= nil then WalletControls[ "MedallionOfLothlorien" ] = { ShowHide = _G.CurrencyData["MedallionOfLothlorien"].IsVisible, Control = MedallionOfLothlorien[ "Ctr" ] }; end
-if TokenOfHeroism ~= nil then WalletControls[ "TokenOfHeroism" ] = { ShowHide = _G.CurrencyData["TokenOfHeroism"].IsVisible, Control = TokenOfHeroism[ "Ctr" ] }; end
-if HerosMark ~= nil then WalletControls[ "HerosMark" ] = { ShowHide = _G.CurrencyData["HerosMark"].IsVisible, Control = HerosMark[ "Ctr" ] }; end
+
+
+for _, currency in pairs(currencies) do
+	if _G.CurrencyData[currency] ~= nil then
+		WalletControls[currency] = {
+			ShowHide = _G.CurrencyData[currency].IsVisible,
+			Control = _G.CurrencyData[currency].Ctr
+		}
+	end
+end
 
 tFonts = { "Arial12", "TrajanPro13", "TrajanPro14", "TrajanPro15", "TrajanPro16", "TrajanPro18", "TrajanPro19", "TrajanPro20", "TrajanPro21",
 			"TrajanPro23", "TrajanPro24", "TrajanPro25", "TrajanPro26", "TrajanPro28", "TrajanProBold16", "TrajanProBold22", "TrajanProBold24",
@@ -307,6 +293,8 @@ end
 
 function ResizeIcon()
 	for ItemID, ShowItem in pairs( WalletControls ) do
-		if ShowItem.ShowHide then AjustIcon( ItemID ); end
+		if ShowItem.ShowHide then
+			AjustIcon(ItemID)
+		end
 	end
 end

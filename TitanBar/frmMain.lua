@@ -171,7 +171,7 @@ function frmMain()
 	else
 		-- Disable infos not useful in Monster Play
 		local currencyNotUsefulInMonsterPlay = {"Shards", "YuleToken", "SkirmishMarks", "TokensOfHytbold",
-			"Medallions", "Seals", "AmrothSilverPiece", "StarsofMerit", "CentralGondorSilverPiece",
+			"Medallions", "Seals", "AmrothSilverPiece", "StarsOfMerit", "CentralGondorSilverPiece",
 			"GiftgiversBrand", "BingoBadge", "AnniversaryToken", "MotesOfEnchantment", "EmbersOfEnchantment",
 			"FigmentsOfSplendour", "FallFestivalToken", "FarmersFaireToken", "SpringLeaf", "MidsummerToken",
 			"AncientScript", "DelvingWrit", "ColdIronToken", "MedallionOfMoriah", "MedallionOfLothlorien",

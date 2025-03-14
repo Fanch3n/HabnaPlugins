@@ -86,8 +86,8 @@ L[ "Commendationh" ] = "Ce sont vos Citations";
 L[ "MAmrothSilverPiece" ] = "Pi\195\168ce d'argent d'Amroth";
 L[ "AmrothSilverPieceh" ] = "Ce sont vos Pi\195\168ces d'argent d'Amroth";
 -- Stars of Merit control
-L[ "MStarsofMerit" ] = "\195\137toile du m\195\169rite";
-L[ "StarsofMerith" ] = "Ce sont vos \195\137toiles du m\195\169rite";
+L[ "MStarsOfMerit" ] = "\195\137toile du m\195\169rite";
+L[ "StarsOfMerith" ] = "Ce sont vos \195\137toiles du m\195\169rite";
 -- Central Gondor Silver Piece control
 L[ "MCentralGondorSilverPiece" ] = "Pi\195\168ce d'argent du Gondor central";
 L[ "CentralGondorSilverPieceh" ] = "Ce sont vos Pi\195\168ces d'argent du gondor Central";
@@ -332,11 +332,11 @@ L[ "RPGG6" ]  = "Ma\195\174tre";--Ma�tre
 L[ "RPGG7" ]  = "Eastemnet Master";
 L[ "RPGG8" ]  = "Westemnet Master";
 L[ "RPGG9" ]  = "Grand Ma\195\174tre Honor\195\169";
-L[ "RCCLE1" ] = "Rookie";
-L[ "RCCLE2" ] = "Minor Leaguer";
-L[ "RCCLE3" ] = "Major Leaguer";
-L[ "RCCLE4" ] = "All-star";
-L[ "RCCLE5" ] = "Hall of Famer";
+L[ "RCCLE1" ] = "Débutant";
+L[ "RCCLE2" ] = "Joueur de ligue mineure";
+L[ "RCCLE3" ] = "Joueur de ligue majeure";
+L[ "RCCLE4" ] = "Vedette";
+L[ "RCCLE5" ] = "Champion";
 L[ "RPBR" ]   = "Bonus Restant";
 L[ "RPMI1" ]  = "The Reclamation";
 L[ "RPMI2" ]  = "The Reclamation Continues";

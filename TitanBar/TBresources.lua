@@ -70,7 +70,7 @@ _G.WalletItem = {
 	Shards = { Icon = 0x41110d5b },
 	SkirmishMarks = { Icon = 0x4111c446 },
 	TokensOfHytbold = { Icon = 0x41127D0C },
-	StarsofMerit = { Icon = 0x4115bea4 },
+	StarsOfMerit = { Icon = 0x4115bea4 },
 	CentralGondorSilverPiece = { Icon = 0x41155957 },
 	GiftgiversBrand = { Icon = 0x4115c888 },
 	BingoBadge = { Icon = 0x410E6EE4 },
