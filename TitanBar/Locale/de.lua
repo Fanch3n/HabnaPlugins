@@ -19,6 +19,7 @@ L[ "ButDel" ] = "Infos dieser Art l\195\182schen";
 -- TitanBar Menu
 L[ "MBag" ] = "Zeige Geldbeutel";
 L[ "MGSC" ] = "Verm\195\182gen"; -- (Gold, Silber, Kupfer)
+L[ "MBI" ] = "Rucksack Infos";
 L[ "MPI" ] = "Spieler Infos";
 L[ "MEI" ] = "Ausr\195\188stung Infos";
 L[ "MDI" ] = "Haltbarkeit Infos";
@@ -49,82 +50,101 @@ L[ "MReputation" ] = "Ruf";
 L[ "MLP" ] = "HdRO-Punkte";
 L[ "LPh" ] = "Eure HdRO-Punkte";
 -- Mithril Coins control
-L[ "MMC" ] = "Mithril-M\195\188nze";
-L[ "MCh" ] = "Eure Mithril-M\195\188nzen";
+L[ "MMithrilCoins" ] = "Mithril-M\195\188nze";
+L[ "MithrilCoinsh" ] = "Eure Mithril-M\195\188nzen";
 -- Yule Tokens control
-L[ "MYT" ] = "Julfest-M\195\188nze";
-L[ "YTh" ] = "Eure Julfest-M\195\188nzen";
+L[ "MYuleToken" ] = "Julfest-M\195\188nze";
+L[ "YuleTokenh" ] = "Eure Julfest-M\195\188nzen";
 -- Anniversary Tokens control
-L[ "MLAT" ] = "Jubil\195\164umsm\195\188nze";
-L[ "LATh" ] = "Eure Jubil\195\164umsm\195\188nzen";
+L[ "MAnniversaryToken" ] = "Jubil\195\164umsm\195\188nze";
+L[ "AnniversaryTokenh" ] = "Eure Jubil\195\164umsm\195\188nzen";
 -- Bingo Badge control
-L[ "MBB" ] = "Bingo-Abzeichen";
-L[ "BBh" ] = "Eure Bingo-Abzeichen";
+L[ "MBingoBadge" ] = "Bingo-Abzeichen";
+L[ "BingoBadgeh" ] = "Eure Bingo-Abzeichen";
 -- Skirmish marks control
-L[ "MSM" ] = "Zeichen";
-L[ "SMh" ] = "Eure Scharm\195\188tzel-Zeichen";
+L[ "MSkirmishMarks" ] = "Zeichen";
+L[ "SkirmishMarksh" ] = "Eure Scharm\195\188tzel-Zeichen";
 -- Destiny Points control
 L[ "MDP" ] = "Schicksalspunkte";
 L[ "DPh" ] = "Eure Schicksalspunkte";
 -- Shards control
-L[ "MSP" ] = "Scherbe";
-L[ "SPh" ] = "Eure Scherben";
+L[ "MShards" ] = "Scherbe";
+L[ "Shardsh" ] = "Eure Scherben";
 -- Tokens of Hytbold control
-L[ "MHT" ] = "M\195\188nze von Hytbold";
-L[ "HTh" ] = "Eure M\195\188nzen von Hytbold";
+L[ "MTokensOfHytbold" ] = "M\195\188nze von Hytbold";
+L[ "TokensOfHytboldh" ] = "Eure M\195\188nzen von Hytbold";
 -- Medallions control
-L[ "MMP" ] = "Medaillon";
-L[ "MPh" ] = "Eure Medallions";
+L[ "MMedallions" ] = "Medaillon";
+L[ "Medallionsh" ] = "Eure Medallions";
 -- Seals control
-L[ "MSL" ] = "Siegel";
-L[ "SLh" ] = "Eure Siegel";
+L[ "MSeals" ] = "Siegel";
+L[ "Sealsh" ] = "Eure Siegel";
 -- Commendations control
-L[ "MCP" ] = "Anerkennung";
-L[ "CPh" ] = "Eure Anerkennung";
+L[ "MCommendation" ] = "Anerkennung";
+L[ "Commendationh" ] = "Eure Anerkennung";
 -- Amroth Silver Piece control
-L[ "MASP" ] = "Amroth-Silberst\195\188ck";
-L[ "ASPh" ] = "Eure Amroth-Silberst\195\188cke";
+L[ "MAmrothSilverPiece" ] = "Amroth-Silberst\195\188ck";
+L[ "AmrothSilverPieceh" ] = "Eure Amroth-Silberst\195\188cke";
 -- Stars of Merit control
-L[ "MSOM" ] = "Stern des Verdienst";
-L[ "SOMh" ] = "Eure Sterne des Verdienst";
+L[ "MStarsofMerit" ] = "Stern des Verdienst";
+L[ "StarsofMerith" ] = "Eure Sterne des Verdienst";
 -- Central Gondor Silver Piece control
-L[ "MCGSP" ] = "Zentralgondorisches Silberst\195\188ck";
-L[ "CGSPh" ] = "Eure Zentralgondorischen Silberst\195\188cke";
+L[ "MCentralGondorSilverPiece" ] = "Zentralgondorisches Silberst\195\188ck";
+L[ "CentralGondorSilverPieceh" ] = "Eure Zentralgondorischen Silberst\195\188cke";
 -- Gift giver's Brand control
-L[ "MGGB" ] = "Zeichen des Schenkenden";
-L[ "GGBh" ] = "Eure Zeichen des Schenkenden";
+L[ "MGiftgiversBrand" ] = "Zeichen des Schenkenden";
+L[ "GiftgiversBrandh" ] = "Eure Zeichen des Schenkenden";
 -- Motes of Enchantment control
-L[ "MMOE" ] = "Aschepartikel der Verzauberung";
-L[ "MOEh" ] = "Eure Aschepartikel der Verzauberung";
+L[ "MMotesOfEnchantment" ] = "Aschepartikel der Verzauberung";
+L[ "MotesOfEnchantmenth" ] = "Eure Aschepartikel der Verzauberung";
+L[ "MMotesOfEnchantment" ] = "Staub der Verzauberung";
+L[ "MotesOfEnchantmenth" ] = "Eure Staub der Verzauberung";
 -- Embers of Enchantment control
-L[ "MEOE" ] = "Asche der Verzauberung";
-L[ "EOEh" ] = "Eure Asche der Verzauberung";
+L[ "MEmbersOfEnchantment" ] = "Asche der Verzauberung";
+L[ "EmbersOfEnchantmenth" ] = "Eure Asche der Verzauberung";
+L[ "MEmbersOfEnchantment" ] = "Funken der Verzauberung";
+L[ "EmbersOfEnchantmenth" ] = "Eure Funken der Verzauberung";
 -- Figments of Splendour control
-L[ "MFOS" ] = "Prachtst\195\188ck des Glanzes";
-L[ "FOSh" ] = "Eure Prachtst\195\188cke des Glanzes";
+L[ "MFigmentsOfSplendour" ] = "Prachtst\195\188ck des Glanzes";
+L[ "FigmentsOfSplendourh" ] = "Eure Prachtst\195\188cke des Glanzes";
 -- Fall Festival Tokens control
-L[ "MFFT" ] = "Herbstfest-Medaille";
-L[ "FFTh" ] = "Eure Herbstfest-Medaillen";
+L[ "MFallFestivalToken" ] = "Herbstfest-Medaille";
+L[ "FallFestivalTokenh" ] = "Eure Herbstfest-Medaillen";
 -- Farmers Faire Tokens control
-L[ "MFFAT" ] = "Bauernfest-M\195\188nze";
-L[ "FFATh" ] = "Eure Bauernfest-M\195\188nzen";
+L[ "MFarmersFaireToken" ] = "Bauernfest-M\195\188nze";
+L[ "FarmersFaireTokenh" ] = "Eure Bauernfest-M\195\188nzen";
 -- Spring Leaves control
-L[ "MSPL" ] = "Fr\195\188hlingsblatt";
-L[ "FSPLh" ] = "Eure Fr\195\188hlingsbl\195\164tter";
+L[ "MSpringLeaf" ] = "Fr\195\188hlingsblatt";
+L[ "FSpringLeafh" ] = "Eure Fr\195\188hlingsbl\195\164tter";
 -- Midsummer Tokens control
-L[ "MMST" ] = "Mittsommer-Marke";
-L[ "MSTh" ] = "Eure Mittsommer-Marken";
+L[ "MMidsummerToken" ] = "Mittsommer-Marke";
+L[ "MidsummerTokenh" ] = "Eure Mittsommer-Marken";
 -- Ancient Script control
-L[ "MAS" ] = "Uralte Schrift";
-L[ "ASh" ] = "Eure Uralte Schriften";
+L[ "MAncientScript" ] = "Uralte Schrift";
+L[ "AncientScripth" ] = "Eure Uralte Schriften";
 -- Inn League / Ale Association control
-L[ "MBOT" ] = "Abzeichen des Geschmacks";
-L[ "BOTh" ] = "Eure Abzeichen des Geschmacks";
-L[ "MBOD" ] = "Abzeichen der Schande";
-L[ "BODh" ] = "Eure Abzeichen der Schande";
--- Delving Writs control
-L[ "MDW" ] = "Delving Writs";
-L[ "DWh" ] = "Eure Delving Writs";
+L[ "MBadgeOfTaste" ] = "Abzeichen des Geschmacks";
+L[ "BadgeOfTasteh" ] = "Eure Abzeichen des Geschmacks";
+L[ "MBadgeOfDishonour" ] = "Abzeichen der Schande";
+L[ "BadgeOfDishonourh" ] = "Eure Abzeichen der Schande";
+-- Delving Writs
+L[ "MDelvingWrit" ] = "Erkunder-Schriftstück";
+L[ "DelvingWrith" ] = "Eure Erkunder-Schriftstücke";
+-- Cold-iron Tokens
+L[ "MColdIronToken" ] = "Kalte Eisenmarke";
+L[ "ColdIronTokenh" ] = "Eure Kalte Eisenmarken";
+-- Token of Heroism
+L[ "MTokenOfHeroism" ] = "Marke des Heldentums";
+L[ "TokenOfHeroismh" ] = "Eure Marken des Heldentums";
+-- Hero's Mark
+L[ "MHerosMark" ] = "Heldenmarke";
+L[ "HerosMarkh" ] = "Eure Heldenmarken";
+-- Medallion of Moria
+L[ "MMedallionOfMoria" ] = "Medaillon von Moria";
+L[ "MedallionOfMoriah" ] = "Eure Medaillons von Moria";
+-- Medallion of Lothlórien
+L[ "MMedallionOfLothlorien" ] = "Medaillon von Lothlórien";
+L[ "MedallionOfLothlorienh" ] = "Eure Medaillons von Lothlórien";
 
 -- Control Menu
 L[ "MCU" ] = "entfernen ...";
@@ -498,7 +518,11 @@ L[ "DevHit" ] = "Verw\195\188stet";
 L[ "DevMag" ] = "Dev. mag.";
 L[ "CritDef" ] = "Krit. Vert.";
 L[ "Partial" ] = "Teilweise";
-L[ "Capped" ] = "Werte in GELB sind am CAP.";
+L[ "PartMit" ] = "Teil. Min.";
+L[ "Capped1" ] = "Gelb - gekappt";
+L[ "Capped2" ] = "Orange - T2 gekappt";
+L[ "Capped3" ] = "Rot - T3+ gekappt";
+L[ "Capped4" ] = "Lila - Enh III gekappt";
 
 -- Money Infos control
 L[ "MGh" ] = "Menge der Goldm\195\188nzen";
@@ -537,34 +561,45 @@ L[ "GTh" ] = "Lokale/Server Zeit";
 -- Chat message
 L[ "TBR" ] = "TitanBar: Alle Einstellungen wurden zur\195\188ck auf die Standardwerte gesetzt";
 
--- Character Race
-L[ "Elf" ] = "Elb";
-L[ "Man" ] = "Mensch";
-L[ "Dwarf" ] = "Zwerg";
-L[ "Hobbit" ] = "Hobbit";
-L[ "Beorning" ] = "Beorninger";
-L[ "HighElf" ] = "Hochelb";
-L[ "StoutAxe" ] = "Stark-Axt";
+-- Player Race names: 'PR' + Race Id
+-- Add appropriate Race Id entry for new/unknown races.
+-- Unlisted Race Id's show up in the Player infos tooltip.
+L[ "PR65" ] = "Elb";
+L[ "PR23" ] = "Mensch";
+L[ "PR73" ] = "Zwerg";
+L[ "PR81" ] = "Hobbit";
+L[ "PR114" ] = "Beorninger";
+L[ "PR117" ] = "Hochelb";
+L[ "PR120" ] = "Stark-Axt";
+L[ "PR125" ] = "Fluss-Hobbit";
+L[ "PR7" ] = "Orc";
+L[ "PR6" ] = "Uruk";
+L[ "PR12" ] = "Spider";
+L[ "PR66" ] = "Warg";
+L[ "PR27" ] = "Critter";
 
--- Free People Class
-L[ "Burglar" ] = "Schurke";
-L[ "Captain" ] = "Hauptmann";
-L[ "Champion" ] = "Waffenmeister";
-L[ "Guardian" ] = "W\195\164chter";
-L[ "Hunter" ] = "J\195\164ger";
-L[ "Lore-Master" ] = "Kundiger";
-L[ "Minstrel" ] = "Barde";
-L[ "Rune-Keeper" ] = "Runenbewahrer";
-L[ "Warden" ] = "H\195\188ter";
-L[ "Brawler" ] = "Schl\195\164ger";
-
--- Monster Play Class
-L[ "Reaver" ] = "Schnitter";
-L[ "Weaver" ] = "Weberspinne";
-L[ "Blackarrow" ] = "Schwarzpfeil";
-L[ "Warleader" ] = "Kriegsanf\195\188hrer";
-L[ "Stalker" ] = "Pirscher";
-L[ "Defiler" ] = "Saboteur";
+-- Player Class names: 'PC' + Class Id
+-- Add appropriate Class Id entry for new/unknown classes.
+-- Unlisted Class Id's show up in the Player infos tooltip.
+L[ "PC40" ] = "Schurke";
+L[ "PC24" ] = "Hauptmann";
+L[ "PC172" ] = "Waffenmeister";
+L[ "PC23" ] = "W\195\164chter";
+L[ "PC162" ] = "J\195\164ger";
+L[ "PC185" ] = "Kundiger";
+L[ "PC31" ] = "Barde";
+L[ "PC193" ] = "Runenbewahrer";
+L[ "PC194" ] = "H\195\188ter";
+L[ "PC214" ] = "Beorning";
+L[ "PC215" ] = "Schl\195\164ger";
+L[ "PC216" ] = "Seefahrer";
+L[ "PC71" ] = "Schnitter";
+L[ "PC127" ] = "Weberspinne";
+L[ "PC179" ] = "Schwarzpfeil";
+L[ "PC52" ] = "Kriegsanf\195\188hrer";
+L[ "PC126" ] = "Pirscher";
+L[ "PC128" ] = "Saboteur";
+L[ "PC192" ] = "H\195\188hn";
 
 -- Durability
 L[ "D" ] = "Haltbarkeit";

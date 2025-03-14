@@ -40,33 +40,15 @@ function RefreshWITTListBox()
 		wttcur = MenuItem[WalletOrder[i]];
 		if wttcur == L["MGSC"] then ttw = _G.MIWhere;
 		elseif wttcur == L["MDP"] then ttw = _G.DPWhere; CtrIconCodeIs=WalletItem.DestinyPoints.Icon; CtrQteIs=PlayerAtt:GetDestinyPoints();
-		elseif wttcur == L["MSP"] then ttw = _G.SPWhere; CtrIconCodeIs=WalletItem.Shard.Icon; CtrQteIs=GetCurrency( L[ "MSP" ] );
-		elseif wttcur == L["MSM"] then ttw = _G.SMWhere; CtrIconCodeIs=WalletItem.Mark.Icon; CtrQteIs=GetCurrency( L[ "MSM" ] );
-		elseif wttcur == L["MMC"] then ttw = _G.MCWhere; CtrIconCodeIs=WalletItem.Mithril.Icon; CtrQteIs=GetCurrency( L[ "MMC" ] );
-		elseif wttcur == L["MYT"] then ttw = _G.YTWhere; CtrIconCodeIs=WalletItem.YuleToken.Icon; CtrQteIs=GetCurrency( L[ "MYT" ] );
-		elseif wttcur == L["MHT"] then ttw = _G.HTWhere; CtrIconCodeIs=WalletItem.TokensOfHytbold.Icon; CtrQteIs=GetCurrency( L[ "MHT" ] );
-		elseif wttcur == L["MMP"] then ttw = _G.MPWhere; CtrIconCodeIs=WalletItem.Medallion.Icon; CtrQteIs=GetCurrency( L[ "MMP" ] );
-		elseif wttcur == L["MSL"] then ttw = _G.SLWhere; CtrIconCodeIs=WalletItem.Seal.Icon; CtrQteIs=GetCurrency( L[ "MSL" ] );
-		elseif wttcur == L["MCP"] then ttw = _G.CPWhere; CtrIconCodeIs=WalletItem.Commendation.Icon; CtrQteIs=GetCurrency( L[ "MCP" ] );
 		elseif wttcur == L["MLP"] then ttw = _G.LPWhere; CtrIconCodeIs=WalletItem.LOTROPTS.Icon; CtrQteIs=_G.LOTROPTS;
-		elseif wttcur == L["MASP"] then ttw = _G.ASPWhere; CtrIconCodeIs=WalletItem.AmrothSilverPiece.Icon; CtrQteIs=GetCurrency( L[ "MASP" ] );
-		elseif wttcur == L["MSOM"] then ttw = _G.SOMWhere; CtrIconCodeIs=WalletItem.StarsofMerit.Icon; CtrQteIs=GetCurrency( L[ "MSOM" ] );
-		elseif wttcur == L["MCGSP"] then ttw = _G.CGSPWhere; CtrIconCodeIs=WalletItem.CentralGondorSilverPiece.Icon; CtrQteIs=GetCurrency( L[ "MCGSP" ] );
-		elseif wttcur == L["MGGB"] then ttw = _G.GGBWhere; CtrIconCodeIs=WalletItem.GiftgiversBrand.Icon; CtrQteIs=GetCurrency( L[ "MGGB" ] );
-		elseif wttcur == L["MAOE"] then ttw = _G.AOEWhere; CtrIconCodeIs=WalletItem.AshOfEnchantment.Icon; CtrQteIs=GetCurrency( L[ "MAOE" ] );
-		elseif wttcur == L["MBB"] then ttw = _G.BBWhere; CtrIconCodeIs=WalletItem.BingoBadge.Icon; CtrQteIs=GetCurrency( L[ "MBB" ] );
-		elseif wttcur == L["MLAT"] then ttw = _G.LATWhere; CtrIconCodeIs=WalletItem.AnniversaryToken.Icon; CtrQteIs=GetCurrency( L[ "MLAT" ] );
-		elseif wttcur == L["MMOE"] then ttw = _G.MOEWhere; CtrIconCodeIs=WalletItem.MotesOfEnchantment.Icon; CtrQteIs=GetCurrency( L[ "MMOE" ] );
-		elseif wttcur == L["MEOE"] then ttw = _G.EOEWhere; CtrIconCodeIs=WalletItem.EmbersOfEnchantment.Icon; CtrQteIs=GetCurrency( L[ "MEOE" ] );
-		elseif wttcur == L["MFOS"] then ttw = _G.FOSWhere; CtrIconCodeIs=WalletItem.FigmentsOfSplendour.Icon; CtrQteIs=GetCurrency( L[ "MFOS" ] );
-		elseif wttcur == L["MFFT"] then ttw = _G.FFTWhere; CtrIconCodeIs=WalletItem.FallFestivalToken.Icon; CtrQteIs=GetCurrency( L[ "MFFT" ] );
-		elseif wttcur == L["MFFAT"] then ttw = _G.FFATWhere; CtrIconCodeIs=WalletItem.FarmersFaireToken.Icon; CtrQteIs=GetCurrency( L[ "MFFAT" ] );	
-		elseif wttcur == L["MSPL"] then ttw = _G.SPLWhere; CtrIconCodeIs=WalletItem.SpringLeaf.Icon; CtrQteIs=GetCurrency( L[ "MSPL" ] );
-		elseif wttcur == L["MMST"] then ttw = _G.MSTWhere; CtrIconCodeIs=WalletItem.MidsummerToken.Icon; CtrQteIs=GetCurrency( L[ "MMST" ] );
-		elseif wttcur == L["MAS"] then ttw = _G.ASWhere; CtrIconCodeIs=WalletItem.AncientScript.Icon; CtrQteIs=GetCurrency( L[ "MAS" ] );	
-		elseif wttcur == L["MBOT"] then ttw = _G.BOTWhere; CtrIconCodeIs=WalletItem.BadgeOfTaste.Icon; CtrQteIs=GetCurrency( L[ "MBOT" ] );
-		elseif wttcur == L["MBOD"] then ttw = _G.BODWhere; CtrIconCodeIs=WalletItem.BadgeOfDishonour.Icon; CtrQteIs=GetCurrency( L[ "MBOD" ] );
-		elseif wttcur == L["MDW"] then ttw = _G.BODWhere; CtrIconCodeIs=WalletItem.DelvingWrit.Icon; CtrQteIs=GetCurrency( L[ "MDW" ] );
+		for k,v in pairs(currenciesList) do
+			if wttcur == L["M" .. k] then
+				ttw = _G.CurrencyData[k].Where
+				CtrIconCodeIs=WalletItem[k].Icon
+				CtrQteIs=GetCurrency(L["M" .. k]);
+			end
+		end
+		
 		end
 		
 		if tonumber(ttw) == 2 then

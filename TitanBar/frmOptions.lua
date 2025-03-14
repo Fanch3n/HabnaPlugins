@@ -2,7 +2,8 @@
 -- written by Habna
 -- rewritten by many
 
-
+-- TODO FIX
+if _G.Debug then write("frmOptions.lua"); end
 local WalletControls = { };
 if WI ~= nil then WalletControls[ "WI" ] = { ShowHide = ShowWallet, Control = WI[ "Ctr" ] }; end
 if MI ~= nil then WalletControls[ "MI" ] = { ShowHide = ShowMoney, Control = MI[ "Ctr" ] }; end
@@ -43,7 +44,12 @@ if MST ~= nil then WalletControls[ "MST" ] = { ShowHide = ShowMidsummerToken, Co
 if AS ~= nil then WalletControls[ "AS" ] = { ShowHide = ShowAncientScript, Control = AS[ "Ctr" ] }; end
 if BOT ~= nil then WalletControls[ "BOT" ] = { ShowHide = ShowBadgeOfTaste, Control = BOT[ "Ctr" ] }; end
 if BOD ~= nil then WalletControls[ "BOD" ] = { ShowHide = ShowBadgeOfDishonour, Control = BOD[ "Ctr" ] }; end
-if DW ~= nil then WalletControls[ "DW" ] = { ShowHide = ShowDelvingWrit, Control = DW[ "Ctr" ] }; end
+if DelvingWrit ~= nil then WalletControls[ "DelvingWrit" ] = { ShowHide = _G.CurrencyData["DelvingWrit"].IsVisible, Control = DelvingWrit[ "Ctr" ] }; end
+if ColdIronToken ~= nil then WalletControls[ "ColdIronToken" ] = { ShowHide = _G.CurrencyData["ColdIronToken"].IsVisible, Control = ColdIronToken[ "Ctr" ] }; end
+if MedallionOfMoria ~= nil then WalletControls[ "MedallionOfMoria" ] = { ShowHide = _G.CurrencyData["MedallionOfMoria"].IsVisible, Control = MedallionOfMoria[ "Ctr" ] }; end
+if MedallionOfLothlorien ~= nil then WalletControls[ "MedallionOfLothlorien" ] = { ShowHide = _G.CurrencyData["MedallionOfLothlorien"].IsVisible, Control = MedallionOfLothlorien[ "Ctr" ] }; end
+if TokenOfHeroism ~= nil then WalletControls[ "TokenOfHeroism" ] = { ShowHide = _G.CurrencyData["TokenOfHeroism"].IsVisible, Control = TokenOfHeroism[ "Ctr" ] }; end
+if HerosMark ~= nil then WalletControls[ "HerosMark" ] = { ShowHide = _G.CurrencyData["HerosMark"].IsVisible, Control = HerosMark[ "Ctr" ] }; end
 
 tFonts = { "Arial12", "TrajanPro13", "TrajanPro14", "TrajanPro15", "TrajanPro16", "TrajanPro18", "TrajanPro19", "TrajanPro20", "TrajanPro21",
 			"TrajanPro23", "TrajanPro24", "TrajanPro25", "TrajanPro26", "TrajanPro28", "TrajanProBold16", "TrajanProBold22", "TrajanProBold24",

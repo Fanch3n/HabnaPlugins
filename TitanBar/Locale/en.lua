@@ -50,82 +50,97 @@ L[ "MReputation" ] = "Reputation";
 L[ "MLP" ] = "LOTRO points";
 L[ "LPh" ] = "These are your LOTRO points";
 -- Mithril Coins control
-L[ "MMC" ] = "Mithril Coin";
-L[ "MCh" ] = "These are your Mitril coins";
+L[ "MMithrilCoins" ] = "Mithril Coin";
+L[ "MithrilCoinsh" ] = "These are your Mitril coins";
 -- Yule Tokens control
-L[ "MYT" ] = "Yule Festival Token";
-L[ "YTh" ] = "These are your Yule Festival Tokens";
+L[ "MYuleToken" ] = "Yule Festival Token";
+L[ "YuleTokenh" ] = "These are your Yule Festival Tokens";
 -- Anniversary Tokens control
-L[ "MLAT" ] = "Anniversary Token";
-L[ "LATh" ] = "These are your Anniversary Tokens";
+L[ "MAnniversaryToken" ] = "Anniversary Token";
+L[ "AnniversaryTokenh" ] = "These are your Anniversary Tokens";
 -- Bingo Badge control
-L[ "MBB" ] = "Bingo Badge";
-L[ "BBh" ] = "These are your Bingo Badges";
+L[ "MBingoBadge" ] = "Bingo Badge";
+L[ "BingoBadgeh" ] = "These are your Bingo Badges";
 -- Skirmish marks control
-L[ "MSM" ] = "Mark";
-L[ "SMh" ] = "These are your skirmish marks";
+L[ "MSkirmishMarks" ] = "Mark";
+L[ "SkirmishMarksh" ] = "These are your skirmish marks";
 -- Destiny Points control
 L[ "MDP" ] = "Destiny point";
 L[ "DPh" ] = "These are your destiny points";
 -- Shards control
-L[ "MSP" ] = "Shard";
-L[ "SPh" ] = "These are your shard";
+L[ "MShards" ] = "Shard";
+L[ "Shardsh" ] = "These are your shard";
 -- Tokens of Hytbold control
-L[ "MHT" ] = "Token of Hytbold";
-L[ "HTh" ] = "These are your Tokens of Hytbold";
+L[ "MTokensOfHytbold" ] = "Token of Hytbold";
+L[ "TokensOfHytboldh" ] = "These are your Tokens of Hytbold";
 -- Medallions control
-L[ "MMP" ] = "Medallion";
-L[ "MPh" ] = "These are your medallions";
+L[ "MMedallions" ] = "Medallion";
+L[ "Medallionsh" ] = "These are your medallions";
 -- Seals control
-L[ "MSL" ] = "Seal";
-L[ "SLh" ] = "These are your seals";
+L[ "MSeals" ] = "Seal";
+L[ "Sealsh" ] = "These are your seals";
 -- Commendations control
-L[ "MCP" ] = "Commendation";
-L[ "CPh" ] = "These are your Commendations";
+L[ "MCommendation" ] = "Commendation";
+L[ "Commendationh" ] = "These are your Commendations";
 -- Amroth Silver Piece control
-L[ "MASP" ] = "Amroth Silver Piece";
-L[ "ASPh" ] = "These are your Amroth Silver Pieces";
+L[ "MAmrothSilverPiece" ] = "Amroth Silver Piece";
+L[ "AmrothSilverPieceh" ] = "These are your Amroth Silver Pieces";
 -- Stars of Merit control
-L[ "MSOM" ] = "Star of Merit";
-L[ "SOMh" ] = "These are your Stars of Merit";
+L[ "MStarsofMerit" ] = "Star of Merit";
+L[ "StarsofMerith" ] = "These are your Stars of Merit";
 -- Central Gondor Silver Piece control
-L[ "MCGSP" ] = "Central Gondor Silver Piece";
-L[ "CGSPh" ] = "These are your Central Gondor Silver Pieces";
+L[ "MCentralGondorSilverPiece" ] = "Central Gondor Silver Piece";
+L[ "CentralGondorSilverPieceh" ] = "These are your Central Gondor Silver Pieces";
 -- Gift giver's Brand control
-L[ "MGGB" ] = "Gift-giver's Brand";
-L[ "GGBh" ] = "These are your Gift-giver's Brands";
+L[ "MGiftgiversBrand" ] = "Gift-giver's Brand";
+L[ "GiftgiversBrandh" ] = "These are your Gift-giver's Brands";
 -- Motes of Enchantment control
-L[ "MMOE" ] = "Motes of Enchantment";
-L[ "MOEh" ] = "These are your Motes of Enchantment";
+L[ "MMotesOfEnchantment" ] = "Motes of Enchantment";
+L[ "MotesOfEnchantmenth" ] = "These are your Motes of Enchantment";
 -- Embers of Enchantment control
-L[ "MEOE" ] = "Embers of Enchantment";
-L[ "EOEh" ] = "These are your Embers of Enchantment";
+L[ "MEmbersOfEnchantment" ] = "Embers of Enchantment";
+L[ "EmbersOfEnchantmenth" ] = "These are your Embers of Enchantment";
 -- Figments of Splendour control
-L[ "MFOS" ] = "Figments of Splendour";
-L[ "FOSh" ] = "These are your Figments of Splendour";
+L[ "MFigmentsOfSplendour" ] = "Figments of Splendour";
+L[ "FigmentsOfSplendourh" ] = "These are your Figments of Splendour";
 -- Fall Festival Tokens control
-L[ "MFFT" ] = "Fall Festival Token";
-L[ "FFTh" ] = "These are your Fall Festival Tokens";
+L[ "MFallFestivalToken" ] = "Fall Festival Token";
+L[ "FallFestivalTokenh" ] = "These are your Fall Festival Tokens";
 -- Farmers Faire Tokens control
-L[ "MFFAT" ] = "Farmers Faire Token";
-L[ "FFATh" ] = "These are your Farmers Faire Tokens";
+L[ "MFarmersFaireToken" ] = "Farmers Faire Token";
+L[ "FarmersFaireTokenh" ] = "These are your Farmers Faire Tokens";
 -- Spring Leaves control
-L[ "MSPL" ] = "Spring Leaf";
-L[ "SPLh" ] = "These are your Spring Leaves";
+L[ "MSpringLeaf" ] = "Spring Leaf";
+L[ "SpringLeafh" ] = "These are your Spring Leaves";
 -- Midsummer Tokens control
-L[ "MMST" ] = "Midsummer Token";
-L[ "MSTh" ] = "These are your Midsummer Tokens";
+L[ "MMidsummerToken" ] = "Midsummer Token";
+L[ "MidsummerTokenh" ] = "These are your Midsummer Tokens";
 -- Ancient Script control
-L[ "MAS" ] = "Ancient Script";
-L[ "ASh" ] = "These are your Ancient Scripts";
+L[ "MAncientScript" ] = "Ancient Script";
+L[ "AncientScripth" ] = "These are your Ancient Scripts";
 -- Inn League / Ale Association control
-L[ "MBOT" ] = "Badge of Taste";
-L[ "BOTh" ] = "These are your Badges of Taste";
-L[ "MBOD" ] = "Badge of Dishonour";
-L[ "BODh" ] = "These are your Badges of Dishonour";
--- Delving Writs control
-L[ "MDW" ] = "Delving Writ";
-L[ "DWh" ] = "These are your Delving Writs";
+L[ "MBadgeOfTaste" ] = "Badge of Taste";
+L[ "BadgeOfTasteh" ] = "These are your Badges of Taste";
+L[ "MBadgeOfDishonour" ] = "Badge of Dishonour";
+L[ "BadgeOfDishonourh" ] = "These are your Badges of Dishonour";
+-- Delving Writs
+L[ "MDelvingWrit" ] = "Delving Writ";
+L[ "DelvingWrith" ] = "These are your Delving Writs";
+-- Cold-iron Tokens
+L[ "MColdIronToken" ] = "Cold-iron Token";
+L[ "ColdIronTokenh" ] = "Your Cold-iron Tokens";
+-- Token of Heroism
+L[ "MTokenOfHeroism" ] = "Token of Heroism";
+L[ "TokenOfHeroismh" ] = "Your Tokens of Heroism";
+-- Hero's Mark
+L[ "MHerosMark" ] = "Hero's Mark";
+L[ "HerosMarkh" ] = "Your Hero's Marks";
+-- Medallion of Moria
+L[ "MMedallionOfMoria" ] = "Medallion of Moria";
+L[ "MedallionOfMoriah" ] = "Your Medallions of Moria";
+-- Medallion of Lothlórien
+L[ "MMedallionOfLothlorien" ] = "Medallion of Lothlórien";
+L[ "MedallionOfLothlorienh" ] = "Your Medallions of Lothlórien";
 
 -- Control Menu
 L[ "MCU" ] = "Unload ...";
@@ -150,7 +165,7 @@ L[ "BWBlack" ] = "Black";
 L[ "BWTrans" ] = "Transparent";
 
 -- Wallet infos window
-L[ "WIt" ] = "Right click a currency name to get it's settings";
+L[ "WIt" ] = "Right click a currency name to get its settings";
 L[ "WIot" ] = "On TitanBar";
 L[ "WIiw" ] = "In tooltip";
 L[ "WIds" ] = "Don't show";
@@ -207,7 +222,7 @@ L[ "NextT" ] = "Show next time";
 L[ "TAjustL" ] = "Timer seed";
 
 -- Reputation window
-L[ "RPt" ] = "select / unselect a faction\nright click to get it's settings";
+L[ "RPt" ] = "select / unselect a faction\nright click to get its settings";
 L[ "RPnf" ] = "You track no faction!\nLeft click to see the faction list.";
 L[ "RPPHMaxHide" ] = "Hide factions at maximum reputation";
 
@@ -499,7 +514,11 @@ L[ "DevHit" ] = "Dev. hit";
 L[ "DevMag" ] = "Dev. mag.";
 L[ "CritDef" ] = "Crit. defence";
 L[ "Partial" ] = "partial";
-L[ "Capped" ] = "Values in YELLOW are CAPPED.";
+L[ "PartMit" ] = "part.mit.";
+L[ "Capped1" ] = "Yellow - capped";
+L[ "Capped2" ] = "Orange - T2 capped";
+L[ "Capped3" ] = "Red - T3+ capped";
+L[ "Capped4" ] = "Purple - Enh III capped";
 
 -- Money Infos control
 L[ "MGh" ] = "Quantity of gold";
@@ -538,34 +557,45 @@ L[ "GTh" ] = "Real/Server Time";
 -- Chat message
 L[ "TBR" ] = "TitanBar: All my settings are set back to default";
 
--- Character Race
-L[ "Elf" ] = "Elf";
-L[ "Man" ] = "Man";
-L[ "Dwarf" ] = "Dwarf";
-L[ "Hobbit" ] = "Hobbit";
-L[ "Beorning" ] = "Beorning";
-L[ "HighElf" ] = "High Elf";
-L[ "StoutAxe" ] = "Stout-axe";
+-- Player Race names: 'PR' + Race Id
+-- Add appropriate Race Id entry for new/unknown races.
+-- Unlisted Race Id's show up in the Player infos tooltip.
+L[ "PR65" ] = "Elf";
+L[ "PR23" ] = "Man";
+L[ "PR73" ] = "Dwarf";
+L[ "PR81" ] = "Hobbit";
+L[ "PR114" ] = "Beorning";
+L[ "PR117" ] = "High Elf";
+L[ "PR120" ] = "Stout-axe";
+L[ "PR125" ] = "River Hobbit";
+L[ "PR7" ] = "Orc";
+L[ "PR6" ] = "Uruk";
+L[ "PR12" ] = "Spider";
+L[ "PR66" ] = "Warg";
+L[ "PR27" ] = "Critter";
 
--- Free People Class
-L[ "Burglar" ] = "Burglar";
-L[ "Captain" ] = "Captain";
-L[ "Champion" ] = "Champion";
-L[ "Guardian" ] = "Guardian";
-L[ "Hunter" ] = "Hunter";
-L[ "Lore-Master" ] = "Lore-Master";
-L[ "Minstrel" ] = "Minstrel";
-L[ "Rune-Keeper" ] = "Rune-Keeper";
-L[ "Warden" ] = "Warden";
-L[ "Brawler" ] = "Brawler";
-
--- Monster Play Class
-L[ "Reaver" ] = "Reaver";
-L[ "Weaver" ] = "Weaver";
-L[ "Blackarrow" ] = "Blackarrow";
-L[ "Warleader" ] = "Warleader";
-L[ "Stalker" ] = "Stalker";
-L[ "Defiler" ] = "Defiler";
+-- Player Class names: 'PC' + Class Id
+-- Add appropriate Class Id entry for new/unknown classes.
+-- Unlisted Class Id's show up in the Player infos tooltip.
+L[ "PC40" ] = "Burglar";
+L[ "PC24" ] = "Captain";
+L[ "PC172" ] = "Champion";
+L[ "PC23" ] = "Guardian";
+L[ "PC162" ] = "Hunter";
+L[ "PC185" ] = "Lore-Master";
+L[ "PC31" ] = "Minstrel";
+L[ "PC193" ] = "Rune-Keeper";
+L[ "PC194" ] = "Warden";
+L[ "PC214" ] = "Beorning";
+L[ "PC215" ] = "Brawler";
+L[ "PC216" ] = "Mariner";
+L[ "PC71" ] = "Reaver";
+L[ "PC127" ] = "Weaver";
+L[ "PC179" ] = "Blackarrow";
+L[ "PC52" ] = "Warleader";
+L[ "PC126" ] = "Stalker";
+L[ "PC128" ] = "Defiler";
+L[ "PC192" ] = "Chicken";
 
 -- Durability
 L[ "D" ] = "Durability";

@@ -2,6 +2,40 @@
 -- Written By Habna
 -- rewritten by many
 
+local DragAndHoldInTooltip = { --same behaviour for drag and hold
+	DP = true,
+	ShardsSP = true,
+	SkirmishMarks = true,
+	MC = true,
+	YuleToken = true,
+	TokensOfHytbold = true,
+	Medallions = true,
+	Seals = true,
+	Commendation = true,
+	PL = true,
+	AmrothSilverPiece = true,
+	StarsofMerit = true,
+	CentralGondorSilverPiece = true,
+	GiftgiversBrand = true,
+	BingoBadge = true,
+	AnniversaryToken = true,
+	MotesOfEnchantment = true,
+	EmbersOfEnchantment = true,
+	FigmentsOfSplendour = true,
+	FallFestivalToken = true,
+	FarmersFaireToken = true,
+	SpringLeaf = true,
+	MidsummerToken = true,
+	AncientScript = true,
+	BadgeOfTaste = true,
+	DelvingWrit = true,
+	BadgeOfDishonour = true,
+	ColdIronToken = true,
+	HerosMark = true,
+	TokenOfHeroism = true,
+	MedallionOfMoria = true,
+	MedallionOfLothlorien = true
+}
 
 function AddCallback(object, event, callback)
     if (object[event] == nil) then
@@ -161,74 +195,18 @@ function ShowToolTipWin( ToShow )
 	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
 	
 	w = 350;
+	-- TODO doesn't work anymore, other workaround possibly needed
 	if TBLocale == "fr" then w = 315;
 	elseif TBLocale == "de" then
 		if ToShow == "DI" then w = 225; 
 		else w = 305; end
 	end
 
-	if ToShow == "DP" then -- Destiny points
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["DPh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "BI" then -- Bag Infos
+	if ToShow == "BI" then -- Bag Infos
 		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
 		h = 80;
 		if not TBTop then y = h; end
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["MBI"], L["EIt1"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "SP" then -- Shards
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["SPh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "SM" then -- Skirmish marks
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["SMh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "MC" then -- Mithril Coins
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MCh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "YT" then -- Yule Tokens
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["YTh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "HT" then -- Tokens of Hytbold
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["HTh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "MP" then -- Medallions
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MPh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "SL" then -- Seals
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["SLh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "CP" then -- Commendations
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["CPh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "PL" then -- Player Location
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["PLh"], L["EIt2"], 
-            L["EIt3"] );
 	elseif ToShow == "GT" then -- Game Time
 		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
 		h = 80;
@@ -265,96 +243,13 @@ function ShowToolTipWin( ToShow )
 		if not TBTop then y = h; end
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["LPh"], L["EIt1"], 
             L["EIt2"], L["EIt3"] );
-	elseif ToShow == "ASP" then -- Amroth Silver Piece
+	elseif DragAndHoldInTooltip[ToShow] then
 		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
 		h = 65;
 		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["ASPh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "SOM" then -- Stars of Merit
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["SOMh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "CGSP" then -- Central Gondor Silver Piece
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w+30, h, bblTo, L["CGSPh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "GGB" then -- Gift giver's Brand
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["GGBh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "BB" then -- Bingo Badge
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["BBh"], L["EIt2"], 
-            L["EIt3"] );
-	elseif ToShow == "LAT" then -- Anniversary Token
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["LATh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "MOE" then -- Motes of Enchantment
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MOEh"], L["EIt2"], L["EIt3"] );	
-	elseif ToShow == "EOE" then -- Embers of Enchantment
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["EOEh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "FOS" then -- Figments of Splendour
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["FOSh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "FFT" then -- Fall Festival Tokens
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["FFTh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "FFAT" then -- Farmers Faire Token
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["FFATh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "SPL" then -- Spring Leaves
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["SPLh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "MST" then -- Midsummer Tokens
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MSTh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "AS" then -- Ancient Script
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["ASh"], L["EIt2"], L["EIt3"] );			
-	elseif ToShow == "BOT" then -- Badge of Taste
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["BOTh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "BOD" then -- Badge of Dishonour
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["BODh"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "DW" then -- Delving Writs
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 65;
-		if not TBTop then y = h; end
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["DWh"], L["EIt2"], L["EIt3"] );
+		TTW = createToolTipWin( x, y, w, h, bblTo, L[ToShow .. "h"], L["EIt2"], L["EIt3"] );
+	else
+		write(ToShow .. " not recognized for Tooltip creation, add in functions.lua")
 	end
 
 	_G.ToolTipWin:SetPosition( mouseX - _G.ToolTipWin.xOffset, mouseY - 
@@ -471,78 +366,6 @@ function UpdateDestinyPoints()
 	end
 end
 --**^
---**v Update Shards currency on TitanBar v**
-function UpdateShards()
-	if _G.SPWhere == 1 then
-		SP[ "Lbl" ]:SetText( GetCurrency( L[ "MSP" ] ) );
-		SP[ "Lbl" ]:SetSize( SP[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "SP" );
-	end
-end
---**^
---**v Update Marks currency on TitanBar v**
-function UpdateMarks()
-	if _G.SMWhere == 1 then
-		SM[ "Lbl" ]:SetText( GetCurrency( L[ "MSM" ] ) );
-		SM[ "Lbl" ]:SetSize( SM[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "SM" );
-	end
-end
---**^
---**v Update Mithril Coins currency on TitanBar v**
-function UpdateMithril()
-	if _G.MCWhere == 1 then
-		MC[ "Lbl" ]:SetText( GetCurrency( L[ "MMC" ] ) );
-		MC[ "Lbl" ]:SetSize( MC[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "MC" );
-	end
-end
---**^
---**v Update Yule Tokens currency on TitanBar v**
-function UpdateYuleToken()
-	if _G.YTWhere == 1 then
-		YT[ "Lbl" ]:SetText( GetCurrency( L[ "MYT" ] ) );
-		YT[ "Lbl" ]:SetSize( YT[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "YT" );
-	end
-end
---**^
---**v Update Tokens of Hytbold currency on TitanBar v**
-function UpdateHytboldTokens()
-	if _G.HTWhere == 1 then
-		HT[ "Lbl" ]:SetText( GetCurrency( L[ "MHT" ] ) );
-		HT[ "Lbl" ]:SetSize( HT[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "HT" );
-	end
-end
---**^
---**v Update Medallions currency on TitanBar v**
-function UpdateMedallions()
-	if _G.MPWhere == 1 then
-		MP[ "Lbl" ]:SetText( GetCurrency( L[ "MMP" ] ) );
-		MP[ "Lbl" ]:SetSize( MP[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "MP" );
-	end
-end
---**^
---**v Update Seals currency on TitanBar v**
-function UpdateSeals()
-	if _G.SLWhere == 1 then
-		SL[ "Lbl" ]:SetText( GetCurrency( L[ "MSL" ] ) );
-		SL[ "Lbl" ]:SetSize( SL[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "SL" );
-	end
-end
---**^
---**v Update Commendations currency on TitanBar v**
-function UpdateCommendations()
-	if _G.CPWhere == 1 then
-		CP[ "Lbl" ]:SetText( GetCurrency( L[ "MCP" ] ) );
-		CP[ "Lbl" ]:SetSize( CP[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "CP" );
-	end
-end
---**^
 --**v Update LOTRO points on TitanBar v**
 function UpdateLOTROPoints()
 	if _G.LPWhere == 1 then
@@ -554,114 +377,6 @@ function UpdateLOTROPoints()
 end
 --**^
 -- AU3 MARKER 2 - DO NOT REMOVE
---**v Update Amroth Silver Piece currency on TitanBar v**
-function UpdateAmrothSilverPiece()
-	if _G.ASPWhere == 1 then
-		ASP[ "Lbl" ]:SetText( GetCurrency( L[ "MASP" ] ) );
-		ASP[ "Lbl" ]:SetSize( ASP[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "ASP" );
-	end
-end
---**^
---**v Update Stars of Merit currency on TitanBar v**
-function UpdateStarsofMerit()
-	if _G.SOMWhere == 1 then
-		SOM[ "Lbl" ]:SetText( GetCurrency( L[ "MSOM" ] ) );
-		SOM[ "Lbl" ]:SetSize( SOM[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "SOM" );
-	end
-end
---**^
---**v Update Central Gondor Silver Piece currency on TitanBar v**
-function UpdateCentralGondorSilverPiece()
-	if _G.CGSPWhere == 1 then
-		CGSP[ "Lbl" ]:SetText( GetCurrency( L[ "MCGSP" ] ) );
-		CGSP[ "Lbl" ]:SetSize( CGSP[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "CGSP" );
-	end
-end
---**^
---**v Update Gift giver's Brand currency on TitanBar v**
-function UpdateGiftgiversBrand()
-	if _G.GGBWhere == 1 then
-		GGB[ "Lbl" ]:SetText( GetCurrency( L[ "MGGB" ] ) );
-		GGB[ "Lbl" ]:SetSize( GGB[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "GGB" );
-	end
-end
---**^
---**v Update Bingo Badge currency on TitanBar v**
-function UpdateBingoBadge()
-	if _G.BBWhere == 1 then
-		BB[ "Lbl" ]:SetText( GetCurrency( L[ "MBB" ] ) );
-		BB[ "Lbl" ]:SetSize( BB[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "BB" );
-	end
-end
---**^
---**v Update Anniversary Token currency on TitanBar v**
-function UpdateAnniversaryToken()
-	if _G.LATWhere == 1 then
-		LAT[ "Lbl" ]:SetText( GetCurrency( L[ "MLAT" ] ) );
-		LAT[ "Lbl" ]:SetSize( LAT[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "LAT" );
-	end
-end
---**^
---**v Update Motes of Enchantment currency on TitanBar v**
-function UpdateMotesOfEnchantment()
-	if _G.MOEWhere == 1 then
-		MOE[ "Lbl" ]:SetText( GetCurrency( L[ "MMOE" ] ) );
-		MOE[ "Lbl" ]:SetSize( MOE[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "MOE" );
-	end
-end
---**^
---**v Update Embers of Enchantment currency on TitanBar v**
-function UpdateEmbersOfEnchantment()
-	if _G.EOEWhere == 1 then
-		EOE[ "Lbl" ]:SetText( GetCurrency( L[ "MEOE" ] ) );
-		EOE[ "Lbl" ]:SetSize( EOE[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "EOE" );
-	end
-end
---**^
---**v Update Figments of Splendour currency on TitanBar v**
-function UpdateFigmentsOfSplendour()
-	if _G.FOSWhere == 1 then
-		FOS[ "Lbl" ]:SetText( GetCurrency( L[ "MFOS" ] ) );
-		FOS[ "Lbl" ]:SetSize( FOS[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "FOS" );
-	end
-end
---**^
---**v Update Fall Festival Tokens currency on TitanBar v**
-function UpdateFallFestivalToken()
-	if _G.FFTWhere == 1 then
-		FFT[ "Lbl" ]:SetText( GetCurrency( L[ "MFFT" ] ) );
-		FFT[ "Lbl" ]:SetSize( FFT[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "FFT" );
-	end
-end
---**^
---**v Update Farmers Faire Tokens currency on TitanBar v**
-function UpdateFarmersFaireToken()
-	if _G.FFATWhere == 1 then
-		FFAT[ "Lbl" ]:SetText( GetCurrency( L[ "MFFAT" ] ) );
-		FFAT[ "Lbl" ]:SetSize( FFAT[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "FFAT" );
-	end
-end
---**^
---**v Update Spring Leaves currency on TitanBar v**
-function UpdateSpringLeaf()
-	if _G.SPLWhere == 1 then
-		SPL[ "Lbl" ]:SetText( GetCurrency( L[ "MSPL" ] ) );
-		SPL[ "Lbl" ]:SetSize( SPL[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "SPL" );
-	end
-end
---**^
 --**v Update Midsummer Token currency on TitanBar v**
 function UpdateMidsummerToken()
 	if _G.MSTWhere == 1 then
@@ -671,39 +386,12 @@ function UpdateMidsummerToken()
 	end
 end
 --**^
---**v Update Ancient Script currency on TitanBar v**
-function UpdateAncientScript()
-	if _G.ASWhere == 1 then
-		AS[ "Lbl" ]:SetText( GetCurrency( L[ "MAS" ] ) );
-		AS[ "Lbl" ]:SetSize( AS[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "AS" );
-	end
-end
---**^
---**v Update Badge of Taste currency on TitanBar v**
-function UpdateBadgeOfTaste()
-	if _G.BOTWhere == 1 then
-		BOT[ "Lbl" ]:SetText( GetCurrency( L[ "MBOT" ] ) );
-		BOT[ "Lbl" ]:SetSize( BOT[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "BOT" );
-	end
-end
---**^
---**v Update Badge of Dishonour currency on TitanBar v**
-function UpdateBadgeOfDishonour()
-	if _G.BODWhere == 1 then
-		BOD[ "Lbl" ]:SetText( GetCurrency( L[ "MBOD" ] ) );
-		BOD[ "Lbl" ]:SetSize( BOD[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "BOD" );
-	end
-end
---**^
---**v Update Delving Writs currency on TitanBar v**
-function UpdateDelvingWrit()
-	if _G.DWWhere == 1 then
-		DW[ "Lbl" ]:SetText( GetCurrency( L[ "MDW" ] ) );
-		DW[ "Lbl" ]:SetSize( DW[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "DW" );
+--**v Update currency on TitanBar v**
+function UpdateCurrencyDisplay(currencyName)
+	if _G.CurrencyData[currencyName].Where == 1 then
+		_G.CurrencyData[currencyName].Lbl:SetText(GetCurrency(L["M"..currencyName]));
+		_G.CurrencyData[currencyName].Lbl:SetSize(_G.CurrencyData[currencyName].Lbl:GetTextLength() * NM, CTRHeight ); 
+		AjustIcon(currencyName);
 	end
 end
 --**^
@@ -744,91 +432,36 @@ function UpdateBackpackInfos()
 	AjustIcon( "BI" );
 end
 --**^
+
 --**v Update player infos on TitanBar v**
 function UpdatePlayersInfos()
-	PlayerRaceIs = Player:GetRace();
-	
-	--Free people race
-	if PlayerRaceIs == 0 then PlayerRaceIs = ""; -- Undefined
-	elseif PlayerRaceIs == 65 then PlayerRaceIs = L[ "Elf" ];
-	elseif PlayerRaceIs == 23 then PlayerRaceIs = L[ "Man" ];
-	elseif PlayerRaceIs == 73 then PlayerRaceIs = L[ "Dwarf" ];
-	elseif PlayerRaceIs == 81 then PlayerRaceIs = L[ "Hobbit" ];
-	elseif PlayerRaceIs == 114 then PlayerRaceIs = L[ "Beorning" ];
-	elseif PlayerRaceIs == 117 then PlayerRaceIs = L[ "HighElf" ];
-	elseif PlayerRaceIs == 120 then PlayerRaceIs = L[ "StoutAxe" ];
-
-	--Monster play race
-	elseif PlayerRaceIs == 7 then PlayerRaceIs = ""; end
-	
-	PlayerClassIs = Player:GetClass();
-	
-	--Free People Class
-	if PlayerClassIs == 23 then 
-        PlayerClassIs = L["Guardian"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Guardian;
-	elseif PlayerClassIs == 24 then 
-        PlayerClassIs = L["Captain"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Captain;
-	elseif PlayerClassIs == 31 then 
-        PlayerClassIs = L["Minstrel"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Minstrel;
-	elseif PlayerClassIs == 40 then 
-        PlayerClassIs = L["Burglar"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Burglar;
-	elseif PlayerClassIs == 162 then 
-        PlayerClassIs = L["Hunter"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Hunter;
-	elseif PlayerClassIs == 172 then 
-        PlayerClassIs = L["Champion"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Champion;
-	elseif PlayerClassIs == 185 then 
-        PlayerClassIs = L["Lore-Master"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.LoreMaster;
-	elseif PlayerClassIs == 193 then 
-        PlayerClassIs = L["Rune-Keeper"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.RuneKeeper;
-	elseif PlayerClassIs == 194 then 
-        PlayerClassIs = L["Warden"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Warden;
-	elseif PlayerClassIs == 214 then 
-        PlayerClassIs = L["Beorning"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Beorning;
-	elseif PlayerClassIs == 215 then 
-        PlayerClassIs = L["Brawler"]; 
-        PlayerIconCodeIs = resources.PlayerIconCode.Brawler;	
-	
-	--Monster Play Class
-	elseif PlayerClassIs == 52 then 
-        PlayerClassIs = L["Warleader"]; 
-        PlayerIconCodeIs = resources.MonsterIconCode.Warleader;
-	elseif PlayerClassIs == 71 then 
-        PlayerClassIs = L["Reaver"]; 
-        PlayerIconCodeIs = resources.MonsterIconCode.Reaver;
-	elseif PlayerClassIs == 126 then 
-        PlayerClassIs = L["Stalker"]; 
-        PlayerIconCodeIs = resources.MonsterIconCode.Stalker;
-	elseif PlayerClassIs == 127 then 
-        PlayerClassIs = L["Weaver"]; 
-        PlayerIconCodeIs = resources.MonsterIconCode.Weaver;
-	elseif PlayerClassIs == 128 then 
-        PlayerClassIs = L["Defiler"]; 
-        PlayerIconCodeIs = resources.MonsterIconCode.Defiler;
-	elseif PlayerClassIs == 179 then 
-        PlayerClassIs = L["Blackarrow"]; 
-        PlayerIconCodeIs = resources.MonsterIconCode.Blackarrow; 
+	--Race
+	PlayerRaceIdIs = Player:GetRace();
+	local PlayerRaceIsLkey = "PR"..PlayerRaceIdIs
+	PlayerRaceIs = L[PlayerRaceIsLkey]
+	if not PlayerRaceIs then
+		PlayerRaceIs = PlayerRaceIsLkey -- show the expected localization key if not found
 	end
-	
-	PI[ "Icon" ]:SetBackground( PlayerIconCodeIs );
-	
-	PI["Lvl"]:SetText( Player:GetLevel() );
-	PI["Lvl"]:SetSize( PI["Lvl"]:GetTextLength() * NM+1, CTRHeight ); 
-	PI["Name"]:SetPosition( PI["Lvl"]:GetLeft() + PI["Lvl"]:GetWidth() + 5, 0 );
-	--PI["Name"]:SetText( "OneVeryLongCharacterName" ); --Debug purpose
-	PI["Name"]:SetText( Player:GetName() );
-	PI["Name"]:SetSize( PI["Name"]:GetTextLength() * TM, CTRHeight ); 
 
-	AjustIcon( "PI" );
+	--Class
+	PlayerClassIdIs = Player:GetClass()
+	local PlayerClassIsLkey = "PC"..PlayerClassIdIs
+	PlayerClassIs = L[PlayerClassIsLkey]
+	if not PlayerClassIs then
+		PlayerClassIs = PlayerClassIsLkey -- show the expected localization key if not found
+	end
+
+	--Update visuale
+	PI[ "Icon" ]:SetBackground(resources.PlayerIconCode[PlayerClassIdIs]) -- if class icon is unknown in the resource then background image is set to nil: nothing visible
+	
+	PI["Lvl"]:SetText(Player:GetLevel())
+	PI["Lvl"]:SetSize(PI["Lvl"]:GetTextLength() * NM+1, CTRHeight)
+	PI["Name"]:SetPosition(PI["Lvl"]:GetLeft() + PI["Lvl"]:GetWidth() + 5, 0)
+	--PI["Name"]:SetText("OneVeryLongCharacterName") --Debug purpose
+	PI["Name"]:SetText(Player:GetName())
+	PI["Name"]:SetSize(PI["Name"]:GetTextLength() * TM, CTRHeight);
+
+	AjustIcon("PI");
 end
 --**^
 
@@ -1023,14 +656,6 @@ function ChangeColor(tColor)
 		if ShowWallet then WI[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowMoney then MI[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowDestinyPoints then DP[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowShards then SP[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowSkirmishMarks then SM[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowMithrilCoins then MC[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowYuleToken then YT[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowHytboldTokens then HT[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowMedallions then MP[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowSeals then SL[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowCommendations then CP[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowBagInfos then BI[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowPlayerInfos then PI[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowEquipInfos then EI[ "Ctr" ]:SetBackColor( tColor ); end
@@ -1045,67 +670,17 @@ function ChangeColor(tColor)
 		if ShowLOTROPoints then LP[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowPlayerLoc then PL[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowGameTime then GT[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowAmrothSilverPiece then ASP[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowStarsofMerit then SOM[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowCentralGondorSilverPiece then CGSP[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowGiftgiversBrand then GGB[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowBingoBadge then BB[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowAniversaryToken then LAT[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowMotesOfEnchantment then MOE[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowEmbersOfEnchantment then EOE[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowFigmentsOfSplendour then FOS[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowFallFestivalToken then FFT[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowFarmersFaireToken then FFAT[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowSpringLeaf then SPL[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowMidsummerToken then MST[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowAncientScript then AS[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowBadgeOfTaste then BOT[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowBadgeOfDishonour then BOD[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowDelvingWrit then DW[ "Ctr" ]:SetBackColor( tColor ); end
+		for k,v in pairs(currenciesList) do
+			if _G.CurrencyData[k].IsVisible then
+				_G.CurrencyData[k].Ctr:SetBackColor(tColor)
+			end
+		end
 	else
-		if sFrom == "TitanBar" then TB["win"]:SetBackColor( tColor ); end
-		if sFrom == "WI" then WI[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "Money" then MI[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "DP" then DP[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "SP" then SP[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "SM" then SM[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "MC" then MC[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "YT" then YT[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "HT" then HT[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "MP" then MP[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "SL" then SL[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "CP" then CP[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "BI" then BI[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "PI" then PI[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "EI" then EI[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "DI" then DI[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "TI" then TI[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "IF" then IF[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "VT" then VT[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "SS" then SS[ "Ctr" ]:SetBackColor( tColor ); end
-		--if sFrom == "BK" then BK[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "DN" then DN[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "RP" then RP[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "LP" then LP[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "PL" then PL[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "GT" then GT[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "ASP" then ASP[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "SOM" then SOM[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "CGSP" then CGSP[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "GGB" then GGB[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "BB" then BB[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "LAT" then LAT[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "MOE" then MOE[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "EOE" then EOE[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "FOS" then FOS[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "FFT" then FFT[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "FFAT" then FFAT[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "SPL" then SPL[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "MST" then MST[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "AS" then AS[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "BOT" then BOT[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "BOD" then BOD[ "Ctr" ]:SetBackColor( tColor ); end
-		if sFrom == "DW" then DW[ "Ctr" ]:SetBackColor( tColor ); end
+		if sFrom == "TitanBar" then TB["win"]:SetBackColor( tColor )
+		elseif sFrom == "Money" then MI[ "Ctr" ]:SetBackColor( tColor )
+		else
+			_G.CurrencyData[sFrom].Ctr:SetBackColor(tColor)
+		end
 	end
 end
 --**^
@@ -1159,11 +734,11 @@ function AjustIcon(str)
 	local Y = -1 - ((TBIconSize - CTRHeight) / 2);
 
 	if str == "WI" then
-		WI[ "Icon" ]:SetStretchMode( 1 );
-		WI[ "Icon" ]:SetPosition( 0, Y );
-		WI[ "Ctr" ]:SetSize( TBIconSize, CTRHeight );
-		WI[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		WI[ "Icon" ]:SetStretchMode( 3 );
+		_G[str][ "Icon" ]:SetStretchMode( 1 );
+		_G[str][ "Icon" ]:SetPosition( 0, Y );
+		_G[str][ "Ctr" ]:SetSize( TBIconSize, CTRHeight );
+		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
+		_G[str][ "Icon" ]:SetStretchMode( 3 );
 	elseif str == "MI" then
 		local t = "" 
         if _G.STM then t = "T"; end 
@@ -1182,108 +757,42 @@ function AjustIcon(str)
         end
 		MI[ "Ctr" ]:SetSize( MI["GCtr"]:GetWidth() + MI["SCtr"]:GetWidth() + 
             MI["CCtr"]:GetWidth(), CTRHeight );
-	elseif str == "DP" then
-		DP[ "Icon" ]:SetStretchMode( 1 );
-		DP[ "Icon" ]:SetPosition( DP[ "Lbl" ]:GetLeft() + DP[ "Lbl" ]:GetWidth(), Y );
-		DP[ "Ctr" ]:SetSize( DP[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		DP[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		DP[ "Icon" ]:SetStretchMode( 3 );
+	elseif str == "DP" or str == "DI" then
+		_G[str][ "Icon" ]:SetStretchMode( 1 );
+		_G[str][ "Icon" ]:SetPosition( _G[str][ "Lbl" ]:GetLeft() + _G[str][ "Lbl" ]:GetWidth(), Y );
+		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
+		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
+		_G[str][ "Icon" ]:SetStretchMode( 3 );
 	elseif str == "SP" then
-		SP[ "Icon" ]:SetStretchMode( 1 );
-		SP[ "Icon" ]:SetPosition( SP[ "Lbl" ]:GetLeft() + SP[ "Lbl" ]:GetWidth()-2, Y );
-		SP[ "Ctr" ]:SetSize( SP[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		SP[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		SP[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "SM" then
-		SM[ "Icon" ]:SetStretchMode( 1 );
-		SM[ "Icon" ]:SetPosition( SM[ "Lbl" ]:GetLeft() + SM[ "Lbl" ]:GetWidth()+3, Y );
-		SM[ "Ctr" ]:SetSize( SM[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		SM[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		SM[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "MC" then
-		MC[ "Icon" ]:SetStretchMode( 1 );
-		MC[ "Icon" ]:SetPosition( MC[ "Lbl" ]:GetLeft() + MC[ "Lbl" ]:GetWidth()+3, Y );
-		MC[ "Ctr" ]:SetSize( MC[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		MC[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		MC[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "YT" then
-		YT[ "Icon" ]:SetStretchMode( 1 );
-		YT[ "Icon" ]:SetPosition( YT[ "Lbl" ]:GetLeft() + YT[ "Lbl" ]:GetWidth()+3, Y );
-		YT[ "Ctr" ]:SetSize( YT[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		YT[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		YT[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "HT" then
-		HT[ "Icon" ]:SetStretchMode( 1 );
-		HT[ "Icon" ]:SetPosition( HT[ "Lbl" ]:GetLeft() + HT[ "Lbl" ]:GetWidth()+3, Y );
-		HT[ "Ctr" ]:SetSize( HT[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		HT[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		HT[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "MP" then
-		MP[ "Icon" ]:SetStretchMode( 1 );
-		MP[ "Icon" ]:SetPosition( MP[ "Lbl" ]:GetLeft() + MP[ "Lbl" ]:GetWidth()+3, Y );
-		MP[ "Ctr" ]:SetSize( MP[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		MP[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		MP[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "SL" then
-		SL[ "Icon" ]:SetStretchMode( 1 );
-		SL[ "Icon" ]:SetPosition( SL[ "Lbl" ]:GetLeft() + SL[ "Lbl" ]:GetWidth()+3, Y );
-		SL[ "Ctr" ]:SetSize( SL[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		SL[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		SL[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "CP" then
-		CP[ "Icon" ]:SetStretchMode( 1 );
-		CP[ "Icon" ]:SetPosition( CP[ "Lbl" ]:GetLeft() + CP[ "Lbl" ]:GetWidth()+3, Y );
-		CP[ "Ctr" ]:SetSize( CP[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		CP[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		CP[ "Icon" ]:SetStretchMode( 3 );
+		_G[str][ "Icon" ]:SetStretchMode( 1 );
+		_G[str][ "Icon" ]:SetPosition( _G[str][ "Lbl" ]:GetLeft() + _G[str][ "Lbl" ]:GetWidth()-2, Y );
+		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
+		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
+		_G[str][ "Icon" ]:SetStretchMode( 3 );
 	elseif str == "BI" then
-		BI[ "Icon" ]:SetStretchMode( 1 );
-		BI[ "Icon" ]:SetPosition( BI[ "Lbl" ]:GetLeft() + BI[ "Lbl" ]:GetWidth()+3, Y+1 );
-		BI[ "Ctr" ]:SetSize( BI[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		BI[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		BI[ "Icon" ]:SetStretchMode( 3 );
+		_G[str][ "Icon" ]:SetStretchMode( 1 );
+		_G[str][ "Icon" ]:SetPosition( _G[str][ "Lbl" ]:GetLeft() + _G[str][ "Lbl" ]:GetWidth()+3, Y+1 );
+		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
+		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
+		_G[str][ "Icon" ]:SetStretchMode( 3 );
 	elseif str == "PI" then
-		PI[ "Icon" ]:SetStretchMode( 1 );
-		PI[ "Icon" ]:SetPosition( PI[ "Name" ]:GetLeft() + PI[ "Name" ]:GetWidth()+3, Y );
-		PI[ "Ctr" ]:SetSize( PI[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		PI[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		PI[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "EI" then
-		EI[ "Icon" ]:SetStretchMode( 1 );
-		EI[ "Icon" ]:SetPosition( EI[ "Lbl" ]:GetLeft() + EI[ "Lbl" ]:GetWidth()+3, Y );
-		EI[ "Ctr" ]:SetSize( EI[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		EI[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		EI[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "DI" then
-		DI[ "Icon" ]:SetStretchMode( 1 );
-		DI[ "Icon" ]:SetPosition( DI[ "Lbl" ]:GetLeft() + DI[ "Lbl" ]:GetWidth(), Y );
-		DI[ "Ctr" ]:SetSize( DI[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		DI[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		DI[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "TI" then
-		TI[ "Icon" ]:SetStretchMode( 1 );
-		TI[ "Icon" ]:SetPosition( 0, Y );
-		TI[ "Ctr" ]:SetSize( TBIconSize, CTRHeight );
-		TI[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		TI[ "Icon" ]:SetStretchMode( 3 );
+		_G[str][ "Icon" ]:SetStretchMode( 1 );
+		_G[str][ "Icon" ]:SetPosition( _G[str][ "Name" ]:GetLeft() + _G[str][ "Name" ]:GetWidth()+3, Y );
+		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
+		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
+		_G[str][ "Icon" ]:SetStretchMode( 3 );
+	elseif str == "TI" or str == "VT" or str == "SS" then
+		_G[str][ "Icon" ]:SetStretchMode( 1 );
+		_G[str][ "Icon" ]:SetPosition( 0, Y );
+		_G[str][ "Ctr" ]:SetSize( TBIconSize, CTRHeight );
+		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
+		_G[str][ "Icon" ]:SetStretchMode( 3 );
 	elseif str == "IF" then
-		IF[ "Icon" ]:SetStretchMode( 1 );
-		IF[ "Icon" ]:SetPosition( 0, Y );
-		IF[ "Ctr" ]:SetSize( IF[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		IF[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		IF[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "VT" then
-		VT[ "Icon" ]:SetStretchMode( 1 );
-		VT[ "Icon" ]:SetPosition( 0, Y );
-		VT[ "Ctr" ]:SetSize( TBIconSize, CTRHeight );
-		VT[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		VT[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "SS" then
-		SS[ "Icon" ]:SetStretchMode( 1 );
-		SS[ "Icon" ]:SetPosition( 0, Y );
-		SS[ "Ctr" ]:SetSize( TBIconSize, CTRHeight );
-		SS[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		SS[ "Icon" ]:SetStretchMode( 3 );
+		_G[str][ "Icon" ]:SetStretchMode( 1 );
+		_G[str][ "Icon" ]:SetPosition( 0, Y );
+		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
+		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
+		_G[str][ "Icon" ]:SetStretchMode( 3 );
 --[[	elseif str == "BK" then
 		BK[ "Icon" ]:SetStretchMode( 1 );
 		BK[ "Icon" ]:SetPosition( 0, Y );
@@ -1291,125 +800,31 @@ function AjustIcon(str)
 		BK[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
 		BK[ "Icon" ]:SetStretchMode( 3 ); --]]
 	elseif str == "DN" then
-		DN[ "Icon" ]:SetStretchMode( 1 );
-		DN[ "Icon" ]:SetPosition(DN[ "Lbl" ]:GetLeft() + DN[ "Lbl" ]:GetWidth(), Y+1);
-		DN[ "Ctr" ]:SetSize( DN[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		DN[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		DN[ "Icon" ]:SetStretchMode( 3 );
+		_G[str][ "Icon" ]:SetStretchMode( 1 );
+		_G[str][ "Icon" ]:SetPosition(_G[str][ "Lbl" ]:GetLeft() + _G[str][ "Lbl" ]:GetWidth(), Y+1);
+		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
+		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
+		_G[str][ "Icon" ]:SetStretchMode( 3 );
 	elseif str == "RP" then
-		RP[ "Icon" ]:SetStretchMode( 1 );
-		RP[ "Icon" ]:SetPosition( 0, Y + 2 );
-		RP[ "Ctr" ]:SetSize( TBIconSize, CTRHeight );
-		RP[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		RP[ "Icon" ]:SetStretchMode( 3 );
+		_G[str][ "Icon" ]:SetStretchMode( 1 );
+		_G[str][ "Icon" ]:SetPosition( 0, Y + 2 );
+		_G[str][ "Ctr" ]:SetSize( TBIconSize, CTRHeight );
+		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
+		_G[str][ "Icon" ]:SetStretchMode( 3 );
 	elseif str == "LP" then
-		LP[ "Icon" ]:SetStretchMode( 1 );
-		LP[ "Icon" ]:SetPosition(LP[ "Lbl" ]:GetLeft()+LP[ "Lbl" ]:GetWidth()+2, Y+1);
-		LP[ "Ctr" ]:SetSize( LP[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		LP[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		LP[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "ASP" then
-		ASP[ "Icon" ]:SetStretchMode( 1 );
-		ASP[ "Icon" ]:SetPosition(ASP[ "Lbl" ]:GetLeft()+ASP[ "Lbl" ]:GetWidth()+3,Y);
-		ASP[ "Ctr" ]:SetSize( ASP[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		ASP[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		ASP[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "SOM" then
-		SOM[ "Icon" ]:SetStretchMode( 1 );
-		SOM[ "Icon" ]:SetPosition(SOM[ "Lbl" ]:GetLeft()+SOM[ "Lbl" ]:GetWidth()+3,Y);
-		SOM[ "Ctr" ]:SetSize( SOM[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		SOM[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		SOM[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "CGSP" then
-		CGSP[ "Icon" ]:SetStretchMode( 1 );
-		CGSP[ "Icon" ]:SetPosition( CGSP[ "Lbl" ]:GetLeft() + CGSP[ "Lbl" ]:GetWidth() + 3, Y );
-		CGSP[ "Ctr" ]:SetSize( CGSP[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		CGSP[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		CGSP[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "GGB" then
-		GGB[ "Icon" ]:SetStretchMode( 1 );
-		GGB[ "Icon" ]:SetPosition(GGB[ "Lbl" ]:GetLeft()+GGB[ "Lbl" ]:GetWidth()+3,Y);
-		GGB[ "Ctr" ]:SetSize( GGB[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		GGB[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		GGB[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "BB" then
-		BB[ "Icon" ]:SetStretchMode( 1 );
-		BB[ "Icon" ]:SetPosition(BB[ "Lbl" ]:GetLeft()+BB[ "Lbl" ]:GetWidth()+3,Y);
-		BB[ "Ctr" ]:SetSize( BB[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		BB[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		BB[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "LAT" then
-		LAT[ "Icon" ]:SetStretchMode( 1 );
-		LAT[ "Icon" ]:SetPosition(LAT[ "Lbl" ]:GetLeft()+LAT[ "Lbl" ]:GetWidth()+3,Y);
-		LAT[ "Ctr" ]:SetSize( LAT[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		LAT[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		LAT[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "MOE" then
-		MOE[ "Icon" ]:SetStretchMode( 1 );
-		MOE[ "Icon" ]:SetPosition(MOE[ "Lbl" ]:GetLeft()+MOE[ "Lbl" ]:GetWidth()+3,Y);
-		MOE[ "Ctr" ]:SetSize( MOE[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		MOE[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		MOE[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "EOE" then
-		EOE[ "Icon" ]:SetStretchMode( 1 );
-		EOE[ "Icon" ]:SetPosition(EOE[ "Lbl" ]:GetLeft()+EOE[ "Lbl" ]:GetWidth()+3,Y);
-		EOE[ "Ctr" ]:SetSize( EOE[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		EOE[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		EOE[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "FOS" then
-		FOS[ "Icon" ]:SetStretchMode( 1 );
-		FOS[ "Icon" ]:SetPosition(FOS[ "Lbl" ]:GetLeft()+FOS[ "Lbl" ]:GetWidth()+3,Y);
-		FOS[ "Ctr" ]:SetSize( FOS[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		FOS[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		FOS[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "FFT" then
-		FFT[ "Icon" ]:SetStretchMode( 1 );
-		FFT[ "Icon" ]:SetPosition(FFT[ "Lbl" ]:GetLeft()+FFT[ "Lbl" ]:GetWidth()+3,Y);
-		FFT[ "Ctr" ]:SetSize( FFT[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		FFT[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		FFT[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "FFAT" then
-		FFAT[ "Icon" ]:SetStretchMode( 1 );
-		FFAT[ "Icon" ]:SetPosition(FFAT[ "Lbl" ]:GetLeft()+FFAT[ "Lbl" ]:GetWidth()+3,Y);
-		FFAT[ "Ctr" ]:SetSize( FFAT[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		FFAT[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		FFAT[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "SPL" then
-		SPL[ "Icon" ]:SetStretchMode( 1 );
-		SPL[ "Icon" ]:SetPosition(SPL[ "Lbl" ]:GetLeft()+SPL[ "Lbl" ]:GetWidth()+3,Y);
-		SPL[ "Ctr" ]:SetSize( SPL[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		SPL[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		SPL[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "MST" then
-		MST[ "Icon" ]:SetStretchMode( 1 );
-		MST[ "Icon" ]:SetPosition(MST[ "Lbl" ]:GetLeft()+MST[ "Lbl" ]:GetWidth()+3,Y);
-		MST[ "Ctr" ]:SetSize( MST[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		MST[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		MST[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "AS" then
-		AS[ "Icon" ]:SetStretchMode( 1 );
-		AS[ "Icon" ]:SetPosition(AS[ "Lbl" ]:GetLeft()+AS[ "Lbl" ]:GetWidth()+3,Y);
-		AS[ "Ctr" ]:SetSize( AS[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		AS[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		AS[ "Icon" ]:SetStretchMode( 3 );		
-	elseif str == "BOT" then
-		BOT[ "Icon" ]:SetStretchMode( 1 );
-		BOT[ "Icon" ]:SetPosition(BOT[ "Lbl" ]:GetLeft()+BOT[ "Lbl" ]:GetWidth()+3,Y);
-		BOT[ "Ctr" ]:SetSize( BOT[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		BOT[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		BOT[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "BOD" then
-		BOD[ "Icon" ]:SetStretchMode( 1 );
-		BOD[ "Icon" ]:SetPosition(BOD[ "Lbl" ]:GetLeft()+BOD[ "Lbl" ]:GetWidth()+3,Y);
-		BOD[ "Ctr" ]:SetSize( BOD[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		BOD[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		BOD[ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "DW" then
-		DW[ "Icon" ]:SetStretchMode( 1 );
-		DW[ "Icon" ]:SetPosition(DW[ "Lbl" ]:GetLeft()+DW[ "Lbl" ]:GetWidth()+3,Y);
-		DW[ "Ctr" ]:SetSize( DW[ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		DW[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		DW[ "Icon" ]:SetStretchMode( 3 );
+		_G[str][ "Icon" ]:SetStretchMode( 1 );
+		_G[str][ "Icon" ]:SetPosition(_G[str][ "Lbl" ]:GetLeft()+_G[str][ "Lbl" ]:GetWidth()+2, Y+1);
+		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
+		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
+		_G[str][ "Icon" ]:SetStretchMode( 3 );
+	else
+		_G.CurrencyData[str].Icon:SetStretchMode(1);
+		_G.CurrencyData[str].Icon:SetPosition(
+			_G.CurrencyData[str].Lbl:GetLeft()+_G.CurrencyData[str].Lbl:GetWidth()+3,Y
+		)
+		_G.CurrencyData[str].Ctr:SetSize( _G.CurrencyData[str].Icon:GetLeft() + TBIconSize, CTRHeight );
+		_G.CurrencyData[str].Icon:SetSize( TBIconSize, TBIconSize );
+		_G.CurrencyData[str].Icon:SetStretchMode(3);
 	end
 end
 

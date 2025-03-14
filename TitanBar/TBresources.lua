@@ -1,6 +1,6 @@
 -- resources.lua
 -- written by Thorondor
--- patched by Technical_13
+-- patched by Technical_13, Giseldah
 
 
 AppRes = "HabnaPlugins/TitanBar/Resources/";
@@ -22,11 +22,29 @@ _G.resources = {
 	MoneyIcon = { Gold = 0x41007e7b, Silver = 0x41007e7c, Copper = 0x41007e7d }, --gold, silver, copper icon 27x21
 	Monster = 	{ [0]=0x4100819c, [1]=0x410080b7, [2]=0x410080b8, [3]=0x410080b9, [4]=0x410080ba, [5]=0x410080bb, [6]=0x410080bc, [7]=0x410080bd, [8]=0x410080be,
 			      [9]=0x410080b0, [10]=0x410080b1, [11]=0x410080b2, [12]=0x410080b3, [13]=0x410080b4, [14]=0x410080b5, [15]=0x410080b6 },
-	MonsterIconCode = { Warleader = 0x41007dde, Reaver = 0x41007ddd, Stalker = 0x41007de1, Weaver = 0x41007de0, Defiler = 0x410E6BF5, Blackarrow = 0x41007ddf },
 	Picker = AppRes.."picker.jpg",
 	PlayerInfo = { Morale = 0x410dcfce, Power = 0x410dcfcf, Armor = 0x410dcfd0, Wrath = 0x4115bdfe },
-	PlayerIconCode = { Guardian = 0x4111dd35, Captain = 0x4111dd31, Minstrel = 0x4111dd3b, Burglar = 0x4111dd2f, Hunter = 0x4111dd37, 
-					   Champion = 0x4111dd33, LoreMaster = 0x4111dd39, RuneKeeper = 0x4111dd3d, Warden = 0x4111dd3f, Beorning = 0x41153604, Brawler = 0x4120fcd9 },
+	PlayerIconCode = { -- icon id for each new class needs to be added here (by Class Id)
+		[23] = 0x4111dd35,  -- Guardian
+		[24] = 0x4111dd31,  -- Captain
+		[31] = 0x4111dd3b,  -- Minstrel
+		[40] = 0x4111dd2f,  -- Burglar
+		[52] = 0x41007dde,  -- Warleader
+		[71] = 0x41007ddd,  -- Reaver
+		[126] = 0x41007de1, -- Stalker
+		[127] = 0x41007de0, -- Weaver
+		[128] = 0x410E6BF5, -- Defiler
+		[162] = 0x4111dd37, -- Hunter
+		[172] = 0x4111dd33, -- Champion
+		[179] = 0x41007ddf, -- Blackarrow
+		[185] = 0x4111dd39, -- LoreMaster
+		[192] = 0x41091dde, -- Chicken (Adventurer)
+		[193] = 0x4111dd3d, -- RuneKeeper
+		[194] = 0x4111dd3f, -- Warden
+		[214] = 0x41153604, -- Beorning
+		[215] = 0x4120fcd9, -- Brawler
+		[216] = 0x4122f865  -- Mariner
+	},
 	Reputation = { Icon = 0x410d431a, BGGood = 0x41007df5, BGBad = 0x41007df5, BGGuild = 0x41007df5, BGFrame = 0x41007e94, BGWindow = 0x4100013B },	-- diff BG's
 	Ring = 0x41005f30,
 	Storage = { Shared = 0x41003830, Vault = 0x41005e9d }, --0x410e76b7 in-game icon 16x16 (Need 32x32)
@@ -45,11 +63,11 @@ _G.WalletItem = {
 	Commendation = { Icon = 0x41123495 },
 	DestinyPoints = { Icon = 0x4100a682 },
 	Mark = { Icon = 0x4111c446 },
-	Medallion = { Icon = 0x4111c43d },
-	Mithril = { Icon = 0x411348E1 },
+	Medallions = { Icon = 0x4111c43d },
+	MithrilCoins = { Icon = 0x411348E1 },
 	YuleToken = { Icon = 0x410FA62D },
-	Seal = { Icon = 0x4111c449 }, 
-	Shard = { Icon = 0x41110d5b },
+	Seals = { Icon = 0x4111c449 }, 
+	Shards = { Icon = 0x41110d5b },
 	SkirmishMarks = { Icon = 0x4111c446 },
 	TokensOfHytbold = { Icon = 0x41127D0C },
 	StarsofMerit = { Icon = 0x4115bea4 },
@@ -68,7 +86,12 @@ _G.WalletItem = {
 	AncientScript = { Icon = 0x41212E84 },
 	BadgeOfTaste = { Icon = 0x41002B2C },
 	BadgeOfDishonour = { Icon = 0x410D4316 },
-	DelvingWrit = { Icon = 0x412204D8 }
+	DelvingWrit = { Icon = 0x412204D8 },
+	MedallionOfMoria = { Icon = 0x4110182C },
+	MedallionOfLothlorien = { Icon = 0x41101829 },
+	HerosMark = { Icon = 0x41231838 },
+	TokenOfHeroism = { Icon = 0x41231838 },
+	ColdIronToken = { Icon = 0x4125E425 }
 };
 
 _G.DurabilitySlotsBG = { 0x41007eed, 0x41007ef6, 0x41007ef7, 0x41007eef, 0x41007eee, 0x41007ee9, 0x41007ef0, 0x41007ef9, 0x41007ef8,

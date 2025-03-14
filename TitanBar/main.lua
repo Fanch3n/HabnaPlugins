@@ -16,7 +16,7 @@ AppLocaleD = AppDirD.."Locale.";
 
 Version = Plugins["TitanBar"]:GetVersion();--> ** TitanBar current version **
 _G.TB = {};
-WalletOrder = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28 };
+WalletOrder = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33 };
 windowOpen = true;
 _G.Debug = false;-- True will enable some functions when I'm debugging
 
@@ -65,6 +65,45 @@ else GLocale = "en";
 end
 --**^
 
+Position = {
+	TITANBAR = 1,
+	TOOLTIP = 2,
+	NONE = 3
+}
+
+currenciesList = {
+	DelvingWrit = true,
+	BadgeOfDishonour = true,
+	Commendation = true,
+	AncientScript = true,
+	BadgeOfTaste = true,
+	BingoBadge = true,
+	AnniversaryToken = true,
+	EmbersOfEnchantment = true,
+	MidsummerToken = true,
+	SpringLeaf = true,
+	FarmersFaireToken = true,
+	FallFestivalToken = true,
+	MotesOfEnchantment = true,
+	FigmentsOfSplendour = true,
+	GiftgiversBrand = true,
+	CentralGondorSilverPiece = true,
+	StarsofMerit = true,
+	AmrothSilverPiece = true,
+	Seals = true,
+	Medallions = true,
+	TokensOfHytbold = true,
+	YuleToken = true,
+	MithrilCoins = true,
+	SkirmishMarks = true,
+	Shards = true,
+	ColdIronToken = true,
+	TokenOfHeroism = true,
+	HerosMark = true,
+	MedallionOfMoria = true,
+	MedallionOfLothlorien = true
+}
+
 import (AppDirD.."TBresources");
 import (AppClassD.."Class");
 import (AppDir);
@@ -72,6 +111,7 @@ import (AppDirD.."color");
 import (AppDirD.."settings");
 LoadSettings();
 import (AppDirD.."functions");
+import (AppCtrD.."CurrencyLogic");
 import (AppDirD.."functionsCtr");
 import (AppDirD.."functionsMenu");
 import (AppDirD.."functionsMenuControl");
@@ -87,23 +127,60 @@ frmMain();
 if PlayerAlign == 1 then 
     MenuItem = { 
 	-- Coin
-	L["MGSC"], L["MCP"], L["MDP"], L["MLP"], L["MMC"],
+	L["MGSC"], L["MCommendation"], L["MDP"], L["MLP"], L["MMithrilCoins"],
 	-- Currency
-	L["MMOE"], L["MFOS"], L["MEOE"], L["MAS"], L["MDW"],
+	L["MMotesOfEnchantment"], L["MFigmentsOfSplendour"], L["MEmbersOfEnchantment"], L["MAncientScript"], L["MDelvingWrit"],
 	-- Instances and Skirmishes
-	L["MSM"], L["MMP"], L["MSL"], L["MSOM"],
+	L["MSkirmishMarks"], L["MMedallions"], L["MSeals"], L["MStarsofMerit"],
 	-- Festivals and Events
-	L["MLAT"], L["MFFT"], L["MFFAT"], L["MMST"], L["MSPL"], L["MYT"],
+	L["MAnniversaryToken"], L["MFallFestivalToken"], L["MFarmersFaireToken"], L["MMidsummerToken"], L["MSpringLeaf"], L["MYuleToken"],
 	-- Inn League and Ale Association
-	L["MBOT"], L["MBOD"],
+	L["MBadgeOfTaste"], L["MBadgeOfDishonour"],
 	-- Item Advancement
-	L["MSP"],
+	L["MShards"],
 	-- Other   
-    L["MASP"], L["MBB"], L["MCGSP"], L["MGGB"], L["MHT"],
+    L["MAmrothSilverPiece"], L["MBingoBadge"], L["MCentralGondorSilverPiece"], L["MGiftgiversBrand"], L["MTokensOfHytbold"], L["MColdIronToken"],
+		L["MMedallionOfMoria"], L["MMedallionOfLothlorien"], L["MTokenOfHeroism"],L["MHerosMark"]
 	};
-else MenuItem = { L["MCP"], L["MLP"] }; end
+else MenuItem = { L["MCommendation"], L["MLP"] }; end
 
 TitanBarCommand = Turbine.ShellCommand()
+
+_G.CurrencyLangMap = { -- TODO clean this up
+	[L["MGSC"]] = "GSC",
+	[L["MCommendation"]] = "Commendation",
+	[L["MDP"]] = "DP",
+	[L["MLP"]] = "LP",
+	[L["MMithrilCoins"]] = "MithrilCoins",
+	[L["MMotesOfEnchantment"]] = "MotesOfEnchantment",
+	[L["MFigmentsOfSplendour"]] = "FigmentsOfSplendour",
+	[L["MEmbersOfEnchantment"]] = "EmbersOfEnchantment",
+	[L["MAncientScript"]] = "AncientScript",
+	[L["MDelvingWrit"]] = "DelvingWrit",
+	[L["MSkirmishMarks"]] = "SkirmishMarks",
+	[L["MMedallions"]] = "Medallions",
+	[L["MSeals"]] = "Seals",
+	[L["MStarsofMerit"]] = "StarsofMerit",
+	[L["MAnniversaryToken"]] = "AnniversaryToken",
+	[L["MFallFestivalToken"]] = "FallFestivalToken",
+	[L["MFarmersFaireToken"]] = "FarmersFaireToken",
+	[L["MMidsummerToken"]] = "MidsummerToken",
+	[L["MSpringLeaf"]] = "SpringLeaf",
+	[L["MYuleToken"]] = "YuleToken",
+	[L["MBadgeOfTaste"]] = "BadgeOfTaste",
+	[L["MBadgeOfDishonour"]] = "BadgeOfDishonour",
+	[L["MShards"]] = "Shards",
+  [L["MAmrothSilverPiece"]] = "AmrothSilverPiece",
+	[L["MBingoBadge"]] = "BingoBadge",
+	[L["MCentralGondorSilverPiece"]] = "CentralGondorSilverPiece",
+	[L["MGiftgiversBrand"]] = "GiftgiversBrand",
+	[L["MTokensOfHytbold"]] = "TokensOfHytbold",
+	[L["MColdIronToken"]] = "ColdIronToken",
+	[L["MTokenOfHeroism"]] = "TokenOfHeroism",
+	[L["MHerosMark"]] = "HerosMark",
+	[L["MMedallionOfMoria"]] = "MedallionOfMoria",
+	[L["MMedallionOfLothlorien"]] = "MedallionOfLothlorien"
+}
 
 function TitanBarCommand:Execute( command, arguments )
 	if ( arguments == L["SCa1"] or arguments == "opt") then

@@ -162,51 +162,31 @@ function frmMain()
 
 	if PlayerAlign == 1 then
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
-			if _G.SPWhere ~= 3 then ImportCtr( "SP" ); end
-			if _G.SMWhere ~= 3 then ImportCtr( "SM" ); end
-			if _G.MCWhere ~= 3 then ImportCtr( "MC" ); end
-			if _G.YTWhere ~= 3 then ImportCtr( "YT" ); end
-			if _G.HTWhere ~= 3 then ImportCtr( "HT" ); end
-			if _G.MPWhere ~= 3 then ImportCtr( "MP" ); end
-			if _G.SLWhere ~= 3 then ImportCtr( "SL" ); end
-			if _G.CPWhere ~= 3 then ImportCtr( "CP" ); end
-			if _G.ASPWhere ~= 3 then ImportCtr( "ASP" ); end
-			if _G.SOMWhere ~= 3 then ImportCtr( "SOM" ); end
-			if _G.CGSPWhere ~= 3 then ImportCtr( "CGSP" ); end
-			if _G.GGBWhere ~= 3 then ImportCtr( "GGB" ); end
-			if _G.BBWhere ~= 3 then ImportCtr( "BB" ); end
-			if _G.LATWhere ~= 3 then ImportCtr( "LAT" ); end
-			if _G.MOEWhere ~= 3 then ImportCtr( "MOE" ); end
-			if _G.EOEWhere ~= 3 then ImportCtr( "EOE" ); end
-			if _G.FOSWhere ~= 3 then ImportCtr( "FOS" ); end
-			if _G.FFTWhere ~= 3 then ImportCtr( "FFT" ); end
-			if _G.FFATWhere ~= 3 then ImportCtr( "FFAT" ); end
-			if _G.SPLWhere ~= 3 then ImportCtr( "SPL" ); end
-			if _G.MSTWhere ~= 3 then ImportCtr( "MST" ); end
-			if _G.ASWhere ~= 3 then ImportCtr( "AS" ); end
-			if _G.BOTWhere ~= 3 then ImportCtr( "BOT" ); end
-			if _G.BODWhere ~= 3 then ImportCtr( "BOD" ); end
-			if _G.DWWhere ~= 3 then ImportCtr( "DW" ); end
+				for k,v in pairs(currenciesList) do
+					if _G.CurrencyData[k] == nil then _G.CurrencyData[k] = {} end
+					if _G.CurrencyData[k].Where == nil then _G.CurrencyData[k].Where = 3 end
+					if _G.CurrencyData[k].Where ~= 3 then ImportCtr(k); end
+				end
 		end
 	else
 		-- Disable infos not useful in Monster Play
-		ShowDurabilityInfos, ShowEquipInfos, ShowDestinyPoints, ShowShards = false, false, false, false;
-		ShowYuleToken, ShowSkirmishMarks, ShowHytboldTokens, ShowMedallions = false, false, false, false;
-		ShowSeals, ShowVault, ShowSharedStorage, ShowAmrothSilverPiece = false, false, false, false;
-		ShowStarsofMerit, ShowCentralGondorSilverPiece, ShowGiftgiversBrand = false, false, false;
-		ShowBingoBadge, ShowAnniversaryToken, ShowReputation = false, false, false;
-		ShowMotesOfEnchantment = false;
-		ShowEmbersOfEnchantment = false;
-		ShowFigmentsOfSplendour = false;
-		ShowFallFestivalToken = false;
-		ShowFarmersFaireToken = false;
-		ShowSpringLeaf = false;
-		ShowMidsummerToken = false;
-		ShowAncientScript = false;
-		ShowDelvingWrit = false;
+		local currencyNotUsefulInMonsterPlay = {"Shards", "YuleToken", "SkirmishMarks", "TokensOfHytbold",
+			"Medallions", "Seals", "AmrothSilverPiece", "StarsofMerit", "CentralGondorSilverPiece",
+			"GiftgiversBrand", "BingoBadge", "AnniversaryToken", "MotesOfEnchantment", "EmbersOfEnchantment",
+			"FigmentsOfSplendour", "FallFestivalToken", "FarmersFaireToken", "SpringLeaf", "MidsummerToken",
+			"AncientScript", "DelvingWrit", "ColdIronToken", "MedallionOfMoriah", "MedallionOfLothlorien",
+			"HerosMark", "TokenOfHeroism"}
+		ShowDurabilityInfos, ShowEquipInfos, ShowDestinyPoints = false, false, false
+		ShowVault, ShowSharedStorage = false, false
+		ShowReputation = false
+
+		for cur in currencyNotUsefulInMonsterPlay do
+			_G.CurrencyData[cur].IsVisible = false
+		end
+
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
 			if ShowWallet then ImportCtr( "WI" ); end
-			if _G.CPWhere ~= 3 then ImportCtr( "CP" ); end
+			if _G.CurrencyData["Commendation"].Where ~= 3 then ImportCtr("Commendation"); end
 			if _G.LPWhere ~= 3 then ImportCtr( "LP" ); end
 		end
 	end
@@ -243,6 +223,23 @@ function frmMain()
 		AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) ItemUnEquippedTimer:SetWantsUpdates( true ); end); --Workaround
 		--AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) if ShowEquipInfos then GetEquipmentInfos(); UpdateEquipsInfos(); end if ShowDurabilityInfos then GetEquipmentInfos(); UpdateDurabilityInfos(); end end);
 	end
+
+	AddCallback(
+		PlayerWallet,
+		"ItemAdded",
+		function(sender, args)
+			LoadPlayerWallet()
+			SetCurrencyFromZero(args["Item"]:GetName(), args["Item"]:GetQuantity())
+		end
+	)
+
+	AddCallback(
+		PlayerWallet,
+		"ItemRemoved",
+		function(sender, args)
+			SetCurrencyToZero(args["Item"]:GetName())
+		end
+	)
 	
 	--**v Workaround for the ItemUnequipped that fires before the equipment was updated (Turbine API issue) v**
 	ItemUnEquippedTimer = Turbine.UI.Control();
@@ -262,14 +259,25 @@ function frmMain()
 	AllTimer = Turbine.UI.Control();
 	AllTimer:SetWantsUpdates( true );
 	
-	if ShowEquipInfos or ShowDurabilityInfos then OneTimer:SetWantsUpdates( true ); AllTimer:SetWantsUpdates( false ); NumSec = 0; Interval = 2; end
-	if TBReloaded then OneTimer:SetWantsUpdates( false ); settings.TitanBar.Z = false; settings.TitanBar.ZT = "TB"; SaveSettings( false ); end --TitanBar was reloaded
+	if ShowEquipInfos or ShowDurabilityInfos then
+		OneTimer:SetWantsUpdates( true )
+		AllTimer:SetWantsUpdates( false )
+		NumSec = 0
+		Interval = 2
+	end
+	if TBReloaded then
+		OneTimer:SetWantsUpdates( false )
+		settings.TitanBar.Z = false
+		settings.TitanBar.ZT = "TB"
+		SaveSettings( false )
+	end --TitanBar was reloaded
 
 	OneTimer.Update = function( sender, args )
 		local currentdate = Turbine.Engine.GetDate();
 		local currentsecond = currentdate.Second;
-		if _G.Debug then max = 6; else max = 24; end
-		if NumSec < max then -- Run for 24 secs.
+		local max = 24
+		if _G.Debug then max = 6 end
+		if NumSec < max then -- Run for 24 secs. -- TODO why?
 			if (oldsecond ~= currentsecond) then
 				if Interval == 0 then
 					if ShowEquipInfos or ShowDurabilityInfos then GetEquipmentInfos();
@@ -316,36 +324,6 @@ function frmMain()
 		end
 		
 		if (oldsecond ~= currentsecond) then
-			--Detect if wallet size has changed
-			if PlayerWallet:GetSize() ~= PlayerWalletSize then -- Until I find the size changed event or something similar in wallet
-				LoadPlayerWallet();
-				if _G.SPWhere ~= 3 then ImportCtr( "SP" ); end
-				if _G.SMWhere ~= 3 then ImportCtr( "SM" ); end
-				if _G.MCWhere ~= 3 then ImportCtr( "MC" ); end
-				if _G.YTWhere ~= 3 then ImportCtr( "YT" ); end
-				if _G.HTWhere ~= 3 then ImportCtr( "HT" ); end
-				if _G.MPWhere ~= 3 then ImportCtr( "MP" ); end
-				if _G.SLWhere ~= 3 then ImportCtr( "SL" ); end
-				if _G.LPWhere ~= 3 then ImportCtr( "CP" ); end
-				if _G.ASPWhere ~= 3 then ImportCtr( "ASP" ); end
-				if _G.SOMWhere ~= 3 then ImportCtr( "SOM" ); end
-				if _G.CGSPWhere ~= 3 then ImportCtr( "CGSP" ); end
-				if _G.GGBWhere ~= 3 then ImportCtr( "GGB" ); end
-				if _G.BBWhere ~= 3 then ImportCtr( "BB" ); end
-				if _G.LATWhere ~= 3 then ImportCtr( "LAT" ); end
-				if _G.MOEWhere ~= 3 then ImportCtr( "MOE" ); end
-				if _G.EOEWhere ~= 3 then ImportCtr( "EOE" ); end
-				if _G.FOSWhere ~= 3 then ImportCtr( "FOS" ); end
-				if _G.FFTWhere ~= 3 then ImportCtr( "FFT" ); end
-				if _G.FFATWhere ~= 3 then ImportCtr( "FFAT" ); end
-				if _G.SPLWhere ~= 3 then ImportCtr( "SPL" ); end
-				if _G.MSTWhere ~= 3 then ImportCtr( "MST" ); end
-				if _G.ASWhere ~= 3 then ImportCtr( "AS" ); end
-				if _G.BOTWhere ~= 3 then ImportCtr( "BOT" ); end
-				if _G.BODWhere ~= 3 then ImportCtr( "BOD" ); end
-				if _G.DWWhere ~= 3 then ImportCtr( "DW" ); end
-			end
-
 			screenWidth, screenHeight = Turbine.UI.Display.GetSize();
 			if TBWidth ~= screenWidth then ReplaceCtr(); end --Replace control if screen width has changed
 

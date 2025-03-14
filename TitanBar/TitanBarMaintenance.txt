@@ -49,11 +49,6 @@ Add a new currency:
 -- Search for "WalletOrder" and add the next number to the array
 -- Search for "PlayerAlign == 1" and add the abbreviation to the MenuItem array. The position in that array defines the order in which the currencies are listed.
 
-- Add currency file in control directory
--- Copy an existing currency file (I mostly use "AnniversaryToken.lua")
--- Change the name of the file to the name of the new currency (as defined in the localization file, first abbreviation, no spaces between words).
--- Replace everything which is connected to the old currency (abbreviation, name, comments) with the new one (I use the replace all function of Notepad++).
-
 - Add currency in 'TBressources.lua'
 -- or more correctly: Add the image of the currency
 -- Search for "_G.WalletItem"
@@ -62,12 +57,8 @@ Add a new currency:
 -- Replace the name in the last entry with the new currency
 -- Replace the hex value with the new icon value. (If you don't know the value scroll down to "HelloWorld-Plugin".
 
-For each point after this: Search through the files and every time the existing currencies are listed, add the new currency.
-- Add currency in 'functions.lua', in 'functionsCtr.lua', 'functionsMenuControl.lua, & in 'functionsMenu.lua'
-- Add currency in 'settings.lua'
+- Add currency in 'functions.lua'
 - Add currency in 'frmOptions.lua' & 'frmMain.lua'
-- Add currency in 'background.lua'
-- Add currency in 'WalletToolTip.lua' & 'WalletWindow.lua' (control directory)
 
 
 To add a new control (from Technical_13):
