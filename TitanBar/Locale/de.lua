@@ -75,7 +75,7 @@ L[ "MTokensOfHytbold" ] = "M\195\188nze von Hytbold";
 L[ "TokensOfHytboldh" ] = "Eure M\195\188nzen von Hytbold";
 -- Medallions control
 L[ "MMedallions" ] = "Medaillon";
-L[ "Medallionsh" ] = "Eure Medallions";
+L[ "Medallionsh" ] = "Eure Medaillons";
 -- Seals control
 L[ "MSeals" ] = "Siegel";
 L[ "Sealsh" ] = "Eure Siegel";
@@ -86,8 +86,8 @@ L[ "Commendationh" ] = "Eure Anerkennung";
 L[ "MAmrothSilverPiece" ] = "Amroth-Silberst\195\188ck";
 L[ "AmrothSilverPieceh" ] = "Eure Amroth-Silberst\195\188cke";
 -- Stars of Merit control
-L[ "MStarsofMerit" ] = "Stern des Verdienst";
-L[ "StarsofMerith" ] = "Eure Sterne des Verdienst";
+L[ "MStarsOfMerit" ] = "Stern des Verdienst";
+L[ "StarsOfMerith" ] = "Eure Sterne des Verdienst";
 -- Central Gondor Silver Piece control
 L[ "MCentralGondorSilverPiece" ] = "Zentralgondorisches Silberst\195\188ck";
 L[ "CentralGondorSilverPieceh" ] = "Eure Zentralgondorischen Silberst\195\188cke";
@@ -95,13 +95,9 @@ L[ "CentralGondorSilverPieceh" ] = "Eure Zentralgondorischen Silberst\195\188cke
 L[ "MGiftgiversBrand" ] = "Zeichen des Schenkenden";
 L[ "GiftgiversBrandh" ] = "Eure Zeichen des Schenkenden";
 -- Motes of Enchantment control
-L[ "MMotesOfEnchantment" ] = "Aschepartikel der Verzauberung";
-L[ "MotesOfEnchantmenth" ] = "Eure Aschepartikel der Verzauberung";
 L[ "MMotesOfEnchantment" ] = "Staub der Verzauberung";
-L[ "MotesOfEnchantmenth" ] = "Eure Staub der Verzauberung";
+L[ "MotesOfEnchantmenth" ] = "Euer Staub der Verzauberung";
 -- Embers of Enchantment control
-L[ "MEmbersOfEnchantment" ] = "Asche der Verzauberung";
-L[ "EmbersOfEnchantmenth" ] = "Eure Asche der Verzauberung";
 L[ "MEmbersOfEnchantment" ] = "Funken der Verzauberung";
 L[ "EmbersOfEnchantmenth" ] = "Eure Funken der Verzauberung";
 -- Figments of Splendour control
@@ -249,7 +245,7 @@ L[ "RPG" ]     = "Galadhrim";
 L[ "RPM" ]     = "Malledhrim";
 L[ "RPTRS" ]   = "Die Reiter von Stangard";
 L[ "RPHLG" ]   = "Helden der Limklar-Schlucht";
-L[ "RPMD" ]    = "Menschen aus Dunland"; 
+L[ "RPMD" ]    = "Menschen aus Dunland";
 L[ "RPTR" ]    = "Th\195\169odreds Reiter";
 L[ "RPJG" ]    = "Goldschmiedegilde";
 L[ "RPCG" ]    = "Kochgilde";
@@ -336,11 +332,11 @@ L[ "RPGG6" ]  = "Meister";
 L[ "RPGG7" ]  = "Ost-Emnet-Meister der Gilde";
 L[ "RPGG8" ]  = "West-Emnet-Meister der Gilde";
 L[ "RPGG9" ]  = "Ehrenmeister der Gilde";
-L[ "RCCLE1" ] = "Rookie";
-L[ "RCCLE2" ] = "Minor Leaguer";
-L[ "RCCLE3" ] = "Major Leaguer";
-L[ "RCCLE4" ] = "All-star";
-L[ "RCCLE5" ] = "Hall of Famer";
+L[ "RCCLE1" ] = "Grünschnabel";
+L[ "RCCLE2" ] = "Minor Leaguer"; --male: Mittelklassespieler female: Mittelklassespielerin
+L[ "RCCLE3" ] = "Major Leaguer"; --male: Meisterspieler female: Meisterspielerin
+L[ "RCCLE4" ] = "All-star"; --male: Spitzenspieler female: Spitzenspielerin
+L[ "RCCLE5" ] = "Hall of Famer"; --male: Rekordspieler female: Rekordspielerin
 L[ "RPBR" ]   = "Verbleibender Bonus";
 L[ "RPMI1" ]  = "Die R\195\188ckeroberung von Minas Ithil";
 L[ "RPMI2" ]  = "Die R\195\188ckeroberung geht weiter I";

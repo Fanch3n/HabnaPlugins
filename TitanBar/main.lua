@@ -88,7 +88,7 @@ currenciesList = {
 	FigmentsOfSplendour = true,
 	GiftgiversBrand = true,
 	CentralGondorSilverPiece = true,
-	StarsofMerit = true,
+	StarsOfMerit = true,
 	AmrothSilverPiece = true,
 	Seals = true,
 	Medallions = true,
@@ -131,7 +131,7 @@ if PlayerAlign == 1 then
 	-- Currency
 	L["MMotesOfEnchantment"], L["MFigmentsOfSplendour"], L["MEmbersOfEnchantment"], L["MAncientScript"], L["MDelvingWrit"],
 	-- Instances and Skirmishes
-	L["MSkirmishMarks"], L["MMedallions"], L["MSeals"], L["MStarsofMerit"],
+	L["MSkirmishMarks"], L["MMedallions"], L["MSeals"], L["MStarsOfMerit"],
 	-- Festivals and Events
 	L["MAnniversaryToken"], L["MFallFestivalToken"], L["MFarmersFaireToken"], L["MMidsummerToken"], L["MSpringLeaf"], L["MYuleToken"],
 	-- Inn League and Ale Association
@@ -160,7 +160,7 @@ _G.CurrencyLangMap = { -- TODO clean this up
 	[L["MSkirmishMarks"]] = "SkirmishMarks",
 	[L["MMedallions"]] = "Medallions",
 	[L["MSeals"]] = "Seals",
-	[L["MStarsofMerit"]] = "StarsofMerit",
+	[L["MStarsOfMerit"]] = "StarsOfMerit",
 	[L["MAnniversaryToken"]] = "AnniversaryToken",
 	[L["MFallFestivalToken"]] = "FallFestivalToken",
 	[L["MFarmersFaireToken"]] = "FarmersFaireToken",
