@@ -38,32 +38,29 @@ local DragAndHoldInTooltip = { --same behaviour for drag and hold
 }
 
 function AddCallback(object, event, callback)
-    if (object[event] == nil) then
-        object[event] = callback;
-    else
-        if (type(object[event]) == "table") then
-            table.insert(object[event], callback);
-        else
-            object[event] = {object[event], callback};
-        end
-    end
-    return callback;
+	if object[event] == nil then
+		object[event] = callback;
+	else
+		if type(object[event]) == "table" then
+			table.insert(object[event], callback);
+		else
+			object[event] = { object[event], callback };
+		end
+	end
+	return callback;
 end
 
 function RemoveCallback(object, event, callback)
-    if (object[event] == callback) then
-        object[event] = nil;
-    else
-        if (type(object[event]) == "table") then
-            local size = table.getn(object[event]);
-            for i = 1, size do
-                if (object[event][i] == callback) then
-                    table.remove(object[event], i);
-                    break;
-                end
-            end
-        end
-    end
+	if object[event] == callback then
+		object[event] = nil;
+	elseif type(object[event]) == "table" then
+		for i = 1, #object[event] do
+			if object[event][i] == callback then
+				table.remove(object[event], i);
+				break;
+			end
+		end
+	end
 end
 
 -- Workaround because 'math.round' not working for some user, weird!
@@ -79,71 +76,27 @@ function round(num)
 end
 
 function ApplySkin() --Tooltip skin
-	--**v Top left corner v**
-	local topLeftCorner = Turbine.UI.Control();
-	topLeftCorner:SetParent( _G.ToolTipWin );
-	topLeftCorner:SetPosition( 0, 0 );
-	topLeftCorner:SetSize( 36, 36 );
-	topLeftCorner:SetBackground( resources.Box.TopLeft );
-	--**^
-	--**v Top v**
-	local TopBar = Turbine.UI.Control();
-	TopBar:SetParent( _G.ToolTipWin );
-	TopBar:SetPosition( 36, 0 );
-	TopBar:SetSize( _G.ToolTipWin:GetWidth() - 36, 37 );
-	TopBar:SetBackground( resources.Box.Top )
-	--**^
-	--**v Top right corner v**
-	local topRightCorner = Turbine.UI.Control();
-	topRightCorner:SetParent( _G.ToolTipWin );
-	topRightCorner:SetPosition( _G.ToolTipWin:GetWidth() - 36, 0 );
-	topRightCorner:SetSize( 36, 36 );
-	topRightCorner:SetBackground( resources.Box.TopRight );
-	--**^
-	--**v Mid Left v**
-	local midLeft = Turbine.UI.Control();
-	midLeft:SetParent( _G.ToolTipWin );
-	midLeft:SetPosition( 0, 36 );
-	midLeft:SetSize( 36, _G.ToolTipWin:GetHeight() - 36 );
-	midLeft:SetBackground( resources.Box.MidLeft );
-	--**^
-	--**v Middle v**
-	local MidMid = Turbine.UI.Control();
-	MidMid:SetParent( _G.ToolTipWin );
-	MidMid:SetPosition( 36, 36 );
-	MidMid:SetSize( 
-        _G.ToolTipWin:GetWidth() - 36, _G.ToolTipWin:GetHeight() - 36);
-	MidMid:SetBackground( resources.Box.Middle ); 
-	--**^
-	--**v Mid Right v**
-	local midRight = Turbine.UI.Control();
-	midRight:SetParent( _G.ToolTipWin );
-	midRight:SetPosition( _G.ToolTipWin:GetWidth() - 36, 36 );
-	midRight:SetSize( 36, _G.ToolTipWin:GetHeight() - 36 );
-	midRight:SetBackground( resources.Box.MidRight );
-	--**^
-	--**v Bottom Left Corner v**
-	local botLeftCorner = Turbine.UI.Control();
-	botLeftCorner:SetParent( _G.ToolTipWin );
-	botLeftCorner:SetPosition( 0, _G.ToolTipWin:GetHeight() - 36 );
-	botLeftCorner:SetSize( 36, 36 );
-	botLeftCorner:SetBackground( resources.Box.BottomLeft ); 
-	--**^
-	--**v Bottom v**
-	local BotBar = Turbine.UI.Control();
-	BotBar:SetParent( _G.ToolTipWin );
-	BotBar:SetPosition( 36, _G.ToolTipWin:GetHeight() - 36 );
-	BotBar:SetSize( _G.ToolTipWin:GetWidth() - 36, 36 );
-	BotBar:SetBackground( resources.Box.Bottom );
-	--**^
-	--**v Bottom right corner v**
-	local botRightCorner = Turbine.UI.Control();
-	botRightCorner:SetParent( _G.ToolTipWin );
-	botRightCorner:SetPosition( _G.ToolTipWin:GetWidth() - 36, 
-        _G.ToolTipWin:GetHeight() - 36 );
-	botRightCorner:SetSize( 36, 36 );
-	botRightCorner:SetBackground( resources.Box.BottomRight );
-	--**^
+	local ToolTipWin = _G.ToolTipWin
+	local Box = resources.Box
+
+	-- Create and position tooltip corners and edges
+	local function createTooltipPart(name, x, y, width, height, background)
+		local part = Turbine.UI.Control()
+		part:SetParent(ToolTipWin)
+		part:SetPosition(x, y)
+		part:SetSize(width, height)
+		part:SetBackground(background)
+	end
+
+	createTooltipPart("topLeftCorner", 0, 0, 36, 36, Box.TopLeft)
+	createTooltipPart("TopBar", 36, 0, ToolTipWin:GetWidth() - 36, 37, Box.Top)
+	createTooltipPart("topRightCorner", ToolTipWin:GetWidth() - 36, 0, 36, 36, Box.TopRight)
+	createTooltipPart("midLeft", 0, 36, 36, ToolTipWin:GetHeight() - 36, Box.MidLeft)
+	createTooltipPart("MidMid", 36, 36, ToolTipWin:GetWidth() - 36, ToolTipWin:GetHeight() - 36, Box.Middle)
+	createTooltipPart("midRight", ToolTipWin:GetWidth() - 36, 36, 36, ToolTipWin:GetHeight() - 36, Box.MidRight)
+	createTooltipPart("botLeftCorner", 0, ToolTipWin:GetHeight() - 36, 36, 36, Box.BottomLeft)
+	createTooltipPart("BotBar", 36, ToolTipWin:GetHeight() - 36, ToolTipWin:GetWidth() - 36, 36, Box.Bottom)
+	createTooltipPart("botRightCorner", ToolTipWin:GetWidth() - 36, ToolTipWin:GetHeight() - 36, 36, 36, Box.BottomRight)
 end
 
 --**v Create a ToolTip Window v**
@@ -190,12 +143,11 @@ end
 
 -- Legend
 -- ( offsetX, offsetY, width, height, bubble side, header text, text1, text2, text3, text4 )
-function ShowToolTipWin( ToShow )
-	local bblTo, x, y, w = "left", -5, -15, 0; 
+function ShowToolTipWin(ToShow)
+	local bblTo, x, y, w = "left", -5, -15, 350;
 	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-	
-	w = 350;
-	-- TODO doesn't work anymore, other workaround possibly needed
+
+	-- TODO if DI (DurIcon) is replaced this needs to change
 	if TBLocale == "fr" then w = 315;
 	elseif TBLocale == "de" then
 		if ToShow == "DI" then w = 225; 

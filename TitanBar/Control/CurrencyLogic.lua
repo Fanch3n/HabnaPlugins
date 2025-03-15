@@ -1,62 +1,63 @@
 -- Create tables in _G
 _G.createCurrencyTable = function(currencyName)
-	_G.CurrencyData[currencyName].Ctr = Turbine.UI.Control()
-	_G.CurrencyData[currencyName].Ctr:SetParent(TB.win)
-	_G.CurrencyData[currencyName].Ctr:SetMouseVisible(false)
-	_G.CurrencyData[currencyName].Ctr:SetZOrder(2)
-	_G.CurrencyData[currencyName].Ctr:SetBlendMode(Turbine.UI.BlendMode.AlphaBlend)
-	_G.CurrencyData[currencyName].Ctr:SetBackColor(
+	local currencyData = _G.CurrencyData[currencyName]
+	currencyData.Ctr = Turbine.UI.Control()
+	currencyData.Ctr:SetParent(TB.win)
+	currencyData.Ctr:SetMouseVisible(false)
+	currencyData.Ctr:SetZOrder(2)
+	currencyData.Ctr:SetBlendMode(Turbine.UI.BlendMode.AlphaBlend)
+	currencyData.Ctr:SetBackColor(
 		Turbine.UI.Color(
-			_G.CurrencyData[currencyName].bcAlpha,
-			_G.CurrencyData[currencyName].bcRed,
-			_G.CurrencyData[currencyName].bcGreen,
-			_G.CurrencyData[currencyName].bcBlue
+			currencyData.bcAlpha,
+			currencyData.bcRed,
+			currencyData.bcGreen,
+			currencyData.bcBlue
 		)
 	)
 
 	-- Currency icon on TitanBar
-	_G.CurrencyData[currencyName].Icon = Turbine.UI.Control()
-	_G.CurrencyData[currencyName].Icon:SetParent(_G.CurrencyData[currencyName].Ctr)
-	_G.CurrencyData[currencyName].Icon:SetBlendMode(Turbine.UI.BlendMode.AlphaBlend)
-	_G.CurrencyData[currencyName].Icon:SetSize(32, 32)
-	_G.CurrencyData[currencyName].Icon:SetBackground(WalletItem[currencyName].Icon)
+	currencyData.Icon = Turbine.UI.Control()
+	currencyData.Icon:SetParent(currencyData.Ctr)
+	currencyData.Icon:SetBlendMode(Turbine.UI.BlendMode.AlphaBlend)
+	currencyData.Icon:SetSize(32, 32)
+	currencyData.Icon:SetBackground(WalletItem[currencyName].Icon)
 
 	-- Icon event handlers
-	_G.CurrencyData[currencyName].Icon.MouseMove = function(sender, args)
-		_G.CurrencyData[currencyName].Lbl.MouseLeave(sender, args)
+	currencyData.Icon.MouseMove = function(sender, args)
+		currencyData.Lbl.MouseLeave(sender, args)
 		TB.win.MouseMove()
 		if dragging then
 			MoveCurrencyCtr(sender, args, currencyName)
 		end
 	end
 
-	_G.CurrencyData[currencyName].Icon.MouseLeave = function(sender, args)
-		_G.CurrencyData[currencyName].Lbl.MouseLeave(sender, args)
+	currencyData.Icon.MouseLeave = function(sender, args)
+		currencyData.Lbl.MouseLeave(sender, args)
 	end
 
-	_G.CurrencyData[currencyName].Icon.MouseClick = function(sender, args)
-		_G.CurrencyData[currencyName].Lbl.MouseClick(sender, args)
+	currencyData.Icon.MouseClick = function(sender, args)
+		currencyData.Lbl.MouseClick(sender, args)
 	end
 
-	_G.CurrencyData[currencyName].Icon.MouseDown = function(sender, args)
-		_G.CurrencyData[currencyName].Lbl.MouseDown(sender, args)
+	currencyData.Icon.MouseDown = function(sender, args)
+		currencyData.Lbl.MouseDown(sender, args)
 	end
 
-	_G.CurrencyData[currencyName].Icon.MouseUp = function(sender, args)
-		_G.CurrencyData[currencyName].Lbl.MouseUp(sender, args)
+	currencyData.Icon.MouseUp = function(sender, args)
+		currencyData.Lbl.MouseUp(sender, args)
 	end
 
 	-- Currency label on TitanBar
-	_G.CurrencyData[currencyName].Lbl = Turbine.UI.Label()
-	_G.CurrencyData[currencyName].Lbl:SetParent(_G.CurrencyData[currencyName].Ctr)
-	_G.CurrencyData[currencyName].Lbl:SetFont(_G.TBFont)
-	_G.CurrencyData[currencyName].Lbl:SetPosition(0, 0)
-	_G.CurrencyData[currencyName].Lbl:SetFontStyle(Turbine.UI.FontStyle.Outline)
-	_G.CurrencyData[currencyName].Lbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight)
+	currencyData.Lbl = Turbine.UI.Label()
+	currencyData.Lbl:SetParent(currencyData.Ctr)
+	currencyData.Lbl:SetFont(_G.TBFont)
+	currencyData.Lbl:SetPosition(0, 0)
+	currencyData.Lbl:SetFontStyle(Turbine.UI.FontStyle.Outline)
+	currencyData.Lbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight)
 
 	-- Label event handlers
-	_G.CurrencyData[currencyName].Lbl.MouseMove = function(sender, args)
-		_G.CurrencyData[currencyName].Lbl.MouseLeave(sender, args)
+	currencyData.Lbl.MouseMove = function(sender, args)
+		currencyData.Lbl.MouseLeave(sender, args)
 		TB.win.MouseMove()
 		if dragging then
 			MoveCurrencyCtr(sender, args, currencyName)
@@ -65,11 +66,11 @@ _G.createCurrencyTable = function(currencyName)
 		end
 	end
 
-	_G.CurrencyData[currencyName].Lbl.MouseLeave = function(sender, args)
+	currencyData.Lbl.MouseLeave = function(sender, args)
 		ResetToolTipWin()
 	end
 
-	_G.CurrencyData[currencyName].Lbl.MouseClick = function(sender, args)
+	currencyData.Lbl.MouseClick = function(sender, args)
 		TB.win.MouseMove()
 		if args.Button == Turbine.UI.MouseButton.Left then
 			if not WasDrag then
@@ -81,22 +82,22 @@ _G.createCurrencyTable = function(currencyName)
 		WasDrag = false
 	end
 
-	_G.CurrencyData[currencyName].Lbl.MouseDown = function(sender, args)
+	currencyData.Lbl.MouseDown = function(sender, args)
 		if args.Button == Turbine.UI.MouseButton.Left then
-			_G.CurrencyData[currencyName].Ctr:SetZOrder(3)
+			currencyData.Ctr:SetZOrder(3)
 			dragStartX = args.X
 			dragStartY = args.Y
 			dragging = true
 		end
 	end
 
-	_G.CurrencyData[currencyName].Lbl.MouseUp = function(sender, args)
-		_G.CurrencyData[currencyName].Ctr:SetZOrder(2)
+	currencyData.Lbl.MouseUp = function(sender, args)
+		currencyData.Ctr:SetZOrder(2)
 		dragging = false
-		_G.CurrencyData[currencyName].LocX = _G.CurrencyData[currencyName].Ctr:GetLeft()
-		settings[currencyName].X = string.format("%.0f", _G.CurrencyData[currencyName].LocX)
-		_G.CurrencyData[currencyName].LocY = _G.CurrencyData[currencyName].Ctr:GetTop()
-		settings[currencyName].Y = string.format("%.0f", _G.CurrencyData[currencyName].LocY)
+		currencyData.LocX = currencyData.Ctr:GetLeft()
+		settings[currencyName].X = string.format("%.0f", currencyData.LocX)
+		currencyData.LocY = currencyData.Ctr:GetTop()
+		settings[currencyName].Y = string.format("%.0f", currencyData.LocY)
 		SaveSettings(false)
 	end
 end
