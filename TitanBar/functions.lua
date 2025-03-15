@@ -2,41 +2,6 @@
 -- Written By Habna
 -- rewritten by many
 
-local DragAndHoldInTooltip = { --same behaviour for drag and hold
-	DP = true,
-	Shards = true,
-	SkirmishMarks = true,
-	MithrilCoins = true,
-	YuleToken = true,
-	TokensOfHytbold = true,
-	Medallions = true,
-	Seals = true,
-	Commendation = true,
-	PL = true,
-	AmrothSilverPiece = true,
-	StarsOfMerit = true,
-	CentralGondorSilverPiece = true,
-	GiftgiversBrand = true,
-	BingoBadge = true,
-	AnniversaryToken = true,
-	MotesOfEnchantment = true,
-	EmbersOfEnchantment = true,
-	FigmentsOfSplendour = true,
-	FallFestivalToken = true,
-	FarmersFaireToken = true,
-	SpringLeaf = true,
-	MidsummerToken = true,
-	AncientScript = true,
-	BadgeOfTaste = true,
-	DelvingWrit = true,
-	BadgeOfDishonour = true,
-	ColdIronToken = true,
-	HerosMark = true,
-	TokenOfHeroism = true,
-	MedallionOfMoria = true,
-	MedallionOfLothlorien = true
-}
-
 function AddCallback(object, event, callback)
 	if object[event] == nil then
 		object[event] = callback;
@@ -64,15 +29,8 @@ function RemoveCallback(object, event, callback)
 end
 
 -- Workaround because 'math.round' not working for some user, weird!
--- Takes a number and returns a rounded up or down version
--- if number is >=0.5, it rounds up
 function round(num)
-    local floor = math.floor(num)
-    local ceiling = math.ceil(num)
-    if (num - floor) >= 0.5 then
-        return ceiling
-    end
-    return floor
+    return math.floor(num + 0.5)
 end
 
 function ApplySkin() --Tooltip skin
@@ -144,8 +102,10 @@ end
 -- Legend
 -- ( offsetX, offsetY, width, height, bubble side, header text, text1, text2, text3, text4 )
 function ShowToolTipWin(ToShow)
-	local bblTo, x, y, w = "left", -5, -15, 350;
+	local w = 350
+	local bblTo, x, y= "left", -5, -15
 	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
+	local h = 80
 
 	-- TODO if DI (DurIcon) is replaced this needs to change
 	if TBLocale == "fr" then w = 315;
@@ -154,59 +114,56 @@ function ShowToolTipWin(ToShow)
 		else w = 305; end
 	end
 
+	if w + mouseX > screenWidth then
+		bblTo = "right"
+		x = w - 10
+	end
+
+	if not TBTop then
+		y = h
+	end
+
+	local function doesCurrencyExist(currency)
+		for i, cur in pairs(_G.currencies) do
+			if cur.name == currency then
+				return true
+			end
+		end
+		return false
+	end
+
 	if ToShow == "BI" then -- Bag Infos
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 80;
-		if not TBTop then y = h; end
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["MBI"], L["EIt1"], L["EIt2"], L["EIt3"] );
 	elseif ToShow == "GT" then -- Game Time
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 80;
-		if not TBTop then y = h; end
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["GTh"], L["EIt1"], 
             L["EIt2"], L["EIt3"] );
 	elseif ToShow == "VT" then -- Vault
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 80;
-		if not TBTop then y = h; end
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["MVault"], L["EIt1"], 
             L["EIt2"], L["EIt3"] );
 	elseif ToShow == "SS" then -- Shared Storage
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 80;
-		if not TBTop then y = h; end
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["MStorage"], L["EIt1"], 
             L["EIt2"], L["EIt3"] );
 --[[	elseif ToShow == "BK" then -- Bank
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 80;
-		if not TBTop then y = h; end
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["MBank"], L["EIt1"], 
             L["EIt2"], L["EIt3"] ); --]]
 	elseif ToShow == "DN" then -- Day & Night
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 80;
-		if not TBTop then y = h; end
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["MDayNight"], L["EIt1"], 
             L["EIt2"], L["EIt3"] );
 	elseif ToShow == "LP" then -- LOTRO points
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-		h = 80;
-		if not TBTop then y = h; end
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["LPh"], L["EIt1"], 
             L["EIt2"], L["EIt3"] );
-	elseif DragAndHoldInTooltip[ToShow] then
-		if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
+	elseif ToShow == "DP" or ToShow == "PL" or doesCurrencyExist(ToShow) then
 		h = 65;
-		if not TBTop then y = h; end
 		TTW = createToolTipWin( x, y, w, h, bblTo, L[ToShow .. "h"], L["EIt2"], L["EIt3"] );
 	else
 		write(ToShow .. " not recognized for Tooltip creation, add in functions.lua")
 	end
 
-	_G.ToolTipWin:SetPosition( mouseX - _G.ToolTipWin.xOffset, mouseY - 
-        _G.ToolTipWin.yOffset);
-	_G.ToolTipWin:SetVisible( true );
+	_G.ToolTipWin:SetPosition(
+		mouseX - _G.ToolTipWin.xOffset,
+		mouseY - _G.ToolTipWin.yOffset
+	)
+	_G.ToolTipWin:SetVisible(true);
 end
 --**^
 --**v Update Wallet on TitanBar v**
@@ -218,7 +175,7 @@ end
 function UpdateMoney()
 	if _G.MIWhere == 1 then
 		local money = PlayerAtt:GetMoney();
-		DecryptMoney( money );
+		DecryptMoney(money);
 	
 		MI[ "GLbl" ]:SetText( string.format( "%.0f", gold ) );
 		MI[ "SLbl" ]:SetText( string.format( "%.0f", silver ) );
@@ -547,7 +504,7 @@ function UpdateGameTime(str)
 	local ampm = "";
 	TheTime = nil;
 	TextLen = nil;
-	
+
 	if cminute < 10 then cminute = "0" .. cminute; end
 
 	if str == "st" then
@@ -622,9 +579,9 @@ function ChangeColor(tColor)
 		if ShowLOTROPoints then LP[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowPlayerLoc then PL[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowGameTime then GT[ "Ctr" ]:SetBackColor( tColor ); end
-		for k,v in pairs(currenciesList) do
-			if _G.CurrencyData[k].IsVisible then
-				_G.CurrencyData[k].Ctr:SetBackColor(tColor)
+		for k,v in pairs(_G.currencies) do
+			if _G.CurrencyData[v.name].IsVisible then
+				_G.CurrencyData[v.name].Ctr:SetBackColor(tColor)
 			end
 		end
 	else

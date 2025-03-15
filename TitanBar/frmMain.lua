@@ -5,23 +5,20 @@
 function frmMain()
 	--**v Check if TitanBar Reloader/Unloader is loaded v**
 	Turbine.PluginManager.RefreshAvailablePlugins();
-	loaded_plugins = Turbine.PluginManager.GetLoadedPlugins();
 
 	TBRChecker = Turbine.UI.Control();
-	TBRChecker:SetWantsUpdates( true );
-	
-	TBRChecker.Update = function( sender, args )
-		for k,v in pairs(loaded_plugins) do
+	TBRChecker:SetWantsUpdates(true);
+
+	TBRChecker.Update = function(sender, args)
+		local loaded_plugins = Turbine.PluginManager.GetLoadedPlugins();
+		for k, v in pairs(loaded_plugins) do
 			if v.Name == "TitanBar Reloader" then
-				Turbine.PluginManager.UnloadScriptState( 'TitanBarReloader' );
-				--break;
-			end
-			if v.Name == "TitanBar Unloader" then
-				Turbine.PluginManager.UnloadScriptState( 'TitanBarUnloader' );
-				--break;
+				Turbine.PluginManager.UnloadScriptState('TitanBarReloader');
+			elseif v.Name == "TitanBar Unloader" then
+				Turbine.PluginManager.UnloadScriptState('TitanBarUnloader');
 			end
 		end
-		TBRChecker:SetWantsUpdates( false );
+		TBRChecker:SetWantsUpdates(false);
 	end
 	--**^
 	
@@ -162,26 +159,21 @@ function frmMain()
 
 	if PlayerAlign == 1 then
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
-				for k,v in pairs(currenciesList) do
-					if _G.CurrencyData[k] == nil then _G.CurrencyData[k] = {} end
-					if _G.CurrencyData[k].Where == nil then _G.CurrencyData[k].Where = 3 end
-					if _G.CurrencyData[k].Where ~= 3 then ImportCtr(k); end
+				for k,v in pairs(_G.currencies) do
+					if _G.CurrencyData[v.name] == nil then _G.CurrencyData[v.name] = {} end
+					if _G.CurrencyData[v.name].Where == nil then _G.CurrencyData[v.name].Where = 3 end
+					if _G.CurrencyData[v.name].Where ~= 3 then ImportCtr(v.name); end
 				end
 		end
 	else
 		-- Disable infos not useful in Monster Play
-		local currencyNotUsefulInMonsterPlay = {"Shards", "YuleToken", "SkirmishMarks", "TokensOfHytbold",
-			"Medallions", "Seals", "AmrothSilverPiece", "StarsOfMerit", "CentralGondorSilverPiece",
-			"GiftgiversBrand", "BingoBadge", "AnniversaryToken", "MotesOfEnchantment", "EmbersOfEnchantment",
-			"FigmentsOfSplendour", "FallFestivalToken", "FarmersFaireToken", "SpringLeaf", "MidsummerToken",
-			"AncientScript", "DelvingWrit", "ColdIronToken", "MedallionOfMoriah", "MedallionOfLothlorien",
-			"HerosMark", "TokenOfHeroism"}
 		ShowDurabilityInfos, ShowEquipInfos, ShowDestinyPoints = false, false, false
 		ShowVault, ShowSharedStorage = false, false
 		ShowReputation = false
-
-		for cur in currencyNotUsefulInMonsterPlay do
-			_G.CurrencyData[cur].IsVisible = false
+		for cur in _G.currencies do
+			if not cur.visibleInMonsterPlay then
+				_G.CurrencyData[cur].IsVisible = false
+			end
 		end
 
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then

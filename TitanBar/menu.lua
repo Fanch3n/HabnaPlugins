@@ -35,62 +35,65 @@ local RBCMenu2 = Turbine.UI.MenuItem( L["MCABTA"] );
 RBCMenu2.Click = function( sender, args ) BGColor( "reset", "all" ); end
 RBCMenu.Items:Add( RBCMenu2 );
 
-
-
 --- Main menu
 TitanBarMenu = Turbine.UI.ContextMenu();
 TitanBarMenu.items = TitanBarMenu:GetItems();
+
+local function ToggleMenuVisibility(menuToggle)
+	menuToggle()
+	TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos) -- TODO what does this actually do?
+end
 
 local opt_line = Turbine.UI.MenuItem("---------------------------------------------", false);
 local opt_empty = Turbine.UI.MenuItem("", false);
 
 opt_WI = Turbine.UI.MenuItem(L["MBag"]);
 opt_WI:SetChecked( ShowWallet );
-opt_WI.Click = function( sender, args ) ShowHideWallet(); TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos); end
+opt_WI.Click = function( sender, args ) ToggleMenuVisibility(ShowHideWallet) end
 
 opt_BI = Turbine.UI.MenuItem(L["MBI"]);
 opt_BI:SetChecked( ShowBagInfos );
-opt_BI.Click = function( sender, args ) ShowHideBackpackInfos(); TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos); end
+opt_BI.Click = function( sender, args ) ToggleMenuVisibility(ShowHideBackpackInfos) end
 
 opt_PI = Turbine.UI.MenuItem(L["MPI"]);
 opt_PI:SetChecked( ShowPlayerInfos );
-opt_PI.Click = function( sender, args ) ShowHidePlayerInfos(); TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos); end
+opt_PI.Click = function( sender, args ) ToggleMenuVisibility(ShowHidePlayerInfos) end
 
 opt_EI = Turbine.UI.MenuItem(L["MEI"]);
 opt_EI:SetChecked( ShowEquipInfos );
 --ShowEquipInfos = false;  -- Remove when GetEquipment() in API work properly
 --opt_EI:SetEnabled( ShowEquipInfos ); -- Remove when GetEquipment() in API work properly
-opt_EI.Click = function( sender, args )	ShowHideEquipInfos(); TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos); end
+opt_EI.Click = function( sender, args )	ToggleMenuVisibility(ShowHideEquipInfos) end
 
 opt_DI = Turbine.UI.MenuItem(L["MDI"]);
 opt_DI:SetChecked( ShowDurabilityInfos );
 --ShowDurabilityInfos = false;  -- Remove when GetEquipment() in API work properly
 --opt_DI:SetEnabled( ShowDurabilityInfos ); -- Remove when GetEquipment() in API work properly
-opt_DI.Click = function( sender, args )	ShowHideDurabilityInfos(); TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos); end
+opt_DI.Click = function( sender, args )	ToggleMenuVisibility(ShowHideDurabilityInfos) end
 
 opt_PL = Turbine.UI.MenuItem(L["MPL"]);
 opt_PL:SetChecked( ShowPlayerLoc );
-opt_PL.Click = function( sender, args ) ShowHidePlayerLoc(); TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos); end
+opt_PL.Click = function( sender, args ) ToggleMenuVisibility(ShowHidePlayerLoc) end
 
 opt_TI = Turbine.UI.MenuItem(L["MTI"]);
 opt_TI:SetChecked( ShowTrackItems );
-opt_TI.Click = function( sender, args ) ShowHideTrackItems(); TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos); end
+opt_TI.Click = function( sender, args ) ToggleMenuVisibility(ShowHideTrackItems) end
 
 opt_IF = Turbine.UI.MenuItem(L["IFWTitle"]);
 opt_IF:SetChecked( ShowInfamy );
-opt_IF.Click = function( sender, args ) ShowHideInfamy(); TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos); end
+opt_IF.Click = function( sender, args ) ToggleMenuVisibility(ShowHideInfamy) end
 
 opt_GT = Turbine.UI.MenuItem(L["MGT"]);
 opt_GT:SetChecked( ShowGameTime );
-opt_GT.Click = function( sender, args ) ShowHideGameTime(); TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos); end
+opt_GT.Click = function( sender, args ) ToggleMenuVisibility(ShowHideGameTime) end
 
 opt_VT = Turbine.UI.MenuItem( L["MVault"] );
 opt_VT:SetChecked( ShowVault );
-opt_VT.Click = function( sender, args ) ShowHideVault(); TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos); end
+opt_VT.Click = function( sender, args ) ToggleMenuVisibility(ShowHideVault) end
 
 opt_SS = Turbine.UI.MenuItem( L["MStorage"] );
 opt_SS:SetChecked( ShowSharedStorage );
-opt_SS.Click = function( sender, args ) ShowHideSharedStorage(); TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos); end
+opt_SS.Click = function( sender, args ) ToggleMenuVisibility(ShowHideSharedStorage) end
 
 --opt_BK = Turbine.UI.MenuItem( L["MBank"] );
 --opt_BK:SetChecked( ShowBank );
@@ -98,11 +101,11 @@ opt_SS.Click = function( sender, args ) ShowHideSharedStorage(); TitanBarMenu:Sh
 
 opt_DN = Turbine.UI.MenuItem( L["MDayNight"] );
 opt_DN:SetChecked( ShowDayNight );
-opt_DN.Click = function( sender, args ) ShowHideDayNight(); TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos); end
+opt_DN.Click = function( sender, args ) ToggleMenuVisibility(ShowHideDayNight) end
 
 opt_RP = Turbine.UI.MenuItem( L["MReputation"] );
 opt_RP:SetChecked( ShowReputation );
-opt_RP.Click = function( sender, args ) ShowHideReputation(); TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos); end
+opt_RP.Click = function( sender, args ) ToggleMenuVisibility(ShowHideReputation) end
 
 opt_options = Turbine.UI.MenuItem(L["MOP"]);
 opt_options.Click = function( sender, args ) import (AppDirD.."frmOptions"); frmOptions(); opt_options:SetEnabled( false ); end

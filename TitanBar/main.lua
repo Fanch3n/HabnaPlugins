@@ -71,40 +71,8 @@ Position = {
 	NONE = 3
 }
 
-currenciesList = {
-	DelvingWrit = true,
-	BadgeOfDishonour = true,
-	Commendation = true,
-	AncientScript = true,
-	BadgeOfTaste = true,
-	BingoBadge = true,
-	AnniversaryToken = true,
-	EmbersOfEnchantment = true,
-	MidsummerToken = true,
-	SpringLeaf = true,
-	FarmersFaireToken = true,
-	FallFestivalToken = true,
-	MotesOfEnchantment = true,
-	FigmentsOfSplendour = true,
-	GiftgiversBrand = true,
-	CentralGondorSilverPiece = true,
-	StarsOfMerit = true,
-	AmrothSilverPiece = true,
-	Seals = true,
-	Medallions = true,
-	TokensOfHytbold = true,
-	YuleToken = true,
-	MithrilCoins = true,
-	SkirmishMarks = true,
-	Shards = true,
-	ColdIronToken = true,
-	TokenOfHeroism = true,
-	HerosMark = true,
-	MedallionOfMoria = true,
-	MedallionOfLothlorien = true
-}
-
 import (AppDirD.."TBresources");
+import (AppDirD.."Currencies");
 import (AppClassD.."Class");
 import (AppDir);
 import (AppDirD.."color");

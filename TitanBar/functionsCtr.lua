@@ -998,21 +998,21 @@ function SavePlayerLOTROPoints()
 end
 
 function UpdateCurrency(str) -- TODO loop can probably go
-    for currency, _ in pairs(currenciesList) do
-        if str == L["M" .. currency] and _G.CurrencyData[currency].IsVisible then
+    for _, currency in pairs(_G.currencies) do
+        if str == L["M" .. currency.name] and _G.CurrencyData[currency.name].IsVisible then
             UpdateCurrencyDisplay(currency)
         end
     end
 end
 
 function SetCurrencyToZero(str)
-    for currency, _ in pairs(currenciesList) do
-        if str == L["M" .. currency] and _G.CurrencyData[currency].IsVisible then
-            if _G.CurrencyData[currency].IsVisible then
-                if _G.CurrencyData[currency].Where == 1 then
-                    _G.CurrencyData[currency].Lbl:SetText("0");
-                    _G.CurrencyData[currency].Lbl:SetSize(_G.CurrencyData[currency].Lbl:GetTextLength() * NM, CTRHeight );
-                    AjustIcon(currency);
+    for _, currency in pairs(_G.currencies) do
+        if str == L["M" .. currency.name] and _G.CurrencyData[currency.name].IsVisible then
+            if _G.CurrencyData[currency.name].IsVisible then
+                if _G.CurrencyData[currency.name].Where == 1 then
+                    _G.CurrencyData[currency.name].Lbl:SetText("0");
+                    _G.CurrencyData[currency.name].Lbl:SetSize(_G.CurrencyData[currency.name].Lbl:GetTextLength() * NM, CTRHeight );
+                    AjustIcon(currency.name);
                 end
             end
         end
@@ -1020,13 +1020,13 @@ function SetCurrencyToZero(str)
 end
 
 function SetCurrencyFromZero(str, amount)
-    for currency, _ in pairs(currenciesList) do
-        if str == L["M" .. currency] and _G.CurrencyData[currency].IsVisible then
-            if _G.CurrencyData[currency].IsVisible then
-                if _G.CurrencyData[currency].Where == 1 then
-                    _G.CurrencyData[currency].Lbl:SetText(amount);
-                    _G.CurrencyData[currency].Lbl:SetSize(_G.CurrencyData[currency].Lbl:GetTextLength() * NM, CTRHeight );
-                    AjustIcon(currency);
+    for _, currency in pairs(_G.currencies) do
+        if str == L["M" .. currency.name] and _G.CurrencyData[currency.name].IsVisible then
+            if _G.CurrencyData[currency.name].IsVisible then
+                if _G.CurrencyData[currecurrency.namency].Where == 1 then
+                    _G.CurrencyData[currency.name].Lbl:SetText(amount);
+                    _G.CurrencyData[currency.name].Lbl:SetSize(_G.CurrencyData[currency.name].Lbl:GetTextLength() * NM, CTRHeight );
+                    AjustIcon(currency.name);
                 end
             end
         end

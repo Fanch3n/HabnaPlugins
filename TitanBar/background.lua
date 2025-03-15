@@ -321,11 +321,11 @@ function UpdateBCvariable()
 		LPbcAlpha, LPbcRed, LPbcGreen, LPbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
 		PLbcAlpha, PLbcRed, PLbcGreen, PLbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
 		GTbcAlpha, GTbcRed, GTbcGreen, GTbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		for k,v in pairs(currenciesList) do
-			_G.CurrencyData[k].bcAlpha = curSelAlpha
-			_G.CurrencyData[k].bcRed = curSelRed
-			_G.CurrencyData[k].bcGreen = curSelGreen
-			_G.CurrencyData[k].bcBlue = curSelBlue
+		for k,v in pairs(_G.currencies) do
+			_G.CurrencyData[v.name].bcAlpha = curSelAlpha
+			_G.CurrencyData[v.name].bcRed = curSelRed
+			_G.CurrencyData[v.name].bcGreen = curSelGreen
+			_G.CurrencyData[v.name].bcBlue = curSelBlue
 		end
 	else
 		if sFrom == "TitanBar" then bcAlpha = curSelAlpha; bcRed = curSelRed; bcGreen = curSelGreen; bcBlue = curSelBlue;
