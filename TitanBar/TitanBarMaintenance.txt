@@ -39,11 +39,10 @@ Adding a new reputation faction:
 Add a new currency:
 - Add  text names to the 'de', 'en', and 'fr' localization files
 -- Search for "Wallet Currency Controls" and add the new currency to the end of the existing list
--- For the abbreviation: You need two for each currency. 
---- The first one starts with an "M" and then normally the first letter of each word in the name of the currency.
---- The second one starts normally with the first letter of each word in the name of the currency and then an "h".
---- Important: Check if the abbreviation you want to use, has already been used. If that is the case, get creative ;)
---- Important: The name behind the first abbreviation has to be exactly the name in the game (and most of the times singular). Otherwise it won't work.
+-- For the names: You need two for each currency.
+--- The first one starts with an "M" and can be the name of the currency (without spaces or special characters)
+--- The second can be the name of the currency (without spaces or special characters) and then an "h".
+--- Important: The name (value) behind the first text name has to be exactly the name in the game (and most of the times singular). Otherwise it won't work.
 
 - Add currency in 'main.lua'
 -- Search for "WalletOrder" and add the next number to the array
@@ -55,10 +54,9 @@ Add a new currency:
 -- Copy the last entry in the array and paste it as the last entry
 -- Add a comma after the second to last entry (TitanBar won't load without it. It get's me every time)
 -- Replace the name in the last entry with the new currency
--- Replace the hex value with the new icon value. (If you don't know the value scroll down to "HelloWorld-Plugin".
+-- Replace the hex value with the new icon value. (If you don't know the value scroll down to "HelloWorld-Plugin")
 
-- Add currency in 'functions.lua'
-- Add currency in 'frmOptions.lua' & 'frmMain.lua'
+- Add currency Currencies.lua
 
 
 To add a new control (from Technical_13):

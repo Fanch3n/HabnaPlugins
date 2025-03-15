@@ -4,12 +4,6 @@
 
 if _G.Debug then write("frmOptions.lua"); end
 
-local currencies = {"Shards", "SkirmishMarks", "MithrilCoins", "YuleToken", "TokensOfHytbold", "Medallions",
-										"Seals", "Commendation", "AmrothSilverPiece", "StarsOfMerit", "CentralGondorSilverPiece",
-										"GiftGiversBrand", "BingoBadge", "AnniversaryToken", "MotesOfEnchantment", "EmbersOfEnchantment",
-										"FigmentsOfSplendour", "FallFestivalToken", "FarmersFaireToken", "SpringLeaf", "MidsummerToken",
-										"AncientScript", "BadgeOfTaste", "BadgeOfDishonour", "ColdIronToken", "MedallionOfMoria",
-										"MedallionOfLothlorien", "TokenOfHeroism", "HerosMark", "DelvingWrit"}
 local WalletControls = { };
 if WI ~= nil then WalletControls[ "WI" ] = { ShowHide = ShowWallet, Control = WI[ "Ctr" ] }; end
 if MI ~= nil then WalletControls[ "MI" ] = { ShowHide = ShowMoney, Control = MI[ "Ctr" ] }; end
@@ -28,11 +22,11 @@ if RP ~= nil then WalletControls[ "RP" ] = { ShowHide = ShowReputation, Control 
 if LP ~= nil then WalletControls[ "LP" ] = { ShowHide = ShowLOTROPoints, Control = LP[ "Ctr" ] }; end
 
 
-for _, currency in pairs(currencies) do
-	if _G.CurrencyData[currency] ~= nil then
-		WalletControls[currency] = {
-			ShowHide = _G.CurrencyData[currency].IsVisible,
-			Control = _G.CurrencyData[currency].Ctr
+for _, currency in pairs(_G.currencies) do
+	if _G.CurrencyData[currency.name] ~= nil then
+		WalletControls[currency.name] = {
+			ShowHide = _G.CurrencyData[currency.name].IsVisible,
+			Control = _G.CurrencyData[currency.name].Ctr
 		}
 	end
 end

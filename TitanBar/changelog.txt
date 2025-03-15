@@ -1,14 +1,28 @@
-This is a replacement for TitanBar v1.34.00 by Technical-13 which replaced v1.29.00 by Thorondor which replaced v1.24 by Habana.
+This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Technical-13 which replaced v1.29.00 by Thorondor which replaced v1.24 by Habana.
 You do not need the original files.
 
 
 Need translations (mostly French)! 
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
-v.1.35.30 (November 20, 2020)
+v.1.40.00
+- Added several currencies
+  - Medallion of Moria
+	- Medallion of Lothlórien
+	- Hero's Mark
+	- Token of Heroism
+	- Cold-iron Token
+	- Delving Writ
+- Significantly reduced necessary steps for adding currencies
+- Removed lots of duplicated code
+- LotroPoints window now accepts and closes when pressing Return
+- Merged Giseldah's changes to CalcStat
+  - CalcStat is now a dependency, which means it can be updated independently of TitanBar
+=================================================
+v.1.35.30 (November 20, 2022)
 - Removed some code used for debugging
 =================================================
-v.1.35.29 (November 20, 2020)
+v.1.35.29 (November 20, 2022)
 - Added the reputation factions "Defenders of The Angle", "The Yonder-Watch" and "Dúnedain of Cardolan"
 =================================================
 v.1.35.28 (December 27, 2021)

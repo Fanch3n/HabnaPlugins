@@ -521,9 +521,9 @@ function LoadSettings()-- I'm confused as to what most of this is... Most of the
 	-- AU3 MARKER 4 - DO NOT REMOVE
 
 
-	for k,v in pairs(currenciesList) do
-		CreateSettingsForCurrency(k)
-		LoadSettingsForCurrency(k)
+	for k,v in pairs(_G.currencies) do
+		CreateSettingsForCurrency(v.name)
+		LoadSettingsForCurrency(v.name)
 	end
 
 	SaveSettings( false );
@@ -809,8 +809,8 @@ function SaveSettings(str)
 		if PlayerAlign == 1 then settings.GameTime.L = string.format("%.0f", GTWLeft); end
 		if PlayerAlign == 1 then  settings.GameTime.T = string.format("%.0f", GTWTop); end
 				
-		for k,v in pairs(currenciesList) do
-			SetSettings(k)
+		for k,v in pairs(_G.currencies) do
+			SetSettings(v.name)
 		end
 
 	end
@@ -860,15 +860,15 @@ function ResetSettings()
 	ShowLOTROPoints, LPbcAlpha, LPbcRed, LPbcGreen, LPbcBlue, _G.LPLocX, _G.LPLocY, _G.LPWhere = false, tA, tR, tG, tB, tX, tY, tW; --for LOTRO points Control
 	ShowPlayerLoc, PLbcAlpha, PLbcRed, PLbcGreen, PLbcBlue, _G.PLLocX, _G.PLLocX = true, tA, tR, tG, tB, screenWidth - 205, tY; --for Player Location Control
 	
-	for k,v in pairs(currenciesList) do
-		_G.CurrencyData[k].IsVisible = false
-		_G.CurrencyData[k].bcAlpha = tA
-		_G.CurrencyData[k].bcRed = tR
-		_G.CurrencyData[k].bcGreen = tG
-		_G.CurrencyData[k].bcBlue = tB
-		_G.CurrencyData[k].LocX = tX
-		_G.CurrencyData[k].LocY = tY
-		_G.CurrencyData[k].Where = tW
+	for k,v in pairs(_G.currencies) do
+		_G.CurrencyData[v.name].IsVisible = false
+		_G.CurrencyData[v.name].bcAlpha = tA
+		_G.CurrencyData[v.name].bcRed = tR
+		_G.CurrencyData[v.name].bcGreen = tG
+		_G.CurrencyData[v.name].bcBlue = tB
+		_G.CurrencyData[v.name].LocX = tX
+		_G.CurrencyData[v.name].LocY = tY
+		_G.CurrencyData[v.name].Where = tW
 	end
 		
 	SaveSettings( true ); --True: Get & save all settings table to file. / False: only save settings table to file.
@@ -968,12 +968,12 @@ function ReplaceCtr()
 	settings.GameTime.X = string.format("%.0f", _G.GTLocX);
 	if ShowGameTime then GT[ "Ctr" ]:SetPosition( _G.GTLocX, _G.GTLocY ); end
 	
-	for k,v in pairs(currenciesList) do
-		oldLocX = settings[k].X / oldScreenWidth
-		_G.CurrencyData[k].LocX = oldLocX * screenWidth
-		settings[k].X = string.format("%.0f", _G.CurrencyData[k].LocX)
-		if _G.CurrencyData[k].IsVisible and _G.CurrencyData[k].Where == 1 then
-			_G.CurrencyData[k].Ctr:SetPosition(_G.CurrencyData[k].LocX, _G.CurrencyData[k].LocY)
+	for k,v in pairs(_G.currencies) do
+		oldLocX = settings[v.name].X / oldScreenWidth
+		_G.CurrencyData[v.name].LocX = oldLocX * screenWidth
+		settings[v.name].X = string.format("%.0f", _G.CurrencyData[v.name].LocX)
+		if _G.CurrencyData[v.name].IsVisible and _G.CurrencyData[v.name].Where == 1 then
+			_G.CurrencyData[v.name].Ctr:SetPosition(_G.CurrencyData[v.name].LocX, _G.CurrencyData[v.name].LocY)
 		end
 	end
 
