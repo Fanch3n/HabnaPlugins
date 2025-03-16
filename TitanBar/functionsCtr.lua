@@ -997,11 +997,10 @@ function SavePlayerLOTROPoints()
         Turbine.DataScope.Account, "TitanBarLOTROPoints", PlayerLOTROPoints);
 end
 
-function UpdateCurrency(str) -- TODO loop can probably go
-    for _, currency in pairs(_G.currencies) do
-        if str == L["M" .. currency.name] and _G.CurrencyData[currency.name].IsVisible then
-            UpdateCurrencyDisplay(currency)
-        end
+function UpdateCurrency(currency_display)
+    local currency_name = _G.CurrencyLangMap[currency_display]
+    if _G.CurrencyData[currency_name].IsVisible then
+        UpdateCurrencyDisplay(currency_name)
     end
 end
 
@@ -1023,7 +1022,7 @@ function SetCurrencyFromZero(str, amount)
     for _, currency in pairs(_G.currencies) do
         if str == L["M" .. currency.name] and _G.CurrencyData[currency.name].IsVisible then
             if _G.CurrencyData[currency.name].IsVisible then
-                if _G.CurrencyData[currecurrency.namency].Where == 1 then
+                if _G.CurrencyData[currency.name].Where == 1 then
                     _G.CurrencyData[currency.name].Lbl:SetText(amount);
                     _G.CurrencyData[currency.name].Lbl:SetSize(_G.CurrencyData[currency.name].Lbl:GetTextLength() * NM, CTRHeight );
                     AjustIcon(currency.name);

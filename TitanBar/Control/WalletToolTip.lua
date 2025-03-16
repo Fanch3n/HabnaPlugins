@@ -37,7 +37,7 @@ function RefreshWITTListBox()
 	local bFound = false;
 	
 	for i = 1, #MenuItem do
-		wttcur = MenuItem[WalletOrder[i]];
+		wttcur = MenuItem[i];
 		if wttcur == L["MGSC"] then ttw = _G.MIWhere;
 		elseif wttcur == L["MDP"] then ttw = _G.DPWhere; CtrIconCodeIs=WalletItem.DestinyPoints.Icon; CtrQteIs=PlayerAtt:GetDestinyPoints();
 		elseif wttcur == L["MLP"] then ttw = _G.LPWhere; CtrIconCodeIs=WalletItem.LOTROPTS.Icon; CtrQteIs=_G.LOTROPTS;

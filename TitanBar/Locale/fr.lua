@@ -141,6 +141,9 @@ L[ "MedallionOfMoriah" ] = "Ce sont vos Médaillons de la Moria";
 -- Medallion of Lothlórien
 L[ "MMedallionOfLothlorien" ] = "Médaillon de la Lothlórien";
 L[ "MedallionOfLothlorienh" ] = "Ce sont vos Médaillons de la Lothlórien";
+-- Buried Treasure Token
+L[ "MBuriedTreasureToken" ] = "Jeton du Trésor enfoui";
+L[ "BuriedTreasureTokenh" ] = "Ce sont vos Jetons du Trésor enfoui";
 
 -- Control Menu
 L[ "MCU" ] = "D\195\169charger ...";

@@ -290,7 +290,7 @@ function RefreshWIListBox()
 		local curLbl = Turbine.UI.Label();
 		WICtr.curLbl = curLbl;
 		curLbl:SetParent( WICtr );
-		curLbl:SetText( MenuItem[WalletOrder[i]] );
+		curLbl:SetText( MenuItem[i] );
 		curLbl:SetSize( WIListBox:GetWidth(), 20 );
 		curLbl:SetPosition( 0, 0 );
 		curLbl:SetFont( Turbine.UI.Lotro.Font.TrajanPro16 );
@@ -300,7 +300,7 @@ function RefreshWIListBox()
 
 		curLbl.MouseClick = function( sender, args )
 			if ( args.Button == Turbine.UI.MouseButton.Right ) then
-				wcur = MenuItem[WalletOrder[i]];
+				wcur = MenuItem[i];
 				WIlblFN:SetText( wcur );
 				LPWCtr:SetVisible( false );
 				WIbutSave:SetPosition( WIWCtr:GetWidth()/2 - WIbutSave:GetWidth()/2, WIDD:GetTop()+WIDD:GetHeight()+10 );

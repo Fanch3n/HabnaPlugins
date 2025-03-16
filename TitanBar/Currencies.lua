@@ -118,5 +118,9 @@ _G.currencies = {
   {
     name = "DelvingWrit",
     visibleInMonsterPlay = false
+  },
+  {
+    name = "BuriedTreasureToken",
+    visibleInMonsterPlay = false
   }
 }

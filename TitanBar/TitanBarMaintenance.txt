@@ -45,7 +45,6 @@ Add a new currency:
 --- Important: The name (value) behind the first text name has to be exactly the name in the game (and most of the times singular). Otherwise it won't work.
 
 - Add currency in 'main.lua'
--- Search for "WalletOrder" and add the next number to the array
 -- Search for "PlayerAlign == 1" and add the abbreviation to the MenuItem array. The position in that array defines the order in which the currencies are listed.
 
 - Add currency in 'TBressources.lua'

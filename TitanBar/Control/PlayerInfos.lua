@@ -20,36 +20,34 @@ PI["Icon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 PI["Icon"]:SetSize( 32, 32 );
 --PI["Icon"]:SetBackground(  );-- need in-game icon 32x32
 --PI["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
-	
-PI["Icon"].MouseMove = function( sender, args )
-	PI["Name"].MouseLeave( sender, args )
-	TB["win"].MouseMove();
+
+local function HandleMouseMove(sender, args)
+	PI.Name.MouseLeave(sender, args);
+	TB.win:MouseMove();
 	if dragging then MovePICtr(sender, args); end
 end
 
-PI["Icon"].MouseLeave = function( sender, args )
-	PI["Name"].MouseLeave( sender, args );
+local function HandleMouseLeave(sender, args)
+	PI.Name.MouseLeave(sender, args);
 end
 
-PI["Icon"].MouseClick = function( sender, args )
-	PI["Name"].MouseClick( sender, args );
+local function HandleMouseClick(sender, args)
+	PI.Name.MouseClick(sender, args);
 end
 
-PI["Icon"].MouseLeave = function( sender, args )
-	PI["Name"].MouseLeave( sender, args );
+local function HandleMouseDown(sender, args)
+	PI.Name.MouseDown(sender, args);
 end
 
-PI["Icon"].MouseClick = function( sender, args )
-	PI["Name"].MouseClick( sender, args );
+local function HandleMouseUp(sender, args)
+	PI.Name.MouseUp(sender, args);
 end
 
-PI["Icon"].MouseDown = function( sender, args )
-	PI["Name"].MouseDown( sender, args );
-end
-
-PI["Icon"].MouseUp = function( sender, args )
-	PI["Name"].MouseUp( sender, args );
-end
+PI.Icon.MouseMove = HandleMouseMove
+PI.Icon.MouseLeave = HandleMouseLeave
+PI.Icon.MouseClick = HandleMouseClick
+PI.Icon.MouseDown = HandleMouseDown
+PI.Icon.MouseUp = HandleMouseUp
 
 
 PI["Lvl"] = Turbine.UI.Label();
@@ -61,35 +59,11 @@ PI["Lvl"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
 PI["Lvl"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 --PI["Lvl"]:SetBackColor( Color["orange"] ); -- Debug purpose
 	
-PI["Lvl"].MouseMove = function( sender, args )
-	PI["Name"].MouseLeave( sender, args )
-	TB["win"].MouseMove();
-	if dragging then MovePICtr(sender, args); end
-end
-
-PI["Lvl"].MouseLeave = function( sender, args )
-	PI["Name"].MouseLeave( sender, args );
-end
-
-PI["Lvl"].MouseClick = function( sender, args )
-	PI["Name"].MouseClick( sender, args );
-end
-
-PI["Lvl"].MouseLeave = function( sender, args )
-	PI["Name"].MouseLeave( sender, args );
-end
-
-PI["Lvl"].MouseClick = function( sender, args )
-	PI["Name"].MouseClick( sender, args );
-end
-
-PI["Lvl"].MouseDown = function( sender, args )
-	PI["Name"].MouseDown( sender, args );
-end
-
-PI["Lvl"].MouseUp = function( sender, args )
-	PI["Name"].MouseUp( sender, args );
-end
+PI.Lvl.MouseMove = HandleMouseMove
+PI.Lvl.MouseLeave = HandleMouseLeave
+PI.Lvl.MouseClick = HandleMouseClick
+PI.Lvl.MouseDown = HandleMouseDown
+PI.Lvl.MouseUp = HandleMouseUp
 
 PI["Name"] = Turbine.UI.Label();
 PI["Name"]:SetParent( PI["Ctr"] );
