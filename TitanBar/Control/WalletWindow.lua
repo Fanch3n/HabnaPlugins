@@ -223,10 +223,6 @@ function frmWalletWindow()
 			_G.MIWhere = SelIndex; settings.Money.W = string.format("%.0f", SelIndex);
 			if SelIndex == Position.TITANBAR then if not ShowMoney then ShowHideMoney(); end
 			else if ShowMoney then ShowHideMoney(); end end
-		elseif wcur == L["MDP"] then
-			_G.DPWhere = SelIndex; settings.DestinyPoints.W = string.format("%.0f", SelIndex);
-			if SelIndex == Position.TITANBAR then if not ShowDestinyPoints then ShowHideDestinyPoints(); end
-			else if ShowDestinyPoints then ShowHideDestinyPoints(); end end
 		elseif wcur == L["MLP"] then
 			_G.LPWhere = SelIndex; settings.LOTROPoints.W = string.format("%.0f", SelIndex);
 			if SelIndex == Position.TITANBAR then
@@ -307,8 +303,6 @@ function RefreshWIListBox()
 
 				if wcur == L["MGSC"] then
 					tw = _G.MIWhere; -- Money
-				elseif wcur == L["MDP"] then
-					tw = _G.DPWhere; -- Destiny Points
 				elseif wcur == L["MLP"] then
 					tw = _G.LPWhere; -- LOTRO Points
 					LPWCtr:SetVisible( true ); -- LOTRO Points

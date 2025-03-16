@@ -94,7 +94,7 @@ frmMain();
 if PlayerAlign == 1 then
   MenuItem = {
 		-- Coin
-		L["MGSC"], L["MCommendation"], L["MDP"], L["MLP"], L["MMithrilCoins"],
+		L["MGSC"], L["MCommendation"], L["MDestinyPoints"], L["MLP"], L["MMithrilCoins"],
 		-- Currency
 		L["MMotesOfEnchantment"], L["MFigmentsOfSplendour"], L["MEmbersOfEnchantment"], L["MAncientScript"], L["MDelvingWrit"],
 		-- Instances and Skirmishes
@@ -119,7 +119,7 @@ TitanBarCommand = Turbine.ShellCommand()
 _G.CurrencyLangMap = { -- reverse lookup table necessary to get the internal item name
 	[L["MGSC"]] = "GSC",
 	[L["MCommendation"]] = "Commendation",
-	[L["MDP"]] = "DP",
+	[L["MDestinyPoints"]] = "DestinyPoints",
 	[L["MLP"]] = "LP",
 	[L["MMithrilCoins"]] = "MithrilCoins",
 	[L["MMotesOfEnchantment"]] = "MotesOfEnchantment",

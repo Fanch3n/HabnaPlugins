@@ -38,19 +38,24 @@ function RefreshWITTListBox()
 	
 	for i = 1, #MenuItem do
 		wttcur = MenuItem[i];
-		if wttcur == L["MGSC"] then ttw = _G.MIWhere;
-		elseif wttcur == L["MDP"] then ttw = _G.DPWhere; CtrIconCodeIs=WalletItem.DestinyPoints.Icon; CtrQteIs=PlayerAtt:GetDestinyPoints();
-		elseif wttcur == L["MLP"] then ttw = _G.LPWhere; CtrIconCodeIs=WalletItem.LOTROPTS.Icon; CtrQteIs=_G.LOTROPTS;
+		if wttcur == L["MGSC"] then
+			ttw = _G.MIWhere;
+		elseif wttcur == L["MLP"] then
+			ttw = _G.LPWhere; CtrIconCodeIs=WalletItem.LOTROPTS.Icon; CtrQteIs=_G.LOTROPTS;
 		end
 		for k,v in pairs(_G.currencies) do
 			if wttcur == L["M" .. v.name] then
 				ttw = _G.CurrencyData[v.name].Where
 				CtrIconCodeIs=WalletItem[v.name].Icon
-				CtrQteIs=GetCurrency(L["M" .. v.name]);
+				if wttcur == L["MDestinyPoints"] then
+					CtrQteIs = PlayerAtt:GetDestinyPoints()
+				else
+					CtrQteIs=GetCurrency(L["M" .. v.name]);
+				end
 			end
 		end
 		
-		if tonumber(ttw) == 2 then
+		if tonumber(ttw) == Position.TOOLTIP then
 			WITTPosY = WITTPosY + 32;
 			bFound = true;
 		
@@ -127,7 +132,7 @@ function RefreshWITTListBox()
 				_G.ToolTipWin:SetWidth( totWidth+40 );
 				--**
 				--** Resize Destiny points & LOTRO points icon since it's not in 32x32 **--
-				if wttcur == L["MDP"] then
+				if wttcur == L["MDestinyPoints"] then
 					ttIcon:SetSize( 21, 22 );
 					ttIcon:SetStretchMode( 1 );
 					ttIcon:SetSize( 32, 32 );

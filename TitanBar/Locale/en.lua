@@ -65,8 +65,8 @@ L[ "BingoBadgeh" ] = "These are your Bingo Badges";
 L[ "MSkirmishMarks" ] = "Mark";
 L[ "SkirmishMarksh" ] = "These are your skirmish marks";
 -- Destiny Points control
-L[ "MDP" ] = "Destiny point";
-L[ "DPh" ] = "These are your destiny points";
+L[ "MDestinyPoints" ] = "Destiny Point";
+L[ "DestinyPointsh" ] = "These are your Destiny Points";
 -- Shards control
 L[ "MShards" ] = "Shard";
 L[ "Shardsh" ] = "These are your shard";

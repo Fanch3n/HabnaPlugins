@@ -28,20 +28,6 @@ function ImportCtr( value )
             RemoveCallback(sspack, "CountChanged", UpdateSharedStorageGold);
             -- ^^ Thx Heridian!
         end
-    elseif value == "DP" then --Destiny Points
-        if _G.DPWhere == 1 then
-            import (AppCtrD.."DestinyPoints");
-            DP[ "Ctr" ]:SetPosition( _G.DPLocX, _G.DPLocY );
-        end
-        if _G.DPWhere ~= 3 then
-            PlayerAtt = Player:GetAttributes();
-            AddCallback(PlayerAtt, "DestinyPointsChanged",
-                function(sender, args) UpdateDestinyPoints(); end
-                );
-            UpdateDestinyPoints();
-        else
-            RemoveCallback(PlayerAtt, "DestinyPointsChanged");
-        end
     elseif value == "BI" then --Backpack Infos
         import (AppCtrD.."BagInfos");
         --import (AppCtrD.."BagInfosToolTip");
@@ -416,7 +402,15 @@ function ImportCtr( value )
             _G.CurrencyData[value].Ctr:SetPosition(_G.CurrencyData[value].LocX, _G.CurrencyData[value].LocY)
         end
         if _G.CurrencyData[value].Where ~= 3 then
+            if value == "DestinyPoints" then
+                PlayerAtt = Player:GetAttributes();
+                AddCallback(PlayerAtt, "DestinyPointsChanged", function(sender, args)
+                    UpdateCurrencyDisplay("DestinyPoints")
+                end)
+            end
             UpdateCurrencyDisplay(value)
+        elseif value == "DestinyPoints" then
+            RemoveCallback(PlayerAtt, "DestinyPointsChanged")
         end
     end
 end

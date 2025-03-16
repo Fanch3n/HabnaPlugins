@@ -65,8 +65,8 @@ L[ "BingoBadgeh" ] = "These are your Insignes de Bingo";
 L[ "MSkirmishMarks" ] = "Marque";
 L[ "SkirmishMarksh" ] = "Ce sont vos marques d'escarmouches";
 -- Destiny Points control
-L[ "MDP" ] = "Points destin\195\169e";
-L[ "DPh" ] = "Ce sont vos points destin\195\169e";
+L[ "MDestinyPoints" ] = "Points destin\195\169e";
+L[ "DestinyPointsh" ] = "Ce sont vos points destin\195\169e";
 -- Shards control
 L[ "MShards" ] = "Eclat";
 L[ "Shardsh" ] = "Ce sont vos Eclats";

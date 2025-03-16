@@ -122,5 +122,9 @@ _G.currencies = {
   {
     name = "BuriedTreasureToken",
     visibleInMonsterPlay = false
+  },
+  {
+    name = "DestinyPoints",
+    visibleInMonsterPlay = false
   }
 }

@@ -65,8 +65,8 @@ L[ "BingoBadgeh" ] = "Eure Bingo-Abzeichen";
 L[ "MSkirmishMarks" ] = "Zeichen";
 L[ "SkirmishMarksh" ] = "Eure Scharm\195\188tzel-Zeichen";
 -- Destiny Points control
-L[ "MDP" ] = "Schicksalspunkte";
-L[ "DPh" ] = "Eure Schicksalspunkte";
+L[ "MDestinyPoints" ] = "Schicksalspunkte";
+L[ "DestinyPointsh" ] = "Eure Schicksalspunkte";
 -- Shards control
 L[ "MShards" ] = "Scherbe";
 L[ "Shardsh" ] = "Eure Scherben";
