@@ -992,8 +992,9 @@ function SavePlayerLOTROPoints()
 end
 
 function UpdateCurrency(currency_display)
+    if _G.Debug then write("UpdateCurrency:" ..currency_display); end
     local currency_name = _G.CurrencyLangMap[currency_display]
-    if _G.CurrencyData[currency_name].IsVisible then
+    if currency_name and _G.CurrencyData[currency_name].IsVisible then
         UpdateCurrencyDisplay(currency_name)
     end
 end

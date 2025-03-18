@@ -71,7 +71,6 @@ function BGColor( cmd, value )
 	elseif cmd == "apply" then
 		if _G.sFromCtr == "WI" then tA, tR, tG, tB = WIbcAlpha, WIbcRed, WIbcGreen, WIbcBlue;
 		elseif _G.sFromCtr == "Money" then tA, tR, tG, tB = MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue;
-		elseif _G.sFromCtr == "DP" then tA, tR, tG, tB = DPbcAlpha, DPbcRed, DPbcGreen, DPbcBlue;
 		elseif _G.sFromCtr == "BI" then tA, tR, tG, tB = BIbcAlpha, BIbcRed, BIbcGreen, BIbcBlue;
 		elseif _G.sFromCtr == "PI" then tA, tR, tG, tB = PIbcAlpha, PIbcRed, PIbcGreen, PIbcBlue;
 		elseif _G.sFromCtr == "EI" then tA, tR, tG, tB = EIbcAlpha, EIbcRed, EIbcGreen, EIbcBlue;
