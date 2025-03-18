@@ -39,19 +39,6 @@ function ShowHideMoney()
 	MI[ "Ctr" ]:SetVisible( ShowMoney );
 end
 -- **^
--- **v Show/Hide Destiny Points v**
-function ShowHideDestinyPoints()
-	ShowDestinyPoints = not ShowDestinyPoints;
-	settings.DestinyPoints.V = ShowDestinyPoints;
-	settings.DestinyPoints.W = string.format("%.0f", _G.DPWhere);
-	SaveSettings( false );
-	ImportCtr( "DP" );
-	if ShowDestinyPoints then
-		DP[ "Ctr" ]:SetBackColor( Turbine.UI.Color( DPbcAlpha, DPbcRed, DPbcGreen, DPbcBlue ) );
-	end
-	DP[ "Ctr" ]:SetVisible( ShowDestinyPoints );
-end
--- **^
 -- **v Show/Hide LOTRO Points v**
 function ShowHideLOTROPoints()
 	ShowLOTROPoints = not ShowLOTROPoints;

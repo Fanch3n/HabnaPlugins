@@ -167,7 +167,7 @@ function frmMain()
 		end
 	else
 		-- Disable infos not useful in Monster Play
-		ShowDurabilityInfos, ShowEquipInfos, ShowDestinyPoints = false, false, false
+		ShowDurabilityInfos, ShowEquipInfos = false, false
 		ShowVault, ShowSharedStorage = false, false
 		ShowReputation = false
 		for cur in _G.currencies do
@@ -185,7 +185,6 @@ function frmMain()
 
 	if ShowWallet then ImportCtr( "WI" ); end
 	if _G.MIWhere ~= 3 then ImportCtr( "MI" ); end
-	if _G.DPWhere ~= 3 then ImportCtr( "DP" ); end
 	if ShowTrackItems then ImportCtr( "TI" ); end --Track Items
 	if ShowInfamy then ImportCtr( "IF" ); end --Infamy/Renown
 	if ShowVault then ImportCtr( "VT" ); end --Vault

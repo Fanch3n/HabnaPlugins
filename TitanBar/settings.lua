@@ -12,6 +12,7 @@ function LoadSettings()-- I'm confused as to what most of this is... Most of the
 	elseif GLocale == "fr" then
 		settings = Turbine.PluginData.Load( Turbine.DataScope.Character, "TitanBarSettingsFR" );
 	end
+	
 	tA, tR, tG, tB, tX, tY, tW = 0.3, 0.3, 0.3, 0.3, 0, 0, 3; --Default alpha, red, green, blue, X, Y pos of control, Show where
 	tL, tT = 100, 100; --Default position of control window
 
@@ -160,26 +161,6 @@ function LoadSettings()-- I'm confused as to what most of this is... Most of the
 	MIWTop = tonumber(settings.Money.T);
 	_G.MIWhere = tonumber(settings.Money.W);
 	if _G.MIWhere == 3 and ShowMoney then _G.MIWhere = 1; settings.Money.W = string.format("%.0f", _G.MIWhere); end --Remove after Oct, 15th 2013
-
-
-	if settings.DestinyPoints == nil then settings.DestinyPoints = {}; end
-	if settings.DestinyPoints.V == nil then settings.DestinyPoints.V = false; end
-	if settings.DestinyPoints.A == nil then settings.DestinyPoints.A = string.format("%.3f", tA); end
-	if settings.DestinyPoints.R == nil then settings.DestinyPoints.R = string.format("%.3f", tR); end
-	if settings.DestinyPoints.G == nil then settings.DestinyPoints.G = string.format("%.3f", tG); end
-	if settings.DestinyPoints.B == nil then settings.DestinyPoints.B = string.format("%.3f", tB); end
-	if settings.DestinyPoints.X == nil then settings.DestinyPoints.X = string.format("%.0f", tX); end
-	if settings.DestinyPoints.Y == nil then settings.DestinyPoints.Y = string.format("%.0f", tY); end
-	if settings.DestinyPoints.W == nil then settings.DestinyPoints.W = string.format("%.0f", tW); end
-	ShowDestinyPoints = settings.DestinyPoints.V;
-	DPbcAlpha = tonumber(settings.DestinyPoints.A);
-	DPbcRed = tonumber(settings.DestinyPoints.R);
-	DPbcGreen = tonumber(settings.DestinyPoints.G);
-	DPbcBlue = tonumber(settings.DestinyPoints.B);
-	_G.DPLocX = tonumber(settings.DestinyPoints.X);
-	_G.DPLocY = tonumber(settings.DestinyPoints.Y);
-	_G.DPWhere = tonumber(settings.DestinyPoints.W);
-	if _G.DPWhere == 3 and ShowDestinyPoints then _G.DPWhere = 1; settings.DestinyPoints.W = string.format("%.0f", _G.DPWhere); end --Remove after Oct, 15th 2013
 
 
 	if settings.LOTROPoints == nil then settings.LOTROPoints = {}; end
@@ -522,7 +503,7 @@ function LoadSettings()-- I'm confused as to what most of this is... Most of the
 
 
 	for k,v in pairs(_G.currencies) do
-		CreateSettingsForCurrency(v.name)
+		CreateSettingsForCurrency(v)
 		LoadSettingsForCurrency(v.name)
 	end
 
@@ -554,9 +535,11 @@ function LoadSettingsForCurrency(name)
 	
 end
 
-function CreateSettingsForCurrency(name)
-	tA, tR, tG, tB, tX, tY, tW = 0.3, 0.3, 0.3, 0.3, 0, 0, 3; --Default alpha, red, green, blue, X, Y pos of control, Show where
-	if settings[name] == nil then settings[name] = {} end
+function CreateSettingsForCurrency(currency)
+	tA, tR, tG, tB, tX, tY, tW = 0.3, 0.3, 0.3, 0.3, 0, 0, Position.NONE; --Default alpha, red, green, blue, X, Y pos of control, Show where
+	local name = currency.name
+	settings[name] = settings[name] or settings[currency.legacyTitanbarName] or {}
+
 	if settings[name].V == nil then settings[name].V = false; end
 	if settings[name].A == nil then settings[name].A = string.format("%.3f", tA); end
 	if settings[name].R == nil then settings[name].R = string.format("%.3f", tR); end
@@ -629,16 +612,6 @@ function SaveSettings(str)
 		settings.Money.TS = _G.STS; --Show today statistics in money tooltip
 		if PlayerAlign == 1 then settings.Money.L = string.format("%.0f", MIWLeft); end
 		if PlayerAlign == 1 then settings.Money.T = string.format("%.0f", MIWTop); end
-
-		settings.DestinyPoints = {};
-		settings.DestinyPoints.V = ShowDestinyPoints;
-		settings.DestinyPoints.A = string.format("%.3f", DPbcAlpha);
-		settings.DestinyPoints.R = string.format("%.3f", DPbcRed);
-		settings.DestinyPoints.G = string.format("%.3f", DPbcGreen);
-		settings.DestinyPoints.B = string.format("%.3f", DPbcBlue);
-		settings.DestinyPoints.X = string.format("%.0f", _G.DPLocX);
-		settings.DestinyPoints.Y = string.format("%.0f", _G.DPLocY);
-		settings.DestinyPoints.W = string.format("%.0f", _G.DPWhere);
 
 		settings.LOTROPoints = {};
 		settings.LOTROPoints.V = ShowLOTROPoints;
@@ -845,7 +818,6 @@ function ResetSettings()
 	TBHeight, _G.TBFont, TBFontT, TBTop, TBAutoHide, TBIconSize, bcAlpha, bcRed, bcGreen, bcBlue = 30, 1107296268, "TrajanPro14", true, L["OPAHC"], 32, tA, tR, tG, tB; --Backcolor & default X Location for TitanBar
 	ShowWallet, WIbcAlpha, WIbcRed, WIbcGreen, WIbcBlue, _G.WILocX, _G.WILocY = false, tA, tR, tG, tB, tX, tY; --for Wallet Control
 	ShowMoney, _G.STM, _G.SSS, _G.STS, MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue, _G.MILocX, _G.MILocY, _G.MIWhere = true, false, true, true, tA, tR, tG, tB, 400, tY, 1; --for Money Control
-	ShowDestinyPoints, DPbcAlpha, DPbcRed, DPbcGreen, DPbcBlue, _G.DPLocX, _G.DPLocY, _G.DPWhere = false, tA, tR, tG, tB, tX, tY, tW; --for Destiny points Control
 	ShowBagInfos, _G.BIUsed, _G.BIMax, BIbcAlpha, BIbcRed, BIbcGreen, BIbcBlue, _G.BILocX, _G.BILocY = true, true, true, tA, tR, tG, tB, tX, tY; --for Bag info Control
 	ShowEquipInfos, EIbcAlpha, EIbcRed, EIbcGreen, EIbcBlue, _G.EILocX, _G.EILocY = true, tA, tR, tG, tB, 75, tY; --for Equipment infos Control
 	ShowDurabilityInfos, DIIcon, DIText, DIbcAlpha, DIbcRed, DIbcGreen, DIbcBlue, _G.DILocX, _G.DILocY = true, true, true, tA, tR, tG, tB, 145, tY; --for Durability infos Control
@@ -892,11 +864,6 @@ function ReplaceCtr()
 	_G.MILocX = oldLocX * screenWidth;
 	settings.Money.X = string.format("%.0f", _G.MILocX);
 	if ShowMoney and _G.MIWhere == 1 then MI[ "Ctr" ]:SetPosition( _G.MILocX, _G.MILocY ); end
-	
-	oldLocX = settings.DestinyPoints.X / oldScreenWidth;
-	_G.DPLocX = oldLocX * screenWidth;
-	settings.DestinyPoints.X = string.format("%.0f", _G.DPLocX);
-	if ShowDestinyPoints and _G.DPWhere == 1 then DP[ "Ctr" ]:SetPosition( _G.DPLocX, _G.DPLocY ); end
 
 	oldLocX = settings.BagInfos.X / oldScreenWidth;
 	_G.BILocX = oldLocX * screenWidth;

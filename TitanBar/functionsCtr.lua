@@ -28,20 +28,6 @@ function ImportCtr( value )
             RemoveCallback(sspack, "CountChanged", UpdateSharedStorageGold);
             -- ^^ Thx Heridian!
         end
-    elseif value == "DP" then --Destiny Points
-        if _G.DPWhere == 1 then
-            import (AppCtrD.."DestinyPoints");
-            DP[ "Ctr" ]:SetPosition( _G.DPLocX, _G.DPLocY );
-        end
-        if _G.DPWhere ~= 3 then
-            PlayerAtt = Player:GetAttributes();
-            AddCallback(PlayerAtt, "DestinyPointsChanged",
-                function(sender, args) UpdateDestinyPoints(); end
-                );
-            UpdateDestinyPoints();
-        else
-            RemoveCallback(PlayerAtt, "DestinyPointsChanged");
-        end
     elseif value == "BI" then --Backpack Infos
         import (AppCtrD.."BagInfos");
         --import (AppCtrD.."BagInfosToolTip");
@@ -416,7 +402,15 @@ function ImportCtr( value )
             _G.CurrencyData[value].Ctr:SetPosition(_G.CurrencyData[value].LocX, _G.CurrencyData[value].LocY)
         end
         if _G.CurrencyData[value].Where ~= 3 then
+            if value == "DestinyPoints" then
+                PlayerAtt = Player:GetAttributes();
+                AddCallback(PlayerAtt, "DestinyPointsChanged", function(sender, args)
+                    UpdateCurrencyDisplay("DestinyPoints")
+                end)
+            end
             UpdateCurrencyDisplay(value)
+        elseif value == "DestinyPoints" then
+            RemoveCallback(PlayerAtt, "DestinyPointsChanged")
         end
     end
 end
@@ -997,11 +991,11 @@ function SavePlayerLOTROPoints()
         Turbine.DataScope.Account, "TitanBarLOTROPoints", PlayerLOTROPoints);
 end
 
-function UpdateCurrency(str) -- TODO loop can probably go
-    for _, currency in pairs(_G.currencies) do
-        if str == L["M" .. currency.name] and _G.CurrencyData[currency.name].IsVisible then
-            UpdateCurrencyDisplay(currency)
-        end
+function UpdateCurrency(currency_display)
+    if _G.Debug then write("UpdateCurrency:" ..currency_display); end
+    local currency_name = _G.CurrencyLangMap[currency_display]
+    if currency_name and _G.CurrencyData[currency_name].IsVisible then
+        UpdateCurrencyDisplay(currency_name)
     end
 end
 
@@ -1023,7 +1017,7 @@ function SetCurrencyFromZero(str, amount)
     for _, currency in pairs(_G.currencies) do
         if str == L["M" .. currency.name] and _G.CurrencyData[currency.name].IsVisible then
             if _G.CurrencyData[currency.name].IsVisible then
-                if _G.CurrencyData[currecurrency.namency].Where == 1 then
+                if _G.CurrencyData[currency.name].Where == 1 then
                     _G.CurrencyData[currency.name].Lbl:SetText(amount);
                     _G.CurrencyData[currency.name].Lbl:SetSize(_G.CurrencyData[currency.name].Lbl:GetTextLength() * NM, CTRHeight );
                     AjustIcon(currency.name);

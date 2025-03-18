@@ -16,7 +16,6 @@ AppLocaleD = AppDirD.."Locale.";
 
 Version = Plugins["TitanBar"]:GetVersion();--> ** TitanBar current version **
 _G.TB = {};
-WalletOrder = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33 };
 windowOpen = true;
 _G.Debug = false;-- True will enable some functions when I'm debugging
 
@@ -92,32 +91,35 @@ import (AppDirD.."frmMain");
 import (AppDirD.."FontMetric");
 frmMain();
 
-if PlayerAlign == 1 then 
-    MenuItem = { 
-	-- Coin
-	L["MGSC"], L["MCommendation"], L["MDP"], L["MLP"], L["MMithrilCoins"],
-	-- Currency
-	L["MMotesOfEnchantment"], L["MFigmentsOfSplendour"], L["MEmbersOfEnchantment"], L["MAncientScript"], L["MDelvingWrit"],
-	-- Instances and Skirmishes
-	L["MSkirmishMarks"], L["MMedallions"], L["MSeals"], L["MStarsOfMerit"],
-	-- Festivals and Events
-	L["MAnniversaryToken"], L["MFallFestivalToken"], L["MFarmersFaireToken"], L["MMidsummerToken"], L["MSpringLeaf"], L["MYuleToken"],
-	-- Inn League and Ale Association
-	L["MBadgeOfTaste"], L["MBadgeOfDishonour"],
-	-- Item Advancement
-	L["MShards"],
-	-- Other   
-    L["MAmrothSilverPiece"], L["MBingoBadge"], L["MCentralGondorSilverPiece"], L["MGiftgiversBrand"], L["MTokensOfHytbold"], L["MColdIronToken"],
-		L["MMedallionOfMoria"], L["MMedallionOfLothlorien"], L["MTokenOfHeroism"],L["MHerosMark"]
-	};
-else MenuItem = { L["MCommendation"], L["MLP"] }; end
+if PlayerAlign == 1 then
+  MenuItem = {
+		-- Coin
+		L["MGSC"], L["MCommendation"], L["MDestinyPoints"], L["MLP"], L["MMithrilCoins"],
+		-- Currency
+		L["MMotesOfEnchantment"], L["MFigmentsOfSplendour"], L["MEmbersOfEnchantment"], L["MAncientScript"], L["MDelvingWrit"],
+		-- Instances and Skirmishes
+		L["MSkirmishMarks"], L["MMedallions"], L["MSeals"], L["MStarsOfMerit"],
+		-- Festivals and Events
+		L["MAnniversaryToken"], L["MFallFestivalToken"], L["MFarmersFaireToken"], L["MMidsummerToken"], L["MSpringLeaf"], L["MYuleToken"],
+		L["MBuriedTreasureToken"],
+		-- Inn League and Ale Association
+		L["MBadgeOfTaste"], L["MBadgeOfDishonour"],
+		-- Item Advancement
+		L["MShards"],
+		-- Other   
+		L["MAmrothSilverPiece"], L["MBingoBadge"], L["MCentralGondorSilverPiece"], L["MGiftgiversBrand"], L["MTokensOfHytbold"], L["MColdIronToken"],
+		L["MMedallionOfMoria"], L["MMedallionOfLothlorien"], L["MTokenOfHeroism"], L["MHerosMark"]
+	}
+else
+	MenuItem = { L["MCommendation"], L["MLP"] }
+end
 
 TitanBarCommand = Turbine.ShellCommand()
 
-_G.CurrencyLangMap = { -- TODO clean this up
+_G.CurrencyLangMap = { -- reverse lookup table necessary to get the internal item name
 	[L["MGSC"]] = "GSC",
 	[L["MCommendation"]] = "Commendation",
-	[L["MDP"]] = "DP",
+	[L["MDestinyPoints"]] = "DestinyPoints",
 	[L["MLP"]] = "LP",
 	[L["MMithrilCoins"]] = "MithrilCoins",
 	[L["MMotesOfEnchantment"]] = "MotesOfEnchantment",
@@ -147,7 +149,8 @@ _G.CurrencyLangMap = { -- TODO clean this up
 	[L["MTokenOfHeroism"]] = "TokenOfHeroism",
 	[L["MHerosMark"]] = "HerosMark",
 	[L["MMedallionOfMoria"]] = "MedallionOfMoria",
-	[L["MMedallionOfLothlorien"]] = "MedallionOfLothlorien"
+	[L["MMedallionOfLothlorien"]] = "MedallionOfLothlorien",
+	[L["MBuriedTreasureToken"]] = "BuriedTreasureToken"
 }
 
 function TitanBarCommand:Execute( command, arguments )

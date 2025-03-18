@@ -19,7 +19,12 @@ _G.createCurrencyTable = function(currencyName)
 	currencyData.Icon = Turbine.UI.Control()
 	currencyData.Icon:SetParent(currencyData.Ctr)
 	currencyData.Icon:SetBlendMode(Turbine.UI.BlendMode.AlphaBlend)
-	currencyData.Icon:SetSize(32, 32)
+
+	if currencyName == "DestinyPoints" then
+		currencyData.Icon:SetSize(21, 22)
+	else
+		currencyData.Icon:SetSize(32, 32)
+	end
 	currencyData.Icon:SetBackground(WalletItem[currencyName].Icon)
 
 	-- Icon event handlers
@@ -53,7 +58,11 @@ _G.createCurrencyTable = function(currencyName)
 	currencyData.Lbl:SetFont(_G.TBFont)
 	currencyData.Lbl:SetPosition(0, 0)
 	currencyData.Lbl:SetFontStyle(Turbine.UI.FontStyle.Outline)
-	currencyData.Lbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight)
+	if currencyName == "DestinyPoints" then
+		currencyData.Lbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleCenter)
+	else
+		currencyData.Lbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight)
+	end
 
 	-- Label event handlers
 	currencyData.Lbl.MouseMove = function(sender, args)

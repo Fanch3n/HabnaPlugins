@@ -13,6 +13,7 @@ v.1.40.00
 	- Token of Heroism
 	- Cold-iron Token
 	- Delving Writ
+	- Buried Treasure Token
 - Significantly reduced necessary steps for adding currencies
 - Removed lots of duplicated code
 - LotroPoints window now accepts and closes when pressing Return

@@ -146,6 +146,7 @@ _G.WalletItem = {
 	MedallionOfLothlorien = { Icon = 0x41101829 },
 	HerosMark = { Icon = 0x41231838 },
 	TokenOfHeroism = { Icon = 0x41231838 },
+	BuriedTreasureToken = { Icon = 0x41002B2C },
 	ColdIronToken = { Icon = 0x4125E425 }
 };
 

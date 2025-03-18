@@ -65,8 +65,8 @@ L[ "BingoBadgeh" ] = "Eure Bingo-Abzeichen";
 L[ "MSkirmishMarks" ] = "Zeichen";
 L[ "SkirmishMarksh" ] = "Eure Scharm\195\188tzel-Zeichen";
 -- Destiny Points control
-L[ "MDP" ] = "Schicksalspunkte";
-L[ "DPh" ] = "Eure Schicksalspunkte";
+L[ "MDestinyPoints" ] = "Schicksalspunkte";
+L[ "DestinyPointsh" ] = "Eure Schicksalspunkte";
 -- Shards control
 L[ "MShards" ] = "Scherbe";
 L[ "Shardsh" ] = "Eure Scherben";
@@ -141,6 +141,9 @@ L[ "MedallionOfMoriah" ] = "Eure Medaillons von Moria";
 -- Medallion of Lothlórien
 L[ "MMedallionOfLothlorien" ] = "Medaillon von Lothlórien";
 L[ "MedallionOfLothlorienh" ] = "Eure Medaillons von Lothlórien";
+-- Buried Treasure Token
+L[ "MBuriedTreasureToken" ] = "Münze der vergrabenen Schätze";
+L[ "BuriedTreasureTokenh" ] = "Eure Münzen der vergrabenen Schätze";
 
 -- Control Menu
 L[ "MCU" ] = "entfernen ...";

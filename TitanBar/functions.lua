@@ -266,15 +266,6 @@ function UpdateMoney()
 	end
 end
 --**^
---**v Update destiny point currency on TitanBar v**
-function UpdateDestinyPoints()
-	if _G.DPWhere == 1 then
-		DP[ "Lbl" ]:SetText( PlayerAtt:GetDestinyPoints() );
-		DP[ "Lbl" ]:SetSize( DP[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "DP" );
-	end
-end
---**^
 --**v Update LOTRO points on TitanBar v**
 function UpdateLOTROPoints()
 	if _G.LPWhere == 1 then
@@ -298,7 +289,11 @@ end
 --**v Update currency on TitanBar v**
 function UpdateCurrencyDisplay(currencyName)
 	if _G.CurrencyData[currencyName].Where == 1 then
-		_G.CurrencyData[currencyName].Lbl:SetText(GetCurrency(L["M"..currencyName]));
+		if currencyName == "DestinyPoints" then
+			_G.CurrencyData[currencyName].Lbl:SetText(PlayerAtt:GetDestinyPoints())
+		else
+			_G.CurrencyData[currencyName].Lbl:SetText(GetCurrency(L["M"..currencyName]))
+		end
 		_G.CurrencyData[currencyName].Lbl:SetSize(_G.CurrencyData[currencyName].Lbl:GetTextLength() * NM, CTRHeight ); 
 		AjustIcon(currencyName);
 	end
@@ -564,7 +559,6 @@ function ChangeColor(tColor)
 		TB["win"]:SetBackColor( tColor );
 		if ShowWallet then WI[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowMoney then MI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowDestinyPoints then DP[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowBagInfos then BI[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowPlayerInfos then PI[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowEquipInfos then EI[ "Ctr" ]:SetBackColor( tColor ); end
@@ -666,7 +660,7 @@ function AjustIcon(str)
         end
 		MI[ "Ctr" ]:SetSize( MI["GCtr"]:GetWidth() + MI["SCtr"]:GetWidth() + 
             MI["CCtr"]:GetWidth(), CTRHeight );
-	elseif str == "DP" or str == "DI" then
+	elseif str == "DI" then
 		_G[str][ "Icon" ]:SetStretchMode( 1 );
 		_G[str][ "Icon" ]:SetPosition( _G[str][ "Lbl" ]:GetLeft() + _G[str][ "Lbl" ]:GetWidth(), Y );
 		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
@@ -728,9 +722,15 @@ function AjustIcon(str)
 		_G[str][ "Icon" ]:SetStretchMode( 3 );
 	else
 		_G.CurrencyData[str].Icon:SetStretchMode(1);
-		_G.CurrencyData[str].Icon:SetPosition(
-			_G.CurrencyData[str].Lbl:GetLeft()+_G.CurrencyData[str].Lbl:GetWidth()+3,Y
-		)
+		if str == "DestinyPoints" then
+			_G.CurrencyData[str].Icon:SetPosition(
+				_G.CurrencyData[str].Lbl:GetLeft() + _G.CurrencyData[str].Lbl:GetWidth(), Y
+			)
+		else
+			_G.CurrencyData[str].Icon:SetPosition(
+				_G.CurrencyData[str].Lbl:GetLeft() + _G.CurrencyData[str].Lbl:GetWidth() + 3, Y
+			)
+		end
 		_G.CurrencyData[str].Ctr:SetSize( _G.CurrencyData[str].Icon:GetLeft() + TBIconSize, CTRHeight );
 		_G.CurrencyData[str].Icon:SetSize( TBIconSize, TBIconSize );
 		_G.CurrencyData[str].Icon:SetStretchMode(3);

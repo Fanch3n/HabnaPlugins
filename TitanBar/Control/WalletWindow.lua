@@ -223,10 +223,6 @@ function frmWalletWindow()
 			_G.MIWhere = SelIndex; settings.Money.W = string.format("%.0f", SelIndex);
 			if SelIndex == Position.TITANBAR then if not ShowMoney then ShowHideMoney(); end
 			else if ShowMoney then ShowHideMoney(); end end
-		elseif wcur == L["MDP"] then
-			_G.DPWhere = SelIndex; settings.DestinyPoints.W = string.format("%.0f", SelIndex);
-			if SelIndex == Position.TITANBAR then if not ShowDestinyPoints then ShowHideDestinyPoints(); end
-			else if ShowDestinyPoints then ShowHideDestinyPoints(); end end
 		elseif wcur == L["MLP"] then
 			_G.LPWhere = SelIndex; settings.LOTROPoints.W = string.format("%.0f", SelIndex);
 			if SelIndex == Position.TITANBAR then
@@ -290,7 +286,7 @@ function RefreshWIListBox()
 		local curLbl = Turbine.UI.Label();
 		WICtr.curLbl = curLbl;
 		curLbl:SetParent( WICtr );
-		curLbl:SetText( MenuItem[WalletOrder[i]] );
+		curLbl:SetText( MenuItem[i] );
 		curLbl:SetSize( WIListBox:GetWidth(), 20 );
 		curLbl:SetPosition( 0, 0 );
 		curLbl:SetFont( Turbine.UI.Lotro.Font.TrajanPro16 );
@@ -300,15 +296,13 @@ function RefreshWIListBox()
 
 		curLbl.MouseClick = function( sender, args )
 			if ( args.Button == Turbine.UI.MouseButton.Right ) then
-				wcur = MenuItem[WalletOrder[i]];
+				wcur = MenuItem[i];
 				WIlblFN:SetText( wcur );
 				LPWCtr:SetVisible( false );
 				WIbutSave:SetPosition( WIWCtr:GetWidth()/2 - WIbutSave:GetWidth()/2, WIDD:GetTop()+WIDD:GetHeight()+10 );
 
 				if wcur == L["MGSC"] then
 					tw = _G.MIWhere; -- Money
-				elseif wcur == L["MDP"] then
-					tw = _G.DPWhere; -- Destiny Points
 				elseif wcur == L["MLP"] then
 					tw = _G.LPWhere; -- LOTRO Points
 					LPWCtr:SetVisible( true ); -- LOTRO Points

@@ -65,8 +65,8 @@ L[ "BingoBadgeh" ] = "These are your Insignes de Bingo";
 L[ "MSkirmishMarks" ] = "Marque";
 L[ "SkirmishMarksh" ] = "Ce sont vos marques d'escarmouches";
 -- Destiny Points control
-L[ "MDP" ] = "Points destin\195\169e";
-L[ "DPh" ] = "Ce sont vos points destin\195\169e";
+L[ "MDestinyPoints" ] = "Points destin\195\169e";
+L[ "DestinyPointsh" ] = "Ce sont vos points destin\195\169e";
 -- Shards control
 L[ "MShards" ] = "Eclat";
 L[ "Shardsh" ] = "Ce sont vos Eclats";
@@ -141,6 +141,9 @@ L[ "MedallionOfMoriah" ] = "Ce sont vos Médaillons de la Moria";
 -- Medallion of Lothlórien
 L[ "MMedallionOfLothlorien" ] = "Médaillon de la Lothlórien";
 L[ "MedallionOfLothlorienh" ] = "Ce sont vos Médaillons de la Lothlórien";
+-- Buried Treasure Token
+L[ "MBuriedTreasureToken" ] = "Jeton du Trésor enfoui";
+L[ "BuriedTreasureTokenh" ] = "Ce sont vos Jetons du Trésor enfoui";
 
 -- Control Menu
 L[ "MCU" ] = "D\195\169charger ...";
