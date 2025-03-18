@@ -12,6 +12,7 @@ function LoadSettings()-- I'm confused as to what most of this is... Most of the
 	elseif GLocale == "fr" then
 		settings = Turbine.PluginData.Load( Turbine.DataScope.Character, "TitanBarSettingsFR" );
 	end
+	
 	tA, tR, tG, tB, tX, tY, tW = 0.3, 0.3, 0.3, 0.3, 0, 0, 3; --Default alpha, red, green, blue, X, Y pos of control, Show where
 	tL, tT = 100, 100; --Default position of control window
 
@@ -502,7 +503,7 @@ function LoadSettings()-- I'm confused as to what most of this is... Most of the
 
 
 	for k,v in pairs(_G.currencies) do
-		CreateSettingsForCurrency(v.name)
+		CreateSettingsForCurrency(v)
 		LoadSettingsForCurrency(v.name)
 	end
 
@@ -534,9 +535,11 @@ function LoadSettingsForCurrency(name)
 	
 end
 
-function CreateSettingsForCurrency(name)
-	tA, tR, tG, tB, tX, tY, tW = 0.3, 0.3, 0.3, 0.3, 0, 0, 3; --Default alpha, red, green, blue, X, Y pos of control, Show where
-	if settings[name] == nil then settings[name] = {} end
+function CreateSettingsForCurrency(currency)
+	tA, tR, tG, tB, tX, tY, tW = 0.3, 0.3, 0.3, 0.3, 0, 0, Position.NONE; --Default alpha, red, green, blue, X, Y pos of control, Show where
+	local name = currency.name
+	settings[name] = settings[name] or settings[currency.legacyTitanbarName] or {}
+
 	if settings[name].V == nil then settings[name].V = false; end
 	if settings[name].A == nil then settings[name].A = string.format("%.3f", tA); end
 	if settings[name].R == nil then settings[name].R = string.format("%.3f", tR); end
