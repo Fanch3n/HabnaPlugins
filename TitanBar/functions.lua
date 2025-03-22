@@ -795,7 +795,14 @@ function ShowTableContent( table )
 	if table == nil then write( "Table " .. table .. " is empty!" ); return end
 
 	for k,v in pairs(table) do
-		write( "key: "..tostring( k )..", value: "..tostring( v ) );
+        local text = "";
+        if (v.GetName) then
+            text = v:GetName();
+        else 
+            text = tostring(v);
+        end
+
+		write( "key: "..tostring( k )..", value: "..text );
 	end
 end
 

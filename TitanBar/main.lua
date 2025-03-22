@@ -204,8 +204,8 @@ function TitanBarCommand:Execute( command, arguments )
 		ShowTableContent( PlayerCurrency );
 		write("-----^----------------------");
 		write("You may request to add a currency if it's not listed in the " .. 
-            "wallet menu! Give the 'key' string to Habna so it can be added" .. 
-            " into future version of TitanBar thx!");
+            "wallet menu! Give both the 'key' and 'value' texts to the maintainer so it can be added" .. 
+            " into future version of TitanBar. Thanks!");
 		write("");
 	else
 		ShowNS = true;
