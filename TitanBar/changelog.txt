@@ -2,8 +2,14 @@ This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Te
 
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
+Version 1.4x.yy (upcoming)
+- Widened currency window to account for longer currency names
+- Fixed output of /titanbar pw
+
+=================================================
 Version 1.41.00 (March 22, 2025)
 - Fixed some problems with encoding in the language files
+- TitanBar no longer produces an error if CalcStat is not installed
 - Added several currencies
 	- Gabil'akkâ War-marks
 	- Iron Coins of Cardolan
