@@ -55,11 +55,9 @@ PlayerAlign = Player:GetAlignment(); --1: Free People / 2: Monster Play
 --**
 
 --**v Detect Game Language v**
--- Legend: 0 = invalid / 2 = English / 268435457 = EnglishGB / 
---    268435459 = Francais / 268435460 = Deutsch / 268435463 = Russian
 GLocale = Turbine.Engine.GetLanguage();
-if GLocale == 268435459 then GLocale = "fr";
-elseif GLocale == 268435460 then GLocale = "de"; 
+if GLocale == Turbine.Language.French then GLocale = "fr";
+elseif GLocale == Turbine.Language.German then GLocale = "de"; 
 else GLocale = "en";
 end
 --**^
