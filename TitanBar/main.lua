@@ -17,7 +17,7 @@ AppLocaleD = AppDirD.."Locale.";
 Version = Plugins["TitanBar"]:GetVersion();--> ** TitanBar current version **
 _G.TB = {};
 windowOpen = true;
-_G.Debug = false;-- True will enable some functions when I'm debugging
+_G.Debug = true;-- True will enable some functions when I'm debugging
 
 -- BlendMode 1: Color / 2: Normal / 3: Multiply / 4: AlphaBlend / 5: Overlay / 
 -- 6: Grayscale / 7: Screen / 8: Undefined
@@ -107,8 +107,10 @@ if PlayerAlign == 1 then
 		-- Item Advancement
 		L["MShards"],
 		-- Other   
-		L["MAmrothSilverPiece"], L["MBingoBadge"], L["MCentralGondorSilverPiece"], L["MGiftgiversBrand"], L["MTokensOfHytbold"], L["MColdIronToken"],
-		L["MMedallionOfMoria"], L["MMedallionOfLothlorien"], L["MTokenOfHeroism"], L["MHerosMark"]
+		L["MAmrothSilverPiece"], L["MBingoBadge"], L["MCentralGondorSilverPiece"], L["MEastGondorSilverPiece"], L["MGiftgiversBrand"], L["MTokensOfHytbold"], L["MColdIronToken"],
+		L["MMedallionOfMoria"], L["MMedallionOfLothlorien"], L["MTokenOfHeroism"], L["MHerosMark"], L["MGabilakkaWarMark"], L["MSteelToken"],
+		L["MCopperCoinOfGundabad"], L["MSilverCoinOfGundabad"], L["MIronCoinOfCardolan"], L["MBreeLandWoodMark"], L["MBronzeArnorianCoin"],
+		L["MSilverArnorianCoin"], L["MGreyfloodMark"], L["MGundabadMountainMark"], L["MSilverTokenOfTheRiddermark"], L["MGoldenTokenOfTheRiddermark"]
 	}
 else
 	MenuItem = { L["MCommendation"], L["MLP"] }
@@ -150,7 +152,20 @@ _G.CurrencyLangMap = { -- reverse lookup table necessary to get the internal ite
 	[L["MHerosMark"]] = "HerosMark",
 	[L["MMedallionOfMoria"]] = "MedallionOfMoria",
 	[L["MMedallionOfLothlorien"]] = "MedallionOfLothlorien",
-	[L["MBuriedTreasureToken"]] = "BuriedTreasureToken"
+	[L["MBuriedTreasureToken"]] = "BuriedTreasureToken",
+	[L["MGabilakkaWarMark"]] = "GabilakkaWarMark",
+	[L["MCopperCoinOfGundabad"]] = "CopperCoinOfGundabad",
+	[L["MSilverCoinOfGundabad"]] = "SilverCoinOfGundabad",
+	[L["MSteelToken"]] = "SteelToken",
+	[L["MIronCoinOfCardolan"]] = "IronCoinOfCardolan",
+	[L["MBreeLandWoodMark"]] = "BreeLandWoodMark",
+	[L["MBronzeArnorianCoin"]] = "BronzeArnorianCoin",
+	[L["MSilverArnorianCoin"]] = "SilverArnorianCoin",
+	[L["MEastGondorSilverPiece"]] = "EastGondorSilverPiece",
+	[L["MGreyfloodMark"]] = "GreyfloodMark",
+	[L["MGundabadMountainMark"]] = "GundabadMountainMark",
+	[L["MSilverTokenOfTheRiddermark"]] = "SilverTokenOfTheRiddermark",
+	[L["MGoldenTokenOfTheRiddermark"]] = "GoldenTokenOfTheRiddermark"
 }
 
 function TitanBarCommand:Execute( command, arguments )

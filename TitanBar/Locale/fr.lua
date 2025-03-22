@@ -114,15 +114,15 @@ L[ "MSpringLeaf" ] = "Feuille de printemps";
 L[ "SpringLeafh" ] = "Ce sont vos Feuille de Printemps";
 -- Midsummer Tokens control
 L[ "MMidsummerToken" ] = "Jeton du solstice d'\195\169t\195\169";
-L[ "MidsummerTokenh" ] = "Ce sont vos Jetons du solstice d'�t�";
+L[ "MidsummerTokenh" ] = "Ce sont vos Jetons du solstice d'été";
 -- Ancient Script control
 L[ "MAncientScript" ] = "\195\137criture ancienne";
 L[ "AncientScripth" ] = "Ce sont vos \195\137criture ancienne";
 -- Inn League / Ale Association control
-L[ "MBadgeOfTaste" ] = "M�daille du go�t";
-L[ "BadgeOfTasteh" ] = "Ce sont vos M�dailles du go�t";
-L[ "MBadgeOfDishonour" ] = "M�daille de la honte";
-L[ "BadgeOfDishonourh" ] = "Ce sont vos M�dailles de la honte";
+L[ "MBadgeOfTaste" ] = "Médaille du goût";
+L[ "BadgeOfTasteh" ] = "Ce sont vos Médailles du goût";
+L[ "MBadgeOfDishonour" ] = "Médaille de la honte";
+L[ "BadgeOfDishonourh" ] = "Ce sont vos Médailles de la honte";
 -- Delving Writs
 L[ "MDelvingWrit" ] = "Acte d'excavation";
 L[ "DelvingWrith" ] = "Ce sont vos Actes d'excavation";
@@ -144,6 +144,45 @@ L[ "MedallionOfLothlorienh" ] = "Ce sont vos Médaillons de la Lothlórien";
 -- Buried Treasure Token
 L[ "MBuriedTreasureToken" ] = "Jeton du Trésor enfoui";
 L[ "BuriedTreasureTokenh" ] = "Ce sont vos Jetons du Trésor enfoui";
+-- Gabil'akkâ War-mark
+L[ "MGabilakkaWarMark" ] = "Marque de guerre des Gabil'akkâ";
+L[ "GabilakkaWarMarkh" ] = "Ce sont vos Marques de guerre des Gabil'akkâ";
+-- Copper Coin of Gundabad
+L[ "MCopperCoinOfGundabad" ] = "Pièce de cuivre de Gundabad";
+L[ "CopperCoinOfGundabadh" ] = "Ce sont vos Pièces de cuivre de Gundabad";
+-- Silver Coin of Gundabad
+L[ "MSilverCoinOfGundabad" ] = "Pièce d'argent de Gundabad";
+L[ "SilverCoinOfGundabadh" ] = "Ce sont vos Pièces d'argent de Gundabad";
+-- Steel Token
+L[ "MSteelToken" ] = "Jeton d'acier";
+L[ "SteelTokenh" ] = "Jetons d'acier";
+-- Iron Coin of Cardolan
+L[ "MIronCoinOfCardolan" ] = "Pièce en fer du Cardolan";
+L[ "IronCoinOfCardolanh" ] = "Ce sont vos Pièces en fer du Cardolan";
+-- Bree-land Wood-mark
+L[ "MBreeLandWoodMark" ] = "Marque sylvestre du Pays de Bree";
+L[ "BreeLandWoodMarkh" ] = "Ce sont vos Marques sylvestres du Pays de Bree";
+-- Bronze Arnorian Coin
+L[ "MBronzeArnorianCoin" ] = "Pièce en bronze d'Arnor";
+L[ "BronzeArnorianCoinh" ] = "Ce sont vos Pièces en bronze d'Arnor";
+-- Silver Arnorian Coin
+L[ "MSilverArnorianCoin" ] = "Pièce en argent d'Arnor";
+L[ "SilverArnorianCoinh" ] = "Ce sont vos Pièces en argent d'Arnor";
+-- East Gondor Silver Piece
+L[ "MEastGondorSilverPiece" ] = "Pièce d'argent du Gondor oriental";
+L[ "EastGondorSilverPieceh" ] = "Ce sont vos Pièces d'argent du Gondor oriental";
+-- Greyflood Marks
+L[ "MGreyfloodMark" ] = "Marque du Flot Gris";
+L[ "GreyfloodMarkh" ] = "Ce sont vos Marques du Flot Gris";
+-- Gundabad Mountain-marks
+L[ "MGundabadMountainMark" ] = "Marque de la montagne de Gundabad";
+L[ "GundabadMountainMarkh" ] = "Ce sont vos Marques de la montagne de Gundabad";
+-- Silver Token of the Riddermark
+L[ "MSilverTokenOfTheRiddermark" ] = "Jeton argenté du Riddermark";
+L[ "SilverTokenOfTheRiddermarkh" ] = "Ce sont vos Jetons argentés du Riddermark";
+-- Golden Token of the Riddermark
+L[ "MGoldenTokenOfTheRiddermark" ] = "Jeton doré du Riddermark";
+L[ "GoldenTokenOfTheRiddermarkh" ] = "Ce sont vos Jetons dorés du Riddermark";
 
 -- Control Menu
 L[ "MCU" ] = "D\195\169charger ...";

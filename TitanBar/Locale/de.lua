@@ -144,6 +144,45 @@ L[ "MedallionOfLothlorienh" ] = "Eure Medaillons von Lothlórien";
 -- Buried Treasure Token
 L[ "MBuriedTreasureToken" ] = "Münze der vergrabenen Schätze";
 L[ "BuriedTreasureTokenh" ] = "Eure Münzen der vergrabenen Schätze";
+-- Gabil'akkâ War-mark
+L[ "MGabilakkaWarMark" ] = "Gabil'akkâ-Kriegsmarke";
+L[ "GabilakkaWarMarkh" ] = "Eure Gabil'akkâ-Kriegsmarken";
+-- Copper Coin of Gundabad
+L[ "MCopperCoinOfGundabad" ] = "Kupfermünze von Gundabad";
+L[ "CopperCoinOfGundabadh" ] = "Eure Kupfermünzen von Gundabad";
+-- Silver Coin of Gundabad
+L[ "MSilverCoinOfGundabad" ] = "Silvermünze von Gundabad";
+L[ "SilverCoinOfGundabadh" ] = "Eure Silbermünzen von Gundabad";
+-- Steel Token
+L[ "MSteelToken" ] = "Schildmünze";
+L[ "SteelTokenh" ] = "Eure Schildmünzen";
+-- Iron Coin of Cardolan
+L[ "MIronCoinOfCardolan" ] = "Eisenmünze von Cardolan";
+L[ "IronCoinOfCardolanh" ] = "Eure Eisenmünzen von Cardolan";
+-- Bree-land Wood-mark
+L[ "MBreeLandWoodMark" ] = "Breeland-Waldmarke";
+L[ "BreeLandWoodMarkh" ] = "Eure Breeland-Waldmarken";
+-- Bronze Arnorian Coin
+L[ "MBronzeArnorianCoin" ] = "Arnorische Bronzemünze";
+L[ "BronzeArnorianCoinh" ] = "Eure Arnorischen Bronzemünzen";
+-- Silver Arnorian Coin
+L[ "MSilverArnorianCoin" ] = "Arnorische Silbermünze";
+L[ "SilverArnorianCoinh" ] = "Eure Arnorischen Silbermünzen";
+-- East Gondor Silver Piece
+L[ "MEastGondorSilverPiece" ] = "Ostgondorisches Silberstück";
+L[ "EastGondorSilverPieceh" ] = "Eure Ostgondorischen Silberstücke";
+-- Greyflood Marks
+L[ "MGreyfloodMark" ] = "Grauflut-Zeichen";
+L[ "GreyfloodMarkh" ] = "Eure Grauflut-Zeichen";
+-- Gundabad Mountain-marks
+L[ "MGundabadMountainMark" ] = "Gundabad-Bergmarke";
+L[ "GundabadMountainMarkh" ] = "Eure Gundabad-Bergmarken";
+-- Silver Token of the Riddermark
+L[ "MSilverTokenOfTheRiddermark" ] = "Silbermünze aus der Riddermark";
+L[ "SilverTokenOfTheRiddermarkh" ] = "Eure Silbermünzen aus der Riddermark";
+-- Golden Token of the Riddermark
+L[ "MGoldenTokenOfTheRiddermark" ] = "Goldmünze aus der Riddermark";
+L[ "GoldenTokenOfTheRiddermarkh" ] = "Eure Goldmünzen aus der Riddermark";
 
 -- Control Menu
 L[ "MCU" ] = "entfernen ...";

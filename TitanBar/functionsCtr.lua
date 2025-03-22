@@ -994,6 +994,7 @@ end
 function UpdateCurrency(currency_display)
     if _G.Debug then write("UpdateCurrency:" ..currency_display); end
     local currency_name = _G.CurrencyLangMap[currency_display]
+    if _G.Debug and not currency_name then write("Currency not supported!"); end
     if currency_name and _G.CurrencyData[currency_name].IsVisible then
         UpdateCurrencyDisplay(currency_name)
     end
@@ -1027,12 +1028,12 @@ function SetCurrencyFromZero(str, amount)
     end
 end
 
-function GetCurrency( localizedCurrencyName )
+function GetCurrency(localizedCurrencyName)
     CurQuantity = 0;
 
-    for k,v in pairs( PlayerCurrency ) do
+    for k,v in pairs(PlayerCurrency) do
         if k == localizedCurrencyName then
-            CurQuantity = PlayerCurrency[ localizedCurrencyName ]:GetQuantity();
+            CurQuantity = PlayerCurrency[localizedCurrencyName]:GetQuantity();
             break
         end
     end

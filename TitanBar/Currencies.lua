@@ -157,5 +157,57 @@ _G.currencies = {
     name = "DestinyPoints",
     legacyTitanbarName = "DP",
     visibleInMonsterPlay = false
+  },
+  {
+    name = "GabilakkaWarMark",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "CopperCoinOfGundabad",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "SilverCoinOfGundabad",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "SteelToken",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "IronCoinOfCardolan",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "BreeLandWoodMark",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "BronzeArnorianCoin",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "SilverArnorianCoin",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "EastGondorSilverPiece",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "GreyfloodMark",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "GundabadMountainMark",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "SilverTokenOfTheRiddermark",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "GoldenTokenOfTheRiddermark",
+    visibleInMonsterPlay = false
   }
 }

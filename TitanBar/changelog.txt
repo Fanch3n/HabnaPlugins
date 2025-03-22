@@ -1,9 +1,26 @@
 This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Technical-13 which replaced v1.29.00 by Thorondor which replaced v1.24 by Habana.
-You do not need the original files.
+
+Missing currencies:
+- Minas Tirith Silver Pieces
 
 
-Need translations (mostly French)! 
 If you notice an error, please send me a pm or post it on the boards.
+=================================================
+v.1.41.00
+- Added several currencies
+	- Gabil'akkâ War-marks
+	- Iron Coins of Cardolan
+	- Copper Coins of Gundabad
+	- Silver Coins of Gundabad
+	- Steel Tokens
+	- Bree-land Wood-marks
+	- Bronze Arnorian Coins
+	- Silver Arnorian Coins
+	- East Gondor Silver Pieces
+	- Greyflood Marks
+	- Gundabad Mountain-marks
+	- Silver Tokens of the Riddermark
+	- Golden Tokens of the Riddermark
 =================================================
 v.1.40.00
 - Added several currencies

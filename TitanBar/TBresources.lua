@@ -147,7 +147,20 @@ _G.WalletItem = {
 	HerosMark = { Icon = 0x41231838 },
 	TokenOfHeroism = { Icon = 0x41231838 },
 	BuriedTreasureToken = { Icon = 0x41002B2C },
-	ColdIronToken = { Icon = 0x4125E425 }
+	ColdIronToken = { Icon = 0x4125E425 },
+	GabilakkaWarMark = { Icon = 0x411F9F8E },
+	CopperCoinOfGundabad = { Icon = 0x411C4D0E },
+	SilverCoinOfGundabad = { Icon = 0x4120C6BD },
+	SteelToken = { Icon = 0x4112611F },
+	IronCoinOfCardolan = { Icon = 0x4121EFD7 },
+	BreeLandWoodMark = { Icon = 0x411FD3BE },
+	BronzeArnorianCoin = { Icon = 0x410E636A },
+	SilverArnorianCoin = { Icon = 0x410E8278 },
+	EastGondorSilverPiece = { Icon = 0x41152879 },
+	GreyfloodMark = { Icon = 0x41221BE0 },
+	GundabadMountainMark = { Icon = 0x4120C6BF },
+	SilverTokenOfTheRiddermark = { Icon = 0x41127D03 },
+	GoldenTokenOfTheRiddermark = { Icon = 0x41127D06 }
 };
 
 _G.DurabilitySlotsBG = { 0x41007eed, 0x41007ef6, 0x41007ef7, 0x41007eef, 0x41007eee, 0x41007ee9, 0x41007ef0, 0x41007ef9, 0x41007ef8,

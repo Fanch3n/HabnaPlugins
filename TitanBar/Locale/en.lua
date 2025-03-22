@@ -144,6 +144,45 @@ L[ "MedallionOfLothlorienh" ] = "Your Medallions of Lothlórien";
 -- Buried Treasure Token
 L[ "MBuriedTreasureToken" ] = "Buried Treasure Token";
 L[ "BuriedTreasureTokenh" ] = "Your Buried Treasure Tokens";
+-- Gabil'akkâ War-mark
+L[ "MGabilakkaWarMark" ] = "Gabil'akkâ War-mark";
+L[ "GabilakkaWarMarkh" ] = "Your Gabil'akkâ War-marks";
+-- Copper Coin of Gundabad
+L[ "MCopperCoinOfGundabad" ] = "Copper Coin of Gundabad";
+L[ "CopperCoinOfGundabadh" ] = "Your Copper Coins of Gundabad";
+-- Silver Coin of Gundabad
+L[ "MSilverCoinOfGundabad" ] = "Silver Coin of Gundabad";
+L[ "SilverCoinOfGundabadh" ] = "Your Silver Coins of Gundabad";
+-- Steel Token
+L[ "MSteelToken" ] = "Steel Token";
+L[ "SteelTokenh" ] = "Your Steel Tokens";
+-- Iron Coin of Cardolan
+L[ "MIronCoinOfCardolan" ] = "Iron Coin of Cardolan";
+L[ "IronCoinOfCardolanh" ] = "Your Iron Coins of Cardolan";
+-- Bree-land Wood-mark
+L[ "MBreeLandWoodMark" ] = "Bree-land Wood-mark";
+L[ "BreeLandWoodMarkh" ] = "Your Bree-land Wood-marks";
+-- Bronze Arnorian Coin
+L[ "MBronzeArnorianCoin" ] = "Bronze Arnorian Coin";
+L[ "BronzeArnorianCoinh" ] = "Your Bronze Arnorian Coins";
+-- Silver Arnorian Coin
+L[ "MSilverArnorianCoin" ] = "Silver Arnorian Coin";
+L[ "SilverArnorianCoinh" ] = "Your Silver Arnorian Coins";
+-- East Gondor Silver Piece
+L[ "MEastGondorSilverPiece" ] = "East Gondor Silver Piece";
+L[ "EastGondorSilverPieceh" ] = "Your East Gondor Silver Pieces";
+-- Greyflood Marks
+L[ "MGreyfloodMark" ] = "Greyflood Mark";
+L[ "GreyfloodMarkh" ] = "Your Greyflood Marks";
+-- Gundabad Mountain-marks
+L[ "MGundabadMountainMark" ] = "Gundabad Mountain-mark";
+L[ "GundabadMountainMarkh" ] = "Your Gundabad Mountain-marks";
+-- Silver Token of the Riddermark
+L[ "MSilverTokenOfTheRiddermark" ] = "Silver Token of the Riddermark";
+L[ "SilverTokenOfTheRiddermarkh" ] = "Your Silver Tokens of the Riddermark";
+-- Golden Token of the Riddermark
+L[ "MGoldenTokenOfTheRiddermark" ] = "Golden Token of the Riddermark";
+L[ "GoldenTokenOfTheRiddermarkh" ] = "Your Golden Tokens of the Riddermark";
 
 -- Control Menu
 L[ "MCU" ] = "Unload ...";
