@@ -27,7 +27,11 @@ LP["Icon"]:SetSize( 32, 32 );
 LP["Icon"].MouseMove = function( sender, args )
 	LP["Lbl"].MouseLeave( sender, args );
 	TB["win"].MouseMove();
-	if dragging then MoveLPCtr(sender, args); end
+	if dragging then
+        MoveLPCtr(sender, args);
+    else
+        ShowToolTipWin( "LP" );
+    end
 end
 
 LP["Icon"].MouseLeave = function( sender, args )

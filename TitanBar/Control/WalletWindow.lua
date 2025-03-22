@@ -9,7 +9,10 @@ function frmWalletWindow()
 
 	-- **v Set some window stuff v**
 	_G.wWI = Turbine.UI.Lotro.Window();
-	if GLocale == "de" then w = 300; else w = 280; end
+    local w = 320;
+	if GLocale == "de" then w = 360;
+    elseif GLocale == "fr" then w = 360;
+    end
 	_G.wWI:SetSize( w, 640 ); --280x260
     _G.wWI:SetPosition( WIWLeft, WIWTop );
 	_G.wWI:SetText( L["MBag"] );
@@ -292,6 +295,7 @@ function RefreshWIListBox()
 		curLbl:SetFont( Turbine.UI.Lotro.Font.TrajanPro16 );
 		curLbl:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 		curLbl:SetForeColor( Color["nicegold"] );
+        curLbl:SetMultiline(false);
 		--curLbl:SetBackColor( Color["blue"] ); --debug purpose
 
 		curLbl.MouseClick = function( sender, args )

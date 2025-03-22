@@ -7,7 +7,8 @@
 --**v Unload control v**
 function UnloadControl( value )
 	if _G.Debug then write("UnloadControl "..value); end
-	if value == "ctr" then
+    -- Remove all controls from TitanBar:
+	if value == "applyToAllControls" then
 		if ShowWallet then ShowHideWallet(); end
 		if ShowMoney then _G.MIWhere = 3; ShowHideMoney(); end
 		if ShowBagInfos then ShowHideBackpackInfos(); opt_BI:SetChecked( false ); end
@@ -30,7 +31,8 @@ function UnloadControl( value )
 				ShowHideCurrency(v.name);
 			end
 		end
-		elseif value == "this" then
+        -- Remove just the selected control from TitanBar
+		elseif value == "applyToThis" then
 			if _G.sFromCtr == "WI" then ShowHideWallet();
 			elseif _G.sFromCtr == "Money" then _G.MIWhere = 3; ShowHideMoney();
 			elseif _G.sFromCtr == "BI" then ShowHideBackpackInfos(); opt_BI:SetChecked( false );
@@ -97,7 +99,7 @@ function BGColor( cmd, value )
 		end
 	end
 	
-	if value == "ctr" then
+	if value == "applyToAllControls" then
 		WIbcAlpha, WIbcRed, WIbcGreen, WIbcBlue = tA, tR, tG, tB;
 		if ShowWallet then WI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
 		MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue = tA, tR, tG, tB;
@@ -140,10 +142,10 @@ function BGColor( cmd, value )
 				_G.CurrencyData[v.name].Ctr:SetBackColor(Turbine.UI.Color(tA, tR, tG, tB))
 			end
 		end
-	elseif value == "all" then
-		BGColor( cmd, "ctr" );
+	elseif value == "applyToAllAndTitanBar" then
+		BGColor( cmd, "applyToAllControls" );
 		BGColor( cmd, "TitanBar" );
-	elseif value == "this" then
+	elseif value == "applyToThis" then
 		if _G.sFromCtr == "WI" then
 			WI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) );
 		elseif _G.sFromCtr == "Money" then

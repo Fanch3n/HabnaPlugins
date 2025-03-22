@@ -1,6 +1,6 @@
 -- MoneyInfosWindow.lua
 -- written by Habna
--- refacotred by 4andreas
+-- refactored by 4andreas
 
 function frmMoneyInfosWindow()
 	-- **v Set some window stuff v**

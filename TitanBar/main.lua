@@ -55,11 +55,9 @@ PlayerAlign = Player:GetAlignment(); --1: Free People / 2: Monster Play
 --**
 
 --**v Detect Game Language v**
--- Legend: 0 = invalid / 2 = English / 268435457 = EnglishGB / 
---    268435459 = Francais / 268435460 = Deutsch / 268435463 = Russian
 GLocale = Turbine.Engine.GetLanguage();
-if GLocale == 268435459 then GLocale = "fr";
-elseif GLocale == 268435460 then GLocale = "de"; 
+if GLocale == Turbine.Language.French then GLocale = "fr";
+elseif GLocale == Turbine.Language.German then GLocale = "de"; 
 else GLocale = "en";
 end
 --**^
@@ -206,8 +204,8 @@ function TitanBarCommand:Execute( command, arguments )
 		ShowTableContent( PlayerCurrency );
 		write("-----^----------------------");
 		write("You may request to add a currency if it's not listed in the " .. 
-            "wallet menu! Give the 'key' string to Habna so it can be added" .. 
-            " into future version of TitanBar thx!");
+            "wallet menu! Give both the 'key' and 'value' texts to the maintainer so it can be added" .. 
+            " into future version of TitanBar. Thanks!");
 		write("");
 	else
 		ShowNS = true;
