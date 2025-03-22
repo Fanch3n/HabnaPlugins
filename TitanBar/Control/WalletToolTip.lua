@@ -48,7 +48,7 @@ function RefreshWITTListBox()
 				ttw = _G.CurrencyData[v.name].Where
 				CtrIconCodeIs=WalletItem[v.name].Icon
 				if wttcur == L["MDestinyPoints"] then
-					CtrQteIs = PlayerAtt:GetDestinyPoints()
+					CtrQteIs = GetPlayerAttributes():GetDestinyPoints()
 				else
 					CtrQteIs=GetCurrency(L["M" .. v.name]);
 				end
@@ -68,7 +68,7 @@ function RefreshWITTListBox()
 
 			if wttcur == L["MGSC"] then --Money control
 				local wiPosX, tmWidth = 0, 0;
-				local wmoney = PlayerAtt:GetMoney();
+				local wmoney = GetPlayerAttributes():GetMoney();
 				DecryptMoney(wmoney);
 				local twmoney = { gold, silver, copper };
 				--local twmoneyi = { 0x41007e7b, 0x41007e7c, 0x41007e7d }; --gold, silver, copper icon 27x21
