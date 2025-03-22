@@ -850,6 +850,7 @@ function ResetSettings()
 end
 -- **^
 
+-- Called when screen size has changed to reposition controls
 function ReplaceCtr()
 	write( L["TBSSCS"] );
 	TB["win"]:SetSize( screenWidth, TBHeight );
