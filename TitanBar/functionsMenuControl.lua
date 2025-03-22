@@ -142,7 +142,7 @@ function BGColor( cmd, value )
 				_G.CurrencyData[v.name].Ctr:SetBackColor(Turbine.UI.Color(tA, tR, tG, tB))
 			end
 		end
-	elseif value == "all" then
+	elseif value == "applyToAllAndTitanBar" then
 		BGColor( cmd, "applyToAllControls" );
 		BGColor( cmd, "TitanBar" );
 	elseif value == "applyToThis" then

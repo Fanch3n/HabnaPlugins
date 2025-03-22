@@ -32,7 +32,7 @@ RBCMenu1.Click = function( sender, args ) BGColor( "reset" , "TitanBar" ); end
 RBCMenu.Items:Add( RBCMenu1 );
 
 local RBCMenu2 = Turbine.UI.MenuItem( L["MCABTA"] );
-RBCMenu2.Click = function( sender, args ) BGColor( "reset", "all" ); end
+RBCMenu2.Click = function( sender, args ) BGColor( "reset", "applyToAllAndTitanBar" ); end
 RBCMenu.Items:Add( RBCMenu2 );
 
 --- Main menu
