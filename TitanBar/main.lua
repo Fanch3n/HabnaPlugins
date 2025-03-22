@@ -17,7 +17,7 @@ AppLocaleD = AppDirD.."Locale.";
 Version = Plugins["TitanBar"]:GetVersion();--> ** TitanBar current version **
 _G.TB = {};
 windowOpen = true;
-_G.Debug = true;-- True will enable some functions when I'm debugging
+_G.Debug = false;-- True will enable some functions when I'm debugging
 
 -- BlendMode 1: Color / 2: Normal / 3: Multiply / 4: AlphaBlend / 5: Overlay / 
 -- 6: Grayscale / 7: Screen / 8: Undefined
