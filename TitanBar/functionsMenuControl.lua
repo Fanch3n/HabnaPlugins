@@ -30,7 +30,7 @@ function UnloadControl( value )
 				ShowHideCurrency(v.name);
 			end
 		end
-		elseif value == "this" then
+		elseif value == "applyToThis" then
 			if _G.sFromCtr == "WI" then ShowHideWallet();
 			elseif _G.sFromCtr == "Money" then _G.MIWhere = 3; ShowHideMoney();
 			elseif _G.sFromCtr == "BI" then ShowHideBackpackInfos(); opt_BI:SetChecked( false );
@@ -143,7 +143,7 @@ function BGColor( cmd, value )
 	elseif value == "all" then
 		BGColor( cmd, "ctr" );
 		BGColor( cmd, "TitanBar" );
-	elseif value == "this" then
+	elseif value == "applyToThis" then
 		if _G.sFromCtr == "WI" then
 			WI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) );
 		elseif _G.sFromCtr == "Money" then

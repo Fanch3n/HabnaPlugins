@@ -7,7 +7,7 @@ local ATBBMenu = Turbine.UI.MenuItem( L["MTBBG"] );
 ATBBMenu.Items = ATBBMenu:GetItems();
 
 local ATBBMenu1 = Turbine.UI.MenuItem( L["MTBBGC"] );
-ATBBMenu1.Click = function( sender, args ) BGColor( "match", "this" ); end
+ATBBMenu1.Click = function( sender, args ) BGColor( "match", "applyToThis" ); end
 ATBBMenu.Items:Add( ATBBMenu1 );
 
 local ATBBMenu2 = Turbine.UI.MenuItem( L["MTBBGAC"] );
@@ -20,7 +20,7 @@ local RBGMenu = Turbine.UI.MenuItem( L["MCRBG"] );
 RBGMenu.Items = RBGMenu:GetItems();
 
 local RBGMenu1 = Turbine.UI.MenuItem( L["MTBBGC"] );
-RBGMenu1.Click = function( sender, args ) BGColor( "reset", "this" ); end
+RBGMenu1.Click = function( sender, args ) BGColor( "reset", "applyToThis" ); end
 RBGMenu.Items:Add( RBGMenu1 );
 
 local RBGMenu2 = Turbine.UI.MenuItem( L["MTBBGAC"] );
@@ -54,7 +54,7 @@ local UnloadMenu = Turbine.UI.MenuItem( L["MCU"] );
 UnloadMenu.Items = UnloadMenu:GetItems();
 
 local UnloadMenu1 = Turbine.UI.MenuItem( L["MTBBGC"] );
-UnloadMenu1.Click = function( sender, args ) UnloadControl("this"); end
+UnloadMenu1.Click = function( sender, args ) UnloadControl("applyToThis"); end
 UnloadMenu.Items:Add( UnloadMenu1 );
 
 local UnloadMenu2 = Turbine.UI.MenuItem( L["MTBBGAC"] );
