@@ -522,6 +522,7 @@ L[ "Capped1" ] = "Jaune - coiff\195\169";
 L[ "Capped2" ] = "Orange - T2 coiff\195\169";
 L[ "Capped3" ] = "Rouge - T3+ coiff\195\169";
 L[ "Capped4" ] = "Violet - Enh III coiff\195\169";
+L[ "CalcStatDependency" ] = "Cette fenêtre nécessite l'installation de CalcStat";
 
 -- Money Infos control
 L[ "MGh" ] = "Quantit\195\169 de pi\195\168ces d'or";

@@ -2,7 +2,18 @@
 -- Refactored By 4andreas
 -- Adjusted for CalcStat use By Giseldah (and added a few more caps)
 
-import "Giseldah.CalcStat";
+function IsCalcStatAvailable()
+    local loadedPlugins = Turbine.PluginManager:GetAvailablePlugins();
+    for i=1, table.maxn(loadedPlugins) do
+        if (loadedPlugins[i].Name == "CalcStat") then
+            return true;
+        end
+    end
+end
+local useCalcStat = IsCalcStatAvailable();
+if (useCalcStat) then
+    import "Giseldah.CalcStat";
+end
 
 -- Data 2-dim array, Data[index][string], string could be name,value,icon
 Data = {};
@@ -38,7 +49,7 @@ function GetData()
         Data[7]["name"],Data[7]["value"] = "XP", L["MLvl"];
         Data[8]["name"],Data[8]["value"] = "NXP", "";
 
-        if curLvl < CalcStat("LevelCap") then
+        if useCalcStat and curLvl < CalcStat("LevelCap") then
             --Calculate experience cost for next level
             maxXP = CalcStat("LvlExpCost",curLvl+1);
             --Calculate the min xp for current level
@@ -92,17 +103,18 @@ function GetData()
         PlayerAttArray[34] = {"Evade", PlayerAtt:GetEvade(), "Evade", "BPE"};
         PlayerAttArray[35] = {"Partial", PlayerAtt:GetEvade(), "PartEvade", "BPE"};
         PlayerAttArray[36] = {"PartMit", PlayerAtt:GetEvade(), "PartEvadeMit", "BPE"};
-		local CSClassName = CalcStat("ClassName",PlayerClassIdIs);
-		local CDCanBlock = CSClassName ~= "" and CalcStat(CSClassName.."CDCanBlock",curLvl) or 1;
-        for i = 14,36 do
-            Data[i]["name"] = PlayerAttArray[i][1];
-			if not (PlayerAttArray[i][3] == "Block" or PlayerAttArray[i][3] == "PartBlock" or PlayerAttArray[i][3] == "PartBlockMit") or CDCanBlock > 0 then
-				Data[i]["value"], Data[i]["capped"] = get_percentage(PlayerAttArray[i][3], PlayerAttArray[i][2], curLvl, PlayerAttArray[i][4]);
-			else
-				Data[i]["value"], Data[i]["capped"] = "--",0;
-			end
+        if (useCalcStat) then
+            local CSClassName = CalcStat("ClassName",PlayerClassIdIs);
+            local CDCanBlock = CSClassName ~= "" and CalcStat(CSClassName.."CDCanBlock",curLvl) or 1;
+            for i = 14,36 do
+                Data[i]["name"] = PlayerAttArray[i][1];
+                if not (PlayerAttArray[i][3] == "Block" or PlayerAttArray[i][3] == "PartBlock" or PlayerAttArray[i][3] == "PartBlockMit") or CDCanBlock > 0 then
+                    Data[i]["value"], Data[i]["capped"] = get_percentage(PlayerAttArray[i][3], PlayerAttArray[i][2], curLvl, PlayerAttArray[i][4]);
+                else
+                    Data[i]["value"], Data[i]["capped"] = "--",0;
+                end
+            end
         end
-        
     end
 end
 
@@ -300,41 +312,53 @@ function ShowPIWindow()
             CreateLabel(APICtr,i,90,130,x,y);
             y = y + 15;
         end
-        local CappedLabel=Turbine.UI.Label();
-        CappedLabel:SetParent(APICtr);
-        CappedLabel:SetSize(400,15);
-        CappedLabel:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
-        CappedLabel:SetFont(Turbine.UI.Lotro.Font.Verdana16);
-        CappedLabel:SetForeColor(Color["yellow"]);
-        CappedLabel:SetText( L["Capped1"] );
-        CappedLabel:SetPosition(595-CappedLabel:GetTextLength()*3.0,y-75); --4.1
-        
-        local T2NLabel=Turbine.UI.Label();
-        T2NLabel:SetParent(APICtr);
-        T2NLabel:SetSize(400,15);
-        T2NLabel:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
-        T2NLabel:SetFont(Turbine.UI.Lotro.Font.Verdana16);
-        T2NLabel:SetForeColor(Color["orange"]);
-        T2NLabel:SetText( L["Capped2"] );
-        T2NLabel:SetPosition(595-T2NLabel:GetTextLength()*3.0,y-60);
-        
-        local T3NLabel=Turbine.UI.Label();
-        T3NLabel:SetParent(APICtr);
-        T3NLabel:SetSize(400,15);
-        T3NLabel:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
-        T3NLabel:SetFont(Turbine.UI.Lotro.Font.Verdana16);
-        T3NLabel:SetForeColor(Color["red"]);
-        T3NLabel:SetText( L["Capped3"] );
-        T3NLabel:SetPosition(595-T3NLabel:GetTextLength()*3.0,y-45);
-        
-		local T2Label=Turbine.UI.Label();
-		T2Label:SetParent(APICtr);
-		T2Label:SetSize(400,15);
-		T2Label:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
-		T2Label:SetFont(Turbine.UI.Lotro.Font.Verdana16);
-		T2Label:SetForeColor(Color["purple"]);
-		T2Label:SetText( L["Capped4"] );
-		T2Label:SetPosition(595-T2Label:GetTextLength()*3.0,y-30);
+
+        if (useCalcStat) then
+            local CappedLabel=Turbine.UI.Label();
+            CappedLabel:SetParent(APICtr);
+            CappedLabel:SetSize(400,15);
+            CappedLabel:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
+            CappedLabel:SetFont(Turbine.UI.Lotro.Font.Verdana16);
+            CappedLabel:SetForeColor(Color["yellow"]);
+            CappedLabel:SetText( L["Capped1"] );
+            CappedLabel:SetPosition(595-CappedLabel:GetTextLength()*3.0,y-75); --4.1
+            
+            local T2NLabel=Turbine.UI.Label();
+            T2NLabel:SetParent(APICtr);
+            T2NLabel:SetSize(400,15);
+            T2NLabel:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
+            T2NLabel:SetFont(Turbine.UI.Lotro.Font.Verdana16);
+            T2NLabel:SetForeColor(Color["orange"]);
+            T2NLabel:SetText( L["Capped2"] );
+            T2NLabel:SetPosition(595-T2NLabel:GetTextLength()*3.0,y-60);
+            
+            local T3NLabel=Turbine.UI.Label();
+            T3NLabel:SetParent(APICtr);
+            T3NLabel:SetSize(400,15);
+            T3NLabel:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
+            T3NLabel:SetFont(Turbine.UI.Lotro.Font.Verdana16);
+            T3NLabel:SetForeColor(Color["red"]);
+            T3NLabel:SetText( L["Capped3"] );
+            T3NLabel:SetPosition(595-T3NLabel:GetTextLength()*3.0,y-45);
+            
+            local T2Label=Turbine.UI.Label();
+            T2Label:SetParent(APICtr);
+            T2Label:SetSize(400,15);
+            T2Label:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
+            T2Label:SetFont(Turbine.UI.Lotro.Font.Verdana16);
+            T2Label:SetForeColor(Color["purple"]);
+            T2Label:SetText( L["Capped4"] );
+            T2Label:SetPosition(595-T2Label:GetTextLength()*3.0,y-30);
+        else
+            local dependencyLabel = Turbine.UI.Label();
+            dependencyLabel:SetParent(APICtr);
+            dependencyLabel:SetSize(400,15);
+            dependencyLabel:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
+            dependencyLabel:SetFont(Turbine.UI.Lotro.Font.Verdana16);
+            dependencyLabel:SetForeColor(Color["yellow"]);
+            dependencyLabel:SetText( L["CalcStatDependency"] );
+            dependencyLabel:SetPosition(595-dependencyLabel:GetTextLength()*3.0,y-75); --4.1
+        end
     end
     
     ApplySkin();

@@ -522,6 +522,7 @@ L[ "Capped1" ] = "Gelb - gekappt";
 L[ "Capped2" ] = "Orange - T2 gekappt";
 L[ "Capped3" ] = "Rot - T3+ gekappt";
 L[ "Capped4" ] = "Lila - Enh III gekappt";
+L[ "CalcStatDependency" ] = "Für dieses Fenster muss CalcStat installiert sein";
 
 -- Money Infos control
 L[ "MGh" ] = "Menge der Goldm\195\188nzen";
