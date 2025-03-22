@@ -7,6 +7,7 @@
 --**v Unload control v**
 function UnloadControl( value )
 	if _G.Debug then write("UnloadControl "..value); end
+    -- Remove all controls from TitanBar:
 	if value == "applyToAllControls" then
 		if ShowWallet then ShowHideWallet(); end
 		if ShowMoney then _G.MIWhere = 3; ShowHideMoney(); end
@@ -30,6 +31,7 @@ function UnloadControl( value )
 				ShowHideCurrency(v.name);
 			end
 		end
+        -- Remove just the selected control from TitanBar
 		elseif value == "applyToThis" then
 			if _G.sFromCtr == "WI" then ShowHideWallet();
 			elseif _G.sFromCtr == "Money" then _G.MIWhere = 3; ShowHideMoney();
