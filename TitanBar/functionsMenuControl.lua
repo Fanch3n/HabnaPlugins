@@ -7,7 +7,7 @@
 --**v Unload control v**
 function UnloadControl( value )
 	if _G.Debug then write("UnloadControl "..value); end
-	if value == "ctr" then
+	if value == "applyToAllControls" then
 		if ShowWallet then ShowHideWallet(); end
 		if ShowMoney then _G.MIWhere = 3; ShowHideMoney(); end
 		if ShowBagInfos then ShowHideBackpackInfos(); opt_BI:SetChecked( false ); end
@@ -97,7 +97,7 @@ function BGColor( cmd, value )
 		end
 	end
 	
-	if value == "ctr" then
+	if value == "applyToAllControls" then
 		WIbcAlpha, WIbcRed, WIbcGreen, WIbcBlue = tA, tR, tG, tB;
 		if ShowWallet then WI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
 		MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue = tA, tR, tG, tB;
@@ -141,7 +141,7 @@ function BGColor( cmd, value )
 			end
 		end
 	elseif value == "all" then
-		BGColor( cmd, "ctr" );
+		BGColor( cmd, "applyToAllControls" );
 		BGColor( cmd, "TitanBar" );
 	elseif value == "applyToThis" then
 		if _G.sFromCtr == "WI" then
