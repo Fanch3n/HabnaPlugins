@@ -9,8 +9,8 @@ function frmWalletWindow()
 
 	-- **v Set some window stuff v**
 	_G.wWI = Turbine.UI.Lotro.Window();
-    local w = 300;
-	if GLocale == "de" then w = 320; end
+    local w = 320;
+	if GLocale == "de" then w = 340; end
 	_G.wWI:SetSize( w, 640 ); --280x260
     _G.wWI:SetPosition( WIWLeft, WIWTop );
 	_G.wWI:SetText( L["MBag"] );
