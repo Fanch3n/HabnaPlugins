@@ -144,6 +144,87 @@ L[ "MedallionOfLothlorienh" ] = "Eure Medaillons von Lothlórien";
 -- Buried Treasure Token
 L[ "MBuriedTreasureToken" ] = "Münze der vergrabenen Schätze";
 L[ "BuriedTreasureTokenh" ] = "Eure Münzen der vergrabenen Schätze";
+-- Gabil'akkâ War-mark
+L[ "MGabilakkaWarMark" ] = "Gabil'akkâ-Kriegsmarke";
+L[ "GabilakkaWarMarkh" ] = "Eure Gabil'akkâ-Kriegsmarken";
+-- Copper Coin of Gundabad
+L[ "MCopperCoinOfGundabad" ] = "Kupfermünze von Gundabad";
+L[ "CopperCoinOfGundabadh" ] = "Eure Kupfermünzen von Gundabad";
+-- Silver Coin of Gundabad
+L[ "MSilverCoinOfGundabad" ] = "Silvermünze von Gundabad";
+L[ "SilverCoinOfGundabadh" ] = "Eure Silbermünzen von Gundabad";
+-- Steel Token
+L[ "MSteelToken" ] = "Schildmünze";
+L[ "SteelTokenh" ] = "Eure Schildmünzen";
+-- Iron Coin of Cardolan
+L[ "MIronCoinOfCardolan" ] = "Eisenmünze von Cardolan";
+L[ "IronCoinOfCardolanh" ] = "Eure Eisenmünzen von Cardolan";
+-- Bree-land Wood-mark
+L[ "MBreeLandWoodMark" ] = "Breeland-Waldmarke";
+L[ "BreeLandWoodMarkh" ] = "Eure Breeland-Waldmarken";
+-- Bronze Arnorian Coin
+L[ "MBronzeArnorianCoin" ] = "Arnorische Bronzemünze";
+L[ "BronzeArnorianCoinh" ] = "Eure Arnorischen Bronzemünzen";
+-- Silver Arnorian Coin
+L[ "MSilverArnorianCoin" ] = "Arnorische Silbermünze";
+L[ "SilverArnorianCoinh" ] = "Eure Arnorischen Silbermünzen";
+-- East Gondor Silver Piece
+L[ "MEastGondorSilverPiece" ] = "Ostgondorisches Silberstück";
+L[ "EastGondorSilverPieceh" ] = "Eure Ostgondorischen Silberstücke";
+-- Greyflood Marks
+L[ "MGreyfloodMark" ] = "Grauflut-Zeichen";
+L[ "GreyfloodMarkh" ] = "Eure Grauflut-Zeichen";
+-- Gundabad Mountain-marks
+L[ "MGundabadMountainMark" ] = "Gundabad-Bergmarke";
+L[ "GundabadMountainMarkh" ] = "Eure Gundabad-Bergmarken";
+-- Silver Token of the Riddermark
+L[ "MSilverTokenOfTheRiddermark" ] = "Silbermünze aus der Riddermark";
+L[ "SilverTokenOfTheRiddermarkh" ] = "Eure Silbermünzen aus der Riddermark";
+-- Golden Token of the Riddermark
+L[ "MGoldenTokenOfTheRiddermark" ] = "Goldmünze aus der Riddermark";
+L[ "GoldenTokenOfTheRiddermarkh" ] = "Eure Goldmünzen aus der Riddermark";
+-- Minas Tirith Silver Piece
+L[ "MMinasTirithSilverPiece" ] = "Silberstück aus Minas Tirith";
+L[ "MinasTirithSilverPieceh" ] = "Silberstücke aus Minas Tirith";
+-- Cracked Easterling Sceptre
+L[ "MCrackedEasterlingSceptre" ] = "Gebrochenes Ostling-Zepter";
+L[ "CrackedEasterlingSceptreh" ] = "Eure Gebrochenen Ostling-Zepter";
+-- Grim Orkish Brand
+L[ "MGrimOrkishBrand" ] = "Fürchterliches Ork-Brandeisen";
+L[ "GrimOrkishBrandh" ] = "Eure Fürchterlichen Ork-Brandeisen";
+-- Sand-work Copper Token
+L[ "MSandWornCopperToken" ] = "Vom Sand geschliffene Kupfermarke";
+L[ "SandWornCopperTokenh" ] = "Eure vom Sand geschliffenen Kupfermarken";
+-- Frigid Steel Signet Ring
+L[ "MFrigidSteelSignetRing" ] = "Kalter stählerner Siegelring";
+L[ "FrigidSteelSignetRingh" ] = "Eure Kalten stählernen Siegelringe";
+-- Engraved Onyx Sigil
+L[ "MEngravedOnyxSigil" ] = "Graviertes Onyx-Siegel";
+L[ "EngravedOnyxSigilh" ] = "Eure Gravierten Onyx-Siegel";
+-- Sand-smoothed Burl
+L[ "MSandSmoothedBurl" ] = "Vom Sand geglättetes Wurzelholz";
+L[ "SandSmoothedBurlh" ] = "Eure vom Sand geglätteten Wurzelhölze";
+-- Lump of Red Rock Salt
+L[ "MLumpOfRedRockSalt" ] = "Brocken rotes Steinsalz";
+L[ "LumpOfRedRockSalth" ] = "Eure Brocken roten Steinsalzes";
+-- Iron Signet of the Sea-shadow
+L[ "MIronSignetOfTheSeaShadow" ] = "Eisernes Siegel des Meeresschattens";
+L[ "IronSignetOfTheSeaShadowh" ] = "Eure Eisernen Siegel des Meeresschattens";
+-- Iron Signet of the Fist
+L[ "MIronSignetOfTheFist" ] = "Eisernes Siegel der Faust";
+L[ "IronSignetOfTheFisth" ] = "Eure Eisernen Siegel der Faust";
+-- Iron Signet of the Axe
+L[ "MIronSignetOfTheAxe" ] = "Eisernes Siegel der Axt";
+L[ "IronSignetOfTheAxeh" ] = "Eure Eisernen Siegel der Axt";
+-- Iron Signet of the Black Moon
+L[ "MIronSignetOfTheBlackMoon" ] = "Eisernes Siegel des schwarzen Monds";
+L[ "IronSignetOfTheBlackMoonh" ] = "Eure Eisernen Siegel des schwarzen Monds";
+-- Iron Signet of the Necromancer
+L[ "MIronSignetOfTheNecromancer" ] = "Eisernes Siegel des Geisterbeschwörers";
+L[ "IronSignetOfTheNecromancerh" ] = "Eure Eisernen Siegel des Geisterbeschwörers";
+-- Iron Signet of the Twin Flame
+L[ "MIronSignetOfTheTwinFlame" ] = "Eisernes Siegel der Zwillingsflamme";
+L[ "IronSignetOfTheTwinFlameh" ] = "Eure Eisernen Siegel der Zwillingsflamme";
 
 -- Control Menu
 L[ "MCU" ] = "entfernen ...";

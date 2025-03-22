@@ -157,5 +157,113 @@ _G.currencies = {
     name = "DestinyPoints",
     legacyTitanbarName = "DP",
     visibleInMonsterPlay = false
+  },
+  {
+    name = "GabilakkaWarMark",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "CopperCoinOfGundabad",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "SilverCoinOfGundabad",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "SteelToken",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "IronCoinOfCardolan",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "BreeLandWoodMark",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "BronzeArnorianCoin",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "SilverArnorianCoin",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "EastGondorSilverPiece",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "GreyfloodMark",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "GundabadMountainMark",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "SilverTokenOfTheRiddermark",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "GoldenTokenOfTheRiddermark",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "MinasTirithSilverPiece",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "CrackedEasterlingSceptre",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "GrimOrkishBrand",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "SandWornCopperToken",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "FrigidSteelSignetRing",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "EngravedOnyxSigil",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "SandSmoothedBurl",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "LumpOfRedRockSalt",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "IronSignetOfTheSeaShadow",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "IronSignetOfTheFist",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "IronSignetOfTheAxe",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "IronSignetOfTheBlackMoon",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "IronSignetOfTheNecromancer",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "IronSignetOfTheTwinFlame",
+    visibleInMonsterPlay = false
   }
 }

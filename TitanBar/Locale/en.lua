@@ -144,6 +144,87 @@ L[ "MedallionOfLothlorienh" ] = "Your Medallions of Lothlórien";
 -- Buried Treasure Token
 L[ "MBuriedTreasureToken" ] = "Buried Treasure Token";
 L[ "BuriedTreasureTokenh" ] = "Your Buried Treasure Tokens";
+-- Gabil'akkâ War-mark
+L[ "MGabilakkaWarMark" ] = "Gabil'akkâ War-mark";
+L[ "GabilakkaWarMarkh" ] = "Your Gabil'akkâ War-marks";
+-- Copper Coin of Gundabad
+L[ "MCopperCoinOfGundabad" ] = "Copper Coin of Gundabad";
+L[ "CopperCoinOfGundabadh" ] = "Your Copper Coins of Gundabad";
+-- Silver Coin of Gundabad
+L[ "MSilverCoinOfGundabad" ] = "Silver Coin of Gundabad";
+L[ "SilverCoinOfGundabadh" ] = "Your Silver Coins of Gundabad";
+-- Steel Token
+L[ "MSteelToken" ] = "Steel Token";
+L[ "SteelTokenh" ] = "Your Steel Tokens";
+-- Iron Coin of Cardolan
+L[ "MIronCoinOfCardolan" ] = "Iron Coin of Cardolan";
+L[ "IronCoinOfCardolanh" ] = "Your Iron Coins of Cardolan";
+-- Bree-land Wood-mark
+L[ "MBreeLandWoodMark" ] = "Bree-land Wood-mark";
+L[ "BreeLandWoodMarkh" ] = "Your Bree-land Wood-marks";
+-- Bronze Arnorian Coin
+L[ "MBronzeArnorianCoin" ] = "Bronze Arnorian Coin";
+L[ "BronzeArnorianCoinh" ] = "Your Bronze Arnorian Coins";
+-- Silver Arnorian Coin
+L[ "MSilverArnorianCoin" ] = "Silver Arnorian Coin";
+L[ "SilverArnorianCoinh" ] = "Your Silver Arnorian Coins";
+-- East Gondor Silver Piece
+L[ "MEastGondorSilverPiece" ] = "East Gondor Silver Piece";
+L[ "EastGondorSilverPieceh" ] = "Your East Gondor Silver Pieces";
+-- Greyflood Marks
+L[ "MGreyfloodMark" ] = "Greyflood Mark";
+L[ "GreyfloodMarkh" ] = "Your Greyflood Marks";
+-- Gundabad Mountain-marks
+L[ "MGundabadMountainMark" ] = "Gundabad Mountain-mark";
+L[ "GundabadMountainMarkh" ] = "Your Gundabad Mountain-marks";
+-- Silver Token of the Riddermark
+L[ "MSilverTokenOfTheRiddermark" ] = "Silver Token of the Riddermark";
+L[ "SilverTokenOfTheRiddermarkh" ] = "Your Silver Tokens of the Riddermark";
+-- Golden Token of the Riddermark
+L[ "MGoldenTokenOfTheRiddermark" ] = "Golden Token of the Riddermark";
+L[ "GoldenTokenOfTheRiddermarkh" ] = "Your Golden Tokens of the Riddermark";
+-- Minas Tirith Silver Piece
+L[ "MMinasTirithSilverPiece" ] = "Minas Tirith Silver Piece";
+L[ "MinasTirithSilverPieceh" ] = "Your Minas Tirith Silver Pieces";
+-- Cracked Easterling Sceptre
+L[ "MCrackedEasterlingSceptre" ] = "Cracked Easterling Sceptre";
+L[ "CrackedEasterlingSceptreh" ] = "Your Cracked Easterling Sceptres";
+-- Grim Orkish Brand
+L[ "MGrimOrkishBrand" ] = "Grim Orkish Brand";
+L[ "GrimOrkishBrandh" ] = "Your Grim Orkish Brands";
+-- Sand-work Copper Token
+L[ "MSandWornCopperToken" ] = "Sand-worn Copper Token";
+L[ "SandWornCopperTokenh" ] = "Your Sand-worn Copper Tokens";
+-- Frigid Steel Signet Ring
+L[ "MFrigidSteelSignetRing" ] = "Frigid Steel Signet Ring";
+L[ "FrigidSteelSignetRingh" ] = "Your Frigid Steel Signet Rings";
+-- Engraved Onyx Sigil
+L[ "MEngravedOnyxSigil" ] = "Engraved Onyx Sigil";
+L[ "EngravedOnyxSigilh" ] = "Your Engraved Onyx Sigils";
+-- Sand-smoothed Burl
+L[ "MSandSmoothedBurl" ] = "Sand-smoothed Burl";
+L[ "SandSmoothedBurlh" ] = "Your Sand-smoothed Burls";
+-- Lump of Red Rock Salt
+L[ "MLumpOfRedRockSalt" ] = "Lump of Red Rock Salt";
+L[ "LumpOfRedRockSalth" ] = "Your Lumps of Red Rock Salt";
+-- Iron Signet of the Sea-shadow
+L[ "MIronSignetOfTheSeaShadow" ] = "Iron Signet of the Sea-shadow";
+L[ "IronSignetOfTheSeaShadowh" ] = "Your Iron Signets of the Sea-shadow";
+-- Iron Signet of the Fist
+L[ "MIronSignetOfTheFist" ] = "Iron Signet of the Fist";
+L[ "IronSignetOfTheFisth" ] = "Your Iron Signets of the Fist";
+-- Iron Signet of the Axe
+L[ "MIronSignetOfTheAxe" ] = "Iron Signet of the Axe";
+L[ "IronSignetOfTheAxeh" ] = "Your Iron Signets of the Axe";
+-- Iron Signet of the Black Moon
+L[ "MIronSignetOfTheBlackMoon" ] = "Iron Signet of the Black Moon";
+L[ "IronSignetOfTheBlackMoonh" ] = "Your Iron Signets of the Black Moon";
+-- Iron Signet of the Necromancer
+L[ "MIronSignetOfTheNecromancer" ] = "Iron Signet of the Necromancer";
+L[ "IronSignetOfTheNecromancerh" ] = "Your Iron Signets of the Necromancer";
+-- Iron Signet of the Twin Flame
+L[ "MIronSignetOfTheTwinFlame" ] = "Iron Signet of the Twin Flame";
+L[ "IronSignetOfTheTwinFlameh" ] = "Your Iron Signets of the Twin Flame";
 
 -- Control Menu
 L[ "MCU" ] = "Unload ...";
