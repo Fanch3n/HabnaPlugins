@@ -33,6 +33,8 @@ _G.createCurrencyTable = function(currencyName)
 		TB.win.MouseMove()
 		if dragging then
 			MoveCurrencyCtr(sender, args, currencyName)
+		else
+			ShowToolTipWin(currencyName)
 		end
 	end
 
