@@ -1,12 +1,9 @@
 This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Technical-13 which replaced v1.29.00 by Thorondor which replaced v1.24 by Habana.
 
-Missing currencies:
-- Minas Tirith Silver Pieces
-
-
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
-v.1.41.00
+Version 1.41.00 (March 22, 2025)
+- Fixed some problems with encoding in the language files
 - Added several currencies
 	- Gabil'akkâ War-marks
 	- Iron Coins of Cardolan
@@ -21,8 +18,22 @@ v.1.41.00
 	- Gundabad Mountain-marks
 	- Silver Tokens of the Riddermark
 	- Golden Tokens of the Riddermark
+	- Minas Tirith Silver Pieces
+	- Cracked Easterling Sceptres
+	- Sand-worn Copper Tokens
+	- Grim Orkish Brands
+	- Frigid Steel Signet Rings
+	- Engraved Onyx-Sigils
+	- Sand-smoothed Burls
+	- Lump of Red Rock Salt
+	- Iron Signet Of The Sea-shadow
+	- Iron Signet Of The Fist
+	- Iron Signet Of The Axe
+	- Iron Signet Of The Black Moon
+	- Iron Signet Of The Necromancer
+	- Iron Signet Of The Twin Flame
 =================================================
-v.1.40.00
+v1.40.00 (March 21, 2025)
 - Added several currencies
   - Medallion of Moria
 	- Medallion of Lothlórien

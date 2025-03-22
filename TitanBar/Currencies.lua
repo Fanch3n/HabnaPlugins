@@ -209,5 +209,61 @@ _G.currencies = {
   {
     name = "GoldenTokenOfTheRiddermark",
     visibleInMonsterPlay = false
+  },
+  {
+    name = "MinasTirithSilverPiece",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "CrackedEasterlingSceptre",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "GrimOrkishBrand",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "SandWornCopperToken",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "FrigidSteelSignetRing",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "EngravedOnyxSigil",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "SandSmoothedBurl",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "LumpOfRedRockSalt",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "IronSignetOfTheSeaShadow",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "IronSignetOfTheFist",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "IronSignetOfTheAxe",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "IronSignetOfTheBlackMoon",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "IronSignetOfTheNecromancer",
+    visibleInMonsterPlay = false
+  },
+  {
+    name = "IronSignetOfTheTwinFlame",
+    visibleInMonsterPlay = false
   }
 }

@@ -160,7 +160,21 @@ _G.WalletItem = {
 	GreyfloodMark = { Icon = 0x41221BE0 },
 	GundabadMountainMark = { Icon = 0x4120C6BF },
 	SilverTokenOfTheRiddermark = { Icon = 0x41127D03 },
-	GoldenTokenOfTheRiddermark = { Icon = 0x41127D06 }
+	GoldenTokenOfTheRiddermark = { Icon = 0x41127D06 },
+	MinasTirithSilverPiece = { Icon = 0x41167911 },
+	CrackedEasterlingSceptre = { Icon = 0x4125D0C7 },
+	GrimOrkishBrand = { Icon = 0x4125D0C4 },
+	SandWornCopperToken = { Icon = 0x4125D0B7 },
+	FrigidSteelSignetRing = { Icon = 0x4125D0B4 },
+	EngravedOnyxSigil = { Icon = 0x4125D0BC },
+	SandSmoothedBurl = { Icon = 0x4125D0C6 },
+	LumpOfRedRockSalt = { Icon = 0x4125D0C1 },
+	IronSignetOfTheSeaShadow = { Icon = 0x4125E42A },
+	IronSignetOfTheFist = { Icon = 0x4125E420 },
+	IronSignetOfTheAxe = { Icon = 0x4125E428 },
+	IronSignetOfTheBlackMoon = { Icon = 0x4125E422 },
+	IronSignetOfTheNecromancer = { Icon = 0x4125E423 },
+	IronSignetOfTheTwinFlame = { Icon = 0x4125E41D },
 };
 
 _G.DurabilitySlotsBG = { 0x41007eed, 0x41007ef6, 0x41007ef7, 0x41007eef, 0x41007eee, 0x41007ee9, 0x41007ef0, 0x41007ef9, 0x41007ef8,

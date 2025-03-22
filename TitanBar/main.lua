@@ -110,7 +110,10 @@ if PlayerAlign == 1 then
 		L["MAmrothSilverPiece"], L["MBingoBadge"], L["MCentralGondorSilverPiece"], L["MEastGondorSilverPiece"], L["MGiftgiversBrand"], L["MTokensOfHytbold"], L["MColdIronToken"],
 		L["MMedallionOfMoria"], L["MMedallionOfLothlorien"], L["MTokenOfHeroism"], L["MHerosMark"], L["MGabilakkaWarMark"], L["MSteelToken"],
 		L["MCopperCoinOfGundabad"], L["MSilverCoinOfGundabad"], L["MIronCoinOfCardolan"], L["MBreeLandWoodMark"], L["MBronzeArnorianCoin"],
-		L["MSilverArnorianCoin"], L["MGreyfloodMark"], L["MGundabadMountainMark"], L["MSilverTokenOfTheRiddermark"], L["MGoldenTokenOfTheRiddermark"]
+		L["MSilverArnorianCoin"], L["MGreyfloodMark"], L["MGundabadMountainMark"], L["MSilverTokenOfTheRiddermark"], L["MGoldenTokenOfTheRiddermark"],
+		L["MMinasTirithSilverPiece"], L["MCrackedEasterlingSceptre"], L["MGrimOrkishBrand"], L["MSandWornCopperToken"], L["MFrigidSteelSignetRing"],
+		L["MEngravedOnyxSigil"], L["MSandSmoothedBurl"], L["MLumpOfRedRockSalt"], L["MIronSignetOfTheSeaShadow"],	L["MIronSignetOfTheFist"],
+		L["MIronSignetOfTheAxe"],	L["MIronSignetOfTheBlackMoon"],	L["MIronSignetOfTheNecromancer"],	L["MIronSignetOfTheTwinFlame"]
 	}
 else
 	MenuItem = { L["MCommendation"], L["MLP"] }
@@ -165,7 +168,21 @@ _G.CurrencyLangMap = { -- reverse lookup table necessary to get the internal ite
 	[L["MGreyfloodMark"]] = "GreyfloodMark",
 	[L["MGundabadMountainMark"]] = "GundabadMountainMark",
 	[L["MSilverTokenOfTheRiddermark"]] = "SilverTokenOfTheRiddermark",
-	[L["MGoldenTokenOfTheRiddermark"]] = "GoldenTokenOfTheRiddermark"
+	[L["MGoldenTokenOfTheRiddermark"]] = "GoldenTokenOfTheRiddermark",
+	[L["MMinasTirithSilverPiece"]] = "MinasTirithSilverPiece",
+	[L["MCrackedEasterlingSceptre"]] = "CrackedEasterlingSceptre",
+	[L["MGrimOrkishBrand"]] = "GrimOrkishBrand",
+	[L["MSandWornCopperToken"]] = "SandWornCopperToken",
+	[L["MFrigidSteelSignetRing"]] = "FrigidSteelSignetRing",
+	[L["MEngravedOnyxSigil"]] = "EngravedOnyxSigil",
+	[L["MSandSmoothedBurl"]] = "SandSmoothedBurl",
+	[L["MLumpOfRedRockSalt"]] = "LumpOfRedRockSalt",
+	[L["MIronSignetOfTheSeaShadow"]] = "IronSignetOfTheSeaShadow",
+	[L["MIronSignetOfTheFist"]] = "IronSignetOfTheFist",
+	[L["MIronSignetOfTheAxe"]] = "IronSignetOfTheAxe",
+	[L["MIronSignetOfTheBlackMoon"]] = "IronSignetOfTheBlackMoon",
+	[L["MIronSignetOfTheNecromancer"]] = "IronSignetOfTheNecromancer",
+	[L["MIronSignetOfTheTwinFlame"]] = "IronSignetOfTheTwinFlame",
 }
 
 function TitanBarCommand:Execute( command, arguments )

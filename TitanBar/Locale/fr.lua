@@ -183,6 +183,48 @@ L[ "SilverTokenOfTheRiddermarkh" ] = "Ce sont vos Jetons argentés du Riddermark
 -- Golden Token of the Riddermark
 L[ "MGoldenTokenOfTheRiddermark" ] = "Jeton doré du Riddermark";
 L[ "GoldenTokenOfTheRiddermarkh" ] = "Ce sont vos Jetons dorés du Riddermark";
+-- Minas Tirith Silver Piece
+L[ "MMinasTirithSilverPiece" ] = "Pièce d'argent de Minas Tirith";
+L[ "MinasTirithSilverPieceh" ] = "Ce sont vos Pièces d'argent de Minas Tirith";
+-- Cracked Easterling Sceptre
+L[ "MCrackedEasterlingSceptre" ] = "Sceptre d'Homme de l'Est fissuré";
+L[ "CrackedEasterlingSceptreh" ] = "Ce sont vos Sceptres fissurés d'Homme de l'Est";
+-- Grim Orkish Brand
+L[ "MGrimOrkishBrand" ] = "Marque orque sombre";
+L[ "GrimOrkishBrandh" ] = "Ce sont vos Marques orques sinistres";
+-- Sand-work Copper Token
+L[ "MSandWornCopperToken" ] = "Jeton de cuivre usé par le sable";
+L[ "SandWornCopperTokenh" ] = "Jetons de cuivre usés par le sable";
+-- Frigid Steel Signet Ring
+L[ "MFrigidSteelSignetRing" ] = "Chevalière en acier glacé";
+L[ "FrigidSteelSignetRingh" ] = "Ce sont vos Chevalières en acier glacial";
+-- Engraved Onyx Sigil
+L[ "MEngravedOnyxSigil" ] = "Sceau en onyx gravé";
+L[ "EngravedOnyxSigilh" ] = "Ce sont vos Sceaux d'onyx gravés";
+-- Sand-smoothed Burl
+L[ "MSandSmoothedBurl" ] = "Nœud poncé";
+L[ "SandSmoothedBurlh" ] = "Nœuds patinés par le sable";
+-- Lump of Red Rock Salt
+L[ "MLumpOfRedRockSalt" ] = "Morceau de sel gemme";
+L[ "LumpOfRedRockSalth" ] = "Ce sont vos Morceaux de sel de roche rouge";
+-- Iron Signet of the Sea-shadow
+L[ "MIronSignetOfTheSeaShadow" ] = "Chevalière en fer de l'Ombre de la Mer";
+L[ "IronSignetOfTheSeaShadowh" ] = "Ce sont vos Chevalières en fer de l'Ombre de la Mer";
+-- Iron Signet of the Fist
+L[ "MIronSignetOfTheFist" ] = "Chevalière en fer du poing";
+L[ "IronSignetOfTheFisth" ] = "Ce sont vos Chevalières en fer du poing";
+-- Iron Signet of the Axe
+L[ "MIronSignetOfTheAxe" ] = "Chevalière en fer de la hache";
+L[ "IronSignetOfTheAxeh" ] = "Ce sont vos Chevalières en fer de la hache";
+-- Iron Signet of the Black Moon
+L[ "MIronSignetOfTheBlackMoon" ] = "Chevalière en fer de la lune noire";
+L[ "IronSignetOfTheBlackMoonh" ] = "Ce sont vos Chevalières en fer de la lune noire";
+-- Iron Signet of the Necromancer
+L[ "MIronSignetOfTheNecromancer" ] = "Chevalière en fer du nécromancien";
+L[ "IronSignetOfTheNecromancerh" ] = "Ce sont vos Chevalières en fer du nécromancien";
+-- Iron Signet of the Twin Flame
+L[ "MIronSignetOfTheTwinFlame" ] = "Chevalière en fer des flammes jumelles";
+L[ "IronSignetOfTheTwinFlameh" ] = "Ce sont vos Chevalières en fer des flammes jumelles";
 
 -- Control Menu
 L[ "MCU" ] = "D\195\169charger ...";
