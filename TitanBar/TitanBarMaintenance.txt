@@ -45,7 +45,8 @@ Add a new currency:
 --- Important: The name (value) behind the first text name has to be exactly the name in the game (and most of the times singular). Otherwise it won't work.
 
 - Add currency in 'main.lua'
--- Search for "PlayerAlign == 1" and add the abbreviation to the MenuItem array. The position in that array defines the order in which the currencies are listed.
+-- Search for "PlayerAlign == 1" and add the item to the MenuItem array. The position in that array defines the order in which the currencies are listed.
+-- Add the currency to the CurrencyLangMap
 
 - Add currency in 'TBressources.lua'
 -- or more correctly: Add the image of the currency
@@ -55,7 +56,7 @@ Add a new currency:
 -- Replace the name in the last entry with the new currency
 -- Replace the hex value with the new icon value. (If you don't know the value scroll down to "HelloWorld-Plugin")
 
-- Add currency Currencies.lua
+- Add currency in Currencies.lua
 
 
 To add a new control (from Technical_13):
