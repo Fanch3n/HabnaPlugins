@@ -39,7 +39,8 @@ function GetData()
     end;
     
     if PlayerAlign == 1 then
-        Data[3]["name"],Data[3]["value"] = "Armour",comma_value(PlayerAtt:GetArmor());
+        local playerAtt = GetPlayerAttributes();
+        Data[3]["name"],Data[3]["value"] = "Armour",comma_value(playerAtt:GetArmor());
         Data[3]["icon"] = resources.PlayerInfo.Armor;    
         curLvl = Player:GetLevel(); --Current player level
         -- OTHER --
@@ -71,38 +72,38 @@ function GetData()
         end
         -- OTHER END --
         -- STATISTICS --
-        Data[9]["name"],Data[9]["value"] = "Might",PlayerAtt:GetMight();
-        Data[10]["name"],Data[10]["value"] = "Agility",PlayerAtt:GetAgility();
-        Data[11]["name"],Data[11]["value"] = "Vitality",PlayerAtt:GetVitality();
-        Data[12]["name"],Data[12]["value"] = "Will",PlayerAtt:GetWill();
-        Data[13]["name"],Data[13]["value"] = "Fate",PlayerAtt:GetFate();
+        Data[9]["name"],Data[9]["value"] = "Might",playerAtt:GetMight();
+        Data[10]["name"],Data[10]["value"] = "Agility",playerAtt:GetAgility();
+        Data[11]["name"],Data[11]["value"] = "Vitality",playerAtt:GetVitality();
+        Data[12]["name"],Data[12]["value"] = "Will",playerAtt:GetWill();
+        Data[13]["name"],Data[13]["value"] = "Fate",playerAtt:GetFate();
         -- STATISTICS END --
         for i = 9,13 do Data[i]["value"] = comma_value(Data[i]["value"]); end
         PlayerAttArray = {}; -- array[i] = {"Visible label name", value, "formula category", "penetration debuff"};
         -- for i = 14,33 do PlayerAttArray[i] = {} end; 
-        PlayerAttArray[22] = {"Physical", PlayerAtt:GetCommonMitigation(), "ComPhyMit", "Armour"}; -- common physical
-        PlayerAttArray[23] = {"Tactical", PlayerAtt:GetTacticalMitigation(), "TacMit", "Armour"}; -- tactical
-        PlayerAttArray[24] = {"Orc", PlayerAtt:GetPhysicalMitigation(), "NonPhyMit", "Armour"}; -- non-common physical
-        PlayerAttArray[25] = {"Fell", PlayerAtt:GetPhysicalMitigation(), "NonPhyMit", "Armour"}; -- non-common physical
-        PlayerAttArray[20] = {"Outgoing", PlayerAtt:GetOutgoingHealing(), "OutHeal", nil};
-        PlayerAttArray[21] = {"Incoming", PlayerAtt:GetIncomingHealing(), "InHeal", nil};
-        PlayerAttArray[14] = {"Melee", PlayerAtt:GetMeleeDamage(), "PhyDmg", nil};
-        PlayerAttArray[15] = {"Ranged", PlayerAtt:GetRangeDamage(), "PhyDmg", nil};
-        PlayerAttArray[16] = {"Tactical", PlayerAtt:GetTacticalDamage(), "TacDmg", nil};
-        PlayerAttArray[17] = {"CritHit", PlayerAtt:GetBaseCriticalHitChance(), "CritHit", nil};
-        PlayerAttArray[18] = {"DevHit", PlayerAtt:GetBaseCriticalHitChance(), "DevHit", nil};
-        PlayerAttArray[19] = {"Finesse", PlayerAtt:GetFinesse(), "Finesse", nil};
-        PlayerAttArray[26] = {"CritDef", PlayerAtt:GetBaseCriticalHitAvoidance(), "CritDef", nil};
-        PlayerAttArray[27] = {"Resistances", PlayerAtt:GetBaseResistance(), "Resist", "Resist"};
-        PlayerAttArray[28] = {"Block", PlayerAtt:GetBlock(), "Block", "BPE"};
-        PlayerAttArray[29] = {"Partial", PlayerAtt:GetBlock(), "PartBlock", "BPE"};
-        PlayerAttArray[30] = {"PartMit", PlayerAtt:GetBlock(), "PartBlockMit", "BPE"};
-        PlayerAttArray[31] = {"Parry", PlayerAtt:GetParry(), "Parry", "BPE"};
-        PlayerAttArray[32] = {"Partial", PlayerAtt:GetParry(), "PartParry", "BPE"};
-        PlayerAttArray[33] = {"PartMit", PlayerAtt:GetParry(), "PartParryMit", "BPE"};
-        PlayerAttArray[34] = {"Evade", PlayerAtt:GetEvade(), "Evade", "BPE"};
-        PlayerAttArray[35] = {"Partial", PlayerAtt:GetEvade(), "PartEvade", "BPE"};
-        PlayerAttArray[36] = {"PartMit", PlayerAtt:GetEvade(), "PartEvadeMit", "BPE"};
+        PlayerAttArray[22] = {"Physical", playerAtt:GetCommonMitigation(), "ComPhyMit", "Armour"}; -- common physical
+        PlayerAttArray[23] = {"Tactical", playerAtt:GetTacticalMitigation(), "TacMit", "Armour"}; -- tactical
+        PlayerAttArray[24] = {"Orc", playerAtt:GetPhysicalMitigation(), "NonPhyMit", "Armour"}; -- non-common physical
+        PlayerAttArray[25] = {"Fell", playerAtt:GetPhysicalMitigation(), "NonPhyMit", "Armour"}; -- non-common physical
+        PlayerAttArray[20] = {"Outgoing", playerAtt:GetOutgoingHealing(), "OutHeal", nil};
+        PlayerAttArray[21] = {"Incoming", playerAtt:GetIncomingHealing(), "InHeal", nil};
+        PlayerAttArray[14] = {"Melee", playerAtt:GetMeleeDamage(), "PhyDmg", nil};
+        PlayerAttArray[15] = {"Ranged", playerAtt:GetRangeDamage(), "PhyDmg", nil};
+        PlayerAttArray[16] = {"Tactical", playerAtt:GetTacticalDamage(), "TacDmg", nil};
+        PlayerAttArray[17] = {"CritHit", playerAtt:GetBaseCriticalHitChance(), "CritHit", nil};
+        PlayerAttArray[18] = {"DevHit", playerAtt:GetBaseCriticalHitChance(), "DevHit", nil};
+        PlayerAttArray[19] = {"Finesse", playerAtt:GetFinesse(), "Finesse", nil};
+        PlayerAttArray[26] = {"CritDef", playerAtt:GetBaseCriticalHitAvoidance(), "CritDef", nil};
+        PlayerAttArray[27] = {"Resistances", playerAtt:GetBaseResistance(), "Resist", "Resist"};
+        PlayerAttArray[28] = {"Block", playerAtt:GetBlock(), "Block", "BPE"};
+        PlayerAttArray[29] = {"Partial", playerAtt:GetBlock(), "PartBlock", "BPE"};
+        PlayerAttArray[30] = {"PartMit", playerAtt:GetBlock(), "PartBlockMit", "BPE"};
+        PlayerAttArray[31] = {"Parry", playerAtt:GetParry(), "Parry", "BPE"};
+        PlayerAttArray[32] = {"Partial", playerAtt:GetParry(), "PartParry", "BPE"};
+        PlayerAttArray[33] = {"PartMit", playerAtt:GetParry(), "PartParryMit", "BPE"};
+        PlayerAttArray[34] = {"Evade", playerAtt:GetEvade(), "Evade", "BPE"};
+        PlayerAttArray[35] = {"Partial", playerAtt:GetEvade(), "PartEvade", "BPE"};
+        PlayerAttArray[36] = {"PartMit", playerAtt:GetEvade(), "PartEvadeMit", "BPE"};
         if (useCalcStat) then
             local CSClassName = CalcStat("ClassName",PlayerClassIdIs);
             local CDCanBlock = CSClassName ~= "" and CalcStat(CSClassName.."CDCanBlock",curLvl) or 1;

@@ -16,15 +16,14 @@ function ImportCtr( value )
             MI[ "Ctr" ]:SetPosition( _G.MILocX, _G.MILocY );
         end
         if _G.MIWhere ~= 3 then
-            PlayerAtt = Player:GetAttributes();
-            AddCallback(PlayerAtt, "MoneyChanged",
+            AddCallback(GetPlayerAttributes(), "MoneyChanged",
                 function(sender, args) UpdateMoney(); end
                 );
             AddCallback(sspack, "CountChanged", UpdateSharedStorageGold);
             -- ^^ Thx Heridian!
             UpdateMoney();
         else
-            RemoveCallback(PlayerAtt, "MoneyChanged");
+            RemoveCallback(GetPlayerAttributes(), "MoneyChanged");
             RemoveCallback(sspack, "CountChanged", UpdateSharedStorageGold);
             -- ^^ Thx Heridian!
         end
@@ -47,7 +46,6 @@ function ImportCtr( value )
     elseif value == "PI" then --Player Infos
         import (AppCtrD.."PlayerInfos");
         import (AppCtrD.."PlayerInfosToolTip");
-        PlayerAtt = Player:GetAttributes();
         AddCallback(Player, "LevelChanged",
             function(sender, args)
                 PI["Lvl"]:SetText( Player:GetLevel() );
@@ -403,14 +401,13 @@ function ImportCtr( value )
         end
         if _G.CurrencyData[value].Where ~= 3 then
             if value == "DestinyPoints" then
-                PlayerAtt = Player:GetAttributes();
-                AddCallback(PlayerAtt, "DestinyPointsChanged", function(sender, args)
+                AddCallback(GetPlayerAttributes(), "DestinyPointsChanged", function(sender, args)
                     UpdateCurrencyDisplay("DestinyPoints")
                 end)
             end
             UpdateCurrencyDisplay(value)
         elseif value == "DestinyPoints" then
-            RemoveCallback(PlayerAtt, "DestinyPointsChanged")
+            RemoveCallback(GetPlayerAttributes(), "DestinyPointsChanged")
         end
     end
 end
@@ -524,7 +521,6 @@ function LoadPlayerMoney()
     if wallet == nil then wallet = {}; end
 
     local PN = Player:GetName();
-    local PlayerAtt = Player:GetAttributes();
 
     if wallet[PN] == nil then wallet[PN] = {}; end
     if wallet[PN].Show == nil then wallet[PN].Show = true; end
@@ -596,8 +592,9 @@ function LoadPlayerMoney()
         walletStats[DOY][PN].TotSpent = "0";
         walletStats[DOY][PN].SumTS = "0";
     end
-    walletStats[DOY][PN].Start = tostring(PlayerAtt:GetMoney());
-    walletStats[DOY][PN].Had = tostring(PlayerAtt:GetMoney());
+    local playerAtt = GetPlayerAttributes();
+    walletStats[DOY][PN].Start = tostring(playerAtt:GetMoney());
+    walletStats[DOY][PN].Had = tostring(playerAtt:GetMoney());
     walletStats[DOY][PN].Earned = "0";
     walletStats[DOY][PN].Spent = "0";
     walletStats[DOY][PN].SumSS = "0";
@@ -613,7 +610,7 @@ function SavePlayerMoney( save )
 
     wallet[PN].Show = _G.SCM;
     wallet[PN].ShowToAll = _G.SCMA;
-    wallet[PN].Money = tostring( PlayerAtt:GetMoney() );
+    wallet[PN].Money = tostring( GetPlayerAttributes():GetMoney() );
 
     -- Calculate Gold/Silver/Copper Total
     GoldTot, SilverTot, CopperTot = 0, 0, 0;

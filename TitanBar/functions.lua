@@ -174,7 +174,7 @@ end
 --**v Update money on TitanBar v**
 function UpdateMoney()
 	if _G.MIWhere == 1 then
-		local money = PlayerAtt:GetMoney();
+		local money = GetPlayerAttributes():GetMoney();
 		DecryptMoney(money);
 	
 		MI[ "GLbl" ]:SetText( string.format( "%.0f", gold ) );
@@ -290,7 +290,7 @@ end
 function UpdateCurrencyDisplay(currencyName)
 	if _G.CurrencyData[currencyName].Where == 1 then
 		if currencyName == "DestinyPoints" then
-			_G.CurrencyData[currencyName].Lbl:SetText(PlayerAtt:GetDestinyPoints())
+			_G.CurrencyData[currencyName].Lbl:SetText(GetPlayerAttributes():GetDestinyPoints())
 		else
 			_G.CurrencyData[currencyName].Lbl:SetText(GetCurrency(L["M"..currencyName]))
 		end
@@ -803,4 +803,16 @@ function GetTotalItems( MyTable )
 	local counter = 0;
 	for k, v in pairs( MyTable ) do counter = counter + 1; end
 	return counter;
+end
+
+PlayerAtt = nil;
+---Central function to handle calling Player:GetAttributes().
+---(The first time GetAttributes is called, the LOTRO client hangs for a short period,
+---so we want to initialize it as-needed instead of on plugin load.)
+---@return Attributes | FreePeopleAttributes
+function GetPlayerAttributes()
+    if (PlayerAtt == nil) then
+        PlayerAtt = Player:GetAttributes();
+    end
+    return PlayerAtt;
 end
