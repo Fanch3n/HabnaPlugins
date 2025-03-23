@@ -152,7 +152,7 @@ function ShowToolTipWin(ToShow)
 	elseif ToShow == "LP" then -- LOTRO points
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["LPh"], L["EIt1"], 
             L["EIt2"], L["EIt3"] );
-	elseif ToShow == "DP" or ToShow == "PL" or doesCurrencyExist(ToShow) then
+	elseif ToShow == "DP" or ToShow == "PL" or _G.currencies.byName[ToShow] then
 		h = 65;
 		TTW = createToolTipWin( x, y, w, h, bblTo, L[ToShow .. "h"], L["EIt2"], L["EIt3"] );
 	else
@@ -573,7 +573,7 @@ function ChangeColor(tColor)
 		if ShowLOTROPoints then LP[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowPlayerLoc then PL[ "Ctr" ]:SetBackColor( tColor ); end
 		if ShowGameTime then GT[ "Ctr" ]:SetBackColor( tColor ); end
-		for k,v in pairs(_G.currencies) do
+		for k,v in pairs(_G.currencies.list) do
 			if _G.CurrencyData[v.name].IsVisible then
 				_G.CurrencyData[v.name].Ctr:SetBackColor(tColor)
 			end

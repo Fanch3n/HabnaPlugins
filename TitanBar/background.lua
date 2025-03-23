@@ -320,7 +320,7 @@ function UpdateBCvariable()
 		LPbcAlpha, LPbcRed, LPbcGreen, LPbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
 		PLbcAlpha, PLbcRed, PLbcGreen, PLbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
 		GTbcAlpha, GTbcRed, GTbcGreen, GTbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		for k,v in pairs(_G.currencies) do
+		for k,v in pairs(_G.currencies.list) do
 			_G.CurrencyData[v.name].bcAlpha = curSelAlpha
 			_G.CurrencyData[v.name].bcRed = curSelRed
 			_G.CurrencyData[v.name].bcGreen = curSelGreen

@@ -504,7 +504,7 @@ function LoadSettings()
 	-- AU3 MARKER 4 - DO NOT REMOVE
 
 
-	for k,v in pairs(_G.currencies) do
+	for k,v in pairs(_G.currencies.list) do
 		CreateSettingsForCurrency(v)
 		LoadSettingsForCurrency(v.name)
 	end
@@ -784,7 +784,7 @@ function SaveSettings(str)
 		if PlayerAlign == 1 then settings.GameTime.L = string.format("%.0f", GTWLeft); end
 		if PlayerAlign == 1 then  settings.GameTime.T = string.format("%.0f", GTWTop); end
 				
-		for k,v in pairs(_G.currencies) do
+		for k,v in pairs(_G.currencies.list) do
 			SetSettings(v.name)
 		end
 
@@ -834,7 +834,7 @@ function ResetSettings()
 	ShowLOTROPoints, LPbcAlpha, LPbcRed, LPbcGreen, LPbcBlue, _G.LPLocX, _G.LPLocY, _G.LPWhere = false, tA, tR, tG, tB, tX, tY, tW; --for LOTRO points Control
 	ShowPlayerLoc, PLbcAlpha, PLbcRed, PLbcGreen, PLbcBlue, _G.PLLocX, _G.PLLocX = true, tA, tR, tG, tB, screenWidth - 205, tY; --for Player Location Control
 	
-	for k,v in pairs(_G.currencies) do
+	for k,v in pairs(_G.currencies.list) do
 		_G.CurrencyData[v.name].IsVisible = false
 		_G.CurrencyData[v.name].bcAlpha = tA
 		_G.CurrencyData[v.name].bcRed = tR
@@ -938,7 +938,7 @@ function ReplaceCtr()
 	settings.GameTime.X = string.format("%.0f", _G.GTLocX);
 	if ShowGameTime then GT[ "Ctr" ]:SetPosition( _G.GTLocX, _G.GTLocY ); end
 	
-	for k,v in pairs(_G.currencies) do
+	for k,v in pairs(_G.currencies.list) do
 		oldLocX = settings[v.name].X / oldScreenWidth
 		_G.CurrencyData[v.name].LocX = oldLocX * screenWidth
 		settings[v.name].X = string.format("%.0f", _G.CurrencyData[v.name].LocX)

@@ -43,10 +43,10 @@ function RefreshWITTListBox()
 		elseif wttcur == L["MLP"] then
 			ttw = _G.LPWhere; CtrIconCodeIs=WalletItem.LOTROPTS.Icon; CtrQteIs=_G.LOTROPTS;
 		end
-		for k,v in pairs(_G.currencies) do
+		for k,v in pairs(_G.currencies.list) do
 			if wttcur == L["M" .. v.name] then
 				ttw = _G.CurrencyData[v.name].Where
-				CtrIconCodeIs=WalletItem[v.name].Icon
+				CtrIconCodeIs=v.icon
 				if wttcur == L["MDestinyPoints"] then
 					CtrQteIs = GetPlayerAttributes():GetDestinyPoints()
 				else

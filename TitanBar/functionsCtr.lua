@@ -998,7 +998,7 @@ function UpdateCurrency(currency_display)
 end
 
 function SetCurrencyToZero(str)
-    for _, currency in pairs(_G.currencies) do
+    for _, currency in pairs(_G.currencies.list) do
         if str == L["M" .. currency.name] and _G.CurrencyData[currency.name].IsVisible then
             if _G.CurrencyData[currency.name].IsVisible then
                 if _G.CurrencyData[currency.name].Where == 1 then
@@ -1012,7 +1012,7 @@ function SetCurrencyToZero(str)
 end
 
 function SetCurrencyFromZero(str, amount)
-    for _, currency in pairs(_G.currencies) do
+    for _, currency in pairs(_G.currencies.list) do
         if str == L["M" .. currency.name] and _G.CurrencyData[currency.name].IsVisible then
             if _G.CurrencyData[currency.name].IsVisible then
                 if _G.CurrencyData[currency.name].Where == 1 then
