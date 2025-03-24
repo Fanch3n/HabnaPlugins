@@ -25,8 +25,8 @@ function UnloadControl( value )
 		if ShowLOTROPoints then _G.LPWhere = 3; ShowHideLOTROPoints(); end
 		if ShowPlayerLoc then ShowHidePlayerLoc(); opt_PL:SetChecked( false ); end
 		if ShowGameTime then ShowHideGameTime(); opt_GT:SetChecked( false ); end
-		for k,v in pairs(_G.currencies) do
-			if _G.CurrencyData[v.name].IsVisible then 
+		for k,v in pairs(_G.currencies.list) do
+			if _G.CurrencyData[v.name].IsVisible then
 				_G.CurrencyData[v.name].Where = 3
 				ShowHideCurrency(v.name);
 			end
@@ -50,11 +50,9 @@ function UnloadControl( value )
 			elseif _G.sFromCtr == "PL" then ShowHidePlayerLoc(); opt_PL:SetChecked( false );
 			elseif _G.sFromCtr == "GT" then ShowHideGameTime(); opt_GT:SetChecked( false );
 			end
-			for k,v in pairs(_G.currencies) do
-				if _G.sFromCtr == v.name then 
-					_G.CurrencyData[v.name].Where = 3
-					ShowHideCurrency(v.name);
-				end
+			if _G.CurrencyData[_G.sFromCtr] then
+				_G.CurrencyData[_G.sFromCtr].Where = 3
+				ShowHideCurrency(_G.sFromCtr)
 			end
 		end
 
@@ -88,13 +86,11 @@ function BGColor( cmd, value )
 		elseif _G.sFromCtr == "PL" then tA, tR, tG, tB = PLbcAlpha, PLbcRed, PLbcGreen, PLbcBlue;
 		elseif _G.sFromCtr == "GT" then tA, tR, tG, tB = GTbcAlpha, GTbcRed, GTbcGreen, GTbcBlue;
 		else
-			for k,v in pairs(_G.currencies) do
-				if v.name == _G.sFromCtr then
-					tA = _G.CurrencyData[v.name].bcAlpha
-					tR = _G.CurrencyData[v.name].bcRed
-					tG = _G.CurrencyData[v.name].bcGreen
-					tB = _G.CurrencyData[v.name].bcBlue
-				end
+			if _G.currencies[_G.sFromCtr] then
+				tA = _G.CurrencyData[_G.sFromCtr].bcAlpha
+				tR = _G.CurrencyData[_G.sFromCtr].bcRed
+				tG = _G.CurrencyData[_G.sFromCtr].bcGreen
+				tB = _G.CurrencyData[_G.sFromCtr].bcBlue
 			end
 		end
 	end
@@ -133,7 +129,7 @@ function BGColor( cmd, value )
 		GTbcAlpha, GTbcRed, GTbcGreen, GTbcBlue = tA, tR, tG, tB;
 		if ShowGameTime then GT[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) );	end
 		
-		for k,v in pairs(_G.currencies) do
+		for k,v in pairs(_G.currencies.list) do
 			_G.CurrencyData[v.name].bcAlpha = tA
 			_G.CurrencyData[v.name].bcRed = tR
 			_G.CurrencyData[v.name].bcGreen = tG

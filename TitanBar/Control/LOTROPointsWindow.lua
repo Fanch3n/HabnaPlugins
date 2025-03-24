@@ -7,7 +7,7 @@ function frmLOTROPointsWindow()
 	_G.wLP = Turbine.UI.Lotro.Window()
 	_G.wLP:SetPosition( LPWLeft, LPWTop );
 	--_G.wLP:SetSize( 300, 80 );
-	_G.wLP:SetText( L["MLP"] );
+	_G.wLP:SetText( L["MLotroPoints"] );
 	_G.wLP:SetWantsKeyEvents( true );
 	_G.wLP:SetVisible( true );
 	--_G.wLP:SetZOrder( 2 );
@@ -47,7 +47,7 @@ function frmLOTROPointsWindow()
 	local lblLOTROPTS = Turbine.UI.Label();
 	lblLOTROPTS:SetParent( LPWCtr );
 	--lblLOTROPTS:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
-	lblLOTROPTS:SetText( L["MLP"] );
+	lblLOTROPTS:SetText( L["MLotroPoints"] );
 	lblLOTROPTS:SetPosition( 0, 2 );
 	lblLOTROPTS:SetSize( lblLOTROPTS:GetTextLength() * 7.5, 15 ); --Auto size with text lenght
 	lblLOTROPTS:SetForeColor( Color["rustedgold"] );
@@ -103,10 +103,9 @@ function frmLOTROPointsWindow()
 			txtLOTROPTS:Focus();
 			return
 		end
-			
+
 		_G.LOTROPTS = txtLOTROPTS:GetText();
 		UpdateLOTROPoints();
-		SavePlayerLOTROPoints();
 		txtLOTROPTS:Focus();
 	end
 

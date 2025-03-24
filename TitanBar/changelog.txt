@@ -2,10 +2,11 @@ This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Te
 
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
-Version 1.4x.yy (upcoming)
+Version 1.42 (upcoming)
 - Widened currency window to account for longer currency names
 - Fixed output of /titanbar pw
-- currency tooltip now displays while hovering over icon as well as number
+- Currency tooltip now displays while hovering over icon as well as number
+- Include icon in Currency.lua file
 
 =================================================
 Version 1.41.00 (March 22, 2025)

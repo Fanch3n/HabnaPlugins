@@ -18,7 +18,7 @@ LP["Icon"] = Turbine.UI.Control();
 LP["Icon"]:SetParent( LP["Ctr"] );
 LP["Icon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 LP["Icon"]:SetSize( 36, 43 );
-LP["Icon"]:SetBackground( resources.LOTROPoints );
+LP["Icon"]:SetBackground( _G.resources.LOTROPoints );
 LP["Icon"]:SetStretchMode( 1 );
 LP["Icon"]:SetSize( 32, 32 );
 

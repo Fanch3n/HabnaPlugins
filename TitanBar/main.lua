@@ -92,7 +92,7 @@ frmMain();
 if PlayerAlign == 1 then
   MenuItem = {
 		-- Coin
-		L["MGSC"], L["MCommendation"], L["MDestinyPoints"], L["MLP"], L["MMithrilCoins"],
+		L["MGSC"], L["MCommendation"], L["MDestinyPoints"], L["MLotroPoints"], L["MMithrilCoins"],
 		-- Currency
 		L["MMotesOfEnchantment"], L["MFigmentsOfSplendour"], L["MEmbersOfEnchantment"], L["MAncientScript"], L["MDelvingWrit"],
 		-- Instances and Skirmishes
@@ -114,7 +114,7 @@ if PlayerAlign == 1 then
 		L["MIronSignetOfTheAxe"],	L["MIronSignetOfTheBlackMoon"],	L["MIronSignetOfTheNecromancer"],	L["MIronSignetOfTheTwinFlame"]
 	}
 else
-	MenuItem = { L["MCommendation"], L["MLP"] }
+	MenuItem = { L["MCommendation"], L["MLotroPoints"] }
 end
 
 TitanBarCommand = Turbine.ShellCommand()
@@ -123,7 +123,7 @@ _G.CurrencyLangMap = { -- reverse lookup table necessary to get the internal ite
 	[L["MGSC"]] = "GSC",
 	[L["MCommendation"]] = "Commendation",
 	[L["MDestinyPoints"]] = "DestinyPoints",
-	[L["MLP"]] = "LP",
+	[L["MLotroPoints"]] = "LotroPoints",
 	[L["MMithrilCoins"]] = "MithrilCoins",
 	[L["MMotesOfEnchantment"]] = "MotesOfEnchantment",
 	[L["MFigmentsOfSplendour"]] = "FigmentsOfSplendour",

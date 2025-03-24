@@ -25,7 +25,7 @@ _G.createCurrencyTable = function(currencyName)
 	else
 		currencyData.Icon:SetSize(32, 32)
 	end
-	currencyData.Icon:SetBackground(WalletItem[currencyName].Icon)
+	currencyData.Icon:SetBackground(_G.currencies.byName[currencyName].icon)
 
 	-- Icon event handlers
 	currencyData.Icon.MouseMove = function(sender, args)

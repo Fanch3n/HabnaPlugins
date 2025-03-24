@@ -47,8 +47,8 @@ L[ "MReputation" ] = "Reputation";
 
 -- Wallet Currency Controls
 -- LOTRO Points control
-L[ "MLP" ] = "LOTRO points";
-L[ "LPh" ] = "These are your LOTRO points";
+L[ "MLotroPoints" ] = "LOTRO points";
+L[ "LotroPointsh" ] = "These are your LOTRO points";
 -- Mithril Coins control
 L[ "MMithrilCoins" ] = "Mithril Coin";
 L[ "MithrilCoinsh" ] = "These are your Mithril Coins";

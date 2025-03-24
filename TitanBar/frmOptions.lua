@@ -21,7 +21,7 @@ if RP ~= nil then WalletControls[ "RP" ] = { ShowHide = ShowReputation, Control 
 if LP ~= nil then WalletControls[ "LP" ] = { ShowHide = ShowLOTROPoints, Control = LP[ "Ctr" ] }; end
 
 
-for _, currency in pairs(_G.currencies) do
+for _, currency in pairs(_G.currencies.list) do
 	if _G.CurrencyData[currency.name] ~= nil then
 		WalletControls[currency.name] = {
 			ShowHide = _G.CurrencyData[currency.name].IsVisible,

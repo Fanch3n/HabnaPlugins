@@ -4,266 +4,332 @@ TitanBar version which used that name.
 --]]
 
 _G.currencies = {
-  {
-    name = "Shards",
-    legacyTitanbarName = "SP",
-    visibleInMonsterPlay = false
+  list = {
+    {
+      name = "Shards",
+      legacyTitanbarName = "SP",
+      visibleInMonsterPlay = false,
+      icon = 0x41110d5b,
+    },
+    {
+      name = "SkirmishMarks",
+      legacyTitanbarName = "SM",
+      visibleInMonsterPlay = false,
+      icon = 0x4111c446,
+    },
+    {
+      name = "MithrilCoins",
+      legacyTitanbarName = "MC",
+      visibleInMonsterPlay = true,
+      icon = 0x411348E1,
+    },
+    {
+      name = "YuleToken",
+      legacyTitanbarName = "YT",
+      visibleInMonsterPlay = false,
+      icon = 0x410FA62D,
+    },
+    {
+      name = "TokensOfHytbold",
+      legacyTitanbarName = "HT",
+      visibleInMonsterPlay = false,
+      icon = 0x41127D0C,
+    },
+    {
+      name = "Medallions",
+      legacyTitanbarName = "MP",
+      visibleInMonsterPlay = false,
+      icon = 0x4111c43d,
+    },
+    {
+      name = "Seals",
+      legacyTitanbarName = "SL",
+      visibleInMonsterPlay = false,
+      icon = 0x4111c449,
+    },
+    {
+      name = "Commendation",
+      legacyTitanbarName = "CP",
+      visibleInMonsterPlay = true,
+      icon = 0x41123495,
+    },
+    {
+      name = "AmrothSilverPiece",
+      legacyTitanbarName = "ASP",
+      visibleInMonsterPlay = false,
+      icon = 0x41152875,
+    },
+    {
+      name = "StarsOfMerit",
+      legacyTitanbarName = "SOM",
+      visibleInMonsterPlay = false,
+      icon = 0x4115bea4,
+    },
+    {
+      name = "CentralGondorSilverPiece",
+      legacyTitanbarName = "CGSP",
+      visibleInMonsterPlay = false,
+      icon = 0x41155957,
+    },
+    {
+      name = "GiftGiversBrand",
+      legacyTitanbarName = "GGB",
+      visibleInMonsterPlay = false,
+      icon = 0x4115c888,
+    },
+    {
+      name = "BingoBadge",
+      legacyTitanbarName = "BB",
+      visibleInMonsterPlay = false,
+      icon = 0x410E6EE4,
+    },
+    {
+      name = "AnniversaryToken",
+      legacyTitanbarName = "LAT",
+      visibleInMonsterPlay = false,
+      icon = 0x4110E2E7,
+    },
+    {
+      name = "MotesOfEnchantment",
+      legacyTitanbarName = "MOE",
+      visibleInMonsterPlay = false,
+      icon = 0x411B91DD,
+    },
+    {
+      name = "EmbersOfEnchantment",
+      legacyTitanbarName = "EOE",
+      visibleInMonsterPlay = false,
+      icon = 0x411CE971,
+    },
+    {
+      name = "FigmentsOfSplendour",
+      legacyTitanbarName = "FOS",
+      visibleInMonsterPlay = false,
+      icon = 0x411CF13B,
+    },
+    {
+      name = "FallFestivalToken",
+      legacyTitanbarName = "FFT",
+      visibleInMonsterPlay = false,
+      icon = 0x410D85DE,
+    },
+    {
+      name = "FarmersFaireToken",
+      legacyTitanbarName = "FFAT",
+      visibleInMonsterPlay = false,
+      icon = 0x410E7BD6,
+    },
+    {
+      name = "SpringLeaf",
+      legacyTitanbarName = "SPL",
+      visibleInMonsterPlay = false,
+      icon = 0x410D74CB,
+    },
+    {
+      name = "MidsummerToken",
+      legacyTitanbarName = "MST",
+      visibleInMonsterPlay = false,
+      icon = 0x411EE829,
+    },
+    {
+      name = "AncientScript",
+      legacyTitanbarName = "AC",
+      visibleInMonsterPlay = false,
+      icon = 0x41212E84,
+    },
+    {
+      name = "BadgeOfTaste",
+      legacyTitanbarName = "BOT",
+      visibleInMonsterPlay = false,
+      icon = 0x41002B2C,
+    },
+    {
+      name = "BadgeOfDishonour",
+      legacyTitanbarName = "BOD",
+      visibleInMonsterPlay = false,
+      icon = 0x410D4316,
+    },
+    {
+      name = "ColdIronToken",
+      visibleInMonsterPlay = false,
+      icon = 0x4125E425,
+    },
+    {
+      name = "MedallionOfMoria",
+      visibleInMonsterPlay = false,
+      icon = 0x4110182C,
+    },
+    {
+      name = "MedallionOfLothlorien",
+      visibleInMonsterPlay = false,
+      icon = 0x41101829,
+    },
+    {
+      name = "TokenOfHeroism",
+      visibleInMonsterPlay = false,
+      icon = 0x41231838,
+    },
+    {
+      name = "HerosMark",
+      visibleInMonsterPlay = false,
+      icon = 0x41231838,
+    },
+    {
+      name = "DelvingWrit",
+      legacyTitanbarName = "DW",
+      visibleInMonsterPlay = false,
+      icon = 0x412204D8,
+    },
+    {
+      name = "BuriedTreasureToken",
+      visibleInMonsterPlay = false,
+      icon = 0x41002B2C,
+    },
+    {
+      name = "DestinyPoints",
+      legacyTitanbarName = "DP",
+      visibleInMonsterPlay = false,
+      icon = 0x4100a682,
+    },
+    {
+      name = "GabilakkaWarMark",
+      visibleInMonsterPlay = false,
+      icon = 0x411F9F8E,
+    },
+    {
+      name = "CopperCoinOfGundabad",
+      visibleInMonsterPlay = false,
+      icon = 0x411C4D0E,
+    },
+    {
+      name = "SilverCoinOfGundabad",
+      visibleInMonsterPlay = false,
+      icon = 0x4120C6BD,
+    },
+    {
+      name = "SteelToken",
+      visibleInMonsterPlay = false,
+      icon = 0x4112611F,
+    },
+    {
+      name = "IronCoinOfCardolan",
+      visibleInMonsterPlay = false,
+      icon = 0x4121EFD7,
+    },
+    {
+      name = "BreeLandWoodMark",
+      visibleInMonsterPlay = false,
+      icon = 0x411FD3BE,
+    },
+    {
+      name = "BronzeArnorianCoin",
+      visibleInMonsterPlay = false,
+      icon = 0x410E636A,
+    },
+    {
+      name = "SilverArnorianCoin",
+      visibleInMonsterPlay = false,
+      icon = 0x410E8278,
+    },
+    {
+      name = "EastGondorSilverPiece",
+      visibleInMonsterPlay = false,
+      icon = 0x41152879,
+    },
+    {
+      name = "GreyfloodMark",
+      visibleInMonsterPlay = false,
+      icon = 0x41221BE0,
+    },
+    {
+      name = "GundabadMountainMark",
+      visibleInMonsterPlay = false,
+      icon = 0x4120C6BF,
+    },
+    {
+      name = "SilverTokenOfTheRiddermark",
+      visibleInMonsterPlay = false,
+      icon = 0x41127D03,
+    },
+    {
+      name = "GoldenTokenOfTheRiddermark",
+      visibleInMonsterPlay = false,
+      icon = 0x41127D06,
+    },
+    {
+      name = "MinasTirithSilverPiece",
+      visibleInMonsterPlay = false,
+      icon = 0x41167911,
+    },
+    {
+      name = "CrackedEasterlingSceptre",
+      visibleInMonsterPlay = false,
+      icon = 0x4125D0C7,
+    },
+    {
+      name = "GrimOrkishBrand",
+      visibleInMonsterPlay = false,
+      icon = 0x4125D0C4,
+    },
+    {
+      name = "SandWornCopperToken",
+      visibleInMonsterPlay = false,
+      icon = 0x4125D0B7,
+    },
+    {
+      name = "FrigidSteelSignetRing",
+      visibleInMonsterPlay = false,
+      icon = 0x4125D0B4,
+    },
+    {
+      name = "EngravedOnyxSigil",
+      visibleInMonsterPlay = false,
+      icon = 0x4125D0BC,
+    },
+    {
+      name = "SandSmoothedBurl",
+      visibleInMonsterPlay = false,
+      icon = 0x4125D0C6,
+    },
+    {
+      name = "LumpOfRedRockSalt",
+      visibleInMonsterPlay = false,
+      icon = 0x4125D0C1,
+    },
+    {
+      name = "IronSignetOfTheSeaShadow",
+      visibleInMonsterPlay = false,
+      icon = 0x4125E42A,
+    },
+    {
+      name = "IronSignetOfTheFist",
+      visibleInMonsterPlay = false,
+      icon = 0x4125E420,
+    },
+    {
+      name = "IronSignetOfTheAxe",
+      visibleInMonsterPlay = false,
+      icon = 0x4125E428,
+    },
+    {
+      name = "IronSignetOfTheBlackMoon",
+      visibleInMonsterPlay = false,
+      icon = 0x4125E422,
+    },
+    {
+      name = "IronSignetOfTheNecromancer",
+      visibleInMonsterPlay = false,
+      icon = 0x4125E423,
+    },
+    {
+      name = "IronSignetOfTheTwinFlame",
+      visibleInMonsterPlay = false,
+      icon = 0x4125E41D,
+    },
   },
-  {
-    name = "SkirmishMarks",
-    legacyTitanbarName = "SM",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "MithrilCoins",
-    legacyTitanbarName = "MC",
-    visibleInMonsterPlay = true
-  },
-  {
-    name = "YuleToken",
-    legacyTitanbarName = "YT",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "TokensOfHytbold",
-    legacyTitanbarName = "HT",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "Medallions",
-    legacyTitanbarName = "MP",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "Seals",
-    legacyTitanbarName = "SL",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "Commendation",
-    legacyTitanbarName = "CP",
-    visibleInMonsterPlay = true
-  },
-  {
-    name = "AmrothSilverPiece",
-    legacyTitanbarName = "ASP",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "StarsOfMerit",
-    legacyTitanbarName = "SOM",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "CentralGondorSilverPiece",
-    legacyTitanbarName = "CGSP",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "GiftGiversBrand",
-    legacyTitanbarName = "GGB",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "BingoBadge",
-    legacyTitanbarName = "BB",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "AnniversaryToken",
-    legacyTitanbarName = "LAT",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "MotesOfEnchantment",
-    legacyTitanbarName = "MOE",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "EmbersOfEnchantment",
-    legacyTitanbarName = "EOE",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "FigmentsOfSplendour",
-    legacyTitanbarName = "FOS",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "FallFestivalToken",
-    legacyTitanbarName = "FFT",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "FarmersFaireToken",
-    legacyTitanbarName = "FFAT",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "SpringLeaf",
-    legacyTitanbarName = "SPL",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "MidsummerToken",
-    legacyTitanbarName = "MST",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "AncientScript",
-    legacyTitanbarName = "AC",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "BadgeOfTaste",
-    legacyTitanbarName = "BOT",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "BadgeOfDishonour",
-    legacyTitanbarName = "BOD",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "ColdIronToken",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "MedallionOfMoria",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "MedallionOfLothlorien",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "TokenOfHeroism",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "HerosMark",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "DelvingWrit",
-    legacyTitanbarName = "DW",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "BuriedTreasureToken",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "DestinyPoints",
-    legacyTitanbarName = "DP",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "GabilakkaWarMark",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "CopperCoinOfGundabad",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "SilverCoinOfGundabad",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "SteelToken",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "IronCoinOfCardolan",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "BreeLandWoodMark",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "BronzeArnorianCoin",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "SilverArnorianCoin",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "EastGondorSilverPiece",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "GreyfloodMark",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "GundabadMountainMark",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "SilverTokenOfTheRiddermark",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "GoldenTokenOfTheRiddermark",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "MinasTirithSilverPiece",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "CrackedEasterlingSceptre",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "GrimOrkishBrand",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "SandWornCopperToken",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "FrigidSteelSignetRing",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "EngravedOnyxSigil",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "SandSmoothedBurl",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "LumpOfRedRockSalt",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "IronSignetOfTheSeaShadow",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "IronSignetOfTheFist",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "IronSignetOfTheAxe",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "IronSignetOfTheBlackMoon",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "IronSignetOfTheNecromancer",
-    visibleInMonsterPlay = false
-  },
-  {
-    name = "IronSignetOfTheTwinFlame",
-    visibleInMonsterPlay = false
-  }
+  byName = {}
 }
+
+for _, currency in ipairs(_G.currencies.list) do
+  _G.currencies.byName[currency.name] = currency
+end

@@ -225,8 +225,7 @@ function ImportCtr( value )
                         if tmpLP ~= nil then
                             LPTS = tmpLP;
                             _G.LOTROPTS = _G.LOTROPTS + LPTS;
-                            if _G.LPWhere == 1 then UpdateLOTROPoints(); end
-                            SavePlayerLOTROPoints();
+                            UpdateLOTROPoints()
                         end
                     end
                 end
@@ -960,32 +959,15 @@ function SavePlayerReputation()
 end
 
 function LoadPlayerLOTROPoints()
-    PlayerLOTROPoints = Turbine.PluginData.Load(
-        Turbine.DataScope.Account, "TitanBarLOTROPoints");
-    if PlayerLOTROPoints == nil then
-        PlayerLOTROPoints = Turbine.PluginData.Load(
-            Turbine.DataScope.Account, "TitanBarTurbinePoints");
-        -- Check for the old file name.
-        if PlayerLOTROPoints == nil then
-            PlayerLOTROPoints = {};-- If old doesn't exist either, start clean.
-        else
-            if PlayerLOTROPoints.PTS == nil then
-                PlayerLOTROPoints.PTS = "0";
-            end
-            _G.LOTROPTS = PlayerLOTROPoints.PTS;
-            SavePlayerLOTROPoints()
-            -- If old named file does exist, create new using data from file
-            -- with old name. Then delete old named file
-        end
-    end
-    if PlayerLOTROPoints.PTS == nil then PlayerLOTROPoints.PTS = "0"; end
+    PlayerLOTROPoints = Turbine.PluginData.Load(Turbine.DataScope.Account, "TitanBarLOTROPoints") or {}
+    PlayerLOTROPoints["PTS"] = PlayerLOTROPoints.PTS or "0"
     _G.LOTROPTS = PlayerLOTROPoints.PTS;
+    SavePlayerLOTROPoints()
 end
 
 function SavePlayerLOTROPoints()
-    PlayerLOTROPoints.PTS = string.format("%.0f", _G.LOTROPTS);
-    Turbine.PluginData.Save(
-        Turbine.DataScope.Account, "TitanBarLOTROPoints", PlayerLOTROPoints);
+    PlayerLOTROPoints["PTS"] = string.format("%.0f", _G.LOTROPTS);
+    Turbine.PluginData.Save(Turbine.DataScope.Account, "TitanBarLOTROPoints", PlayerLOTROPoints);
 end
 
 function UpdateCurrency(currency_display)
@@ -998,7 +980,7 @@ function UpdateCurrency(currency_display)
 end
 
 function SetCurrencyToZero(str)
-    for _, currency in pairs(_G.currencies) do
+    for _, currency in pairs(_G.currencies.list) do
         if str == L["M" .. currency.name] and _G.CurrencyData[currency.name].IsVisible then
             if _G.CurrencyData[currency.name].IsVisible then
                 if _G.CurrencyData[currency.name].Where == 1 then
@@ -1012,7 +994,7 @@ function SetCurrencyToZero(str)
 end
 
 function SetCurrencyFromZero(str, amount)
-    for _, currency in pairs(_G.currencies) do
+    for _, currency in pairs(_G.currencies.list) do
         if str == L["M" .. currency.name] and _G.CurrencyData[currency.name].IsVisible then
             if _G.CurrencyData[currency.name].IsVisible then
                 if _G.CurrencyData[currency.name].Where == 1 then

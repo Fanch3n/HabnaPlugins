@@ -47,8 +47,8 @@ L[ "MReputation" ] = "Ruf";
 
 -- Wallet Currency Controls
 -- LOTRO Points control
-L[ "MLP" ] = "HdRO-Punkte";
-L[ "LPh" ] = "Eure HdRO-Punkte";
+L[ "MLotroPoints" ] = "HdRO-Punkte";
+L[ "LotroPointsh" ] = "Eure HdRO-Punkte";
 -- Mithril Coins control
 L[ "MMithrilCoins" ] = "Mithril-M\195\188nze";
 L[ "MithrilCoinsh" ] = "Eure Mithril-M\195\188nzen";

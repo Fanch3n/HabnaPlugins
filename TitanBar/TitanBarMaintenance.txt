@@ -48,14 +48,6 @@ Add a new currency:
 -- Search for "PlayerAlign == 1" and add the item to the MenuItem array. The position in that array defines the order in which the currencies are listed.
 -- Add the currency to the CurrencyLangMap
 
-- Add currency in 'TBressources.lua'
--- or more correctly: Add the image of the currency
--- Search for "_G.WalletItem"
--- Copy the last entry in the array and paste it as the last entry
--- Add a comma after the second to last entry (TitanBar won't load without it. It get's me every time)
--- Replace the name in the last entry with the new currency
--- Replace the hex value with the new icon value. (If you don't know the value scroll down to "HelloWorld-Plugin")
-
 - Add currency in Currencies.lua
 
 
@@ -117,7 +109,7 @@ end
 13. Find the currency, which you want to add, and copy / make a note of the number.
 14. Open a hex converter of your choice (I use https://www.rapidtables.com/convert/number/decimal-to-hex.html)
 15. Paste the number in the decimal field and convert it to hex.
-16. Add the hex number to the "WalletItem" list in "TBResources.lua" (and remember to add that comma...)
+16. Add the hex number to the item in "Currencies.lua"
 17. Unload the HelloWorld-Plugin if you don't need it. Type "/plugins unload HelloWorld".
 
 Plugin commands:

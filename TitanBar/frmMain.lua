@@ -159,7 +159,7 @@ function frmMain()
 
 	if PlayerAlign == 1 then
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
-				for k,v in pairs(_G.currencies) do
+				for k,v in pairs(_G.currencies.list) do
 					if _G.CurrencyData[v.name] == nil then _G.CurrencyData[v.name] = {} end
 					if _G.CurrencyData[v.name].Where == nil then _G.CurrencyData[v.name].Where = 3 end
 					if _G.CurrencyData[v.name].Where ~= 3 then ImportCtr(v.name); end
@@ -170,7 +170,7 @@ function frmMain()
 		ShowDurabilityInfos, ShowEquipInfos = false, false
 		ShowVault, ShowSharedStorage = false, false
 		ShowReputation = false
-		for cur in _G.currencies do
+		for cur in _G.currencies.list do
 			if not cur.visibleInMonsterPlay then
 				_G.CurrencyData[cur].IsVisible = false
 			end

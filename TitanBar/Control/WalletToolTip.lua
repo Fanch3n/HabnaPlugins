@@ -35,18 +35,20 @@ function RefreshWITTListBox()
 	WITTListBox:ClearItems();
 	WITTPosY, totWidth = 0, 0;
 	local bFound = false;
-	
+
 	for i = 1, #MenuItem do
 		wttcur = MenuItem[i];
 		if wttcur == L["MGSC"] then
 			ttw = _G.MIWhere;
-		elseif wttcur == L["MLP"] then
-			ttw = _G.LPWhere; CtrIconCodeIs=WalletItem.LOTROPTS.Icon; CtrQteIs=_G.LOTROPTS;
+		elseif wttcur == L["MLotroPoints"] then
+			ttw = _G.LPWhere;
+			CtrIconCodeIs=_G.resources.LOTROPoints;
+			CtrQteIs=_G.LOTROPTS;
 		end
-		for k,v in pairs(_G.currencies) do
+		for k,v in pairs(_G.currencies.list) do
 			if wttcur == L["M" .. v.name] then
 				ttw = _G.CurrencyData[v.name].Where
-				CtrIconCodeIs=WalletItem[v.name].Icon
+				CtrIconCodeIs=v.icon
 				if wttcur == L["MDestinyPoints"] then
 					CtrQteIs = GetPlayerAttributes():GetDestinyPoints()
 				else
@@ -110,7 +112,7 @@ function RefreshWITTListBox()
 				ttIcon:SetPosition( 0, 0 );
 				ttIcon:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 			
-				if wttcur == L["MSL"] or wttcur == L["MLP"] then ttIcon:SetBackground( CtrIconCodeIs );
+				if wttcur == L["MSL"] or wttcur == L["MLotroPoints"] then ttIcon:SetBackground( CtrIconCodeIs );
 				else ttIcon:SetBackground( tonumber(CtrIconCodeIs) ); end
 				--ttIcon:SetBackColor( Color["blue"] ); -- Debug purpose
 				--**^
@@ -137,7 +139,7 @@ function RefreshWITTListBox()
 					ttIcon:SetStretchMode( 1 );
 					ttIcon:SetSize( 32, 32 );
 					ttIcon:SetStretchMode( 3 );
-				elseif wttcur == L["MLP"] then
+				elseif wttcur == L["MLotroPoints"] then
 					ttIcon:SetSize( 30, 32 )
 					ttIcon:SetStretchMode( 1 );
 					ttIcon:SetSize( 32, 32 );
