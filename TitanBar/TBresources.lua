@@ -109,12 +109,6 @@ _G.resources = {
 	Wallet = 0x41004641,    --0x41007f7c,
 	WalletWindow = 0x4100014c,
 	WalletWindowRefresh = 0x4100013B
-
-
-};
-
-_G.WalletItem = {
-	LOTROPTS = { Icon = 0x4113478C },
 };
 
 _G.DurabilitySlotsBG = { 0x41007eed, 0x41007ef6, 0x41007ef7, 0x41007eef, 0x41007eee, 0x41007ee9, 0x41007ef0, 0x41007ef9, 0x41007ef8,

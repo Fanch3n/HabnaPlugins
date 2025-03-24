@@ -150,7 +150,7 @@ function ShowToolTipWin(ToShow)
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["MDayNight"], L["EIt1"], 
             L["EIt2"], L["EIt3"] );
 	elseif ToShow == "LP" then -- LOTRO points
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["LPh"], L["EIt1"], 
+		TTW = createToolTipWin( x, y, w, h, bblTo, L["LotroPointsh"], L["EIt1"], 
             L["EIt2"], L["EIt3"] );
 	elseif ToShow == "DP" or ToShow == "PL" or _G.currencies.byName[ToShow] then
 		h = 65;
@@ -268,24 +268,15 @@ end
 --**^
 --**v Update LOTRO points on TitanBar v**
 function UpdateLOTROPoints()
-	if _G.LPWhere == 1 then
-		LP[ "Lbl" ]:SetText( _G.LOTROPTS );
-		LP[ "Lbl" ]:SetSize( LP[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "LP" );
+	if _G.LPWhere == Position.TITANBAR then
+		LP["Lbl"]:SetText(_G.LOTROPTS)
+		LP["Lbl"]:SetSize(LP["Lbl"]:GetTextLength() * NM, CTRHeight)
+		AjustIcon("LP")
 	end
-	SavePlayerLOTROPoints();
+	SavePlayerLOTROPoints()
 end
 --**^
 -- AU3 MARKER 2 - DO NOT REMOVE
---**v Update Midsummer Token currency on TitanBar v**
-function UpdateMidsummerToken()
-	if _G.MSTWhere == 1 then
-		MST[ "Lbl" ]:SetText( GetCurrency( L[ "MMST" ] ) );
-		MST[ "Lbl" ]:SetSize( MST[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon( "MST" );
-	end
-end
---**^
 --**v Update currency on TitanBar v**
 function UpdateCurrencyDisplay(currencyName)
 	if _G.CurrencyData[currencyName].Where == 1 then

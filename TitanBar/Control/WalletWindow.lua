@@ -169,7 +169,7 @@ function frmWalletWindow()
 	local WIlblLOTROPTS = Turbine.UI.Label();
 	WIlblLOTROPTS:SetParent( LPWCtr );
 	--WIlblLOTROPTS:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
-	WIlblLOTROPTS:SetText( L["MLP"] );
+	WIlblLOTROPTS:SetText( L["MLotroPoints"] );
 	WIlblLOTROPTS:SetPosition( 0, 2 );
 	WIlblLOTROPTS:SetSize( WIlblLOTROPTS:GetTextLength() * 7.5, 15 ); --Auto size with text lenght
 	WIlblLOTROPTS:SetForeColor( Color["rustedgold"] );
@@ -226,7 +226,7 @@ function frmWalletWindow()
 			_G.MIWhere = SelIndex; settings.Money.W = string.format("%.0f", SelIndex);
 			if SelIndex == Position.TITANBAR then if not ShowMoney then ShowHideMoney(); end
 			else if ShowMoney then ShowHideMoney(); end end
-		elseif wcur == L["MLP"] then
+		elseif wcur == L["MLotroPoints"] then
 			_G.LPWhere = SelIndex; settings.LOTROPoints.W = string.format("%.0f", SelIndex);
 			if SelIndex == Position.TITANBAR then
 				if not ShowLOTROPoints then
@@ -250,10 +250,7 @@ function frmWalletWindow()
 			end
 			
 			_G.LOTROPTS = WItxtLOTROPTS:GetText();
-			if _G.LPWhere == Position.TITANBAR then
-				UpdateLOTROPoints()
-			end
-			SavePlayerLOTROPoints();
+			UpdateLOTROPoints()
 		else
 			local cur = _G.CurrencyLangMap[wcur]
 			_G.CurrencyData[cur].Where = SelIndex
@@ -307,7 +304,7 @@ function RefreshWIListBox()
 
 				if wcur == L["MGSC"] then
 					tw = _G.MIWhere; -- Money
-				elseif wcur == L["MLP"] then
+				elseif wcur == L["MLotroPoints"] then
 					tw = _G.LPWhere; -- LOTRO Points
 					LPWCtr:SetVisible( true ); -- LOTRO Points
 					WItxtLOTROPTS:SetText( _G.LOTROPTS ); -- LOTRO Points
