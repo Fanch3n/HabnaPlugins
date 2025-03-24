@@ -123,15 +123,6 @@ function ShowToolTipWin(ToShow)
 		y = h
 	end
 
-	local function doesCurrencyExist(currency)
-		for i, cur in pairs(_G.currencies) do
-			if cur.name == currency then
-				return true
-			end
-		end
-		return false
-	end
-
 	if ToShow == "BI" then -- Bag Infos
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["MBI"], L["EIt1"], L["EIt2"], L["EIt3"] );
 	elseif ToShow == "GT" then -- Game Time
