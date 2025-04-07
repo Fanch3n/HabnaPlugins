@@ -22,10 +22,16 @@ _G.createCurrencyTable = function(currencyName)
 
 	if currencyName == "DestinyPoints" then
 		currencyData.Icon:SetSize(21, 22)
+	elseif currencyName == "LotroPoints" then
+		currencyData.Icon:SetSize(36, 43)
 	else
 		currencyData.Icon:SetSize(32, 32)
 	end
 	currencyData.Icon:SetBackground(_G.currencies.byName[currencyName].icon)
+	if currencyName == "LotroPoints" then
+		currencyData.Icon:SetStretchMode(1)
+		currencyData.Icon:SetSize(32, 32)
+	end
 
 	-- Icon event handlers
 	currencyData.Icon.MouseMove = function(sender, args)
@@ -60,7 +66,7 @@ _G.createCurrencyTable = function(currencyName)
 	currencyData.Lbl:SetFont(_G.TBFont)
 	currencyData.Lbl:SetPosition(0, 0)
 	currencyData.Lbl:SetFontStyle(Turbine.UI.FontStyle.Outline)
-	if currencyName == "DestinyPoints" then
+	if currencyName == "DestinyPoints" or currencyName == "LotroPoints" then
 		currencyData.Lbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleCenter)
 	else
 		currencyData.Lbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight)
@@ -84,7 +90,15 @@ _G.createCurrencyTable = function(currencyName)
 	currencyData.Lbl.MouseClick = function(sender, args)
 		TB.win.MouseMove()
 		if args.Button == Turbine.UI.MouseButton.Left then
-			if not WasDrag then
+			if not WasDrag and currencyName == "LotroPoints" then
+				if _G.frmLP then
+					_G.frmLP = false
+					wLP:Close()
+				else
+					_G.frmLP = true
+					import (AppCtrD.."LotroPointsWindow")
+					frmLOTROPointsWindow()
+				end
 			end
 		elseif args.Button == Turbine.UI.MouseButton.Right then
 			_G.sFromCtr = currencyName

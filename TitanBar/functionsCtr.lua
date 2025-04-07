@@ -203,7 +203,7 @@ function ImportCtr( value )
             LP[ "Ctr" ]:SetPosition( _G.LPLocX, _G.LPLocY );
             UpdateLOTROPoints();
         end
-        if _G.LPWhere ~= 3 then
+        if _G.LPWhere ~= Position.NONE then
             --PlayerLP = Player:GetLOTROPoints();
             --AddCallback(PlayerLP, "LOTROPointsChanged",
             --    function(sender, args) UpdateLOTROPoints(); end
@@ -211,7 +211,7 @@ function ImportCtr( value )
             LPcb = AddCallback(Turbine.Chat, "Received",
                 function(sender, args)
                 if args.ChatType == Turbine.ChatType.Advancement then
-                    tpMess = args.Message;
+                    local tpMess = args.Message;
                     if tpMess ~= nil then
                         local tpPattern;
                         if GLocale == "en" then
@@ -264,29 +264,16 @@ function ImportCtr( value )
         UpdateSharedStorage();
         SS[ "Ctr" ]:SetPosition( _G.SSLocX, _G.SSLocY );
 	elseif value == "RP" then --Reputation Points
-        RPGR = { ['default'] = {
-            [0] = 10000, [1] = 10000, [2] = 20000, [3] = 25000, [4] = 30000,
-            [5] = 45000, [6] = 60000, [7] = 90000, [8] = 200000, [9] = 1 },
-            ['RPTGA'] = { [1] = 10000, [2] = 20000, [3] = 20000, [4] = 1 },
-            ['RPTWC'] = { [1] = 10000, [2] = 15000, [3] = 20000, [4] = 20000,
-                        [5] = 20000, [6] = 20000, [7] = 30000, [8] = 1 },
-            ['RPRMI'] = { [1] = 4000, [2] = 6000, [3] = 8000, [4] = 10000,
-                        [5] = 12000, [6] = 14000, [7] = 16000, [8] = 18000,
-                        [9] = 20000, [10] = 1 },
-			['RPGA'] = { [1] = 10000, [2] = 20000, [3] = 25000, [4] = 30000,
-                        [5] = 45000, [6] = 1 }			
-            };
-            -- Reputation max points per rank
         import (AppCtrD.."Reputation");
         import (AppCtrD.."ReputationToolTip");
-        RPcb = AddCallback(Turbine.Chat, "Received",
+        ReputationCallback = AddCallback(Turbine.Chat, "Received",
             function( sender, args )
                 if (args.ChatType ~= Turbine.ChatType.Advancement) then return; end
 
-                rpMess = args.Message;
+                local rpMess = args.Message;
                 if rpMess ~= nil then
                 -- Check string, Reputation Name and Reputation Point pattern
-                    local cstr, rpnPattern, rppPatern, rpbPattern;
+                    local cstr, rpnPattern, rppPattern, rpbPattern;
                     if GLocale == "en" then
                         rpnPattern = "reputation with (.*) has"..
                             " (.*) by";
@@ -322,15 +309,12 @@ function ImportCtr( value )
                     local rpName,increaseOrDecrease = string.match( rpMess,rpnPattern );
                     -- Reputation Name
                     if rpMess ~= nil and rpName ~= nil then
+                        -- decrease remaining bonus acceleration
                         if rpbPattern ~= nil then
                             local rpBonus = string.match( rpMess, rpbPattern );
                             rpBonus = string.gsub( rpBonus, ",", "" );
-                            tot = PlayerReputation[ PN ][ "RPACC" ].P;
-                            tot = tot - rpBonus;
-                            if tot < 0 then
-                                tot = 0;
-                            end
-                            PlayerReputation[ PN ][ "RPACC" ].P = string.format( "%.0f", tot );
+                            local newValue = math.max(0, PlayerReputation[PN]["ReputationAcceleration"].Total - rpBonus)
+                            PlayerReputation[PN]["ReputationAcceleration"].Total = string.format("%.0f", newValue);
                         end
                         local rpPTS = string.match( rpMess, rppPattern );
                         if (increaseOrDecrease == L[ "RPDECREASE"]) then
@@ -339,52 +323,14 @@ function ImportCtr( value )
                         -- Reputation points
                         local rpPTS = string.gsub( rpPTS, ",", "" );
                         -- Replace "," in 1,400 to get 1400
-                        for i = 1, #RepOrder do
-                            local v = RepType[ i ];
-                            local name = RepOrder[ i ];
-                            if L[ name ] == rpName then
-                                local lastR = #RepTypes[ v ]
-                                -- Check if new points is equal or bigger
-                                -- of the max points
-                                local tot = PlayerReputation[ PN ][ name ].P;
-                                tot = tot + rpPTS;
-                                local max = tonumber( PlayerReputation[PN][name].R );
-                                if max == lastR and tot > 0 then
-                                    tot = 0;
-                                end
-                                if v == 2 or v == 7 or v == 15 then
-                                    max = max - 1
-                                elseif v == 8 then
-                                    max = max - 1
-                                end
-                                RPPROG = "default";
-                                if name == "RPTGA" or name == "RPTWC" or name == "RPRMI" or name == "RPGA" then
-                                    RPPROG = name;
-                                end
-                                max = RPGR[RPPROG][ max ];
-                                if tot >= max then
-                                    -- true, then calculate diff to add to next rank
-                                    tot = tot - max;
-                                    -- Change rank & points
-                                    PlayerReputation[ PN ][ name ].R = tostring( PlayerReputation[ PN ][ name ].R + 1 );
-                                elseif tot < 0 then
-                                    local newR = tonumber( PlayerReputation[ PN ][ name ].R ) - 1;
-                                    isNewRNegative = newR;
-                                    if v == 2 or v == 7 or v == 8 or v == 15 then
-                                        isNewRNegative = isNewRNegative - 1;
-                                    end
-                                    if isNewRNegative >= 0 then
-                                        max = RPGR[RPPROG][ ( isNewRNegative ) ];
-                                        PlayerReputation[ PN ][ name ].R = tostring( newR );
-                                        tot = tot + max;
-                                    end
-                                end
-                                if PlayerReputation[ PN ][ name ].R == lastR then
-                                    tot = 0;
-                                end
-                                -- add points
-                                PlayerReputation[ PN ][ name ].P = string.format( "%.0f", tot );
-                                break
+                        for faction in _G.Factions.list do
+                            if L[faction.name] == rpName then
+                                local current_points = PlayerReputation[PN][faction.name].Total
+                                local newPointsTotal = current_points + rpPTS
+                                local factionMaxReputation = faction.ranks[#faction.ranks].requiredReputation
+                                newPointsTotal = math.min(factionMaxReputation, newPointsTotal)
+                                newPointsTotal = math.max(0, newPointsTotal)
+                                PlayerReputation[PN][faction.name].Total = string.format("%.0f", newPointsTotal)
                             end
                         end
                         SavePlayerReputation();
@@ -854,6 +800,27 @@ function LoadPlayerReputation()
         -- Reputation Accelerator
         "RPACC",
     };
+    local baseReputation = {
+        20000, 20000, 20000, 20000, 0,     20000, 20000, 1000,  20000, 20000, 20000,
+        10000, 20000, 10000, 20000, 20000, 20000, 20000, 20000, 20000, 20000,
+        20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000,
+        20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000,
+        20000, 20000, 20000, 20000, 20000,
+        20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000,
+        20000, 20000, 20000, 20000, 20000, 20000, 20000,
+        20000, 20000, 20000, 20000,
+        20000, 0,     0,     10000,
+        20000, 20000, 20000, 20000,
+        20000,
+        30000, 0,     2000,
+        20000,
+        20000, 20000,
+        20000, 10000,
+        20000,
+        20000, 0,     0,
+        0
+    }
+    -- special: 2,7,8,15
     RepType = {
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         2, 1, 15, 1, 1, 1, 1, 1, 1, 1,
@@ -888,22 +855,22 @@ function LoadPlayerReputation()
         10,
     };
     RepTypes = {
-        [1] = {"RPGL1", "RPGL2", "RPGL3", "RPGL4", "RPGL5"}, -- normal
-        [2] = {"RPBL1", "RPGL1", "RPGL2", "RPGL3", "RPGL4", "RPGL5"}, -- Forochel
-        [3] = {"RPGL1", "RPGL2", "RPGL3", "RPGL4", "RPGL5", "RPGL6", "RPGL7", "RPGL8"}, -- extended normal
-        [4] = {"RPGL1", "RPGL2"}, -- DA buildings
-        [5] = {"RPGG1", "RPGG2", "RPGG3", "RPGG4", "RPGG5", "RPGG6", "RPGG7", "RPGG8", "RPGG9"}, -- craft guild
-        [6] = {"RCCLE1", "RCCLE2", "RCCLE3", "RCCLE4", "RCCLE5"}, -- chicken
-        [7] = {"RPBL2", "RPGL1", "RPGL2", "RPGL3", "RPGL4", "RPGL5"}, -- inn/alhe
-        [8] = {"RPBL2", "RPBL1", "RPGL1"}, -- fushaum
-        [9] = {"RPBL1", "RPGL1", "RPGL2", "RPGL3"}, -- red sky clan
-        [10] = {"RPBR"}, -- Accelerator
-        [11] = {"RPGL1", "RPGL2", "RPGL3", "RPGL4", "RPGL5", "RPGL6"}, -- why another??? Dwarfs of Erebor
-        [12] = {"RPGL5", "RPGL6", "RPGL7", "RPGL8"}, -- another one for Minas Morgul
-        [13] = {"RPMI1", "RPMI2", "RPMI3", "RPMI4", "RPMI5", "RPMI6", "RPMI7", "RPMI8", "RPMI9", "RPMI10"}, -- and another one for the Reclamation, because... why not?
-		[14] = {"RPGA1", "RPGA2", "RPGA3", "RPGA4", "RPGA5", "RPGA6"}, -- The Gabil'akk�
-		[15] = {"RPBL1", "RPGL1", "RPGL2", "RPGL3", "RPGL4"}, -- Outsider to Ally
-		[16] = {"RPGA1", "RPGA2", "RPGA3", "RPGA4", "RPGA5"}, -- The Haban'akk� of Thr�in		
+        [1] = {"Neutral", "Acquaintance", "Friend", "Ally", "Kindred"}, -- normal
+        [2] = {"Outsider", "Neutral", "Acquaintance", "Friend", "Ally", "Kindred"}, -- Forochel
+        [3] = {"Neutral", "Acquaintance", "Friend", "Ally", "Kindred", "Respected", "Honoured", "Celebrated"}, -- extended normal
+        [4] = {"Neutral", "Acquaintance"}, -- DA buildings
+        [5] = {"GuildInitiate", "ApprenticeOfTheGuild", "JourneymanOfTheGuild", "ExpertOfTheGuild", "ArtisanOfTheGuild", "MasterOfTheGuild", "EastemnetMasterOfTheGuild", "WestemnetMasterOfTheGuild", "HonouredMasterOfTheGuild"}, -- craft guild
+        [6] = {"Rookie", "MinorLeaguer", "MajorLeaguer", "AllStar", "HallOfFamer"}, -- chicken
+        [7] = {"Enemy", "Neutral", "Acquaintance", "Friend", "Ally", "Kindred"}, -- inn/alhe
+        [8] = {"Enemy", "Outsider", "Neutral"}, -- fushaum
+        [9] = {"Outsider", "Neutral", "Acquaintance", "Friend"}, -- red sky clan
+        [10] = {"BonusRemaining"}, -- Accelerator
+        [11] = {"Neutral", "Acquaintance", "Friend", "Ally", "Kindred", "Respected"}, -- why another??? Dwarfs of Erebor
+        [12] = {"Kindred", "Respected", "Honoured", "Celebrated"}, -- another one for Minas Morgul
+        [13] = {"TheReclamation", "TheReclamationContinues", "TheTrialOfWrath", "TheReclamationContinuesIi", "TheTrialOfSorrow", "TheReclamationContinuesIii", "TheTrialOfMadness", "TheReclamationContinuesIv", "TheTrialOfDespair", "TheTrialOfDeath"}, -- and another one for the Reclamation, because... why not?
+		[14] = {"Idmul", "Dumul", "Izkhas", "Uzkhas", "Fabaral", "Azghzabad"}, -- The Gabil'akk�
+		[15] = {"Outsider", "Neutral", "Acquaintance", "Friend", "Ally"}, -- Outsider to Ally
+		[16] = {"Idmul", "Dumul", "Izkhas", "Uzkhas", "Fabaral"}, -- The Haban'akk� of Thr�in		
     };
     PlayerReputation = Turbine.PluginData.Load(
         Turbine.DataScope.Server, "TitanBarReputation");
@@ -922,32 +889,38 @@ function LoadPlayerReputation()
         if PlayerReputation[PN][RepOrder[i]].R == nil then
             PlayerReputation[PN][RepOrder[i]].R = "1";
         end --rank
-        -- delete old values vv
-        if PlayerReputation[PN][RepOrder[i]].T ~= nil then
-            PlayerReputation[PN][RepOrder[i]].T = nil;
+
+        -- add total (cumulative) points for reputation
+        local factionAbbreviation = RepOrder[i]
+        local reputationRank = PlayerReputation[PN][factionAbbreviation].R
+        local stepsType = "default"
+        if factionAbbreviation == "RPTGA" or factionAbbreviation == "RPTWC" or
+        factionAbbreviation == "RPRMI" or factionAbbreviation == "RPGA" then
+            stepsType = factionAbbreviation;
         end
-        if PlayerReputation[PN][RepOrder[i]].N ~= nil then
-            PlayerReputation[PN][RepOrder[i]].N = nil;
+        local reputationSteps = _G.Factions.reputationSteps[stepsType]
+        local totalReputation = PlayerReputation[PN][factionAbbreviation].P
+        totalReputation = totalReputation + baseReputation[i]
+        for j = 1, math.min(#reputationSteps, reputationRank) - 1 do
+            totalReputation = totalReputation + reputationSteps[j]
         end
-        -- ^^
+        PlayerReputation[PN][factionAbbreviation].Total = tostring(totalReputation)
     end
-    -- if old reputation data exists, load them into new.
-    for i = 1, 60 do
-        if PlayerReputation[PN][tostring(i)] == nil then break end
-        for j = 1, #RepOrder do
-            local ind = tostring(i);
-            if PlayerReputation[PN][ind].en == L[RepOrder[j]] or
-                    PlayerReputation[PN][ind].de == L[RepOrder[j]] or
-                    PlayerReputation[PN][ind].fr == L[RepOrder[j]] then
-                PlayerReputation[PN][RepOrder[j]].P = PlayerReputation[PN][ind].P;
-                PlayerReputation[PN][RepOrder[j]].V = PlayerReputation[PN][ind].V;
-                PlayerReputation[PN][RepOrder[j]].R = PlayerReputation[PN][ind].R;
-                PlayerReputation[PN][ind] = nil;
-                break;
-            end
+    for _, faction in ipairs(_G.Factions.list) do
+        PlayerReputation[PN][faction.name] = PlayerReputation[PN][faction.name] or {}
+        local total = "0"
+        local visible = false
+        if faction.legacyTitanbarName and PlayerReputation[PN][faction.legacyTitanbarName] then
+            total = PlayerReputation[PN][faction.name].Total or PlayerReputation[PN][faction.legacyTitanbarName].Total or "0"
+            visible = PlayerReputation[PN][faction.name].V or PlayerReputation[PN][faction.legacyTitanbarName].V
+            PlayerReputation[PN][faction.legacyTitanbarName] = nil
+        else
+            total = PlayerReputation[PN][faction.name].Total
+            visible = PlayerReputation[PN][faction.name].V
         end
+        PlayerReputation[PN][faction.name].Total = total
+        PlayerReputation[PN][faction.name].V = visible
     end
-    -- ^^ Old rep data load
     SavePlayerReputation();
 end
 

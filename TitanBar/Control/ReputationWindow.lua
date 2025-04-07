@@ -3,7 +3,7 @@
 
 
 function frmReputationWindow()
-    faction = nil;
+    _G.SelectedFaction = nil;
     import(AppClassD.."ComboBox");
     RPDD = HabnaPlugins.TitanBar.Class.ComboBox();
 
@@ -242,13 +242,23 @@ function frmReputationWindow()
         RPtxtTotal:Focus();
         RPWCtr:SetVisible(false);
         RPWCtr:SetZOrder(0);
-        for i = 1, #RepTypes[RepType[faction]] do -- number of rank in the drop down box
-            if RPCBO[i] == RPDD.label:GetText() then
-                PlayerReputation[PN][RepOrder[faction]].R = tostring(i);
+        local baseRankReputation = 0
+        local numberOfRanks = #_G.Factions.byName[_G.SelectedFaction].ranks
+        for i = 1, numberOfRanks do -- number of ranks in the drop down box
+            if L[_G.Factions.byName[_G.SelectedFaction].ranks[i].name] == RPDD.label:GetText() then
+                baseRankReputation = _G.Factions.byName[_G.SelectedFaction].ranks[i].requiredReputation
             end
         end
         RPDD:ClearSelection();
-        PlayerReputation[PN][RepOrder[faction]].P = RPtxtTotal:GetText();
+        local factionMaxReputation = _G.Factions.byName[_G.SelectedFaction].ranks[numberOfRanks].requiredReputation
+        if _G.SelectedFaction == "ReputationAcceleration" then
+            PlayerReputation[PN]["ReputationAcceleration"].Total = RPtxtTotal:GetText()
+        else
+            PlayerReputation[PN][_G.SelectedFaction].Total = tostring(math.min(RPtxtTotal:GetText() + baseRankReputation, factionMaxReputation));
+        end
+        if _G.Debug then
+            write("saving reputation: "..PlayerReputation[PN][_G.SelectedFaction].Total)
+        end
         SavePlayerReputation();
     end
     RefreshRPListBox();
@@ -256,8 +266,7 @@ end
 
 function RefreshRPListBox()
     RPListBox:ClearItems();
-
-    for i = 1, #RepOrder do
+    for _, faction in ipairs(_G.Factions.list) do
         --**v Control of all data v**
         local RPCtr = Turbine.UI.Control();
         RPCtr:SetParent(RPListBox);
@@ -267,32 +276,38 @@ function RefreshRPListBox()
         local repLbl = Turbine.UI.Lotro.CheckBox();
         RPCtr.repLbl = repLbl;
         repLbl:SetParent(RPCtr);
-        repLbl:SetText(L[RepOrder[i]]);
+        repLbl:SetText(L[faction.name])
         repLbl:SetSize(RPListBox:GetWidth() - 10, 20);
         repLbl:SetPosition(0, 0);
         repLbl:SetFont(Turbine.UI.Lotro.Font.TrajanPro16);
         repLbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
         repLbl:SetForeColor(Color["nicegold"]);
-        repLbl:SetChecked(PlayerReputation[PN][RepOrder[i]].V);
+        repLbl:SetChecked(PlayerReputation[PN][faction.name].V);
         repLbl.MouseClick = function(sender, args)
             if args.Button == Turbine.UI.MouseButton.Right then
-                faction = i;
-                RPlblFN:SetText(L[RepOrder[i]]);
-                RPtxtTotal:SetText(PlayerReputation[PN][RepOrder[i]].P);
-                RPDD:ClearItems();
-                RPCBO = {};
-                
-                rtype = RepType[i];
-                for j = 1, #RepTypes[rtype] do
-                    rName = RepTypes[rtype][j];
-                    table.insert(RPCBO, L[rName]);
+                _G.SelectedFaction = faction.name
+                RPlblFN:SetText(L[faction.name]);
+
+                local currentRankPoints = "0"
+                local currentRank = ""
+                local totalReputation = PlayerReputation[PN][faction.name].Total
+
+                for i = #faction.ranks, 1, -1 do
+                    if tonumber(faction.ranks[i].requiredReputation) <= tonumber(totalReputation) then
+                        currentRankPoints = totalReputation - faction.ranks[i].requiredReputation
+                        currentRank = faction.ranks[i].name
+                        break
+                    end
                 end
 
-                for k,v in pairs(RPCBO) do RPDD:AddItem(v, k) end;
-                local tra = tonumber(PlayerReputation[PN][RepOrder[i]].R);
-                for k,v in pairs(RPCBO) do
-                    if k == tra then RPDD:SetSelection(k); end
+                RPtxtTotal:SetText(tostring(currentRankPoints));
+                RPDD:ClearItems();
+                
+                for _, rank in ipairs(faction.ranks) do
+                    RPDD:AddItem(L[rank.name], rank.name)
                 end
+
+                RPDD:SetSelection(currentRank)
                 RPWCtr:SetVisible(true);
                 RPWCtr:SetZOrder(2);
                 RPtxtTotal:Focus();
@@ -300,11 +315,12 @@ function RefreshRPListBox()
         end
 
         repLbl.CheckedChanged = function(sender, args)
-            PlayerReputation[PN][RepOrder[i]].V = repLbl:IsChecked();
+            PlayerReputation[PN][faction.name].V = repLbl:IsChecked();
             SavePlayerReputation();
         end
 
         RPListBox:AddItem(RPCtr);
     end
+
     RPFilter();
 end
