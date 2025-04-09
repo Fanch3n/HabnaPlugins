@@ -60,7 +60,7 @@ _G.createCurrencyTable = function(currencyName)
 	currencyData.Lbl:SetFont(_G.TBFont)
 	currencyData.Lbl:SetPosition(0, 0)
 	currencyData.Lbl:SetFontStyle(Turbine.UI.FontStyle.Outline)
-	if currencyName == "DestinyPoints" or currencyName == "LotroPoints" then
+	if currencyName == "DestinyPoints" then
 		currencyData.Lbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleCenter)
 	else
 		currencyData.Lbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight)
