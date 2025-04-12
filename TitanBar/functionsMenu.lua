@@ -229,7 +229,7 @@ function ShowHideReputation()
 		ImportCtr( "RP" );
 		RP[ "Ctr" ]:SetBackColor( Turbine.UI.Color( RPbcAlpha, RPbcRed, RPbcGreen, RPbcBlue ) );
 	else
-		RemoveCallback(Turbine.Chat, "Received", RPcb);
+		RemoveCallback(Turbine.Chat, "Received", ReputationCallback);
 		if _G.frmRP then wRP:Close(); end
 	end
 	RP[ "Ctr" ]:SetVisible( ShowReputation );

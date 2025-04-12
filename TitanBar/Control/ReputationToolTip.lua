@@ -35,18 +35,15 @@ function RPRefreshListBox()
     RPTTPosY = 0;
     local bFound = false;
 
-    for i = 1, #RepOrder do
-        if PlayerReputation[PN][RepOrder[i]].V then
-            HideMaxReps = true;
+    for _, faction in ipairs(_G.Factions.list) do
+        if PlayerReputation[PN][faction.name].V then
+            HideMaxReps = true; -- TODO add option to hide/show
             HideBonus = true;
-            if RepOrder[i] == "RPACC" then
-                if tonumber(PlayerReputation[PN][RepOrder[i]].P) > 0 then
+            if faction.name == "ReputationAcceleration" then
+                if tonumber(PlayerReputation[PN][faction.name].Total) > 0 then
                     HideBonus = false;
-                    -- hide rep accelerator if 0 points
                 end
             end
-            -- Assume that people want factions that are max hidden until I
-            -- can offer an option checkbox
 
             --**v Control of all data v**
             local RPTTCtr = Turbine.UI.Control();
@@ -63,45 +60,53 @@ function RPRefreshListBox()
             repLbl:SetFont( Turbine.UI.Lotro.Font.TrajanPro16 );
             repLbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleCenter);
             repLbl:SetForeColor( Color["nicegold"] );
-            repLbl:SetText( L[RepOrder[i]] );
+            repLbl:SetText( L[faction.name] );
 
-            local tl, tm, percentage_done = nil, nil, 0;
-            local tp = PlayerReputation[PN][RepOrder[i]].P;
-            local tr = tonumber(PlayerReputation[PN][RepOrder[i]].R);
+            local percentage_done = "0.00"
+            local totalReputation = math.max(tonumber(PlayerReputation[PN][faction.name].Total) or 0, 0)
+            local rankName = faction.ranks[1].name
+            local currentRankPoints = 0
+            local currentRankMax = 1
 
-            name = RepOrder[i];
-            RPPROG = "default";
-            if name == "RPTGA" or name == "RPTWC" or name == "RPRMI" or name == "RPGA" then
-                RPPROG = name;
+            for n, rank in ipairs(faction.ranks) do
+                local required = tonumber(rank.requiredReputation) or 0
+
+                if totalReputation < required then
+                    local previousRankMax = faction.ranks[math.max(n-1, 1)].requiredReputation
+                    rankName = faction.ranks[math.max(n-1, 1)].name
+                    currentRankPoints = totalReputation - previousRankMax
+                    currentRankMax = required - previousRankMax
+
+                    if currentRankPoints and currentRankMax and currentRankMax ~= 0 then
+                        local percent = (currentRankPoints / currentRankMax) * 100
+                        percentage_done = string.format("%.2f", percent)
+                    end
+                    break
+                elseif required == totalReputation and n == #faction.ranks then
+                    rankName = rank.name
+                elseif faction.name == "ReputationAcceleration" then
+                    currentRankPoints = totalReputation
+                    currentRankMax = 80000
+                    local percent = (currentRankPoints / currentRankMax) * 100
+                    percentage_done = string.format("%.2f", percent)
+                end
+            end
+            if rankName == faction.ranks[#faction.ranks].name and HideBonus then
+                percentage_done = "max"
             end
 
-
-            local tt = RepType[i];
-            if tt == 2 or tt == 7 or tt == 8 or tt == 15 then
-                tm = RPGR[RPPROG][tonumber( tr-1 )];
-            else
-                tm = RPGR[RPPROG][tonumber( tr )];
-            end
-            if tt == 10 then
-                tm = 80000;
-            end
-
-            if tr == #RepTypes[RepType[i]] and HideBonus then
-                percentage_done = "max";
-            else percentage_done = string.format( "%.2f", ( tp / tm ) * 100 );
-            end
-
-            --**v progress bar v**
             local RPPBFill = Turbine.UI.Control();--Filling
             RPPBFill:SetParent( RPTTCtr );
             RPPBFill:SetPosition( 9, 17 );
             if percentage_done == "max" then RPPBFill:SetSize( 183, 9 );
-            else RPPBFill:SetSize( ( 183 * percentage_done ) / 100, 9 ); end
+            else RPPBFill:SetSize( ( 183 * tonumber(percentage_done) ) / 100, 9 ); end
             RPPBFill:SetBackground( resources.Reputation.BGGood );
             --RPPBFill:SetBackground( resources.Reputation.BGBad );
-            if RepType[i] == 5 then
+
+            if faction.isCraftingGuild then
                 RPPBFill:SetBackground( resources.Reputation.BGGuild );
             end
+
             local RPPB = Turbine.UI.Control(); --Frame
             RPPB:SetParent( RPTTCtr );
             RPPB:SetPosition( 0, 14 );
@@ -117,22 +122,20 @@ function RPRefreshListBox()
             else
                 bFound = true;
                 RPPC:SetPosition( 9, 17 );
-                RPPC:SetText( tp.."/"..tm.."  "..percentage_done.."%" );
+                RPPC:SetText( currentRankPoints.."/"..currentRankMax.."  "..percentage_done.."%" );
             end
             RPPC:SetSize( 200, 9 );
             RPPC:SetForeColor( Color["white"] );
             RPPC:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
-            --**^
 
             local RPLvl = Turbine.UI.Label();
-            tl = L[RepTypes[RepType[i]][tr]];
             RPLvl:SetForeColor( Color["white"] );
-            if RepType[i] == 10 then RPLvl:SetForeColor( Color["purple"] ); end
+            if faction.name == "ReputationAcceleration" then RPLvl:SetForeColor( Color["purple"] ); end
             --RPLvl:SetForeColor( Color["red"] );
             --RPLvl:SetForeColor( Color["green"] );
 
             RPLvl:SetParent( RPTTCtr );
-            RPLvl:SetText( tl );
+            RPLvl:SetText(L[rankName]);
             RPLvl:SetPosition( 205, 15 );
             RPLvl:SetSize( RPTTListBox:GetWidth() - RPPB:GetWidth(), 15 );
             RPLvl:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
@@ -147,8 +150,10 @@ function RPRefreshListBox()
                 RPTTPosY = RPTTPosY + 35;
                 RPTTListBox:AddItem( RPTTCtr );
             end
+
         end
     end
+    
     if not bFound then --If not showing any faction
         local lblName = Turbine.UI.Label();
         lblName:SetParent( _G.ToolTipWin );

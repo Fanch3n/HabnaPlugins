@@ -2,11 +2,33 @@ This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Te
 
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
-Version 1.42 (upcoming)
+Version 1.42 (April 13, 2025)
+- Significantly changed how reputation factions are handled, making it easier to add factions
+- Changed reputation save file format. Before converting, the old content is saved to a backup file
+- German version: Parsing reputation gain messages should work now
 - Widened currency window to account for longer currency names
 - Fixed output of /titanbar pw
 - Currency tooltip now displays while hovering over icon as well as number
-- Include icon in Currency.lua file
+- Include icon in Currencies.lua file
+- Added all remaining reputation factions
+	- Stewards of the Iron-home
+	- Townsfolk of the Kingstead
+	- Townsfolk of the Eastfold
+	- The Renewal of Gondor
+	- Umbar Cook's Guild
+	- Umbar Jeweller's Guild
+	- Umbar Metalsmith's Guild
+	- Umbar Scholar's Guild
+	- Umbar Tailor's Guild
+	- Umbar Weaponsmith's Guild
+	- Umbar Woodworker's Guild
+	- Citizens of Umbar Baharbêl
+	- Phetekâri of Umbar
+	- The Ikorbâni
+	- The Adúrhid
+	- The Path of Valour
+	- Amelia's Studies
+	- Moria Bounty Hunters
 
 =================================================
 Version 1.41.00 (March 22, 2025)
@@ -42,6 +64,7 @@ Version 1.41.00 (March 22, 2025)
 	- Iron Signet Of The Twin Flame
 =================================================
 v1.40.00 (March 21, 2025)
+Note: Due to the changes to currency names in the save file, saves created by this version of TitanBar can't be loaded by older versions. Affected currencies will need to be configured and positioned again should you decide to downgrade TitanBar. If you just want to try this version, back up your TitanBarSettingsEN.plugindata, TitanBarSettingsDE.plugindata and/or TitanBarSettingsFR.plugindata file.
 - Added several currencies
   - Medallion of Moria
 	- Medallion of Lothlórien

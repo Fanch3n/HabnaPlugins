@@ -1,40 +1,16 @@
 You can download the newest version of the code from GitHub:
-https://github.com/Duriel908/HabnaPlugins
+https://github.com/Fanch3n/HabnaPlugins
 
-All files are encoded in ANSI. 
-Some of them were encoded as UTF-8 at some point but I had some interesting results while using them (didn't pick up reputation gain as an example). 
-I converted them back to ANSI because of that.
-Because the files are encoded in ANSI you have to use code for special characters. You can find the most commonly used in the "code.txt" file.
-I used the following page to get the code for different characters: https://www.utf8-chartable.de/
-Some text editors (Notepad++...) automatically convert ANSI files to UTF-8. I recommend to turn that feature off while working on then Plugin.
-For Notepad++ go to Settings -> Preferences -> New Document -> Remove the checkmark by "Apply to opened ANSI files".
-
+All files are encoded in UTF-8.
+Some characters are represented by their codes: https://www.utf8-chartable.de/
+You can find commonly used codes in the "code.txt" file.
+They were used because UTF-8 support was spotty in some editors. They should not be needed anymore.
+Make sure you always save files in UTF-8.
 
 Adding a new reputation faction:
 - Add the faction text names to the 'de', 'en', and 'fr' localization files (Important: Excatly as they are written in the game, otherwise it won't work)
 -- Search for "All reputation names" and add the new name to the end of the existing list
--- The abbreviation for reputation factions always starts with a "RP". After that it's normally the first letter of each word in the name of the reputation.
--- Important: Check if the abbreviation you want to use, has already been used. If that is the case, get creative ;)
-- Add faction name to LoadPlayerReputation() in 'functionsCtr.lua'
--- Search for "LoadPlayerReputation"
--- Add the abbreviation to the RepOrder array
--- Look for the correct type (how many reputation levels, when do they change, name of the levels) in the RepTypes array. 
--- Then add the type to the RepType array. At the same position where you added the abbreviation in the RepOrder array. 
--- And don't forget the comma (RepOrder and RepType), TitanBar won't load without it.
-- If you need to add a new reputation type
--- Add the names of the reputation levels to the localization files ("de", "en" and "fr").
---- Search for "All reputation standings" and add the new names to the end of the existing list.
---- For the abbreviation: They also start with a "RP". If the new type is only for one reputation, you can use the abbreviation of that reputation and then add a number for each level.
--- Add the reputation type to LoadPlayerReputation() in 'functionsCtr.lua'
---- Search for "LoadPlayerReputation"
---- Add the type to the RepTypes array
--- Add the reputation Points to ImportCtr() in 'functionsCtr.lua'
---- Search for "Reputation points"
---- Add the abbreviation of the faction name and the points where the reputation levels change
---- Search for "RPPROG = "default"" and add the new abbreviation in the if-statement under it
--- Add the reputation points to in 'ReputationToolTip.lua'
---- Search for "RPPROG = "default"" and add the new abbreviation in the if-statement under it
-
+- Add faction in 'Factions.lua'
 
 Add a new currency:
 - Add  text names to the 'de', 'en', and 'fr' localization files
