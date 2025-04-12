@@ -426,6 +426,7 @@ L[ "Honoured" ]  = "Honoured";
 L[ "Celebrated" ]  = "Celebrated";
 L[ "Outsider" ]  = "Outsider";
 L[ "Enemy" ]  = "Enemy";
+L[ "Member" ] = "Member";
 L[ "GuildInitiate" ]  = "Initiate";
 L[ "ApprenticeOfTheGuild" ]  = "Apprentice";
 L[ "JourneymanOfTheGuild" ]  = "Journeyman";

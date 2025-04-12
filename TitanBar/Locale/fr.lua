@@ -425,6 +425,7 @@ L[ "Honoured" ]  = "Honor\195\169";-- thx axennexa
 L[ "Celebrated" ]  = "Acclam\195\169";-- thx axennexa
 L[ "Outsider" ]  = "\195\137tranger";-- �tranger
 L[ "Enemy" ]  = "Ennemi";
+L[ "Member" ] = "Membre";
 L[ "GuildInitiate" ]  = "Initier";
 L[ "ApprenticeOfTheGuild" ]  = "Aprenti";
 L[ "JourneymanOfTheGuild" ]  = "Compagnon";

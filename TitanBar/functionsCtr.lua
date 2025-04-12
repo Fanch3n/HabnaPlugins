@@ -764,162 +764,132 @@ function SavePlayerBags()
     --]]
 end
 
-function LoadPlayerReputation()
-    RepOrder = {
-        -- Normal faction advancement + Forochel and Minas Tirith
-        "RPMB", "RPTH", "RPTMS", "RPDOC", "RPTYW", "RPRE", "RPER", "RPDOTA", "RPTEl", "RPCN", "RPTWA",
-        "RPLF", "RPWB", "RPLOTA", "RPTEg", "RPIGG", "RPIGM", "RPAME", "RPTGC", "RPG", "RPM",
-        "RPTRS", "RPHLG", "RPMD", "RPTR", "RPMEV", "RPMN", "RPMS", "RPMW",
-        "RPPW", "RPSW", "RPTEo", "RPTHe", "RPTEFF", "RPMRV", "RPMDE", "RPML",
-        "RPP", "RPRI", "RPRR", "RPDMT", "RPDA",
-        -- Dol Amroth Buildings (position 37< <46)
-        "RPDAA", "RPDAB", "RPDAD", "RPDAGH", "RPDAL", "RPDAW", "RPDAM",
-        "RPDAS",
-        -- Crafting guilds (position 45< <53)
-        "RPJG", "RPCG", "RPSG", "RPTG", "RPWoG", "RPWeG", "RPMG",
-        -- Host of the West
-        "RPHOTW", "RPHOTWA", "RPHOTWW", "RPHOTWP",
-        -- Plateau of Gorgoroth
-        "RPCOG", "RPEOFBs", "RPEOFBn", "RPRSC",
-        -- Strongholds of the North
-        "RPDOE", "RPEOF", "RPMOD", "RPGME",
-        -- Vales of Anduin
-        "RPWF",
-        -- Minas Morgul
-        "RPTGA", "RPTWC", "RPRMI",
-        -- Wells of Langflood
-		"RPPOW",
-		-- Elderslade
-		"RPMOG", "RPGA",
-		--Azanulbizar
-		"RPHOT", "RPKU",
-		--Gundabad
-		"RPROFMH",
-		-- Special Event
-        "RPCCLE", "RPTAA", "RPTIL",
-        -- Reputation Accelerator
-        "RPACC",
-    };
-    local baseReputation = {
-        20000, 20000, 20000, 20000, 0,     20000, 20000, 1000,  20000, 20000, 20000,
-        10000, 20000, 10000, 20000, 20000, 20000, 20000, 20000, 20000, 20000,
-        20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000,
-        20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000,
-        20000, 20000, 20000, 20000, 20000,
-        20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000,
-        20000, 20000, 20000, 20000, 20000, 20000, 20000,
-        20000, 20000, 20000, 20000,
-        20000, 0,     0,     10000,
-        20000, 20000, 20000, 20000,
-        20000,
-        30000, 0,     2000,
-        20000,
-        20000, 20000,
-        20000, 10000,
-        20000,
-        20000, 0,     0,
-        0
-    }
-    -- special: 2,7,8,15
-    RepType = {
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        2, 1, 15, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 3, 1,
-        -- DA Buildings
-        4, 4, 4, 4, 4, 4, 4, 4,
-        -- Crafting guilds
-        5, 5, 5, 5, 5, 5, 5,
-        -- Host of the West
-        3, 1, 1, 1,
-        -- Plateau of Gorgoroth
-        3, 8, 8, 9,
-        -- Strongholds of the North
-        11, 1, 1, 1,
-        -- Vales of Anduin
-        1,
-        -- Minas Morgul
-        12, 3, 13,
-        -- Wells of Langflood
-		1,
-		-- Elderslade
-		1, 14,
-		--Azanulbizar
-		16, 15,
-		--Gundabad
-		3,
-		-- Special Event
-        6, 7, 7,
-        -- Accelerator
-        10,
-    };
-    RepTypes = {
-        [1] = {"Neutral", "Acquaintance", "Friend", "Ally", "Kindred"}, -- normal
-        [2] = {"Outsider", "Neutral", "Acquaintance", "Friend", "Ally", "Kindred"}, -- Forochel
-        [3] = {"Neutral", "Acquaintance", "Friend", "Ally", "Kindred", "Respected", "Honoured", "Celebrated"}, -- extended normal
-        [4] = {"Neutral", "Acquaintance"}, -- DA buildings
-        [5] = {"GuildInitiate", "ApprenticeOfTheGuild", "JourneymanOfTheGuild", "ExpertOfTheGuild", "ArtisanOfTheGuild", "MasterOfTheGuild", "EastemnetMasterOfTheGuild", "WestemnetMasterOfTheGuild", "HonouredMasterOfTheGuild"}, -- craft guild
-        [6] = {"Rookie", "MinorLeaguer", "MajorLeaguer", "AllStar", "HallOfFamer"}, -- chicken
-        [7] = {"Enemy", "Neutral", "Acquaintance", "Friend", "Ally", "Kindred"}, -- inn/alhe
-        [8] = {"Enemy", "Outsider", "Neutral"}, -- fushaum
-        [9] = {"Outsider", "Neutral", "Acquaintance", "Friend"}, -- red sky clan
-        [10] = {"BonusRemaining"}, -- Accelerator
-        [11] = {"Neutral", "Acquaintance", "Friend", "Ally", "Kindred", "Respected"}, -- why another??? Dwarfs of Erebor
-        [12] = {"Kindred", "Respected", "Honoured", "Celebrated"}, -- another one for Minas Morgul
-        [13] = {"TheReclamation", "TheReclamationContinues", "TheTrialOfWrath", "TheReclamationContinuesIi", "TheTrialOfSorrow", "TheReclamationContinuesIii", "TheTrialOfMadness", "TheReclamationContinuesIv", "TheTrialOfDespair", "TheTrialOfDeath"}, -- and another one for the Reclamation, because... why not?
-		[14] = {"Idmul", "Dumul", "Izkhas", "Uzkhas", "Fabaral", "Azghzabad"}, -- The Gabil'akk�
-		[15] = {"Outsider", "Neutral", "Acquaintance", "Friend", "Ally"}, -- Outsider to Ally
-		[16] = {"Idmul", "Dumul", "Izkhas", "Uzkhas", "Fabaral"}, -- The Haban'akk� of Thr�in		
-    };
-    PlayerReputation = Turbine.PluginData.Load(
-        Turbine.DataScope.Server, "TitanBarReputation");
-    if PlayerReputation == nil then PlayerReputation = {}; end
-    if PlayerReputation[PN] == nil then PlayerReputation[PN] = {}; end
-    for i = 1, #RepOrder do
-        if PlayerReputation[PN][RepOrder[i]] == nil then
-            PlayerReputation[PN][RepOrder[i]] = {};
-        end
-        if PlayerReputation[PN][RepOrder[i]].P == nil then
-            PlayerReputation[PN][RepOrder[i]].P = "0";
-        end --Points
-        if PlayerReputation[PN][RepOrder[i]].V == nil then
-            PlayerReputation[PN][RepOrder[i]].V = false;
-        end --Show faction in tooltip
-        if PlayerReputation[PN][RepOrder[i]].R == nil then
-            PlayerReputation[PN][RepOrder[i]].R = "1";
-        end --rank
+function UpdateReputationSaveFileFormat(reputation)
+    if not reputation["file_version"] then
+        local now = Turbine.Engine.GetDate()
+        local nowString = string.format("%04d%02d%02d_%02d%02d%02d",
+            now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second)
+        local filename = string.format("TitanBarRep_v0bak_%s", nowString)
+        Turbine.PluginData.Save(Turbine.DataScope.Server, filename, reputation)
 
-        -- add total (cumulative) points for reputation
-        local factionAbbreviation = RepOrder[i]
-        local reputationRank = PlayerReputation[PN][factionAbbreviation].R
-        local stepsType = "default"
-        if factionAbbreviation == "RPTGA" or factionAbbreviation == "RPTWC" or
-        factionAbbreviation == "RPRMI" or factionAbbreviation == "RPGA" then
-            stepsType = factionAbbreviation;
+        local repOrder = {
+            -- Normal faction advancement + Forochel and Minas Tirith
+            "RPMB", "RPTH", "RPTMS", "RPDOC", "RPTYW", "RPRE", "RPER", "RPDOTA", "RPTEl", "RPCN", "RPTWA",
+            "RPLF", "RPWB", "RPLOTA", "RPTEg", "RPIGG", "RPIGM", "RPAME", "RPTGC", "RPG", "RPM",
+            "RPTRS", "RPHLG", "RPMD", "RPTR", "RPMEV", "RPMN", "RPMS", "RPMW",
+            "RPPW", "RPSW", "RPTEo", "RPTHe", "RPTEFF", "RPMRV", "RPMDE", "RPML",
+            "RPP", "RPRI", "RPRR", "RPDMT", "RPDA",
+            -- Dol Amroth Buildings (position 37< <46)
+            "RPDAA", "RPDAB", "RPDAD", "RPDAGH", "RPDAL", "RPDAW", "RPDAM",
+            "RPDAS",
+            -- Crafting guilds (position 45< <53)
+            "RPJG", "RPCG", "RPSG", "RPTG", "RPWoG", "RPWeG", "RPMG",
+            -- Host of the West
+            "RPHOTW", "RPHOTWA", "RPHOTWW", "RPHOTWP",
+            -- Plateau of Gorgoroth
+            "RPCOG", "RPEOFBs", "RPEOFBn", "RPRSC",
+            -- Strongholds of the North
+            "RPDOE", "RPEOF", "RPMOD", "RPGME",
+            -- Vales of Anduin
+            "RPWF",
+            -- Minas Morgul
+            "RPTGA", "RPTWC", "RPRMI",
+            -- Wells of Langflood
+            "RPPOW",
+            -- Elderslade
+            "RPMOG", "RPGA",
+            --Azanulbizar
+            "RPHOT", "RPKU",
+            --Gundabad
+            "RPROFMH",
+            -- Special Event
+            "RPCCLE", "RPTAA", "RPTIL",
+            -- Reputation Accelerator
+            "RPACC",
+        }
+        local baseReputation = {
+            20000, 20000, 20000, 20000, 0,     20000, 20000, 1000,  20000, 20000, 20000,
+            10000, 20000, 10000, 20000, 20000, 20000, 20000, 20000, 20000, 20000,
+            20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000,
+            20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000,
+            20000, 20000, 20000, 20000, 20000,
+            20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000,
+            20000, 20000, 20000, 20000, 20000, 20000, 20000,
+            20000, 20000, 20000, 20000,
+            20000, 0,     0,     10000,
+            20000, 20000, 20000, 20000,
+            20000,
+            30000, 0,     2000,
+            20000,
+            20000, 20000,
+            20000, 10000,
+            20000,
+            20000, 0,     0,
+            0
+        }
+        for playerName, playerRep in pairs(reputation) do
+            write(playerName)
+            for i = 1, #repOrder do
+                local factionAbbreviation = repOrder[i]
+                if playerRep[factionAbbreviation] == nil then
+                    playerRep[factionAbbreviation] = {};
+                end
+                if playerRep[factionAbbreviation].P == nil then
+                    playerRep[factionAbbreviation].P = "0";
+                end --Points
+                if playerRep[factionAbbreviation].V == nil then
+                    playerRep[factionAbbreviation].V = false;
+                end --Show faction in tooltip
+                if playerRep[factionAbbreviation].R == nil then
+                    playerRep[factionAbbreviation].R = "1";
+                end --rank
+
+                -- add total (cumulative) points for reputation
+                local reputationRank = playerRep[factionAbbreviation].R
+                local stepsType = "default"
+                if factionAbbreviation == "RPTGA" or factionAbbreviation == "RPTWC" or
+                factionAbbreviation == "RPRMI" or factionAbbreviation == "RPGA" then
+                    stepsType = factionAbbreviation;
+                end
+                local reputationSteps = _G.Factions.reputationSteps[stepsType]
+                local totalReputation = playerRep[factionAbbreviation].P
+                totalReputation = totalReputation + baseReputation[i]
+                for j = 1, math.min(#reputationSteps, reputationRank) - 1 do
+                    totalReputation = totalReputation + reputationSteps[j]
+                end
+                playerRep[factionAbbreviation].Total = tostring(totalReputation)
+            end
+            for _, faction in ipairs(_G.Factions.list) do
+                playerRep = reputation[playerName]
+                playerRep[faction.name] = playerRep[faction.name] or {}
+                local total = "0"
+                local visible = false
+                if faction.legacyTitanbarName and playerRep[faction.legacyTitanbarName] then
+                    total = playerRep[faction.name].Total or playerRep[faction.legacyTitanbarName].Total
+                    visible = playerRep[faction.name].V or playerRep[faction.legacyTitanbarName].V
+                    playerRep[faction.legacyTitanbarName] = nil
+                else
+                    total = playerRep[faction.name].Total
+                    visible = playerRep[faction.name].V
+                end
+                playerRep[faction.name].Total = total or "0"
+                playerRep[faction.name].V = visible or false
+            end
         end
-        local reputationSteps = _G.Factions.reputationSteps[stepsType]
-        local totalReputation = PlayerReputation[PN][factionAbbreviation].P
-        totalReputation = totalReputation + baseReputation[i]
-        for j = 1, math.min(#reputationSteps, reputationRank) - 1 do
-            totalReputation = totalReputation + reputationSteps[j]
-        end
-        PlayerReputation[PN][factionAbbreviation].Total = tostring(totalReputation)
+    reputation["file_version"] = "2"
     end
+end
+
+function LoadPlayerReputation()
+    PlayerReputation = Turbine.PluginData.Load(Turbine.DataScope.Server, "TitanBarReputation")
+    if PlayerReputation == nil then PlayerReputation = {}; end
+    UpdateReputationSaveFileFormat(PlayerReputation)
+    if PlayerReputation[PN] == nil then PlayerReputation[PN] = {}; end
+
     for _, faction in ipairs(_G.Factions.list) do
         PlayerReputation[PN][faction.name] = PlayerReputation[PN][faction.name] or {}
-        local total = "0"
-        local visible = false
-        if faction.legacyTitanbarName and PlayerReputation[PN][faction.legacyTitanbarName] then
-            total = PlayerReputation[PN][faction.name].Total or PlayerReputation[PN][faction.legacyTitanbarName].Total or "0"
-            visible = PlayerReputation[PN][faction.name].V or PlayerReputation[PN][faction.legacyTitanbarName].V
-            PlayerReputation[PN][faction.legacyTitanbarName] = nil
-        else
-            total = PlayerReputation[PN][faction.name].Total
-            visible = PlayerReputation[PN][faction.name].V
-        end
-        PlayerReputation[PN][faction.name].Total = total
-        PlayerReputation[PN][faction.name].V = visible
+        PlayerReputation[PN][faction.name].Total = PlayerReputation[PN][faction.name].Total or "0"
+        PlayerReputation[PN][faction.name].V = PlayerReputation[PN][faction.name].V or false
     end
     SavePlayerReputation();
 end

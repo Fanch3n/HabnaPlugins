@@ -102,11 +102,10 @@ function RPRefreshListBox()
             else RPPBFill:SetSize( ( 183 * tonumber(percentage_done) ) / 100, 9 ); end
             RPPBFill:SetBackground( resources.Reputation.BGGood );
             --RPPBFill:SetBackground( resources.Reputation.BGBad );
-            
-            -- TODO re-enable Guild background
-            --if RepType[i] == 5 then
-            --    RPPBFill:SetBackground( resources.Reputation.BGGuild );
-            --end           
+
+            if faction.isCraftingGuild then
+                RPPBFill:SetBackground( resources.Reputation.BGGuild );
+            end
 
             local RPPB = Turbine.UI.Control(); --Frame
             RPPB:SetParent( RPTTCtr );
@@ -131,7 +130,7 @@ function RPRefreshListBox()
 
             local RPLvl = Turbine.UI.Label();
             RPLvl:SetForeColor( Color["white"] );
-            if RepType[i] == 10 then RPLvl:SetForeColor( Color["purple"] ); end
+            if faction.name == "ReputationAcceleration" then RPLvl:SetForeColor( Color["purple"] ); end
             --RPLvl:SetForeColor( Color["red"] );
             --RPLvl:SetForeColor( Color["green"] );
 

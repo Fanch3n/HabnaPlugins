@@ -1038,6 +1038,7 @@ _G.Factions = {
     {
       name = "CooksGuild",
       legacyTitanbarName = "RPCG",
+      isCraftingGuild = true,
       initialRank = "GuildInitiate",
       ranks = {
         {name = "Member", requiredReputation = "0"},
@@ -1057,6 +1058,7 @@ _G.Factions = {
     {
       name = "JewellersGuild",
       legacyTitanbarName = "RPJG",
+      isCraftingGuild = true,
       initialRank = "GuildInitiate",
       ranks = {
         {name = "Member", requiredReputation = "0"},
@@ -1076,6 +1078,7 @@ _G.Factions = {
     {
       name = "MetalsmithsGuild",
       legacyTitanbarName = "RPMG",
+      isCraftingGuild = true,
       initialRank = "GuildInitiate",
       ranks = {
         {name = "Member", requiredReputation = "0"},
@@ -1095,6 +1098,7 @@ _G.Factions = {
     {
       name = "ScholarsGuild",
       legacyTitanbarName = "RPSG",
+      isCraftingGuild = true,
       initialRank = "GuildInitiate",
       ranks = {
         {name = "Member", requiredReputation = "0"},
@@ -1114,6 +1118,7 @@ _G.Factions = {
     {
       name = "TailorsGuild",
       legacyTitanbarName = "RPTG",
+      isCraftingGuild = true,
       initialRank = "GuildInitiate",
       ranks = {
         {name = "Member", requiredReputation = "0"},
@@ -1133,6 +1138,7 @@ _G.Factions = {
     {
       name = "WeaponsmithsGuild",
       legacyTitanbarName = "RPWeG",
+      isCraftingGuild = true,
       initialRank = "GuildInitiate",
       ranks = {
         {name = "Member", requiredReputation = "0"},
@@ -1152,6 +1158,7 @@ _G.Factions = {
     {
       name = "WoodworkersGuild",
       legacyTitanbarName = "RPWoG",
+      isCraftingGuild = true,
       initialRank = "GuildInitiate",
       ranks = {
         {name = "Member", requiredReputation = "0"},
@@ -1170,6 +1177,7 @@ _G.Factions = {
     },
     {
       name = "UmbarCooksGuild",
+      isCraftingGuild = true,
       initialRank = "GuildInitiate",
       ranks = {
         {name = "Member", requiredReputation = "0"},
@@ -1180,6 +1188,7 @@ _G.Factions = {
     },
     {
       name = "UmbarJewellersGuild",
+      isCraftingGuild = true,
       initialRank = "GuildInitiate",
       ranks = {
         {name = "Member", requiredReputation = "0"},
@@ -1190,6 +1199,7 @@ _G.Factions = {
     },
     {
       name = "UmbarMetalsmithsGuild",
+      isCraftingGuild = true,
       initialRank = "GuildInitiate",
       ranks = {
         {name = "Member", requiredReputation = "0"},
@@ -1200,6 +1210,7 @@ _G.Factions = {
     },
     {
       name = "UmbarScholarsGuild",
+      isCraftingGuild = true,
       initialRank = "GuildInitiate",
       ranks = {
         {name = "Member", requiredReputation = "0"},
@@ -1210,6 +1221,7 @@ _G.Factions = {
     },
     {
       name = "UmbarTailorsGuild",
+      isCraftingGuild = true,
       initialRank = "GuildInitiate",
       ranks = {
         {name = "Member", requiredReputation = "0"},
@@ -1220,6 +1232,7 @@ _G.Factions = {
     },
     {
       name = "UmbarWeaponsmithsGuild",
+      isCraftingGuild = true,
       initialRank = "GuildInitiate",
       ranks = {
         {name = "Member", requiredReputation = "0"},
@@ -1230,6 +1243,7 @@ _G.Factions = {
     },
     {
       name = "UmbarWoodworkersGuild",
+      isCraftingGuild = true,
       initialRank = "GuildInitiate",
       ranks = {
         {name = "Member", requiredReputation = "0"},

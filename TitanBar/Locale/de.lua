@@ -426,6 +426,7 @@ L[ "Honoured" ]  = "Verehrt";
 L[ "Celebrated" ]  = "Gefeiert";
 L[ "Outsider" ]  = "Au\195\159enseiter";
 L[ "Enemy" ]  = "Feind";
+L[ "Member" ] = "Mitglied";
 L[ "GuildInitiate" ]  = "Eingeweihter";
 L[ "ApprenticeOfTheGuild" ]  = "Lehrling";
 L[ "JourneymanOfTheGuild" ]  = "Geselle";
