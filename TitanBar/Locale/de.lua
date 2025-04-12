@@ -3,8 +3,8 @@
 -- Rewritten by many
 
 _G.L = {};
-L[ "TBLoad" ] = "TitanBar " .. Version .. " geladenen!";
-L[ "TBSSCS" ] = "TitanBar: Bildschirmgr\195\182\195\159e ge\195\164ndert hat, Neupositionierung Kontrollen...";
+L[ "TBLoad" ] = "TitanBar " .. Version .. " geladen!";
+L[ "TBSSCS" ] = "TitanBar: Bildschirmgröße geändert, positioniere Icons neu...";
 L[ "TBSSCD" ] = "TitanBar: erledigt!";
 L[ "TBOpt" ] = "Optionen sind durch einen Rechtsklick auf TitanBar verf\195\188gbar";
 
