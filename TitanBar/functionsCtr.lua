@@ -334,7 +334,8 @@ function ImportCtr( value )
                         SavePlayerReputation();
                     end
                 end
-            end);
+            end
+        );
         UpdateReputation();
         RP[ "Ctr" ]:SetPosition( _G.RPLocX, _G.RPLocY );
     else
