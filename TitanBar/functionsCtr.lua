@@ -826,8 +826,27 @@ function UpdateReputationSaveFileFormat(reputation)
             20000, 0,     0,
             0
         }
+        local reputationSteps = {
+          ["default"] = {
+            [0] = 10000, [1] = 10000, [2] = 20000, [3] = 25000, [4] = 30000, [5] = 45000,
+            [6] = 60000, [7] = 90000, [8] = 200000, [9] = 1
+          },
+          ["RPTGA"] = {
+            [1] = 10000, [2] = 20000, [3] = 20000, [4] = 1
+          },
+          ["RPTWC"] = {
+            [1] = 10000, [2] = 15000, [3] = 20000, [4] = 20000, [5] = 20000, [6] = 20000,
+            [7] = 30000, [8] = 1
+          },
+          ["RPRMI"] = {
+            [1] = 4000, [2] = 6000, [3] = 8000, [4] = 10000, [5] = 12000,
+            [6] = 14000, [7] = 16000, [8] = 18000, [9] = 20000, [10] = 1
+          },
+          ["RPGA"] = {
+            [1] = 10000, [2] = 20000, [3] = 25000, [4] = 30000, [5] = 45000, [6] = 1
+          }
+        }
         for playerName, playerRep in pairs(reputation) do
-            write(playerName)
             for i = 1, #repOrder do
                 local factionAbbreviation = repOrder[i]
                 if playerRep[factionAbbreviation] == nil then
@@ -850,11 +869,11 @@ function UpdateReputationSaveFileFormat(reputation)
                 factionAbbreviation == "RPRMI" or factionAbbreviation == "RPGA" then
                     stepsType = factionAbbreviation;
                 end
-                local reputationSteps = _G.Factions.reputationSteps[stepsType]
+                local factionReputationSteps = reputationSteps[stepsType]
                 local totalReputation = playerRep[factionAbbreviation].P
                 totalReputation = totalReputation + baseReputation[i]
-                for j = 1, math.min(#reputationSteps, reputationRank) - 1 do
-                    totalReputation = totalReputation + reputationSteps[j]
+                for j = 1, math.min(#factionReputationSteps, reputationRank) - 1 do
+                    totalReputation = totalReputation + factionReputationSteps[j]
                 end
                 playerRep[factionAbbreviation].Total = tostring(totalReputation)
             end
