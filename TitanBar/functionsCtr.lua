@@ -273,18 +273,16 @@ function ImportCtr( value )
                 local rpMess = args.Message;
                 if rpMess ~= nil then
                 -- Check string, Reputation Name and Reputation Point pattern
-                    local cstr, rpnPattern, rppPattern, rpbPattern;
+                    local cstr, factionPattern, rppPattern, rpbPattern;
                     if GLocale == "en" then
-                        rpnPattern = "reputation with (.*) has"..
-                            " (.*) by";
+                        factionPattern = "reputation with (.*) has (.*) by";
                         rppPattern = "has .* by ([%d%p]*)%.";
                     elseif GLocale == "fr" then
-                        rpnPattern = "de la faction (.*) a "..
-                            "(.*) de";
+                        factionPattern = "de la faction (.*) a (.*) de";
                         rppPattern = "a .* de ([%d%p]*)%.";
                     elseif GLocale == "de" then
-                        rpnPattern = "Euer Ruf bei (.*) hat sich um .* (%a+)";
-                        rppPattern = "hat sich um ([%d%p]*) .*";
+                        factionPattern = "Euer Ruf bei der Gruppe \"(.*)\" wurde um (.*)";
+                        rppPattern = "wurde um ([%d%p]*) .*";
                     end
                     -- check string if an accelerator was used
                     if GLocale == "de" then
@@ -301,12 +299,12 @@ function ImportCtr( value )
                             rppPattern = "a augment\195\169 de ([%d%p]*) %(";
                             rpbPattern = "%(([%d%p]*) du bonus";
                         elseif GLocale == "de" then
-                            rpnPattern = "Euer Ruf bei der Gruppe \"([%a%p%u%l%s]*)\" wurde um";
                             rppPattern = "wurde um ([%d%p]*) erh\195\182ht";
                             rpbPattern = "%(([%d%p]*) durch Bonus";
                         end
                     end
-                    local rpName,increaseOrDecrease = string.match( rpMess,rpnPattern );
+                    local rpName,increaseOrDecrease = string.match( rpMess,factionPattern );
+
                     -- Reputation Name
                     if rpMess ~= nil and rpName ~= nil then
                         -- decrease remaining bonus acceleration
@@ -323,11 +321,11 @@ function ImportCtr( value )
                         -- Reputation points
                         local rpPTS = string.gsub( rpPTS, ",", "" );
                         -- Replace "," in 1,400 to get 1400
-                        for faction in _G.Factions.list do
+                        for _, faction in ipairs(_G.Factions.list) do
                             if L[faction.name] == rpName then
                                 local current_points = PlayerReputation[PN][faction.name].Total
                                 local newPointsTotal = current_points + rpPTS
-                                local factionMaxReputation = faction.ranks[#faction.ranks].requiredReputation
+                                local factionMaxReputation = tonumber(faction.ranks[#faction.ranks].requiredReputation) or 0
                                 newPointsTotal = math.min(factionMaxReputation, newPointsTotal)
                                 newPointsTotal = math.max(0, newPointsTotal)
                                 PlayerReputation[PN][faction.name].Total = string.format("%.0f", newPointsTotal)
