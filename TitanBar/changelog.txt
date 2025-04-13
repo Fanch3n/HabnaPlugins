@@ -29,7 +29,6 @@ Version 1.42 (April 13, 2025)
 	- The Path of Valour
 	- Amelia's Studies
 	- Moria Bounty Hunters
-
 =================================================
 Version 1.41.00 (March 22, 2025)
 - Fixed some problems with encoding in the language files
