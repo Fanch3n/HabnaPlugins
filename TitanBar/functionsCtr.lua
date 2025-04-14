@@ -281,8 +281,8 @@ function ImportCtr( value )
                         factionPattern = "de la faction (.*) a (.*) de";
                         rppPattern = "a .* de ([%d%p]*)%.";
                     elseif GLocale == "de" then
-                        factionPattern = "Euer Ruf bei der Gruppe \"(.*)\" wurde um (.*)";
-                        rppPattern = "wurde um ([%d%p]*) .*";
+                        factionPattern = "Euer Ruf bei (.*) hat sich um .* (%a+)";
+                        rppPattern = "hat sich um ([%d%p]*) .*";
                     end
                     -- check string if an accelerator was used
                     if GLocale == "de" then
@@ -299,6 +299,7 @@ function ImportCtr( value )
                             rppPattern = "a augment\195\169 de ([%d%p]*) %(";
                             rpbPattern = "%(([%d%p]*) du bonus";
                         elseif GLocale == "de" then
+                            factionPattern = "Euer Ruf bei der Gruppe \"(.*)\" wurde um"
                             rppPattern = "wurde um ([%d%p]*) erh\195\182ht";
                             rpbPattern = "%(([%d%p]*) durch Bonus";
                         end

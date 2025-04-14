@@ -2,6 +2,9 @@ This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Te
 
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
+Version 1.42.1 (April 15, 2025)
+- Fixed parsing of reputation gain messages with no bonus reputation
+=================================================
 Version 1.42 (April 13, 2025)
 - Significantly changed how reputation factions are handled, making it easier to add factions
 - Changed reputation save file format. Before converting, the old content is saved to a backup file
@@ -29,7 +32,6 @@ Version 1.42 (April 13, 2025)
 	- The Path of Valour
 	- Amelia's Studies
 	- Moria Bounty Hunters
-
 =================================================
 Version 1.41.00 (March 22, 2025)
 - Fixed some problems with encoding in the language files
