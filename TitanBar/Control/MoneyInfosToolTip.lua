@@ -23,10 +23,10 @@ function ShowMIWindow()
 end
 
 function MoneyToCoins(m)
-    local g = math.floor(m/100000);
-    local s = math.floor(m/100)-g*1000;
-    local c = m%100;
-    return c,s,g;
+	local g = math.floor(m/100000);
+	local s = math.floor(m/100)-g*1000;
+	local c = m%100;
+	return c,s,g;
 end
 
 function MIRefreshMITTListBox()	
@@ -180,8 +180,8 @@ end
 
 function MITTShowData(parent,l,m,lc,mc,showDelIcon) -- l = label, m = money, lc = label color, money color
 	iFound = true;
-    local g = {};
-    g[1], g[2], g[3] = MoneyToCoins(m);
+	local g = {};
+	g[1], g[2], g[3] = MoneyToCoins(m);
 	--**v Control of Gold/Silver/Copper currencies v**
 	local MoneyCtr = Turbine.UI.Control();
 	MoneyCtr:SetParent( parent );
