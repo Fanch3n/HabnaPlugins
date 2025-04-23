@@ -98,8 +98,8 @@ L[ "GiftgiversBrandh" ] = "Eure Zeichen des Schenkenden";
 L[ "MMotesOfEnchantment" ] = "Staub der Verzauberung";
 L[ "MotesOfEnchantmenth" ] = "Euer Staub der Verzauberung";
 -- Embers of Enchantment control
-L[ "MEmbersOfEnchantment" ] = "Funken der Verzauberung";
-L[ "EmbersOfEnchantmenth" ] = "Eure Funken der Verzauberung";
+L[ "MEmbersOfEnchantment" ] = "Asche der Verzauberung";
+L[ "EmbersOfEnchantmenth" ] = "Eure Asche der Verzauberung";
 -- Figments of Splendour control
 L[ "MFigmentsOfSplendour" ] = "Prachtst\195\188ck des Glanzes";
 L[ "FigmentsOfSplendourh" ] = "Eure Prachtst\195\188cke des Glanzes";

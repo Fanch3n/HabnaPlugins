@@ -2,8 +2,12 @@ This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Te
 
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
+Version 1.42.2 (April 23, 2025)
+- Fixed calculation of total money
+- German version: Fixed display of Embers of Enchantment (Asche der Verzauberung)
+=================================================
 Version 1.42.1 (April 15, 2025)
-- Fixed parsing of reputation gain messages with no bonus reputation
+- German version: Fixed parsing of reputation gain messages with no bonus reputation
 =================================================
 Version 1.42 (April 13, 2025)
 - Significantly changed how reputation factions are handled, making it easier to add factions
