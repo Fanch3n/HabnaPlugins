@@ -326,6 +326,41 @@ _G.currencies = {
       visibleInMonsterPlay = false,
       icon = 0x4125E41D,
     },
+    {
+      name = "PhialCrimsonExtract",
+      visibleInMonsterPlay = false,
+      icon = 0x411A2B85,
+    },
+    {
+      name = "PhialUmberExtract",
+      visibleInMonsterPlay = false,
+      icon = 0x411A2B7F,
+    },
+    {
+      name = "PhialVerdantExtract",
+      visibleInMonsterPlay = false,
+      icon = 0x411A2B7A,
+    },
+    {
+      name = "PhialGoldenExtract",
+      visibleInMonsterPlay = false,
+      icon = 0x411A2B82,
+    },
+    {
+      name = "PhialVioletExtract",
+      visibleInMonsterPlay = false,
+      icon = 0x411A2B84,
+    },
+    {
+      name = "PhialAmberExtract",
+      visibleInMonsterPlay = false,
+      icon = 0x411A2B7B,
+    },
+    {
+      name = "PhialSapphireExtract",
+      visibleInMonsterPlay = false,
+      icon = 0x411A2B7C,
+    },
   },
   byName = {}
 }

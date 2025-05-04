@@ -225,6 +225,27 @@ L[ "IronSignetOfTheNecromancerh" ] = "Eure Eisernen Siegel des Geisterbeschwöre
 -- Iron Signet of the Twin Flame
 L[ "MIronSignetOfTheTwinFlame" ] = "Eisernes Siegel der Zwillingsflamme";
 L[ "IronSignetOfTheTwinFlameh" ] = "Eure Eisernen Siegel der Zwillingsflamme";
+-- Phial of Crimson Extract
+L[ "MPhialCrimsonExtract" ] = "Phiole mit karmesinrotem Extrakt";
+L[ "PhialCrimsonExtracth" ] = "Eure Phiolen mit karmesinrotem Extrakt";
+-- Phial of Umber Extract
+L[ "MPhialUmberExtract" ] = "Phiole mit umbrafarbenem Extrakt";
+L[ "PhialUmberExtracth" ] = "Eure Phiolen mit umbrafarbenem Extrakt";
+-- Phial of Verdant Extract
+L[ "MPhialVerdantExtract" ] = "Phiole mit grünem Extrakt";
+L[ "PhialVerdantExtracth" ] = "Eure Phiolen mit grünem Extrakt";
+-- Phial of Golden Extract
+L[ "MPhialGoldenExtract" ] = "Phiole mit goldenem Extrakt";
+L[ "PhialGoldenExtracth" ] = "Eure Phiolen mit goldenem Extrakt";
+-- Phial of Violet Extract
+L[ "MPhialVioletExtract" ] = "Phiole mit violettem Extrakt";
+L[ "PhialVioletExtracth" ] = "Eure Phiolen mit violettem Extrakt";
+-- Phial of Amber Extract
+L[ "MPhialAmberExtract" ] = "Phiole mit bernsteinfarbenem Extrakt";
+L[ "PhialAmberExtracth" ] = "Eure Phiolen mit bernsteinfarbenem Extrakt";
+-- Phial of Sapphire Extract
+L[ "MPhialSapphireExtract" ] = "Phiole mit saphirfarbenem Extrakt";
+L[ "PhialSapphireExtracth" ] = "Eure Phiolen mit saphirfarbenem Extrakt";
 
 -- Control Menu
 L[ "MCU" ] = "entfernen ...";

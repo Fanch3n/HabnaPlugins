@@ -225,6 +225,27 @@ L[ "IronSignetOfTheNecromancerh" ] = "Your Iron Signets of the Necromancer";
 -- Iron Signet of the Twin Flame
 L[ "MIronSignetOfTheTwinFlame" ] = "Iron Signet of the Twin Flame";
 L[ "IronSignetOfTheTwinFlameh" ] = "Your Iron Signets of the Twin Flame";
+-- Phial of Crimson Extract
+L[ "MPhialCrimsonExtract" ] = "Phial of Crimson Extract";
+L[ "PhialCrimsonExtracth" ] = "Your Phials of Crimson Extract";
+-- Phial of Umber Extract
+L[ "MPhialUmberExtract" ] = "Phial of Umber Extract";
+L[ "PhialUmberExtracth" ] = "Your Phials of Umber Extract";
+-- Phial of Verdant Extract
+L[ "MPhialVerdantExtract" ] = "Phial of Verdant Extract";
+L[ "PhialVerdantExtracth" ] = "Your Phials of Verdant Extract";
+-- Phial of Golden Extract
+L[ "MPhialGoldenExtract" ] = "Phial of Golden Extract";
+L[ "PhialGoldenExtracth" ] = "Your Phials of Golden Extract";
+-- Phial of Violet Extract
+L[ "MPhialVioletExtract" ] = "Phial of Violet Extract";
+L[ "PhialVioletExtracth" ] = "Your Phials of Violet Extract";
+-- Phial of Amber Extract
+L[ "MPhialAmberExtract" ] = "Phial of Amber Extract";
+L[ "PhialAmberExtracth" ] = "Your Phials of Amber Extract";
+-- Phial of Sapphire Extract
+L[ "MPhialSapphireExtract" ] = "Phial of Sapphire Extract";
+L[ "PhialSapphireExtracth" ] = "Your Phials of Sapphire Extract";
 
 -- Control Menu
 L[ "MCU" ] = "Unload ...";
