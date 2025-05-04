@@ -225,6 +225,27 @@ L[ "IronSignetOfTheNecromancerh" ] = "Ce sont vos Chevalières en fer du nécrom
 -- Iron Signet of the Twin Flame
 L[ "MIronSignetOfTheTwinFlame" ] = "Chevalière en fer des flammes jumelles";
 L[ "IronSignetOfTheTwinFlameh" ] = "Ce sont vos Chevalières en fer des flammes jumelles";
+-- Phial of Crimson Extract
+L[ "MPhialCrimsonExtract" ] = "Fiole d'extrait de pourpre";
+L[ "PhialCrimsonExtracth" ] = "Ce sont vos Fioles d'extrait de pourpre";
+-- Phial of Umber Extract
+L[ "MPhialUmberExtract" ] = "Fiole d'extrait de terre de Sienne";
+L[ "PhialUmberExtracth" ] = "Ce sont vos Fioles d'extrait de terre de Sienne";
+-- Phial of Verdant Extract
+L[ "MPhialVerdantExtract" ] = "Fiole d'extrait verdoyant";
+L[ "PhialVerdantExtracth" ] = "Ce sont vos Fioles d'extrait verdoyant";
+-- Phial of Golden Extract
+L[ "MPhialGoldenExtract" ] = "Fiole d'extrait doré";
+L[ "PhialGoldenExtracth" ] = "Ce sont vos Fioles d'extrait doré";
+-- Phial of Violet Extract
+L[ "MPhialVioletExtract" ] = "Fiole d'extrait de violette";
+L[ "PhialVioletExtracth" ] = "Ce sont vos Fioles d'extrait de violette";
+-- Phial of Amber Extract
+L[ "MPhialAmberExtract" ] = "Fiole d'extrait d'ambre";
+L[ "PhialAmberExtracth" ] = "Ce sont vos Fioles d'extrait d'ambre";
+-- Phial of Sapphire Extract
+L[ "MPhialSapphireExtract" ] = "Fiole d'extrait de saphir";
+L[ "PhialSapphireExtracth" ] = "Ce sont vos Fioles d'extrait de saphir";
 
 -- Control Menu
 L[ "MCU" ] = "D\195\169charger ...";

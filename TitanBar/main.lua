@@ -112,7 +112,8 @@ if PlayerAlign == 1 then
 		L["MSilverArnorianCoin"], L["MGreyfloodMark"], L["MGundabadMountainMark"], L["MSilverTokenOfTheRiddermark"], L["MGoldenTokenOfTheRiddermark"],
 		L["MMinasTirithSilverPiece"], L["MCrackedEasterlingSceptre"], L["MGrimOrkishBrand"], L["MSandWornCopperToken"], L["MFrigidSteelSignetRing"],
 		L["MEngravedOnyxSigil"], L["MSandSmoothedBurl"], L["MLumpOfRedRockSalt"], L["MIronSignetOfTheSeaShadow"],	L["MIronSignetOfTheFist"],
-		L["MIronSignetOfTheAxe"],	L["MIronSignetOfTheBlackMoon"],	L["MIronSignetOfTheNecromancer"],	L["MIronSignetOfTheTwinFlame"]
+		L["MIronSignetOfTheAxe"],	L["MIronSignetOfTheBlackMoon"],	L["MIronSignetOfTheNecromancer"],	L["MIronSignetOfTheTwinFlame"],
+        L["MPhialCrimsonExtract"], L["MPhialUmberExtract"], L["MPhialVerdantExtract"], L["MPhialGoldenExtract"], L["MPhialVioletExtract"], L["MPhialAmberExtract"], L["MPhialSapphireExtract"],
 	}
 else
 	MenuItem = { L["MCommendation"], L["MLotroPoints"] }
@@ -182,6 +183,13 @@ _G.CurrencyLangMap = { -- reverse lookup table necessary to get the internal ite
 	[L["MIronSignetOfTheBlackMoon"]] = "IronSignetOfTheBlackMoon",
 	[L["MIronSignetOfTheNecromancer"]] = "IronSignetOfTheNecromancer",
 	[L["MIronSignetOfTheTwinFlame"]] = "IronSignetOfTheTwinFlame",
+    [L["MPhialCrimsonExtract"]] = "PhialCrimsonExtract",
+    [L["MPhialUmberExtract"]] = "PhialUmberExtract",
+    [L["MPhialVerdantExtract"]] = "PhialVerdantExtract",
+    [L["MPhialGoldenExtract"]] = "PhialGoldenExtract",
+    [L["MPhialVioletExtract"]] = "PhialVioletExtract",
+    [L["MPhialAmberExtract"]] = "PhialAmberExtract",
+    [L["MPhialSapphireExtract"]] = "PhialSapphireExtract",
 }
 
 function TitanBarCommand:Execute( command, arguments )
