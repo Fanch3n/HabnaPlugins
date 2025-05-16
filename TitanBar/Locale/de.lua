@@ -98,8 +98,8 @@ L[ "GiftgiversBrandh" ] = "Eure Zeichen des Schenkenden";
 L[ "MMotesOfEnchantment" ] = "Staub der Verzauberung";
 L[ "MotesOfEnchantmenth" ] = "Euer Staub der Verzauberung";
 -- Embers of Enchantment control
-L[ "MEmbersOfEnchantment" ] = "Asche der Verzauberung";
-L[ "EmbersOfEnchantmenth" ] = "Eure Asche der Verzauberung";
+L[ "MEmbersOfEnchantment" ] = "Funken der Verzauberung";
+L[ "EmbersOfEnchantmenth" ] = "Eure Funken der Verzauberung";
 -- Figments of Splendour control
 L[ "MFigmentsOfSplendour" ] = "Prachtst\195\188ck des Glanzes";
 L[ "FigmentsOfSplendourh" ] = "Eure Prachtst\195\188cke des Glanzes";
@@ -342,8 +342,8 @@ L[ "CouncilOfTheNorth" ]    = "Rat des Nordens";
 L[ "TheWardensOfAnnuminas" ]   = "Die H\195\188ter von Ann\195\186minas";
 L[ "LossothOfForochel" ]    = "Lossoth von Forochel";
 L[ "TheEglain" ]   = "Die Eglain";
-L[ "IronGarrisonGuards" ]   = "W\195\164chter der eisernen Garnison";
-L[ "IronGarrisonMiners" ]   = "Minenbauer der Eisernen Garnison";
+L[ "IronGarrisonGuards" ]   = "Wächter der eisernen Garnison";
+L[ "IronGarrisonMiners" ]   = "Bergarbeiter der Eisernen Garnison";
 L[ "AlgraigMenOfEnedwaith" ]   = "Algraig, Menschen von Enedwaith";
 L[ "TheGreyCompany" ]   = "Die Graue Schar";
 L[ "Galadhrim" ]     = "Galadhrim";

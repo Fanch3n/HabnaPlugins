@@ -2,6 +2,12 @@ This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Te
 
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
+Version 1.43 (May 16, 2025)
+- Overhaul of the Player Info menu (thanks Giseldah)
+- Added Herbalism Phials (thanks b414213562)
+- German version: Fixed display of Embers of Enchantment (Funken der Verzauberung)
+- German version: Corrected name for Iron Garrison Miners (Bergarbeiter der Eisernen Garnison)
+=================================================
 Version 1.42.2 (April 23, 2025)
 - Fixed calculation of total money
 - German version: Fixed display of Embers of Enchantment (Asche der Verzauberung)
