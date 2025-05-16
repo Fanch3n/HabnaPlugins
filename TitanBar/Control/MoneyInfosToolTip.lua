@@ -117,8 +117,7 @@ function MIRefreshMITTListBox()
 		LblStat:SetSize( 140, 19 );
 		LblStat:SetFont(Turbine.UI.Lotro.Font.TrajanPro14);
 		LblStat:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-		LblStat:SetText( L["MISession"] .. " " .. L["Stats"] );
-		if TBLocale == "fr" then LblStat:SetText( L["Stats"] .. " " .. L["MISession"] ); end
+		LblStat:SetText( L["MISession"] );
 
 		local StatsSeparator = Turbine.UI.Control();
 		StatsSeparator:SetParent( MITTListBox );
@@ -148,8 +147,7 @@ function MIRefreshMITTListBox()
 		LblStat:SetSize( 140, 19 );
 		LblStat:SetFont(Turbine.UI.Lotro.Font.TrajanPro14);
 		LblStat:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-		LblStat:SetText( L["MIDaily"] .. " " .. L["Stats"] );
-		if TBLocale == "fr" then LblStat:SetText( L["Stats"] .. " " .. L["MIDaily"] ); end
+		LblStat:SetText( L["MIDaily"] );
 
 		local StatsSeparator = Turbine.UI.Control();
 		StatsSeparator:SetParent( MITTListBox );
