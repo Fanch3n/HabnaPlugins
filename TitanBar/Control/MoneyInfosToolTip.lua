@@ -23,10 +23,10 @@ function ShowMIWindow()
 end
 
 function MoneyToCoins(m)
-    local g = math.floor(m/100000);
-    local s = math.floor(m/100)-g*1000;
-    local c = m%100;
-    return c,s,g;
+	local g = math.floor(m/100000);
+	local s = math.floor(m/100)-g*1000;
+	local c = m%100;
+	return c,s,g;
 end
 
 function MIRefreshMITTListBox()	
@@ -117,8 +117,7 @@ function MIRefreshMITTListBox()
 		LblStat:SetSize( 140, 19 );
 		LblStat:SetFont(Turbine.UI.Lotro.Font.TrajanPro14);
 		LblStat:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-		LblStat:SetText( L["MISession"] .. " " .. L["Stats"] );
-		if TBLocale == "fr" then LblStat:SetText( L["Stats"] .. " " .. L["MISession"] ); end
+		LblStat:SetText( L["MISession"] );
 
 		local StatsSeparator = Turbine.UI.Control();
 		StatsSeparator:SetParent( MITTListBox );
@@ -148,8 +147,7 @@ function MIRefreshMITTListBox()
 		LblStat:SetSize( 140, 19 );
 		LblStat:SetFont(Turbine.UI.Lotro.Font.TrajanPro14);
 		LblStat:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-		LblStat:SetText( L["MIDaily"] .. " " .. L["Stats"] );
-		if TBLocale == "fr" then LblStat:SetText( L["Stats"] .. " " .. L["MIDaily"] ); end
+		LblStat:SetText( L["MIDaily"] );
 
 		local StatsSeparator = Turbine.UI.Control();
 		StatsSeparator:SetParent( MITTListBox );
@@ -180,8 +178,8 @@ end
 
 function MITTShowData(parent,l,m,lc,mc,showDelIcon) -- l = label, m = money, lc = label color, money color
 	iFound = true;
-    local g = {};
-    g[1], g[2], g[3] = MoneyToCoins(m);
+	local g = {};
+	g[1], g[2], g[3] = MoneyToCoins(m);
 	--**v Control of Gold/Silver/Copper currencies v**
 	local MoneyCtr = Turbine.UI.Control();
 	MoneyCtr:SetParent( parent );

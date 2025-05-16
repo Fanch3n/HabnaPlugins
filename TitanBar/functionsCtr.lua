@@ -281,8 +281,8 @@ function ImportCtr( value )
                         factionPattern = "de la faction (.*) a (.*) de";
                         rppPattern = "a .* de ([%d%p]*)%.";
                     elseif GLocale == "de" then
-                        factionPattern = "Euer Ruf bei der Gruppe \"(.*)\" wurde um (.*)";
-                        rppPattern = "wurde um ([%d%p]*) .*";
+                        factionPattern = "Euer Ruf bei (.*) hat sich um .* (%a+)";
+                        rppPattern = "hat sich um ([%d%p]*) .*";
                     end
                     -- check string if an accelerator was used
                     if GLocale == "de" then
@@ -299,6 +299,7 @@ function ImportCtr( value )
                             rppPattern = "a augment\195\169 de ([%d%p]*) %(";
                             rpbPattern = "%(([%d%p]*) du bonus";
                         elseif GLocale == "de" then
+                            factionPattern = "Euer Ruf bei der Gruppe \"(.*)\" wurde um"
                             rppPattern = "wurde um ([%d%p]*) erh\195\182ht";
                             rpbPattern = "%(([%d%p]*) durch Bonus";
                         end
@@ -549,47 +550,37 @@ function LoadPlayerMoney()
 end
 
 -- **v Save player wallet infos v**
-function SavePlayerMoney( save )
+function SavePlayerMoney(save)
     if string.sub( PN, 1, 1 ) == "~" then return end; --Ignore session play
 
     wallet[PN].Show = _G.SCM;
     wallet[PN].ShowToAll = _G.SCMA;
-    wallet[PN].Money = tostring( GetPlayerAttributes():GetMoney() );
+    wallet[PN].Money = tostring(GetPlayerAttributes():GetMoney());
 
     -- Calculate Gold/Silver/Copper Total
-    GoldTot, SilverTot, CopperTot = 0, 0, 0;
-    gold, silver, copper = 0, 0, 0;
+    local goldTotal, silverTotal, copperTotal = 0, 0, 0;
 
-    for k,v in pairs( wallet ) do
-        DecryptMoney( v.Money );
-        if k == PN then
-            if v.Show then
-                GoldTot = GoldTot + gold;
-                SilverTot = SilverTot + silver;
-                CopperTot = CopperTot + copper;
-            end
-        else
-            if v.ShowToAll or v.ShowToAll == nil then
-                GoldTot = GoldTot + gold;
-                SilverTot = SilverTot + silver;
-                CopperTot = CopperTot + copper;
-            end
+    for k,v in pairs(wallet) do
+        local gold, silver, copper = DecryptMoney(v.Money);
+        if (k == PN and v.Show) or (k ~= PN and (v.ShowToAll or v.ShowToAll == nil)) then
+            goldTotal = goldTotal + gold;
+            silverTotal = silverTotal + silver;
+            copperTotal = copperTotal + copper;
         end
     end
 
-    if ( CopperTot > 999 ) then
-        SilverTot = SilverTot + ( CopperTot / 1000 );
-        CopperTot = CopperTot % 1000;
-    end
+    silverTotal = silverTotal + math.floor(copperTotal / 100)
+    copperTotal = copperTotal % 100
 
-    if ( SilverTot > 999 ) then
-        GoldTot = GoldTot + ( SilverTot / 1000 );
-        SilverTot = SilverTot % 1000;
-    end
+    goldTotal = goldTotal + math.floor(silverTotal / 1000)
+    silverTotal = silverTotal % 1000
+
+    GoldTot = goldTotal
+    SilverTot = silverTotal
+    CopperTot = copperTotal
 
     if save then
-        Turbine.PluginData.Save(
-            Turbine.DataScope.Server, "TitanBarPlayerWallet", wallet);
+        Turbine.PluginData.Save(Turbine.DataScope.Server, "TitanBarPlayerWallet", wallet)
     end
 end
 -- **^

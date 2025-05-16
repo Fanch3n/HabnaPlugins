@@ -71,15 +71,14 @@ function RefreshWITTListBox()
 			if wttcur == L["MGSC"] then --Money control
 				local wiPosX, tmWidth = 0, 0;
 				local wmoney = GetPlayerAttributes():GetMoney();
-				DecryptMoney(wmoney);
-				local twmoney = { gold, silver, copper };
+				local twmoney = {DecryptMoney(wmoney)};
 				--local twmoneyi = { 0x41007e7b, 0x41007e7c, 0x41007e7d }; --gold, silver, copper icon 27x21
 				for w = 1, 3 do
 					--**v Quantity v**
 					local lblQte = Turbine.UI.Label();
 					lblQte:SetParent( WITTCtr );
 					lblQte:SetPosition( wiPosX+5, 0 );
-					lblQte:SetText( twmoney[w] );
+					lblQte:SetText( tostring(twmoney[w]) );
 					lblQte:SetSize( lblQte:GetTextLength() * NM, WITTCtr:GetHeight() );
 					--lblQte:SetForeColor( Color["green"] );
 					lblQte:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
