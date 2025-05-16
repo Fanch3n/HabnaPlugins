@@ -170,9 +170,9 @@ function frmMain()
 		ShowDurabilityInfos, ShowEquipInfos = false, false
 		ShowVault, ShowSharedStorage = false, false
 		ShowReputation = false
-		for cur in _G.currencies.list do
+		for _,cur in pairs(_G.currencies.list) do
 			if not cur.visibleInMonsterPlay then
-				_G.CurrencyData[cur].IsVisible = false
+				_G.CurrencyData[cur.name].IsVisible = false
 			end
 		end
 
