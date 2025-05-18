@@ -1,4 +1,4 @@
--- Written By Giseldah (Original By Habna. 4andreas)
+-- Written By Giseldah (inspired by original work by Habna, 4andreas)
 
 local mathmax = math.max
 local strfind = string.find
@@ -88,151 +88,145 @@ end
 
 -- ********************* End Formatting/Display Support ***********************
 
+-- simple enum support
+local function enum(fields)
+	local enums = {}
+	for i,name in ipairs(fields) do
+		enums[name] = i
+	end
+	return enums
+end
+
 -- player data
 
 local aCalcTypeMit = {[12] = "MitLight", [25] = "MitLight", [13] = "MitMedium", [26] = "MitMedium", [14] = "MitHeavy", [27] = "MitHeavy"}
 
-local PD = {}
-	PD.CLASS,
-	PD.LEVEL,
-	PD.MAXMORALE,
-	PD.MAXPOWER,
-	PD.BASEMORALE,
-	PD.BASEPOWER,
-	PD.RACE,
-	PD.XP_CURRENT,
-	PD.ICMR,
-	PD.NCMR,
-	PD.ICPR,
-	PD.NCPR,
-	PD.BASEICMR,
-	PD.BASENCMR,
-	PD.BASEICPR,
-	PD.BASENCPR,
-	PD.MIGHT,
-	PD.AGILITY,
-	PD.VITALITY,
-	PD.WILL,
-	PD.FATE,
-	PD.BASEMIGHT,
-	PD.BASEAGILITY,
-	PD.BASEVITALITY,
-	PD.BASEWILL,
-	PD.BASEFATE,
-	PD.CRITHIT,
-	PD.FINESSE,
-	PD.MELPHYMAS,
-	PD.RNGPHYMAS,
-	PD.TACMAS,
-	PD.OUTHEAL,
-	PD.RESIST,
-	PD.CRITDEF,
-	PD.INHEAL,
-	PD.CANBLOCK,
-	PD.CANPARRY,
-	PD.CANEVADE,
-	PD.BLOCK,
-	PD.PARRY,
-	PD.EVADE,
-	PD.COMPHYMIT,
-	PD.NONPHYMIT,
-	PD.TACMIT,
-	PD.FIREMIT,
-	PD.LIGHTNINGMIT,
-	PD.FROSTMIT,
-	PD.ACIDMIT,
-	PD.SHADOWMIT,
-	PD.CALCTYPE_COMPHYMIT,
-	PD.CALCTYPE_NONPHYMIT,
-	PD.CALCTYPE_TACMIT,
-	PD.PENARMOUR,
-	PD.PENBPE,
-	PD.PENRESIST
-	= 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55
+local PD = enum {
+	'CLASS', 'LEVEL', 'RACE', 'XP_CURRENT', 'MAXMORALE', 'MAXPOWER', 'CLASSMORALE', 'CLASSPOWER', 'RACEMORALE', 'RACEPOWER',
+	'ICMR', 'NCMR', 'ICPR', 'NCPR', 'CLASSICMR', 'CLASSNCMR', 'CLASSICPR', 'CLASSNCPR', 'RACEICMR', 'RACENCMR', 'RACEICPR', 'RACENCPR',
+	'MIGHT', 'AGILITY', 'VITALITY', 'WILL', 'FATE', 'CLASSMIGHT', 'CLASSAGILITY', 'CLASSVITALITY', 'CLASSWILL', 'CLASSFATE', 'RACEMIGHT', 'RACEAGILITY', 'RACEVITALITY', 'RACEWILL', 'RACEFATE',
+	'CRITHIT', 'FINESSE', 'MELPHYMAS', 'RNGPHYMAS', 'TACMAS', 'OUTHEAL', 'RESIST', 'CRITDEF', 'INHEAL', 'CANBLOCK', 'CANPARRY', 'CANEVADE', 'BLOCK', 'PARRY', 'EVADE',
+	'COMPHYMIT', 'NONPHYMIT', 'TACMIT', 'FIREMIT', 'LIGHTNINGMIT', 'FROSTMIT', 'ACIDMIT', 'SHADOWMIT', 'CALCTYPE_COMPHYMIT', 'CALCTYPE_NONPHYMIT', 'CALCTYPE_TACMIT',
+	'PENARMOUR', 'PENBPE', 'PENRESIST'
+}
+
+-- CalcStat stats set
+local IsCScontent = {
+	[PD.CLASSMORALE] = true,		[PD.CLASSICMR] = true,			[PD.CLASSNCMR] = true,
+	[PD.CLASSPOWER] = true,			[PD.CLASSICPR] = true,			[PD.CLASSNCPR] = true,
+	[PD.RACEMORALE] = true,			[PD.RACEICMR] = true,			[PD.RACENCMR] = true,
+	[PD.RACEPOWER] = true,			[PD.RACEICPR] = true,			[PD.RACENCPR] = true,
+	[PD.RACEMIGHT] = true,			[PD.RACEAGILITY] = true,		[PD.RACEVITALITY] = true,		[PD.RACEWILL] = true,		[PD.RACEFATE] = true,
+	[PD.CALCTYPE_COMPHYMIT] = true,	[PD.CALCTYPE_NONPHYMIT] = true,	[PD.CALCTYPE_TACMIT] = true,
+	[PD.PENARMOUR] = true,			[PD.PENBPE] = true,				[PD.PENRESIST] = true
+}
+
+-- Regeneration stats set: need to display these with different number of decimals
+local IsRegenStat = {
+	[PD.ICMR] = true,		[PD.NCMR] = true,		[PD.ICPR] = true,		[PD.NCPR] = true,
+	[PD.CLASSICMR] = true,	[PD.CLASSNCMR] = true,	[PD.CLASSICPR] = true,	[PD.CLASSNCPR] = true,
+	[PD.RACEICMR] = true,	[PD.RACENCMR] = true,	[PD.RACEICPR] = true,	[PD.RACENCPR] = true
+}
 
 local function GetPlayerData()
 	aPlayerData = {}
-	for nPDId = 1,55 do
+	for _,nPDId in ipairs(PD) do
 		aPlayerData[nPDId] = nil
 	end
 
-	aPlayerData[PD.CLASS] = PlayerClassIs
-	aPlayerData[PD.LEVEL] = Player:GetLevel()
-	aPlayerData[PD.MAXMORALE] = Player:GetMaxMorale()
-	aPlayerData[PD.MAXPOWER] = Player:GetMaxPower()
-	aPlayerData[PD.RACE] = PlayerRaceIs
+	aPlayerData[PD.CLASS] =		PlayerClassIs
+	aPlayerData[PD.LEVEL] =		Player:GetLevel()
+	aPlayerData[PD.MAXMORALE] =	Player:GetMaxMorale()
+	aPlayerData[PD.MAXPOWER] =	Player:GetMaxPower()
+	aPlayerData[PD.RACE] =		PlayerRaceIs
 
 	if PlayerAlign == 1 then -- freeps only
-		local PlayerAttrib = GetPlayerAttributes()
-
-		local sCS_ClassName
-		if useCalcStat then
-			sCS_ClassName = CalcStat("ClassName",PlayerClassIdIs)
-		end
-
 		if ExpPTS then
 			-- experience data from chat
 			local sExpPTS = strgsub(ExpPTS,"%p+","")
 			aPlayerData[PD.XP_CURRENT] = tonumber(sExpPTS)
 		end
 
+		local PlayerAttrib = GetPlayerAttributes()
 		-- Vital/Main
-		aPlayerData[PD.ICMR] = PlayerAttrib:GetInCombatMoraleRegeneration()
-		aPlayerData[PD.NCMR] = PlayerAttrib:GetOutOfCombatMoraleRegeneration()
-		aPlayerData[PD.ICPR] = PlayerAttrib:GetInCombatPowerRegeneration()
-		aPlayerData[PD.NCPR] = PlayerAttrib:GetOutOfCombatPowerRegeneration()
-		if useCalcStat then
-			aPlayerData[PD.BASEMORALE] = CalcStat(sCS_ClassName.."CDBaseMorale",aPlayerData[PD.LEVEL])
-			aPlayerData[PD.BASEICMR] = CalcStat(sCS_ClassName.."CDBaseICMR",aPlayerData[PD.LEVEL])
-			aPlayerData[PD.BASENCMR] = CalcStat(sCS_ClassName.."CDBaseNCMR",aPlayerData[PD.LEVEL])
-			aPlayerData[PD.BASEPOWER] = CalcStat(sCS_ClassName.."CDBasePower",aPlayerData[PD.LEVEL])
-			aPlayerData[PD.BASEICPR] = CalcStat(sCS_ClassName.."CDBaseICPR",aPlayerData[PD.LEVEL])
-			aPlayerData[PD.BASENCPR] = CalcStat(sCS_ClassName.."CDBaseNCPR",aPlayerData[PD.LEVEL])
-		end
-		aPlayerData[PD.MIGHT] = PlayerAttrib:GetMight()
-		aPlayerData[PD.AGILITY] = PlayerAttrib:GetAgility()
-		aPlayerData[PD.VITALITY] = PlayerAttrib:GetVitality()
-		aPlayerData[PD.WILL] = PlayerAttrib:GetWill()
-		aPlayerData[PD.FATE] = PlayerAttrib:GetFate()
-		aPlayerData[PD.BASEMIGHT] = PlayerAttrib:GetBaseMight()
-		aPlayerData[PD.BASEAGILITY] = PlayerAttrib:GetBaseAgility()
-		aPlayerData[PD.BASEVITALITY] = PlayerAttrib:GetBaseVitality()
-		aPlayerData[PD.BASEWILL] = PlayerAttrib:GetBaseWill()
-		aPlayerData[PD.BASEFATE] = PlayerAttrib:GetBaseFate()
+		aPlayerData[PD.ICMR] =			PlayerAttrib:GetInCombatMoraleRegeneration()
+		aPlayerData[PD.NCMR] =			PlayerAttrib:GetOutOfCombatMoraleRegeneration()
+		aPlayerData[PD.ICPR] =			PlayerAttrib:GetInCombatPowerRegeneration()
+		aPlayerData[PD.NCPR] =			PlayerAttrib:GetOutOfCombatPowerRegeneration()
+		aPlayerData[PD.MIGHT] =			PlayerAttrib:GetMight()
+		aPlayerData[PD.AGILITY] =		PlayerAttrib:GetAgility()
+		aPlayerData[PD.VITALITY] =		PlayerAttrib:GetVitality()
+		aPlayerData[PD.WILL] =			PlayerAttrib:GetWill()
+		aPlayerData[PD.FATE] =			PlayerAttrib:GetFate()
+		aPlayerData[PD.CLASSMIGHT] =	PlayerAttrib:GetBaseMight()
+		aPlayerData[PD.CLASSAGILITY] =	PlayerAttrib:GetBaseAgility()
+		aPlayerData[PD.CLASSVITALITY] =	PlayerAttrib:GetBaseVitality()
+		aPlayerData[PD.CLASSWILL] =		PlayerAttrib:GetBaseWill()
+		aPlayerData[PD.CLASSFATE] =		PlayerAttrib:GetBaseFate()
 		-- Offence
-		aPlayerData[PD.CRITHIT] = PlayerAttrib:GetBaseCriticalHitChance()
-		aPlayerData[PD.FINESSE] = PlayerAttrib:GetFinesse()
-		aPlayerData[PD.MELPHYMAS] = PlayerAttrib:GetMeleeDamage()
-		aPlayerData[PD.RNGPHYMAS] = PlayerAttrib:GetRangeDamage()
-		aPlayerData[PD.TACMAS] = PlayerAttrib:GetTacticalDamage()
-		aPlayerData[PD.OUTHEAL] = PlayerAttrib:GetOutgoingHealing()
+		aPlayerData[PD.CRITHIT] =		PlayerAttrib:GetBaseCriticalHitChance()
+		aPlayerData[PD.FINESSE] =		PlayerAttrib:GetFinesse()
+		aPlayerData[PD.MELPHYMAS] =		PlayerAttrib:GetMeleeDamage()
+		aPlayerData[PD.RNGPHYMAS] =		PlayerAttrib:GetRangeDamage()
+		aPlayerData[PD.TACMAS] =		PlayerAttrib:GetTacticalDamage()
+		aPlayerData[PD.OUTHEAL] =		PlayerAttrib:GetOutgoingHealing()
 		-- Defence
-		aPlayerData[PD.RESIST] = PlayerAttrib:GetBaseResistance()
-		aPlayerData[PD.CRITDEF] = PlayerAttrib:GetBaseCriticalHitAvoidance()
-		aPlayerData[PD.INHEAL] = PlayerAttrib:GetIncomingHealing()
+		aPlayerData[PD.RESIST] =		PlayerAttrib:GetBaseResistance()
+		aPlayerData[PD.CRITDEF] =		PlayerAttrib:GetBaseCriticalHitAvoidance()
+		aPlayerData[PD.INHEAL] =		PlayerAttrib:GetIncomingHealing()
 		-- Avoidance
-		aPlayerData[PD.CANBLOCK] = PlayerAttrib:CanBlock()
-		aPlayerData[PD.CANPARRY] = PlayerAttrib:CanParry()
-		aPlayerData[PD.CANEVADE] = PlayerAttrib:CanEvade()
-		aPlayerData[PD.BLOCK] = PlayerAttrib:GetBlock()
-		aPlayerData[PD.PARRY] = PlayerAttrib:GetParry()
-		aPlayerData[PD.EVADE] = PlayerAttrib:GetEvade()
+		aPlayerData[PD.CANBLOCK] =		PlayerAttrib:CanBlock()
+		aPlayerData[PD.CANPARRY] =		PlayerAttrib:CanParry()
+		aPlayerData[PD.CANEVADE] =		PlayerAttrib:CanEvade()
+		aPlayerData[PD.BLOCK] =			PlayerAttrib:GetBlock()
+		aPlayerData[PD.PARRY] =			PlayerAttrib:GetParry()
+		aPlayerData[PD.EVADE] =			PlayerAttrib:GetEvade()
 		-- Mitigations
-		aPlayerData[PD.COMPHYMIT] = PlayerAttrib:GetCommonMitigation()
-		aPlayerData[PD.NONPHYMIT] = PlayerAttrib:GetPhysicalMitigation()
-		aPlayerData[PD.TACMIT] = PlayerAttrib:GetTacticalMitigation()
-		aPlayerData[PD.FIREMIT] = PlayerAttrib:GetFireMitigation()
-		aPlayerData[PD.LIGHTNINGMIT] = PlayerAttrib:GetLightningMitigation()
-		aPlayerData[PD.FROSTMIT] = PlayerAttrib:GetFrostMitigation()
-		aPlayerData[PD.ACIDMIT] = PlayerAttrib:GetAcidMitigation()
-		aPlayerData[PD.SHADOWMIT] = PlayerAttrib:GetShadowMitigation()
+		aPlayerData[PD.COMPHYMIT] =		PlayerAttrib:GetCommonMitigation()
+		aPlayerData[PD.NONPHYMIT] =		PlayerAttrib:GetPhysicalMitigation()
+		aPlayerData[PD.TACMIT] =		PlayerAttrib:GetTacticalMitigation()
+		aPlayerData[PD.FIREMIT] =		PlayerAttrib:GetFireMitigation()
+		aPlayerData[PD.LIGHTNINGMIT] =	PlayerAttrib:GetLightningMitigation()
+		aPlayerData[PD.FROSTMIT] =		PlayerAttrib:GetFrostMitigation()
+		aPlayerData[PD.ACIDMIT] =		PlayerAttrib:GetAcidMitigation()
+		aPlayerData[PD.SHADOWMIT] =		PlayerAttrib:GetShadowMitigation()
+
 		if useCalcStat then
-			aPlayerData[PD.CALCTYPE_COMPHYMIT] = aCalcTypeMit[CalcStat(sCS_ClassName.."CDCalcTypeComPhyMit",aPlayerData[PD.LEVEL])]
-			aPlayerData[PD.CALCTYPE_NONPHYMIT] = aCalcTypeMit[CalcStat(sCS_ClassName.."CDCalcTypeNonPhyMit",aPlayerData[PD.LEVEL])]
-			aPlayerData[PD.CALCTYPE_TACMIT] = aCalcTypeMit[CalcStat(sCS_ClassName.."CDCalcTypeTacMit",aPlayerData[PD.LEVEL])]
-			aPlayerData[PD.PENARMOUR] = {CalcStat("TPenArmour",aPlayerData[PD.LEVEL],1),CalcStat("TPenArmour",aPlayerData[PD.LEVEL],2),CalcStat("TPenArmour",aPlayerData[PD.LEVEL],3),CalcStat("T2PenArmour",aPlayerData[PD.LEVEL])}
-			aPlayerData[PD.PENBPE] = {CalcStat("TPenBPE",aPlayerData[PD.LEVEL],1),CalcStat("TPenBPE",aPlayerData[PD.LEVEL],2),CalcStat("TPenBPE",aPlayerData[PD.LEVEL],3),CalcStat("T2PenBPE",aPlayerData[PD.LEVEL])}
-			aPlayerData[PD.PENRESIST] = {CalcStat("TPenResist",aPlayerData[PD.LEVEL],1),CalcStat("TPenResist",aPlayerData[PD.LEVEL],2),CalcStat("TPenResist",aPlayerData[PD.LEVEL],3),CalcStat("T2PenResist",aPlayerData[PD.LEVEL])}
+			local sCS_ClassName = CalcStat("ClassName",PlayerClassIdIs)
+			local sCS_RaceName = CalcStat("RaceName",PlayerRaceIdIs)
+			local nCS_CharLevel = aPlayerData[PD.LEVEL]
+			-- Vital/Main
+			aPlayerData[PD.CLASSMORALE] =	CalcStat(sCS_ClassName.."CDBaseMorale",nCS_CharLevel)
+			aPlayerData[PD.CLASSICMR] =		CalcStat(sCS_ClassName.."CDBaseICMR",nCS_CharLevel)
+			aPlayerData[PD.CLASSNCMR] =		CalcStat(sCS_ClassName.."CDBaseNCMR",nCS_CharLevel)
+			aPlayerData[PD.CLASSPOWER] =	CalcStat(sCS_ClassName.."CDBasePower",nCS_CharLevel)
+			aPlayerData[PD.CLASSICPR] =		CalcStat(sCS_ClassName.."CDBaseICPR",nCS_CharLevel)
+			aPlayerData[PD.CLASSNCPR] =		CalcStat(sCS_ClassName.."CDBaseNCPR",nCS_CharLevel)
+			if PlayerClassIdIs == 185 and nCS_CharLevel >= 28 then
+				-- add Will from Lore-master's Combat Characteristic Ancient Wisdom (active from cLvl28) to CLass Will, because it's also a passive scaling stat, depending on class
+				-- with this, main stats will always be like class+race = current, if nothing is traited and no items or effects are on the character
+				-- similar passive stats exist for other classes, for example involving Critical Defence rating for Guardian, Warden, etc.
+				aPlayerData[PD.CLASSWILL] = (aPlayerData[PD.CLASSWILL] or 0) + CalcStat("LMAncientWisdomWill",nCS_CharLevel)
+			end
+			aPlayerData[PD.RACEMORALE] =	CalcStat(sCS_RaceName.."RDTraitMorale",nCS_CharLevel)
+			aPlayerData[PD.RACEICMR] =		CalcStat(sCS_RaceName.."RDTraitICMR",nCS_CharLevel)
+			aPlayerData[PD.RACENCMR] =		CalcStat(sCS_RaceName.."RDTraitNCMR",nCS_CharLevel)
+			aPlayerData[PD.RACEPOWER] =		CalcStat(sCS_RaceName.."RDTraitPower",nCS_CharLevel)
+			aPlayerData[PD.RACEICPR] =		CalcStat(sCS_RaceName.."RDTraitICPR",nCS_CharLevel)
+			aPlayerData[PD.RACENCPR] =		CalcStat(sCS_RaceName.."RDTraitNCPR",nCS_CharLevel)
+			aPlayerData[PD.RACEMIGHT] =		CalcStat(sCS_RaceName.."RDTraitMight",nCS_CharLevel)
+			aPlayerData[PD.RACEAGILITY] =	CalcStat(sCS_RaceName.."RDTraitAgility",nCS_CharLevel)
+			aPlayerData[PD.RACEVITALITY] =	CalcStat(sCS_RaceName.."RDTraitVitality",nCS_CharLevel)
+			aPlayerData[PD.RACEWILL] =		CalcStat(sCS_RaceName.."RDTraitWill",nCS_CharLevel)
+			aPlayerData[PD.RACEFATE] =		CalcStat(sCS_RaceName.."RDTraitFate",nCS_CharLevel)
+			-- Mitigations
+			aPlayerData[PD.CALCTYPE_COMPHYMIT] =	aCalcTypeMit[CalcStat(sCS_ClassName.."CDCalcTypeComPhyMit",	nCS_CharLevel)]
+			aPlayerData[PD.CALCTYPE_NONPHYMIT] =	aCalcTypeMit[CalcStat(sCS_ClassName.."CDCalcTypeNonPhyMit",	nCS_CharLevel)]
+			aPlayerData[PD.CALCTYPE_TACMIT] =		aCalcTypeMit[CalcStat(sCS_ClassName.."CDCalcTypeTacMit",	nCS_CharLevel)]
+			-- Penetrations
+			aPlayerData[PD.PENARMOUR] =	{T1 = CalcStat("TPenArmour",nCS_CharLevel,1),	T2 = CalcStat("TPenArmour",	nCS_CharLevel,2),	T3 = CalcStat("TPenArmour",	nCS_CharLevel,3),	EnhIII = CalcStat("T2PenArmour",nCS_CharLevel)}
+			aPlayerData[PD.PENBPE] =	{T1 = CalcStat("TPenBPE",	nCS_CharLevel,1),	T2 = CalcStat("TPenBPE",	nCS_CharLevel,2),	T3 = CalcStat("TPenBPE",	nCS_CharLevel,3),	EnhIII = CalcStat("T2PenBPE",	nCS_CharLevel)}
+			aPlayerData[PD.PENRESIST] =	{T1 = CalcStat("TPenResist",nCS_CharLevel,1),	T2 = CalcStat("TPenResist",	nCS_CharLevel,2),	T3 = CalcStat("TPenResist",	nCS_CharLevel,3),	EnhIII = CalcStat("T2PenResist",nCS_CharLevel)}
 		end
 	end
 	
@@ -241,67 +235,51 @@ end
 
 -- various content display functions
 
-local CI = {}
-
-CI.TI_TEXT
-	= 1
-
--- displays a generic text
-local function SetTextStatValue(oControl,aPlayerData,aContentInfo)
-	local nPDId = aContentInfo[CI.TI_TEXT]
-	local sText = type(nPDId) == "number" and aPlayerData[nPDId] or nil
+-- displays a generic text or number value from player data
+local function SetStatValue(Ctr,aPlayerData,aContData)
+	local nPDId = aContData.Stat
+	if IsCScontent[nPDId] and not useCalcStat then Ctr:SetText(NO_CALCSTAT_CONTENT) return end
+	local xValue = type(nPDId) == "number" and aPlayerData[nPDId] or nil
 
 	local sContentText = ""
 	
-	if not (type(sText) == "string") then
+	if xValue == nil then
 		sContentText = L[ "PINOTAVAIL" ]
+	elseif type(xValue) == "string" then
+		sContentText = xValue
+	elseif xValue == 0 then
+		-- don't display zero values
+	elseif IsRegenStat[nPDId] then
+		-- use regeneration stats number formatting
+		sContentText = stringformatvalue("%'.1f",correctvalue(xValue))
 	else
-		sContentText = sText
+		sContentText = stringformatvalue("%'.0f",correctvalue(xValue))
 	end
-
-	oControl:SetText(sContentText)
-end
-
-CI.NI_NUMBER
-	= 1
-
--- displays a generic number
-local function SetNumberStatValue(oControl,aPlayerData,aContentInfo)
-	local nPDId = aContentInfo[CI.NI_NUMBER]
-	local nNumber = type(nPDId) == "number" and aPlayerData[nPDId] or nil
-
-	local sContentText = ""
 	
-	if not (type(nNumber) == "number") then
-		sContentText = L[ "PINOTAVAIL" ]
-	else
-		sContentText = stringformatvalue("%'.0f",correctvalue(nNumber))
-	end
-
-	oControl:SetText(sContentText)
+	Ctr:SetText(sContentText)
 end
 
 -- displays LvlXP information
 -- needs CalcStat
-local function SetLvlXPStatValue(oControl,aPlayerData,aContentInfo)
-	if not aPlayerData[PD.XP_CURRENT] then oControl:SetText(L[ "PINOTAVAIL" ]) return end
-	if not useCalcStat then oControl:SetText(NO_CALCSTAT_CONTENT) return end
+local function SetLvlXPStatValue(Ctr,aPlayerData,aContData)
+	if not aPlayerData[PD.XP_CURRENT] then Ctr:SetText(L[ "PINOTAVAIL" ]) return end
+	if not useCalcStat then Ctr:SetText(NO_CALCSTAT_CONTENT) return end
 	local nLevelCap = CalcStat("LevelCap")
-	if aPlayerData[PD.LEVEL] == nLevelCap then oControl:SetText(L[ "PILVLXPCAP" ]) return end
+	if aPlayerData[PD.LEVEL] >= nLevelCap then Ctr:SetText(L[ "PILVLXPCAP" ]) return end
 
 	local nLvlExpCostTot = CalcStat("LvlExpCostTot",aPlayerData[PD.LEVEL])
 	local nLvlExpCurr = aPlayerData[PD.XP_CURRENT]-nLvlExpCostTot
 	local nLvlExpNext = CalcStat("LvlExpCost",aPlayerData[PD.LEVEL]+1)
-	if nLvlExpCurr < 0 or nLvlExpCurr > nLvlExpNext then oControl:SetText(L[ "PINOTAVAIL" ]) return end
+	if nLvlExpCurr < 0 or nLvlExpCurr > nLvlExpNext then Ctr:SetText(L[ "PINOTAVAIL" ]) return end
 	local nLvlExpPerc = (nLvlExpCurr/nLvlExpNext)*100
 
-	oControl:SetText(stringformatvalue("%'d",nLvlExpNext-nLvlExpCurr).."/"..stringformatvalue("%.1f%%",correctvalue(nLvlExpPerc)))
+	Ctr:SetText(stringformatvalue("%'d",nLvlExpNext-nLvlExpCurr).." / "..stringformatvalue("%.1f%%",correctvalue(nLvlExpPerc)))
 end
 
 -- displays next reforge character level and item level
 -- needs CalcStat
-local function SetLiReforgeStatValue(oControl,aPlayerData,aContentInfo)
-	if not useCalcStat then oControl:SetText(NO_CALCSTAT_CONTENT) return end
+local function SetLiReforgeStatValue(Ctr,aPlayerData,aContData)
+	if not useCalcStat then Ctr:SetText(NO_CALCSTAT_CONTENT) return end
 	local nLevelCap = CalcStat("LevelCap")
 	local nLi2ILvlCap = CalcStat("Li2ILvlCap")
 	local nPrevLi2ReforgeILvl = CalcStat("Li2ReforgeILvl",aPlayerData[PD.LEVEL]-1,nLi2ILvlCap)
@@ -310,134 +288,83 @@ local function SetLiReforgeStatValue(oControl,aPlayerData,aContentInfo)
 	for nLevel = aPlayerData[PD.LEVEL], nLevelCap do
 		nTestLi2ReforgeILvl = CalcStat("Li2ReforgeILvl",nLevel,nLi2ILvlCap)
 		if nTestLi2ReforgeILvl > nPrevLi2ReforgeILvl then
-			oControl:SetText(strgsub(strgsub(L[ "PILIREFFMT" ],"#iLvl",nTestLi2ReforgeILvl),"#cLvl",nLevel))
+			Ctr:SetText(strgsub(strgsub(L[ "PILIREFFMT" ],"#iLvl",nTestLi2ReforgeILvl),"#cLvl",nLevel))
 			return
 		end
 	end
 	
-	oControl:SetText(L[ "PINOTAVAIL" ])
-end
-
-CI.BTI_VALUE
-	= 1
-
--- displays base & total values
--- needs CalcStat for some values
-local function SetBaseTotalStatValue(oControl,aPlayerData,aContentInfo)
-	local nPDId = aContentInfo[CI.BTI_VALUE]
-	local nValue = type(nPDId) == "number" and aPlayerData[nPDId] or nil
-
-	local sContentText = ""
-	
-	if (PD.BASEMORALE <= nPDId and nPDId <= PD.BASEPOWER) or (PD.BASEICMR <= nPDId and nPDId <= PD.BASENCPR) then
-		-- CalcStat content
-		if not useCalcStat then
-			sContentText = NO_CALCSTAT_CONTENT
-		elseif PD.BASEICMR <= nPDId and nPDId <= PD.BASENCPR then
-			sContentText = stringformatvalue("%'.1f",correctvalue(nValue))
-		else
-			sContentText = stringformatvalue("%'.0f",correctvalue(nValue))
-		end
-	else
-		-- non CalcStat content
-		if not (type(nValue) == "number") then
-			sContentText = L[ "PINOTAVAIL" ]
-		elseif PD.ICMR <= nPDId and nPDId <= PD.NCPR then
-			sContentText = stringformatvalue("%'.1f",correctvalue(nValue))
-		else
-			sContentText = stringformatvalue("%'.0f",correctvalue(nValue))
-		end
-	end
-	
-	oControl:SetText(sContentText)
+	Ctr:SetText(strgsub(strgsub(L[ "PILIREFFMT" ],"#iLvl",nLi2ILvlCap),"#cLvl",aPlayerData[PD.LEVEL]))
 end
 
 local CAPCOLOR = {}
-	CAPCOLOR.STANDARD = Color["yellow"]
-	CAPCOLOR.T1 = Color["yellow"] -- Turbine.UI.Color(1,0.9,0) -- T1 only exists in The Hoard for mitigations
-	CAPCOLOR.T2 = Color["orange"]
-	CAPCOLOR.T3 = Color["red"]
-	CAPCOLOR.ENHIII = Color["purple"]
+CAPCOLOR.NONCAP = Color["white"]
+CAPCOLOR.CAPPED = Color["yellow"]
+CAPCOLOR.T1 = Color["yellow"] -- T1 only exists in The Hoard (mitigations only), no different color for now
+CAPCOLOR.T2 = Color["orange"]
+CAPCOLOR.T3 = Color["red"]
+CAPCOLOR.ENHIII = Color["purple"]
 
 -- calculates reached caps and returns approp. color
 -- needs CalcStat for caps
 local function GetRatCapColor(sCSRatName,nRating,aCSPenRats)
 	if useCalcStat and type(sCSRatName) == "string" and type(nRating) == "number" then
-		nPRatPCapR = CalcStat(sCSRatName.."PRatPCapR",aPlayerData[PD.LEVEL])
+		nPRatPCapR = CalcStat(sCSRatName.."PRatPCapR",aPlayerData[PD.LEVEL]) -- (normal) cap rating
 		if aCSPenRats then
-			if nRating >= nPRatPCapR-aCSPenRats[4] then
+			-- penetration ratings are negative values, so need to be substracted here to calculate the compensated cap rating
+			if nRating >= nPRatPCapR-aCSPenRats.EnhIII then
 				return CAPCOLOR.ENHIII
-			elseif nRating >= nPRatPCapR-aCSPenRats[3] then
+			elseif nRating >= nPRatPCapR-aCSPenRats.T3 then
 				return CAPCOLOR.T3
-			elseif nRating >= nPRatPCapR-aCSPenRats[2] then
+			elseif nRating >= nPRatPCapR-aCSPenRats.T2 then
 				return CAPCOLOR.T2
-			elseif nRating >= nPRatPCapR-aCSPenRats[1] then
+			elseif nRating >= nPRatPCapR-aCSPenRats.T1 then
 				return CAPCOLOR.T1
 			end
 		end
 		if nRating >= nPRatPCapR then
-			return CAPCOLOR.STANDARD
+			return CAPCOLOR.CAPPED
 		end
 	end
-	return Color["white"]
+	return CAPCOLOR.NONCAP
 end
 
-CI.RI_RATING,
-CI.RI_CSRATNAME,
-CI.RI_CSPENRATS,
-CI.RI_AVAILABLE,
-CI.RI_SELECT
-	= 1,2,3,4,5
-
-local RISEL = {}
-	RISEL.CURRAT,
-	RISEL.CURPERC,
-	RISEL.CAPRAT,
-	RISEL.CAPPERC
-	= 1,2,3,4
+-- Rating stat Select enum for stat selection
+local RS = enum {'CURRAT','CURPERC','CAPRAT','CAPPERC'}
 
 -- displays ratings & percentages in colors which depend on reached cap
 -- needs CalcStat for percentages and cap ratings
-local function SetRatingStatValue(oControl,aPlayerData,aContentInfo)
-	local nRating = type(aContentInfo[CI.RI_RATING]) == "number" and aPlayerData[aContentInfo[CI.RI_RATING]] or nil
-	local sCSRatName = type(aContentInfo[CI.RI_CSRATNAME]) == "string" and aContentInfo[CI.RI_CSRATNAME] or aPlayerData[aContentInfo[CI.RI_CSRATNAME]]
-	local aCSPenRats = type(aContentInfo[CI.RI_CSPENRATS]) == "number" and aPlayerData[aContentInfo[CI.RI_CSPENRATS]] or nil
-	local bAvailable = type(aContentInfo[CI.RI_AVAILABLE]) == "number" and aPlayerData[aContentInfo[CI.RI_AVAILABLE]] or not aContentInfo[CI.RI_AVAILABLE]
+local function SetRatingStatValue(Ctr,aPlayerData,aContData)
+	local nRating = type(aContData.CurrRating) == "number" and aPlayerData[aContData.CurrRating] or nil
+	local sCSRatName = type(aContData.CSRatName) == "string" and aContData.CSRatName or aPlayerData[aContData.CSRatName]
+	local aCSPenRats = type(aContData.CSPenRats) == "number" and aPlayerData[aContData.CSPenRats] or nil
+	local bAvailable = type(aContData.Available) == "number" and aPlayerData[aContData.Available] or not aContData.Available
 
 	local sContentText = ""
 	local oContentColor = Color["white"]
 	
-	if aContentInfo[CI.RI_SELECT] == RISEL.CURRAT then
-		-- non CalcStat content (except for cap color)
-		if not (bAvailable and type(nRating) == "number") then
-			sContentText = L[ "PINOTAVAIL" ]
-		else
-			sContentText = stringformatvalue("%'.0f",correctvalue(nRating))
-			oContentColor = GetRatCapColor(sCSRatName,nRating,aCSPenRats)
-		end
-	else
-		-- CalcStat content
-		if not (bAvailable and type(nRating) == "number") then
-			sContentText = L[ "PINOTAVAIL" ]
-		elseif not useCalcStat then
-			sContentText = NO_CALCSTAT_CONTENT
-		elseif not (type(sCSRatName) == "string") then
-			-- likely unknown mitigation calculation type
-			sContentText = L[ "PINOTAVAIL" ]
-		elseif aContentInfo[CI.RI_SELECT] == RISEL.CURPERC then
-			sContentText = stringformatvalue("%.1f%%",correctvalue(CalcStat(sCSRatName.."PRatP",aPlayerData[PD.LEVEL],nRating)+CalcStat(sCSRatName.."PBonus",aPlayerData[PD.LEVEL])))
-			oContentColor = GetRatCapColor(sCSRatName,nRating,aCSPenRats)
-		elseif aContentInfo[CI.RI_SELECT] == RISEL.CAPRAT then
-			sContentText = stringformatvalue("%'.0f",correctvalue(CalcStat(sCSRatName.."PRatPCapR",aPlayerData[PD.LEVEL])))
-			oContentColor = GetRatCapColor(sCSRatName,nRating,aCSPenRats)
-		elseif aContentInfo[CI.RI_SELECT] == RISEL.CAPPERC then
-			sContentText = stringformatvalue("%.1f%%",correctvalue(CalcStat(sCSRatName.."PRatPCap",aPlayerData[PD.LEVEL])+CalcStat(sCSRatName.."PBonus",aPlayerData[PD.LEVEL])))
-			oContentColor = GetRatCapColor(sCSRatName,nRating,aCSPenRats)
-		end
+	if not (bAvailable and type(nRating) == "number") then
+		sContentText = L[ "PINOTAVAIL" ]
+	elseif not useCalcStat and aContData.Select ~= RS.CURRAT then
+		sContentText = NO_CALCSTAT_CONTENT
+	elseif type(sCSRatName) ~= "string" and aContData.Select ~= RS.CURRAT then
+		-- likely unknown mitigation calculation type
+		sContentText = L[ "PINOTAVAIL" ]
+	elseif aContData.Select == RS.CURRAT then
+		sContentText = stringformatvalue("%'.0f",correctvalue(nRating))
+		oContentColor = GetRatCapColor(sCSRatName,nRating,aCSPenRats)
+	elseif aContData.Select == RS.CURPERC then
+		sContentText = stringformatvalue("%.1f%%",correctvalue(CalcStat(sCSRatName.."PRatP",aPlayerData[PD.LEVEL],nRating)+CalcStat(sCSRatName.."PBonus",aPlayerData[PD.LEVEL])))
+		oContentColor = GetRatCapColor(sCSRatName,nRating,aCSPenRats)
+	elseif aContData.Select == RS.CAPRAT then
+		sContentText = stringformatvalue("%'.0f",correctvalue(CalcStat(sCSRatName.."PRatPCapR",aPlayerData[PD.LEVEL])))
+		oContentColor = GetRatCapColor(sCSRatName,nRating,aCSPenRats)
+	elseif aContData.Select == RS.CAPPERC then
+		sContentText = stringformatvalue("%.1f%%",correctvalue(CalcStat(sCSRatName.."PRatPCap",aPlayerData[PD.LEVEL])+CalcStat(sCSRatName.."PBonus",aPlayerData[PD.LEVEL])))
+		oContentColor = GetRatCapColor(sCSRatName,nRating,aCSPenRats)
 	end
 	
-	oControl:SetText(sContentText)
-	oControl:SetForeColor(oContentColor)
+	Ctr:SetText(sContentText)
+	Ctr:SetForeColor(oContentColor)
 end
 
 -- Layout Definition functions
@@ -465,60 +392,23 @@ local function NewLayoutDefinition()
 	return aLayoutDef
 end
 
--- possible types of row formats, each expecting different row defs (parameters/settings)
-local ROWFORMAT = {}
-	ROWFORMAT.CHAR_HEADER, 
-	ROWFORMAT.CHAR_STAT,
-	ROWFORMAT.CHAR_LVLXP_STAT,
-	ROWFORMAT.CHAR_LIREFORGE_STAT,
-	ROWFORMAT.EMPTY,
-	ROWFORMAT.BASETOTAL_HEADER,
-	ROWFORMAT.BASETOTAL_STAT,
-	ROWFORMAT.RATPERC_HEADER,
-	ROWFORMAT.RATPERC_STAT,
-	ROWFORMAT.COLORCENTER_TEXT
-	= 1,2,3,4,5,6,7,8,9,10
+-- possible types of row formats, each expecting different row def parameters/settings
+local ROWFORMAT = enum {'CHAR_HEADER', 'CHAR_STAT', 'CHAR_LVLXP_STAT', 'CHAR_LIREFORGE_STAT', 'EMPTY', 'VITALMAIN_HEADER', 'VITALMAIN_STAT', 'RATPERC_HEADER', 'RATPERC_STAT', 'COLORCENTER_TEXT'}
 
-local ROWDEF = {}
-	-- all except EMPTY
-	ROWDEF.ROWFORMAT,
-	ROWDEF.LABELTEXT,
-	ROWDEF.SUBINDENT
-	= 1,2,3
-	-- CHAR types
-	ROWDEF.STAT_CONTENTFN,
-	ROWDEF.STAT_CONTENT
-	= 4,5
-	-- BASETOTAL_STAT
-	ROWDEF.STAT_BASE,
-	ROWDEF.STAT_TOTAL
-	= 4,5
-	-- RATPERC_STAT
-	ROWDEF.STAT_RATING,
-	ROWDEF.STAT_CSRATNAME,
-	ROWDEF.STAT_CSPENRATS,
-	ROWDEF.STAT_AVAILABLE
-	= 4,5,6,7
-	-- COLORCENTER_TEXT
-	ROWDEF.TEXT_COLOR
-	= 4
-
--- layout text style data
-local ST = {}
-	ST.ALIGN, -- text alignment
-	ST.FONT, -- text font
-	ST.YOFF, -- offset from the top of row, for lining out texts with different font heights
-	ST.HEIGHT, -- height of the text label, depending on font height
-	ST.FGCOL, -- foreground/text color
-	ST.BKCOL -- background color, used to create separator lines
-	= 1,2,3,4,5,6
-
-local StMainHdr =	{Turbine.UI.ContentAlignment.BottomLeft,	Turbine.UI.Lotro.Font.TrajanPro16,	0,	16,	Color["white"],		nil}
-local StStatLbl =	{Turbine.UI.ContentAlignment.BottomLeft,	Turbine.UI.Lotro.Font.TrajanPro14,	2,	14,	Color["nicegold"],	nil}
-local StColHdr =	{Turbine.UI.ContentAlignment.BottomRight,	Turbine.UI.Lotro.Font.Verdana13,	3,	13,	Color["white"],		nil}
-local StStatVal =	{Turbine.UI.ContentAlignment.BottomRight,	Turbine.UI.Lotro.Font.Verdana12,	3,	12,	Color["white"],		nil}
-local StClrText =	{Turbine.UI.ContentAlignment.BottomCenter,	Turbine.UI.Lotro.Font.Verdana14,	1,	14,	nil,				nil}
-local StSep =		{nil,										nil,								15,	1,	nil,				Color["trueblue"]}
+-- layout Text Styles
+-- Align: text alignment
+-- Font: text font
+-- Yoff: offset from the top of row, for lining out texts with different font heights
+-- Height: height of the text label, depending on font height
+-- FGColor: foreground/text color
+-- BGColor: background color, used to create separator lines
+local LTS = {}
+LTS.MAINHDR =	{Align = Turbine.UI.ContentAlignment.BottomLeft,	Font = Turbine.UI.Lotro.Font.TrajanPro16,	Yoff = 0,	Height = 16,	FGColor = Color["white"]}
+LTS.STATLBL =	{Align = Turbine.UI.ContentAlignment.BottomLeft,	Font = Turbine.UI.Lotro.Font.TrajanPro14,	Yoff = 2,	Height = 14,	FGColor = Color["nicegold"]}
+LTS.COLHDR =	{Align = Turbine.UI.ContentAlignment.BottomRight,	Font = Turbine.UI.Lotro.Font.Verdana13,		Yoff = 3,	Height = 13,	FGColor = Color["white"]}
+LTS.STATVAL =	{Align = Turbine.UI.ContentAlignment.BottomRight,	Font = Turbine.UI.Lotro.Font.Verdana12,		Yoff = 3,	Height = 12,	FGColor = Color["white"]}
+LTS.COLORTXT =	{Align = Turbine.UI.ContentAlignment.BottomCenter,	Font = Turbine.UI.Lotro.Font.Verdana14,		Yoff = 1,	Height = 14}
+LTS.SEP =		{																								Yoff = 15,	Height = 1,									BGColor = Color["trueblue"]}
 
 -- adds a table to a layout definition.
 -- tables are automatically positioned next to eachother: a new table will be added to the right of any existing ones (with a gap/offset).
@@ -539,171 +429,185 @@ local function AddTableDefinition(aLayoutDef,aTableDef)
 	local nRowY = nTableStartY
 	local nIndent, nIndentedX
 	
-	-- create control defs out of row defs
+	-- generate layout control definitions from table row definitions
 
 	local aControlDefs = aLayoutDef.ControlDefs
 
+	local nRowFormat
 	for _,aRowDef in ipairs(aTableDef.RowDefs) do
-		nIndent = aRowDef[ROWDEF.SUBINDENT] and nSubIndent or nBaseIndent
+		nRowFormat = aRowDef.RowFormat
+		nIndent = aRowDef.SubIndent and nSubIndent or nBaseIndent
 		nIndentedX = nTableStartX+nIndent
-		if aRowDef[ROWDEF.ROWFORMAT] == ROWFORMAT.CHAR_HEADER then
+		if nRowFormat == ROWFORMAT.CHAR_HEADER then
 			-- main header label
-			tableinsert(aControlDefs,{nTableStartX,		nRowY,aTableDef.Width,						StMainHdr,	aRowDef[ROWDEF.LABELTEXT]})
+			tableinsert(aControlDefs,{PosX = nTableStartX,	PosY = nRowY,	Width = aTableDef.Width,						Style = LTS.MAINHDR,									ContData = {LabelText = aRowDef.LabelText}})
 			-- separator
-			tableinsert(aControlDefs,{nTableStartX-1,	nRowY,aTableDef.Width+2,					StSep})
-		elseif aRowDef[ROWDEF.ROWFORMAT] == ROWFORMAT.CHAR_STAT then
+			tableinsert(aControlDefs,{PosX = nTableStartX-1,PosY = nRowY,	Width = aTableDef.Width+2,						Style = LTS.SEP})
+		elseif nRowFormat == ROWFORMAT.CHAR_STAT then
 			-- stat label
-			tableinsert(aControlDefs,{nIndentedX,		nRowY,aTableDef.Width-nIndent,				StStatLbl,	aRowDef[ROWDEF.LABELTEXT]})
+			tableinsert(aControlDefs,{PosX = nIndentedX,	PosY = nRowY,	Width = aTableDef.Width-nIndent,				Style = LTS.STATLBL,									ContData = {LabelText = aRowDef.LabelText}})
 			-- stat value
-			tableinsert(aControlDefs,{nIndentedX,		nRowY,aTableDef.Width-nIndent,				StStatVal,	aRowDef[ROWDEF.STAT_CONTENT],	aRowDef[ROWDEF.STAT_CONTENTFN]})
-		elseif aRowDef[ROWDEF.ROWFORMAT] == ROWFORMAT.EMPTY then
-			-- nothing
-		elseif aRowDef[ROWDEF.ROWFORMAT] == ROWFORMAT.BASETOTAL_HEADER then
+			tableinsert(aControlDefs,{PosX = nIndentedX,	PosY = nRowY,	Width = aTableDef.Width-nIndent,				Style = LTS.STATVAL,	ContFunc = aRowDef.ContFunc or
+																																								SetStatValue,		ContData = {Stat = aRowDef.Stat}})
+		elseif nRowFormat == ROWFORMAT.EMPTY then
+			-- nothing.. might do something with vertical spacing here, for situations with only a single table
+		elseif nRowFormat == ROWFORMAT.VITALMAIN_HEADER then
 			-- main header label
-			tableinsert(aControlDefs,{nTableStartX,		nRowY,aTableDef.Width,						StMainHdr,	aRowDef[ROWDEF.LABELTEXT]})
-			-- column header label base
-			tableinsert(aControlDefs,{nTableStartX,		nRowY,aTableDef.CellWidthBase,				StColHdr,	L[ "PIBASE" ]})
-			-- column header label total
-			tableinsert(aControlDefs,{nTableStartX,		nRowY,aTableDef.CellWidthTotal,				StColHdr,	L[ "PITOTAL" ]})
+			tableinsert(aControlDefs,{PosX = nTableStartX,	PosY = nRowY,	Width = aTableDef.Width,						Style = LTS.MAINHDR,									ContData = {LabelText = aRowDef.LabelText}})
+			-- column header label class base
+			tableinsert(aControlDefs,{PosX = nTableStartX,	PosY = nRowY,	Width = aTableDef.CellWidthClassBase,			Style = LTS.COLHDR,										ContData = {LabelText = L[ "PICLASS" ]}})
+			-- column header label race base
+			tableinsert(aControlDefs,{PosX = nTableStartX,	PosY = nRowY,	Width = aTableDef.CellWidthRaceBase,			Style = LTS.COLHDR,										ContData = {LabelText = L[ "PIRACE" ]}})
+			-- column header label current
+			tableinsert(aControlDefs,{PosX = nTableStartX,	PosY = nRowY,	Width = aTableDef.CellWidthCurrent,				Style = LTS.COLHDR,										ContData = {LabelText = L[ "PICURR" ]}})
 			-- separator
-			tableinsert(aControlDefs,{nTableStartX-1,	nRowY,aTableDef.Width+2,					StSep})
-		elseif aRowDef[ROWDEF.ROWFORMAT] == ROWFORMAT.BASETOTAL_STAT then
+			tableinsert(aControlDefs,{PosX = nTableStartX-1,PosY = nRowY,	Width = aTableDef.Width+2,						Style = LTS.SEP})
+		elseif nRowFormat == ROWFORMAT.VITALMAIN_STAT then
 			-- stat label
-			tableinsert(aControlDefs,{nIndentedX,		nRowY,aTableDef.Width-nIndent,				StStatLbl,	aRowDef[ROWDEF.LABELTEXT]})
-			-- stat value base
-			tableinsert(aControlDefs,{nIndentedX,		nRowY,aTableDef.CellWidthBase-nIndent,		StStatVal,	{aRowDef[ROWDEF.STAT_BASE]},	SetBaseTotalStatValue})
-			-- stat value total
-			tableinsert(aControlDefs,{nIndentedX,		nRowY,aTableDef.CellWidthTotal-nIndent,		StStatVal,	{aRowDef[ROWDEF.STAT_TOTAL]},	SetBaseTotalStatValue})
-		elseif aRowDef[ROWDEF.ROWFORMAT] == ROWFORMAT.RATPERC_HEADER then
+			tableinsert(aControlDefs,{PosX = nIndentedX,	PosY = nRowY,	Width = aTableDef.Width-nIndent,				Style = LTS.STATLBL,									ContData = {LabelText = aRowDef.LabelText}})
+			-- stat value class base
+			tableinsert(aControlDefs,{PosX = nIndentedX,	PosY = nRowY,	Width = aTableDef.CellWidthClassBase-nIndent,	Style = LTS.STATVAL,	ContFunc = SetStatValue,		ContData = {Stat = aRowDef.ClassBase}})
+			-- stat value race base
+			tableinsert(aControlDefs,{PosX = nIndentedX,	PosY = nRowY,	Width = aTableDef.CellWidthRaceBase-nIndent,	Style = LTS.STATVAL,	ContFunc = SetStatValue,		ContData = {Stat = aRowDef.RaceBase}})
+			-- stat value current
+			tableinsert(aControlDefs,{PosX = nIndentedX,	PosY = nRowY,	Width = aTableDef.CellWidthCurrent-nIndent,		Style = LTS.STATVAL,	ContFunc = SetStatValue,		ContData = {Stat = aRowDef.StatCurr}})
+		elseif nRowFormat == ROWFORMAT.RATPERC_HEADER then
 			-- main header label
-			tableinsert(aControlDefs,{nTableStartX,		nRowY,aTableDef.Width,						StMainHdr,	aRowDef[ROWDEF.LABELTEXT]})
+			tableinsert(aControlDefs,{PosX = nTableStartX,	PosY = nRowY,	Width = aTableDef.Width,						Style = LTS.MAINHDR,									ContData = {LabelText = aRowDef.LabelText}})
 			-- column header label current rating
-			tableinsert(aControlDefs,{nTableStartX,		nRowY,aTableDef.CellWidthCurrRat,			StColHdr,	L[ "PICURRAT" ]})
+			tableinsert(aControlDefs,{PosX = nTableStartX,	PosY = nRowY,	Width = aTableDef.CellWidthCurrRat,				Style = LTS.COLHDR,										ContData = {LabelText = L[ "PICURRAT" ]}})
 			-- column header label current percentage
-			tableinsert(aControlDefs,{nTableStartX,		nRowY,aTableDef.CellWidthCurrPerc,			StColHdr,	L[ "PICURPERC" ]})
+			tableinsert(aControlDefs,{PosX = nTableStartX,	PosY = nRowY,	Width = aTableDef.CellWidthCurrPerc,			Style = LTS.COLHDR,										ContData = {LabelText = L[ "PICURPERC" ]}})
 			-- column header label cap rating
-			tableinsert(aControlDefs,{nTableStartX,		nRowY,aTableDef.CellWidthCapRat,			StColHdr,	L[ "PICAPRAT" ]})
+			tableinsert(aControlDefs,{PosX = nTableStartX,	PosY = nRowY,	Width = aTableDef.CellWidthCapRat,				Style = LTS.COLHDR,										ContData = {LabelText = L[ "PICAPRAT" ]}})
 			-- column header label cap percentage
-			tableinsert(aControlDefs,{nTableStartX,		nRowY,aTableDef.CellWidthCapPerc,			StColHdr,	L[ "PICAPPERC" ]})
+			tableinsert(aControlDefs,{PosX = nTableStartX,	PosY = nRowY,	Width = aTableDef.CellWidthCapPerc,				Style = LTS.COLHDR,										ContData = {LabelText = L[ "PICAPPERC" ]}})
 			-- separator
-			tableinsert(aControlDefs,{nTableStartX-1,	nRowY,aTableDef.Width+2,					StSep})
-		elseif aRowDef[ROWDEF.ROWFORMAT] == ROWFORMAT.RATPERC_STAT then
+			tableinsert(aControlDefs,{PosX = nTableStartX-1,PosY = nRowY,	Width = aTableDef.Width+2,						Style = LTS.SEP})
+		elseif nRowFormat == ROWFORMAT.RATPERC_STAT then
 			-- stat label
-			tableinsert(aControlDefs,{nIndentedX,		nRowY,aTableDef.Width-nIndent,				StStatLbl,	aRowDef[ROWDEF.LABELTEXT]})
+			tableinsert(aControlDefs,{PosX = nIndentedX,	PosY = nRowY,	Width = aTableDef.Width-nIndent,				Style = LTS.STATLBL,									ContData = {LabelText = aRowDef.LabelText}})
 			-- stat value current rating
-			tableinsert(aControlDefs,{nIndentedX,		nRowY,aTableDef.CellWidthCurrRat-nIndent,	StStatVal,	{aRowDef[ROWDEF.STAT_RATING],aRowDef[ROWDEF.STAT_CSRATNAME],aRowDef[ROWDEF.STAT_CSPENRATS],aRowDef[ROWDEF.STAT_AVAILABLE],RISEL.CURRAT},	SetRatingStatValue})
+			tableinsert(aControlDefs,{PosX = nIndentedX,	PosY = nRowY,	Width = aTableDef.CellWidthCurrRat-nIndent,		Style = LTS.STATVAL,	ContFunc = SetRatingStatValue,	ContData = {CurrRating = aRowDef.CurrRating, CSRatName = aRowDef.CSRatName, CSPenRats = aRowDef.CSPenRats, Available = aRowDef.Available, Select = RS.CURRAT}})
 			-- stat value current percentage
-			tableinsert(aControlDefs,{nIndentedX,		nRowY,aTableDef.CellWidthCurrPerc-nIndent,	StStatVal,	{aRowDef[ROWDEF.STAT_RATING],aRowDef[ROWDEF.STAT_CSRATNAME],aRowDef[ROWDEF.STAT_CSPENRATS],aRowDef[ROWDEF.STAT_AVAILABLE],RISEL.CURPERC},	SetRatingStatValue})
+			tableinsert(aControlDefs,{PosX = nIndentedX,	PosY = nRowY,	Width = aTableDef.CellWidthCurrPerc-nIndent,	Style = LTS.STATVAL,	ContFunc = SetRatingStatValue,	ContData = {CurrRating = aRowDef.CurrRating, CSRatName = aRowDef.CSRatName, CSPenRats = aRowDef.CSPenRats, Available = aRowDef.Available, Select = RS.CURPERC}})
 			-- stat value cap rating
-			tableinsert(aControlDefs,{nIndentedX,		nRowY,aTableDef.CellWidthCapRat-nIndent,	StStatVal,	{aRowDef[ROWDEF.STAT_RATING],aRowDef[ROWDEF.STAT_CSRATNAME],aRowDef[ROWDEF.STAT_CSPENRATS],aRowDef[ROWDEF.STAT_AVAILABLE],RISEL.CAPRAT},	SetRatingStatValue})
+			tableinsert(aControlDefs,{PosX = nIndentedX,	PosY = nRowY,	Width = aTableDef.CellWidthCapRat-nIndent,		Style = LTS.STATVAL,	ContFunc = SetRatingStatValue,	ContData = {CurrRating = aRowDef.CurrRating, CSRatName = aRowDef.CSRatName, CSPenRats = aRowDef.CSPenRats, Available = aRowDef.Available, Select = RS.CAPRAT}})
 			-- stat value cap percentage
-			tableinsert(aControlDefs,{nIndentedX,nRowY,aTableDef.CellWidthCapPerc-nIndent,			StStatVal,	{aRowDef[ROWDEF.STAT_RATING],aRowDef[ROWDEF.STAT_CSRATNAME],aRowDef[ROWDEF.STAT_CSPENRATS],aRowDef[ROWDEF.STAT_AVAILABLE],RISEL.CAPPERC},	SetRatingStatValue})
-		elseif aRowDef[ROWDEF.ROWFORMAT] == ROWFORMAT.COLORCENTER_TEXT then
+			tableinsert(aControlDefs,{PosX = nIndentedX,	PosY = nRowY,	Width = aTableDef.CellWidthCapPerc-nIndent,		Style = LTS.STATVAL,	ContFunc = SetRatingStatValue,	ContData = {CurrRating = aRowDef.CurrRating, CSRatName = aRowDef.CSRatName, CSPenRats = aRowDef.CSPenRats, Available = aRowDef.Available, Select = RS.CAPPERC}})
+		elseif nRowFormat == ROWFORMAT.COLORCENTER_TEXT then
 			-- centered text with color
-			tableinsert(aControlDefs,{nTableStartX,		nRowY,aTableDef.Width,						StClrText,	aRowDef[ROWDEF.LABELTEXT],		aRowDef[ROWDEF.TEXT_COLOR]})
+			tableinsert(aControlDefs,{PosX = nTableStartX,	PosY = nRowY,	Width = aTableDef.Width,						Style = LTS.COLORTXT,									ContData = {LabelText = aRowDef.LabelText, TextColor = aRowDef.TextColor}})
 		end
 		nRowY = nRowY+nRowHeight
 	end
 	
-	aLayoutDef.Height = mathmax(aLayoutDef.Height,nRowY+nMarginBottom)
-	aLayoutDef.Width = nTableStartX+aTableDef.Width+nMarginRight
+	aLayoutDef.Height = mathmax(aLayoutDef.Height,nRowY+nMarginBottom) -- height of the layout is equal to the height of the largest table
+	aLayoutDef.Width = nTableStartX+aTableDef.Width+nMarginRight -- add the total width of this table to the layout's width
 end
 
 -- layout for freeps have all available stats
 local function GetFreepLayoutDefinition()
 	local aLayoutDef = NewLayoutDefinition()
 
+	local nLabelWidth = 100 -- width reservation for label
+
 	-- table on the left, with general character stats, vitals stats and main stats
 	AddTableDefinition(aLayoutDef,{
-		Width = 230,
-		CellWidthBase = 165,
-		CellWidthTotal = 230,
+		Width = nLabelWidth+180,
+		CellWidthClassBase = nLabelWidth+70, -- reserve Label Width +70 for class base
+		CellWidthRaceBase = nLabelWidth+120, -- +50 for race base
+		CellWidthCurrent = nLabelWidth+180, -- +60 for current value --> total width
 		RowDefs = {
-			{ROWFORMAT.CHAR_HEADER,L[ "PICHAR" ]},
-			{ROWFORMAT.CHAR_STAT,L[ "PIRACE" ],			false,	SetTextStatValue,		{PD.RACE}},
-			{ROWFORMAT.CHAR_STAT,L[ "PICLASS" ],		false,	SetTextStatValue,		{PD.CLASS}},
-			{ROWFORMAT.CHAR_STAT,L[ "PILEVEL" ],		false,	SetNumberStatValue,		{PD.LEVEL}},
-			{ROWFORMAT.CHAR_STAT,L[ "PILVLXP" ],		true,	SetLvlXPStatValue,		{nil}},
-			{ROWFORMAT.CHAR_STAT,L[ "PILIREF" ],		true,	SetLiReforgeStatValue,	{nil}},
-			{ROWFORMAT.EMPTY},
-			{ROWFORMAT.BASETOTAL_HEADER,L[ "PIVITALS" ]},
-			{ROWFORMAT.BASETOTAL_STAT,L[ "PIMORALE" ],	false,	PD.BASEMORALE,	PD.MAXMORALE},
-			{ROWFORMAT.BASETOTAL_STAT,L[ "PIICMR" ],	true,	PD.BASEICMR,	PD.ICMR},
-			{ROWFORMAT.BASETOTAL_STAT,L[ "PINCMR" ],	true,	PD.BASENCMR,	PD.NCMR},
-			{ROWFORMAT.BASETOTAL_STAT,L[ "PIPOWER" ],	false,	PD.BASEPOWER,	PD.MAXPOWER},
-			{ROWFORMAT.BASETOTAL_STAT,L[ "PIICPR" ],	true,	PD.BASEICPR,	PD.ICPR},
-			{ROWFORMAT.BASETOTAL_STAT,L[ "PINCPR" ],	true,	PD.BASENCPR,	PD.NCPR},
-			{ROWFORMAT.EMPTY},
-			{ROWFORMAT.BASETOTAL_HEADER,L[ "PIMAIN" ]},
-			{ROWFORMAT.BASETOTAL_STAT,L[ "PIMIGHT" ],	false,	PD.BASEMIGHT,	PD.MIGHT},
-			{ROWFORMAT.BASETOTAL_STAT,L[ "PIAGILITY" ],	false,	PD.BASEAGILITY,	PD.AGILITY},
-			{ROWFORMAT.BASETOTAL_STAT,L[ "PIVITALITY" ],false,	PD.BASEVITALITY,PD.VITALITY},
-			{ROWFORMAT.BASETOTAL_STAT,L[ "PIWILL" ],	false,	PD.BASEWILL,	PD.WILL},
-			{ROWFORMAT.BASETOTAL_STAT,L[ "PIFATE" ],	false,	PD.BASEFATE,	PD.FATE}
+			{RowFormat = ROWFORMAT.CHAR_HEADER,		LabelText = L[ "PICHAR" ]},
+			{RowFormat = ROWFORMAT.CHAR_STAT,		LabelText = L[ "PICLASS" ],		SubIndent = false,	Stat = PD.CLASS},
+			{RowFormat = ROWFORMAT.CHAR_STAT,		LabelText = L[ "PIRACE" ],		SubIndent = false,	Stat = PD.RACE},
+			{RowFormat = ROWFORMAT.CHAR_STAT,		LabelText = L[ "PILEVEL" ],		SubIndent = false,	Stat = PD.LEVEL},
+			{RowFormat = ROWFORMAT.CHAR_STAT,		LabelText = L[ "PILVLXP" ],		SubIndent = true,	ContFunc = SetLvlXPStatValue},
+			{RowFormat = ROWFORMAT.CHAR_STAT,		LabelText = L[ "PILIREF" ],		SubIndent = true,	ContFunc = SetLiReforgeStatValue},
+			{RowFormat = ROWFORMAT.EMPTY},
+			{RowFormat = ROWFORMAT.VITALMAIN_HEADER,LabelText = L[ "PIVITALS" ]},
+			{RowFormat = ROWFORMAT.VITALMAIN_STAT,	LabelText = L[ "PIMORALE" ],	SubIndent = false,	ClassBase = PD.CLASSMORALE,		RaceBase = PD.RACEMORALE,	StatCurr = PD.MAXMORALE},
+			{RowFormat = ROWFORMAT.VITALMAIN_STAT,	LabelText = L[ "PIICMR" ],		SubIndent = true,	ClassBase = PD.CLASSICMR,		RaceBase = PD.RACEICMR,		StatCurr = PD.ICMR},
+			{RowFormat = ROWFORMAT.VITALMAIN_STAT,	LabelText = L[ "PINCMR" ],		SubIndent = true,	ClassBase = PD.CLASSNCMR,		RaceBase = PD.RACENCMR,		StatCurr = PD.NCMR},
+			{RowFormat = ROWFORMAT.VITALMAIN_STAT,	LabelText = L[ "PIPOWER" ],		SubIndent = false,	ClassBase = PD.CLASSPOWER,		RaceBase = PD.RACEPOWER,	StatCurr = PD.MAXPOWER},
+			{RowFormat = ROWFORMAT.VITALMAIN_STAT,	LabelText = L[ "PIICPR" ],		SubIndent = true,	ClassBase = PD.CLASSICPR,		RaceBase = PD.RACEICPR,		StatCurr = PD.ICPR},
+			{RowFormat = ROWFORMAT.VITALMAIN_STAT,	LabelText = L[ "PINCPR" ],		SubIndent = true,	ClassBase = PD.CLASSNCPR,		RaceBase = PD.RACENCPR,		StatCurr = PD.NCPR},
+			{RowFormat = ROWFORMAT.EMPTY},
+			{RowFormat = ROWFORMAT.VITALMAIN_HEADER,LabelText = L[ "PIMAIN" ]},
+			{RowFormat = ROWFORMAT.VITALMAIN_STAT,	LabelText = L[ "PIMIGHT" ],		SubIndent = false,	ClassBase = PD.CLASSMIGHT,		RaceBase = PD.RACEMIGHT,	StatCurr = PD.MIGHT},
+			{RowFormat = ROWFORMAT.VITALMAIN_STAT,	LabelText = L[ "PIAGILITY" ],	SubIndent = false,	ClassBase = PD.CLASSAGILITY,	RaceBase = PD.RACEAGILITY,	StatCurr = PD.AGILITY},
+			{RowFormat = ROWFORMAT.VITALMAIN_STAT,	LabelText = L[ "PIVITALITY" ],	SubIndent = false,	ClassBase = PD.CLASSVITALITY,	RaceBase = PD.RACEVITALITY,	StatCurr = PD.VITALITY},
+			{RowFormat = ROWFORMAT.VITALMAIN_STAT,	LabelText = L[ "PIWILL" ],		SubIndent = false,	ClassBase = PD.CLASSWILL,		RaceBase = PD.RACEWILL,		StatCurr = PD.WILL},
+			{RowFormat = ROWFORMAT.VITALMAIN_STAT,	LabelText = L[ "PIFATE" ],		SubIndent = false,	ClassBase = PD.CLASSFATE,		RaceBase = PD.RACEFATE,		StatCurr = PD.FATE}
 		}
 	})
 
 	-- table in the center, with percentage ratings and some colored notes at the bottom
 	AddTableDefinition(aLayoutDef,{
-		Width = 340,
-		CellWidthCurrRat = 170,
-		CellWidthCurrPerc = 220,
-		CellWidthCapRat = 290,
-		CellWidthCapPerc = 340,
+		Width = nLabelWidth+240,
+		CellWidthCurrRat = nLabelWidth+70, -- reserve Label Width +70 for current rating
+		CellWidthCurrPerc = nLabelWidth+120, -- +50 for current percentage
+		CellWidthCapRat = nLabelWidth+190, -- +70 for cap rating
+		CellWidthCapPerc = nLabelWidth+240, -- +50 for cap percentage --> total width
 		RowDefs = {
-			{ROWFORMAT.RATPERC_HEADER,L[ "PIOFFENCE" ]},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIMELDMG" ],	false,	PD.MELPHYMAS,	"PhyDmg"},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIRNGDMG" ],	false,	PD.RNGPHYMAS,	"PhyDmg"},
-			{ROWFORMAT.RATPERC_STAT,L[ "PITACDMG" ],	false,	PD.TACMAS,		"TacDmg"},
-			{ROWFORMAT.RATPERC_STAT,L[ "PICRITHIT" ],	false,	PD.CRITHIT,		"CritHit"},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIDEVHIT" ],	false,	PD.CRITHIT,		"DevHit"},
-			{ROWFORMAT.RATPERC_STAT,L[ "PICRITMAGN" ],	false,	PD.CRITHIT,		"CritMagn"},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIFINESSE" ],	false,	PD.FINESSE,		"Finesse"},
-			{ROWFORMAT.EMPTY},
-			{ROWFORMAT.RATPERC_HEADER,L[ "PIHEALING" ]},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIOUTHEAL" ],	false,	PD.OUTHEAL,		"OutHeal"},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIINHEAL" ],	false,	PD.INHEAL,		"InHeal"},
-			{ROWFORMAT.EMPTY},
-			{ROWFORMAT.RATPERC_HEADER,L[ "PIDEFENCE" ]},
-			{ROWFORMAT.RATPERC_STAT,L[ "PICRITDEF" ],	false,	PD.CRITDEF,		"CritDef"},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIRESIST" ],	false,	PD.RESIST,		"Resist",				PD.PENRESIST}, -- with resistance penetration
-			{ROWFORMAT.EMPTY},
-			useCalcStat and {ROWFORMAT.COLORCENTER_TEXT,L[ "PICAPPED1" ],false,CAPCOLOR.STANDARD} or {ROWFORMAT.EMPTY},
-			useCalcStat and {ROWFORMAT.COLORCENTER_TEXT,L[ "PICAPPED2" ],false,CAPCOLOR.T2}       or {ROWFORMAT.COLORCENTER_TEXT,L[ "PICSDEP" ],false,CAPCOLOR.STANDARD},
-			useCalcStat and {ROWFORMAT.COLORCENTER_TEXT,L[ "PICAPPED3" ],false,CAPCOLOR.T3}       or {ROWFORMAT.EMPTY},
-			useCalcStat and {ROWFORMAT.COLORCENTER_TEXT,L[ "PICAPPED4" ],false,CAPCOLOR.ENHIII}   or {ROWFORMAT.EMPTY}
+			{RowFormat = ROWFORMAT.RATPERC_HEADER,	LabelText = L[ "PIOFFENCE" ]},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIMELDMG" ],	SubIndent = false,	CurrRating = PD.MELPHYMAS,		CSRatName = "PhyDmg"},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIRNGDMG" ],	SubIndent = false,	CurrRating = PD.RNGPHYMAS,		CSRatName = "PhyDmg"},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PITACDMG" ],	SubIndent = false,	CurrRating = PD.TACMAS,			CSRatName = "TacDmg"},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PICRITHIT" ],	SubIndent = false,	CurrRating = PD.CRITHIT,		CSRatName = "CritHit"},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIDEVHIT" ],	SubIndent = false,	CurrRating = PD.CRITHIT,		CSRatName = "DevHit"},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PICRITMAGN" ],	SubIndent = false,	CurrRating = PD.CRITHIT,		CSRatName = "CritMagn"},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIFINESSE" ],	SubIndent = false,	CurrRating = PD.FINESSE,		CSRatName = "Finesse"},
+			{RowFormat = ROWFORMAT.EMPTY},
+			{RowFormat = ROWFORMAT.RATPERC_HEADER,	LabelText = L[ "PIHEALING" ]},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIOUTHEAL" ],	SubIndent = false,	CurrRating = PD.OUTHEAL,		CSRatName = "OutHeal"},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIINHEAL" ],	SubIndent = false,	CurrRating = PD.INHEAL,			CSRatName = "InHeal"},
+			{RowFormat = ROWFORMAT.EMPTY},
+			{RowFormat = ROWFORMAT.RATPERC_HEADER,	LabelText = L[ "PIDEFENCE" ]},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PICRITDEF" ],	SubIndent = false,	CurrRating = PD.CRITDEF,		CSRatName = "CritDef"},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIRESIST" ],	SubIndent = false,	CurrRating = PD.RESIST,			CSRatName = "Resist",				CSPenRats = PD.PENRESIST}, -- with resistance penetration
+			{RowFormat = ROWFORMAT.EMPTY},
+			useCalcStat and
+			{RowFormat = ROWFORMAT.COLORCENTER_TEXT,LabelText = L[ "PICAPPED1" ],	TextColor = CAPCOLOR.CAPPED} or	{RowFormat = ROWFORMAT.EMPTY},
+			useCalcStat and
+			{RowFormat = ROWFORMAT.COLORCENTER_TEXT,LabelText = L[ "PICAPPED2" ],	TextColor = CAPCOLOR.T2} or			{RowFormat = ROWFORMAT.COLORCENTER_TEXT,LabelText = L[ "PICSDEP" ],		TextColor = Color["yellow"]},
+			useCalcStat and
+			{RowFormat = ROWFORMAT.COLORCENTER_TEXT,LabelText = L[ "PICAPPED3" ],	TextColor = CAPCOLOR.T3} or			{RowFormat = ROWFORMAT.EMPTY},
+			useCalcStat and
+			{RowFormat = ROWFORMAT.COLORCENTER_TEXT,LabelText = L[ "PICAPPED4" ],	TextColor = CAPCOLOR.ENHIII} or		{RowFormat = ROWFORMAT.EMPTY}
 		}
 	})
 
 	-- table on the right, with avoidances and mitigations
 	AddTableDefinition(aLayoutDef,{
-		Width = 340,
-		CellWidthCurrRat = 170,
-		CellWidthCurrPerc = 220,
-		CellWidthCapRat = 290,
-		CellWidthCapPerc = 340,
+		Width = nLabelWidth+240,
+		CellWidthCurrRat = nLabelWidth+70, -- reserve Label Width +70 for current rating
+		CellWidthCurrPerc = nLabelWidth+120, -- +50 for current percentage
+		CellWidthCapRat = nLabelWidth+190, -- +70 for cap rating
+		CellWidthCapPerc = nLabelWidth+240, -- +50 for cap percentage --> total width
 		RowDefs = {
-			{ROWFORMAT.RATPERC_HEADER,L[ "PIAVOID" ]},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIBLOCK" ],		false,	PD.BLOCK,		"Block",				PD.PENBPE,	PD.CANBLOCK}, -- with avoidance penetration
-			{ROWFORMAT.RATPERC_STAT,L[ "PIBLOCKPART" ],	true,	PD.BLOCK,		"PartBlock",			PD.PENBPE,	PD.CANBLOCK},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIBLOCKPMIT" ],	true,	PD.BLOCK,		"PartBlockMit",			PD.PENBPE,	PD.CANBLOCK},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIPARRY" ],		false,	PD.PARRY,		"Parry",				PD.PENBPE,	PD.CANPARRY},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIPARRYPART" ],	true,	PD.PARRY,		"PartParry",			PD.PENBPE,	PD.CANPARRY},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIPARRYPMIT" ],	true,	PD.PARRY,		"PartParryMit",			PD.PENBPE,	PD.CANPARRY},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIEVADE" ],		false,	PD.EVADE,		"Evade",				PD.PENBPE,	PD.CANEVADE},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIEVADEPART" ],	true,	PD.EVADE,		"PartEvade",			PD.PENBPE,	PD.CANEVADE},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIEVADEPMIT" ],	true,	PD.EVADE,		"PartEvadeMit",			PD.PENBPE,	PD.CANEVADE},
-			{ROWFORMAT.EMPTY},
-			{ROWFORMAT.RATPERC_HEADER,L[ "PIMITS" ]},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIPHYMIT" ],	false,	PD.COMPHYMIT,	PD.CALCTYPE_COMPHYMIT,	PD.PENARMOUR}, -- with armour(mitigations) penetration
-			{ROWFORMAT.RATPERC_STAT,L[ "PIORCMIT" ],	true,	PD.NONPHYMIT,	PD.CALCTYPE_NONPHYMIT,	PD.PENARMOUR},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIFWMIT" ],		true,	PD.NONPHYMIT,	PD.CALCTYPE_NONPHYMIT,	PD.PENARMOUR},
-			{ROWFORMAT.RATPERC_STAT,L[ "PITACMIT" ],	false,	PD.TACMIT,		PD.CALCTYPE_TACMIT,		PD.PENARMOUR},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIFIREMIT" ],	true,	PD.FIREMIT,		PD.CALCTYPE_TACMIT,		PD.PENARMOUR},
-			{ROWFORMAT.RATPERC_STAT,L[ "PILIGHTNMIT" ],	true,	PD.LIGHTNINGMIT,PD.CALCTYPE_TACMIT,		PD.PENARMOUR},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIFROSTMIT" ],	true,	PD.FROSTMIT,	PD.CALCTYPE_TACMIT,		PD.PENARMOUR},
-			{ROWFORMAT.RATPERC_STAT,L[ "PIACIDMIT" ],	true,	PD.ACIDMIT,		PD.CALCTYPE_TACMIT,		PD.PENARMOUR},
-			{ROWFORMAT.RATPERC_STAT,L[ "PISHADMIT" ],	true,	PD.SHADOWMIT,	PD.CALCTYPE_TACMIT,		PD.PENARMOUR}
+			{RowFormat = ROWFORMAT.RATPERC_HEADER,	LabelText = L[ "PIAVOID" ]},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIBLOCK" ],		SubIndent = false,	CurrRating = PD.BLOCK,			CSRatName = "Block",				CSPenRats = PD.PENBPE,	Available = PD.CANBLOCK}, -- with avoidance penetration
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIBLOCKPART" ],	SubIndent = true,	CurrRating = PD.BLOCK,			CSRatName = "PartBlock",			CSPenRats = PD.PENBPE,	Available = PD.CANBLOCK},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIBLOCKPMIT" ],	SubIndent = true,	CurrRating = PD.BLOCK,			CSRatName = "PartBlockMit",			CSPenRats = PD.PENBPE,	Available = PD.CANBLOCK},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIPARRY" ],		SubIndent = false,	CurrRating = PD.PARRY,			CSRatName = "Parry",				CSPenRats = PD.PENBPE,	Available = PD.CANPARRY},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIPARRYPART" ],	SubIndent = true,	CurrRating = PD.PARRY,			CSRatName = "PartParry",			CSPenRats = PD.PENBPE,	Available = PD.CANPARRY},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIPARRYPMIT" ],	SubIndent = true,	CurrRating = PD.PARRY,			CSRatName = "PartParryMit",			CSPenRats = PD.PENBPE,	Available = PD.CANPARRY},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIEVADE" ],		SubIndent = false,	CurrRating = PD.EVADE,			CSRatName = "Evade",				CSPenRats = PD.PENBPE,	Available = PD.CANEVADE},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIEVADEPART" ],	SubIndent = true,	CurrRating = PD.EVADE,			CSRatName = "PartEvade",			CSPenRats = PD.PENBPE,	Available = PD.CANEVADE},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIEVADEPMIT" ],	SubIndent = true,	CurrRating = PD.EVADE,			CSRatName = "PartEvadeMit",			CSPenRats = PD.PENBPE,	Available = PD.CANEVADE},
+			{RowFormat = ROWFORMAT.EMPTY},
+			{RowFormat = ROWFORMAT.RATPERC_HEADER,	LabelText = L[ "PIMITS" ]},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIPHYMIT" ],	SubIndent = false,	CurrRating = PD.COMPHYMIT,		CSRatName = PD.CALCTYPE_COMPHYMIT,	CSPenRats = PD.PENARMOUR}, -- with armour(mitigations) penetration
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIORCMIT" ],	SubIndent = true,	CurrRating = PD.NONPHYMIT,		CSRatName = PD.CALCTYPE_NONPHYMIT,	CSPenRats = PD.PENARMOUR},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIFWMIT" ],		SubIndent = true,	CurrRating = PD.NONPHYMIT,		CSRatName = PD.CALCTYPE_NONPHYMIT,	CSPenRats = PD.PENARMOUR},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PITACMIT" ],	SubIndent = false,	CurrRating = PD.TACMIT,			CSRatName = PD.CALCTYPE_TACMIT,		CSPenRats = PD.PENARMOUR},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIFIREMIT" ],	SubIndent = true,	CurrRating = PD.FIREMIT,		CSRatName = PD.CALCTYPE_TACMIT,		CSPenRats = PD.PENARMOUR},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PILIGHTNMIT" ],	SubIndent = true,	CurrRating = PD.LIGHTNINGMIT,	CSRatName = PD.CALCTYPE_TACMIT,		CSPenRats = PD.PENARMOUR},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIFROSTMIT" ],	SubIndent = true,	CurrRating = PD.FROSTMIT,		CSRatName = PD.CALCTYPE_TACMIT,		CSPenRats = PD.PENARMOUR},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIACIDMIT" ],	SubIndent = true,	CurrRating = PD.ACIDMIT,		CSRatName = PD.CALCTYPE_TACMIT,		CSPenRats = PD.PENARMOUR},
+			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PISHADMIT" ],	SubIndent = true,	CurrRating = PD.SHADOWMIT,		CSRatName = PD.CALCTYPE_TACMIT,		CSPenRats = PD.PENARMOUR}
 		}
 	})
 	
@@ -718,14 +622,14 @@ local function GetAltLayoutDefinition()
 	AddTableDefinition(aLayoutDef,{
 		Width = 165,
 		RowDefs = {
-			{ROWFORMAT.CHAR_HEADER,L[ "PICHAR" ]},
-			{ROWFORMAT.CHAR_STAT,L[ "PIRACE" ],		false,SetTextStatValue,		{PD.RACE}},
-			{ROWFORMAT.CHAR_STAT,L[ "PICLASS" ],	false,SetTextStatValue,		{PD.CLASS}},
-			{ROWFORMAT.CHAR_STAT,L[ "PILEVEL" ],	false,SetNumberStatValue,	{PD.LEVEL}},
-			{ROWFORMAT.EMPTY},
-			{ROWFORMAT.CHAR_HEADER,L[ "PIVITALS" ]},
-			{ROWFORMAT.CHAR_STAT,L[ "PIMORALE" ],	false,SetNumberStatValue,	{PD.MAXMORALE}},
-			{ROWFORMAT.CHAR_STAT,L[ "PIPOWER" ],	false,SetNumberStatValue,	{PD.MAXPOWER}}
+			{RowFormat = ROWFORMAT.CHAR_HEADER,		LabelText = L[ "PICHAR" ]},
+			{RowFormat = ROWFORMAT.CHAR_STAT,		LabelText = L[ "PICLASS" ],		SubIndent = false,	Stat = PD.CLASS},
+			{RowFormat = ROWFORMAT.CHAR_STAT,		LabelText = L[ "PIRACE" ],		SubIndent = false,	Stat = PD.RACE},
+			{RowFormat = ROWFORMAT.CHAR_STAT,		LabelText = L[ "PILEVEL" ],		SubIndent = false,	Stat = PD.LEVEL},
+			{RowFormat = ROWFORMAT.EMPTY},
+			{RowFormat = ROWFORMAT.CHAR_HEADER,		LabelText = L[ "PIVITALS" ]},
+			{RowFormat = ROWFORMAT.CHAR_STAT,		LabelText = L[ "PIMORALE" ],	SubIndent = false,	Stat = PD.MAXMORALE},
+			{RowFormat = ROWFORMAT.CHAR_STAT,		LabelText = L[ "PIPOWER" ],		SubIndent = false,	Stat = PD.MAXPOWER},
 		}
 	})
 
@@ -734,56 +638,42 @@ end
 
 -- Control functions
 
-local CTRDEF = {}
-	CTRDEF.X,
-	CTRDEF.Y,
-	CTRDEF.WIDTH,
-	CTRDEF.STYLE
-	= 1,2,3,4
-	CTRDEF.CONTENT,
-	CTRDEF.CONTENTFN
-	= 5,6
-	CTRDEF.TEXT,
-	CTRDEF.TXTCOLOR
-	= 5,6
-
 -- create controls out of the layout's control defs
-local function CreateControls(oParent,aLayoutDef)
-	local aContentControls = {}
+-- returns a list of 'dynamic' controls: controls with content which need to be updated by method/function, using player data
+local function CreateControls(ParentCtr,aLayoutDef)
+	local aDynamicControls = {}
 	local aStyle
-	local oControl
+	local NewCtr
 	for _,aControlDef in ipairs(aLayoutDef.ControlDefs) do
-		aStyle = aControlDef[CTRDEF.STYLE]
-		oControl = Turbine.UI.Label()
-		oControl:SetParent(oParent)
-		oControl:SetSize(aControlDef[CTRDEF.WIDTH],aStyle[ST.HEIGHT])
-		oControl:SetPosition(aControlDef[CTRDEF.X],aControlDef[CTRDEF.Y]+aStyle[ST.YOFF])
-		if aStyle[ST.ALIGN]	then oControl:SetTextAlignment(aStyle[ST.ALIGN]) end
-		if aStyle[ST.FONT]	then oControl:SetFont(aStyle[ST.FONT]) end
-		if aStyle[ST.FGCOL]	then oControl:SetForeColor(aStyle[ST.FGCOL]) end
-		if aStyle[ST.BKCOL]	then oControl:SetBackColor(aStyle[ST.BKCOL]) end
-		if type(aControlDef[CTRDEF.CONTENT]) == "table" then
+		aStyle = aControlDef.Style
+
+		NewCtr = Turbine.UI.Label()
+		NewCtr:SetParent(ParentCtr)
+
+		NewCtr:SetSize(aControlDef.Width,aStyle.Height)
+		NewCtr:SetPosition(aControlDef.PosX,aControlDef.PosY+aStyle.Yoff)
+
+		if aStyle.Align		then NewCtr:SetTextAlignment(aStyle.Align) end
+		if aStyle.Font		then NewCtr:SetFont(aStyle.Font) end
+		if aStyle.FGColor	then NewCtr:SetForeColor(aStyle.FGColor) end
+		if aStyle.BGColor	then NewCtr:SetBackColor(aStyle.BGColor) end
+
+		if aControlDef.ContFunc then
 			-- dynamic content creation by function
-			tableinsert(aContentControls,{oControl,aControlDef[CTRDEF.CONTENT],aControlDef[CTRDEF.CONTENTFN]})
-		elseif type(aControlDef[CTRDEF.TEXT]) == "string" then
+			tableinsert(aDynamicControls,{Ctr = NewCtr, ContFunc = aControlDef.ContFunc, ContData = aControlDef.ContData})
+		elseif aControlDef.ContData and aControlDef.ContData.LabelText then
 			-- static text label with optional color
-			oControl:SetText(aControlDef[CTRDEF.TEXT])
-			if aControlDef[CTRDEF.TXTCOLOR] then oControl:SetForeColor(aControlDef[CTRDEF.TXTCOLOR]) end
+			if aControlDef.ContData.TextColor then NewCtr:SetForeColor(aControlDef.ContData.TextColor) end
+			NewCtr:SetText(aControlDef.ContData.LabelText)
 		end
 	end
-	return aContentControls
+	return aDynamicControls
 end
 
-local CONTCTR = {}
-	CONTCTR.OBJ,
-	CONTCTR.CONTENT,
-	CONTCTR.CONTENTFN
-	= 1,2,3
-
 -- update dynamic controls with player data by using the control's content functions
-local function UpdateDynamicContent(aContentControls,aPlayerData)
-	for _,aContentControl in ipairs(aContentControls) do
-		aContentControl[CONTCTR.CONTENTFN](aContentControl[CONTCTR.OBJ],aPlayerData,aContentControl[CONTCTR.CONTENT])
+local function UpdateDynamicContent(aDynamicControls,aPlayerData)
+	for _,aDynamicControl in ipairs(aDynamicControls) do
+		aDynamicControl.ContFunc(aDynamicControl.Ctr,aPlayerData,aDynamicControl.ContData)
 	end
 end
 
@@ -830,7 +720,7 @@ function ShowPIWindow()
 	--**^
 
 	-- creates all needed controls defined in the layout and returns a list with controls with 'dynamic' content: these need to be updated with data
-	local aContentControls = CreateControls(APICtr,aLayoutDef)
+	local aDynamicControls = CreateControls(APICtr,aLayoutDef)
 
 	-- in theory you only need to create layout+controls once and update player.data+dyn.controls every time the window is shown,
 	-- but it might be bad for resource usage.
@@ -839,7 +729,7 @@ function ShowPIWindow()
 	local aPlayerData = GetPlayerData()
 
 	-- update all dynamic content with player information
-	UpdateDynamicContent(aContentControls,aPlayerData)
+	UpdateDynamicContent(aDynamicControls,aPlayerData)
 
 	ApplySkin()
 end
