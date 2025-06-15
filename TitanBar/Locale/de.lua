@@ -92,8 +92,8 @@ L[ "StarsOfMerith" ] = "Eure Sterne des Verdienst";
 L[ "MCentralGondorSilverPiece" ] = "Zentralgondorisches Silberst\195\188ck";
 L[ "CentralGondorSilverPieceh" ] = "Eure Zentralgondorischen Silberst\195\188cke";
 -- Gift giver's Brand control
-L[ "MGiftgiversBrand" ] = "Zeichen des Schenkenden";
-L[ "GiftgiversBrandh" ] = "Eure Zeichen des Schenkenden";
+L[ "MGiftGiversBrand" ] = "Zeichen des Schenkenden";
+L[ "GiftGiversBrandh" ] = "Eure Zeichen des Schenkenden";
 -- Motes of Enchantment control
 L[ "MMotesOfEnchantment" ] = "Staub der Verzauberung";
 L[ "MotesOfEnchantmenth" ] = "Euer Staub der Verzauberung";

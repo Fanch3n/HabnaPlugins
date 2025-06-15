@@ -92,8 +92,8 @@ L[ "StarsOfMerith" ] = "Ce sont vos \195\137toiles du m\195\169rite";
 L[ "MCentralGondorSilverPiece" ] = "Pi\195\168ce d'argent du Gondor central";
 L[ "CentralGondorSilverPieceh" ] = "Ce sont vos Pi\195\168ces d'argent du gondor Central";
 -- Gift giver's Brand control
-L[ "MGiftgiversBrand" ] = "Marque du Donateur";
-L[ "GiftgiversBrandh" ] = "Ce sont vos Marques du Donateur";
+L[ "MGiftGiversBrand" ] = "Marque du Donateur";
+L[ "GiftGiversBrandh" ] = "Ce sont vos Marques du Donateur";
 -- Motes of Enchantment control
 L[ "MMotesOfEnchantment" ] = "Grain d\226\128\153enchantement";
 L[ "MotesOfEnchantmenth" ] = "Ce sont vos Grains d'Enchantement";
