@@ -106,7 +106,7 @@ if PlayerAlign == 1 then
 		-- Item Advancement
 		L["MShards"],
 		-- Other   
-		L["MAmrothSilverPiece"], L["MBingoBadge"], L["MCentralGondorSilverPiece"], L["MEastGondorSilverPiece"], L["MGiftgiversBrand"], L["MTokensOfHytbold"], L["MColdIronToken"],
+		L["MAmrothSilverPiece"], L["MBingoBadge"], L["MCentralGondorSilverPiece"], L["MEastGondorSilverPiece"], L["MGiftGiversBrand"], L["MTokensOfHytbold"], L["MColdIronToken"],
 		L["MMedallionOfMoria"], L["MMedallionOfLothlorien"], L["MTokenOfHeroism"], L["MHerosMark"], L["MGabilakkaWarMark"], L["MSteelToken"],
 		L["MCopperCoinOfGundabad"], L["MSilverCoinOfGundabad"], L["MIronCoinOfCardolan"], L["MBreeLandWoodMark"], L["MBronzeArnorianCoin"],
 		L["MSilverArnorianCoin"], L["MGreyfloodMark"], L["MGundabadMountainMark"], L["MSilverTokenOfTheRiddermark"], L["MGoldenTokenOfTheRiddermark"],
@@ -148,7 +148,7 @@ _G.CurrencyLangMap = { -- reverse lookup table necessary to get the internal ite
   [L["MAmrothSilverPiece"]] = "AmrothSilverPiece",
 	[L["MBingoBadge"]] = "BingoBadge",
 	[L["MCentralGondorSilverPiece"]] = "CentralGondorSilverPiece",
-	[L["MGiftgiversBrand"]] = "GiftgiversBrand",
+	[L["MGiftGiversBrand"]] = "GiftGiversBrand",
 	[L["MTokensOfHytbold"]] = "TokensOfHytbold",
 	[L["MColdIronToken"]] = "ColdIronToken",
 	[L["MTokenOfHeroism"]] = "TokenOfHeroism",
