@@ -82,26 +82,35 @@ function EIRefreshListBox()
 		EIitemCtl[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
 		-- Item Background/Underlay/Shadow/Item
-		EIitemBG[i] = Turbine.UI.Control();
-		EIitemBG[i]:SetParent( EIitemCtl[i] );
-		EIitemBG[i]:SetSize( 32, 32 );
-		EIitemBG[i]:SetPosition( 6, 6 );
-		EIitemBG[i]:SetBackground(itemEquip[i].BImgID);
-		EIitemBG[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
-		
-		EIitemU[i] = Turbine.UI.Control();
-		EIitemU[i]:SetParent( EIitemCtl[i] );
-		EIitemU[i]:SetSize( 32, 32 );
-		EIitemU[i]:SetPosition( 6, 6 );
-		EIitemU[i]:SetBackground(itemEquip[i].UImgID);
-		EIitemU[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
+		if (itemEquip[i].BImgID and itemEquip[i].BImgID > 0) then
+			EIitemBG[i] = Turbine.UI.Control();
+			EIitemBG[i]:SetParent( EIitemCtl[i] );
+			EIitemBG[i]:SetSize( 32, 32 );
+			EIitemBG[i]:SetPosition( 6, 6 );
+			EIitemBG[i]:SetBackground(itemEquip[i].BImgID);
+			EIitemBG[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
+		end
 
-		EIitemS[i] = Turbine.UI.Control();
-		EIitemS[i]:SetParent( EIitemCtl[i] );
-		EIitemS[i]:SetSize( 32, 32 );
-		EIitemS[i]:SetPosition( 6, 6 );
-		EIitemS[i]:SetBackground(itemEquip[i].SImgID);
-		EIitemS[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
+		if (itemEquip[i].UImgID and itemEquip[i].UImgID > 0) then
+			EIitemU[i] = Turbine.UI.Control();
+			EIitemU[i]:SetParent( EIitemCtl[i] );
+			EIitemU[i]:SetSize( 32, 32 );
+			EIitemU[i]:SetPosition( 6, 6 );
+			EIitemU[i]:SetBackground(itemEquip[i].UImgID);
+			EIitemU[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
+		end
+
+		-- Added if statements because some items
+		-- (e.g. Mended Dwarf-make Leather Tunic, minstrel L.I. Book)
+		-- were getting 0 for their SImgID which messed up the final composite.
+		if (itemEquip[i].SImgID and itemEquip[i].SImgID > 0) then
+			EIitemS[i] = Turbine.UI.Control();
+			EIitemS[i]:SetParent( EIitemCtl[i] );
+			EIitemS[i]:SetSize( 32, 32 );
+			EIitemS[i]:SetPosition( 6, 6 );
+			EIitemS[i]:SetBackground(itemEquip[i].SImgID);
+			EIitemS[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
+		end
 
 		EIitem[i] = Turbine.UI.Control();
 		EIitem[i]:SetParent( EIitemCtl[i] );
