@@ -702,7 +702,7 @@ function AjustIcon(str)
 		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
 		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
 		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	else
+	elseif (_G.CurrencyData[str] and _G.CurrencyData[str].Icon) then
 		_G.CurrencyData[str].Icon:SetStretchMode(1);
 		if str == "DestinyPoints" then
 			_G.CurrencyData[str].Icon:SetPosition(
