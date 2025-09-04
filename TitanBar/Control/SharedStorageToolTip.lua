@@ -15,7 +15,7 @@ end
 
 function RefreshSharedTTListBox()
 	SharedTTListBox:ClearItems();
-	sharedpackCount=0;
+	local sharedpackCount=0;
 	--VaultItemHeight = 35;
 	
 	for k, v in pairs(PlayerSharedStorage) do sharedpackCount = sharedpackCount + 1; end

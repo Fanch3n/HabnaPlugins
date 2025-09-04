@@ -15,7 +15,7 @@ end
 
 function RefreshVaultTTListBox()
 	VaultTTListBox:ClearItems();
-	vaultpackCount=0;
+	local vaultpackCount=0;
 	--VaultItemHeight = 35;
 	
 	for k, v in pairs(PlayerVault[PN]) do vaultpackCount = vaultpackCount + 1; end
