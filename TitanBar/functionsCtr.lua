@@ -355,6 +355,9 @@ function ImportCtr( value )
             RemoveCallback(GetPlayerAttributes(), "DestinyPointsChanged")
         end
     end
+
+    KeepIconControlInBar(value);
+
 end
 
 

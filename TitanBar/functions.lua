@@ -614,10 +614,17 @@ end
 
 --- Make sure if a control was at the bottom of the bar 
 --- and now the bar is shorter that the control stays on the bar.
----@param control Control
----@param saveFunction function
-function KeepIconControlInBar(control, saveFunction)
-	if (control) then
+---@param controlName string
+function KeepIconControlInBar(controlName)
+	local container = nil;
+	if (_G[controlName] and _G[controlName]["Ctr"]) then container = _G[controlName];
+	elseif (_G.CurrencyData[controlName] and _G.CurrencyData[controlName].Ctr) then container = _G.CurrencyData[controlName];
+	end
+
+	if (container and container["Ctr"]) then
+		local control = container["Ctr"];
+		local saveFunction = container.SavePosition;
+
 		-- if the control exists, make sure it's in the right location:
 		local height = control:GetHeight();
 		local currentBottom = control:GetTop() + height;
@@ -739,14 +746,7 @@ function AjustIcon(str)
 		_G.CurrencyData[str].Icon:SetStretchMode(3);
 	end
 
-	local container = nil;
-	if (_G[str] and _G[str]["Ctr"]) then container = _G[str];
-	elseif (_G.CurrencyData[str] and _G.CurrencyData[str].Ctr) then container = _G.CurrencyData[str];
-	end
-
-	if (container) then
-		KeepIconControlInBar(container["Ctr"], container.SavePosition);
-	end
+	KeepIconControlInBar(str);
 
 end
 
