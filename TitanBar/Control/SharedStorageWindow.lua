@@ -114,13 +114,9 @@ function frmSharedStorage()
 		_G.wSS.SearchTextBox:SetVisible( false );
 		_G.wSS.DelIcon:SetVisible( false );
 		
-		local lblmgs = Turbine.UI.Label();
+		local lblmgs = _G.SS.GetSharedStorageNotFoundLabel(_G.wSS);
 		lblmgs:SetParent( _G.wSS );
-		lblmgs:SetText( L["SSnd"] );
-		lblmgs:SetPosition( 17, 40 );
 		lblmgs:SetSize( _G.wSS:GetWidth()-32, 39 );
-		lblmgs:SetForeColor( Color["green"] );
-		lblmgs:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 		
 		_G.wSS:SetHeight( lblmgs:GetHeight() + 65 );
 		_G.wSS.ListBoxScrollBar:SetVisible( false );
