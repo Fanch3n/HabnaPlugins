@@ -143,6 +143,10 @@ end
 EI["Lbl"].MouseUp = function( sender, args )
 	EI[ "Ctr" ]:SetZOrder( 2 );
 	dragging = false;
+	EI.SavePosition();
+end
+
+EI.SavePosition = function()
 	_G.EILocX = EI[ "Ctr" ]:GetLeft();
 	settings.EquipInfos.X = string.format("%.0f", _G.EILocX);
 	_G.EILocY = EI[ "Ctr" ]:GetTop();

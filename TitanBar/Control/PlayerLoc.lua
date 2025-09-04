@@ -62,6 +62,10 @@ end
 PL["Lbl"].MouseUp = function( sender, args )
 	PL["Ctr"]:SetZOrder( 2 );
 	dragging = false;
+	PL.SavePosition();
+end
+
+PL.SavePosition = function()
 	_G.PLLocX = PL["Ctr"]:GetLeft();
 	settings.PlayerLoc.X = string.format("%.0f", _G.PLLocX);
 	_G.PLLocY = PL["Ctr"]:GetTop();

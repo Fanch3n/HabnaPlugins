@@ -612,6 +612,27 @@ function Player:InCombatChanged(sender, args)
 	if TBAutoHide == L["OPAHC"] then AutoHideCtr:SetWantsUpdates( true ); end
 end
 
+--- Make sure if a control was at the bottom of the bar 
+--- and now the bar is shorter that the control stays on the bar.
+---@param control Control
+---@param saveFunction function
+function KeepIconControlInBar(control, saveFunction)
+	if (control) then
+		-- if the control exists, make sure it's in the right location:
+		local height = control:GetHeight();
+		local currentBottom = control:GetTop() + height;
+		if (currentBottom > TBHeight) then
+			local newTop = TBHeight - height;
+			-- Don't try and move the control above the bar:
+			if (newTop < 0) then newTop = 0; end
+
+			control:SetTop(newTop);
+
+			if (saveFunction) then saveFunction(); end
+		end
+	end
+end
+
 function AjustIcon(str)
 	--if TBHeight > 30 then CTRHeight = 30; end 
     --Stop ajusting icon size if TitanBar height is > 30px
@@ -717,6 +738,16 @@ function AjustIcon(str)
 		_G.CurrencyData[str].Icon:SetSize( TBIconSize, TBIconSize );
 		_G.CurrencyData[str].Icon:SetStretchMode(3);
 	end
+
+	local container = nil;
+	if (_G[str] and _G[str]["Ctr"]) then container = _G[str];
+	elseif (_G.CurrencyData[str] and _G.CurrencyData[str].Ctr) then container = _G.CurrencyData[str];
+	end
+
+	if (container) then
+		KeepIconControlInBar(container["Ctr"], container.SavePosition);
+	end
+
 end
 
 function DecryptMoney( v )

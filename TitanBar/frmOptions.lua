@@ -20,7 +20,8 @@ function GetWalletControls()
 	if DN ~= nil then walletControls[ "DN" ] = { ShowHide = ShowDayNight, Control = DN[ "Ctr" ] }; end
 	if RP ~= nil then walletControls[ "RP" ] = { ShowHide = ShowReputation, Control = RP[ "Ctr" ] }; end
 	if LP ~= nil then walletControls[ "LP" ] = { ShowHide = ShowLOTROPoints, Control = LP[ "Ctr" ] }; end
-
+	if PL ~= nil then walletControls[ "PL" ] = { ShowHide = ShowPlayerLoc, Control = PL[ "Ctr" ] }; end
+	if GT ~= nil then walletControls[ "GT" ] = { ShowHide = ShowGameTime, Control = GT[ "Ctr" ] }; end
 
 	for _, currency in pairs(_G.currencies.list) do
 		if _G.CurrencyData[currency.name] ~= nil then
@@ -125,10 +126,10 @@ function frmOptions()
 		lblHeightV:SetText( tValue );
 		TBHeight = tValue;
 		settings.TitanBar.H = string.format( "%.0f", tValue );
-		SaveSettings( false );
 
 		--Size Control if height is less 30px & stop at 30px if more 30px
 		ResizeControls();
+		SaveSettings(true);
 	end
 	-- **^
 	-- **v TitanBar Height Value - label v**

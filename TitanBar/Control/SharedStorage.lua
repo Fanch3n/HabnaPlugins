@@ -79,6 +79,10 @@ end
 SS["Icon"].MouseUp = function( sender, args )
 	SS["Ctr"]:SetZOrder( 2 );
 	dragging = false;
+	SS.SavePosition();
+end
+
+SS.SavePosition = function()
 	_G.SSLocX = SS["Ctr"]:GetLeft();
 	settings.SharedStorage.X = string.format("%.0f", _G.SSLocX);
 	_G.SSLocY = SS["Ctr"]:GetTop();

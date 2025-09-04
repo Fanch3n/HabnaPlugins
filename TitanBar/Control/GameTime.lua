@@ -67,6 +67,10 @@ end
 GT["Lbl"].MouseUp = function( sender, args )
 	GT["Ctr"]:SetZOrder( 2 );
 	dragging = false;
+	GT.SavePosition();
+end
+
+GT.SavePosition = function()
 	_G.GTLocX = GT["Ctr"]:GetLeft();
 	settings.GameTime.X = string.format("%.0f", _G.GTLocX);
 	_G.GTLocY = GT["Ctr"]:GetTop();
