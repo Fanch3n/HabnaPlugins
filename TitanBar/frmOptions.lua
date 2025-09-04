@@ -4,30 +4,33 @@
 
 if _G.Debug then write("frmOptions.lua"); end
 
-local WalletControls = { };
-if WI ~= nil then WalletControls[ "WI" ] = { ShowHide = ShowWallet, Control = WI[ "Ctr" ] }; end
-if MI ~= nil then WalletControls[ "MI" ] = { ShowHide = ShowMoney, Control = MI[ "Ctr" ] }; end
-if BI ~= nil then WalletControls[ "BI" ] = { ShowHide = ShowBagInfos, Control = BI[ "Ctr" ] }; end
-if PI ~= nil then WalletControls[ "PI" ] = { ShowHide = ShowPlayerInfos, Control = PI[ "Ctr" ] }; end
-if EI ~= nil then WalletControls[ "EI" ] = { ShowHide = ShowEquipInfos, Control = EI[ "Ctr" ] }; end
-if DI ~= nil then WalletControls[ "DI" ] = { ShowHide = ShowDurabilityInfos, Control = DI[ "Ctr" ] };end
-if TI ~= nil then WalletControls[ "TI" ] = { ShowHide = ShowTrackItems, Control = TI[ "Ctr" ] }; end
-if IF ~= nil then WalletControls[ "IF" ] = { ShowHide = ShowInfamy, Control = IF[ "Ctr" ] }; end
-if VT ~= nil then WalletControls[ "VT" ] = { ShowHide = ShowVault, Control = VT[ "Ctr" ] }; end
-if SS ~= nil then WalletControls[ "SS" ] = { ShowHide = ShowSharedStorage, Control = SS[ "Ctr" ] }; end
---if BK ~= nil then WalletControls[ "BK" ] = { ShowHide = ShowBank, Control = BK[ "Ctr" ] }; end
-if DN ~= nil then WalletControls[ "DN" ] = { ShowHide = ShowDayNight, Control = DN[ "Ctr" ] }; end
-if RP ~= nil then WalletControls[ "RP" ] = { ShowHide = ShowReputation, Control = RP[ "Ctr" ] }; end
-if LP ~= nil then WalletControls[ "LP" ] = { ShowHide = ShowLOTROPoints, Control = LP[ "Ctr" ] }; end
+function GetWalletControls()
+	local walletControls = { };
+	if WI ~= nil then walletControls[ "WI" ] = { ShowHide = ShowWallet, Control = WI[ "Ctr" ] }; end
+	if MI ~= nil then walletControls[ "MI" ] = { ShowHide = ShowMoney, Control = MI[ "Ctr" ] }; end
+	if BI ~= nil then walletControls[ "BI" ] = { ShowHide = ShowBagInfos, Control = BI[ "Ctr" ] }; end
+	if PI ~= nil then walletControls[ "PI" ] = { ShowHide = ShowPlayerInfos, Control = PI[ "Ctr" ] }; end
+	if EI ~= nil then walletControls[ "EI" ] = { ShowHide = ShowEquipInfos, Control = EI[ "Ctr" ] }; end
+	if DI ~= nil then walletControls[ "DI" ] = { ShowHide = ShowDurabilityInfos, Control = DI[ "Ctr" ] };end
+	if TI ~= nil then walletControls[ "TI" ] = { ShowHide = ShowTrackItems, Control = TI[ "Ctr" ] }; end
+	if IF ~= nil then walletControls[ "IF" ] = { ShowHide = ShowInfamy, Control = IF[ "Ctr" ] }; end
+	if VT ~= nil then walletControls[ "VT" ] = { ShowHide = ShowVault, Control = VT[ "Ctr" ] }; end
+	if SS ~= nil then walletControls[ "SS" ] = { ShowHide = ShowSharedStorage, Control = SS[ "Ctr" ] }; end
+	--if BK ~= nil then walletControls[ "BK" ] = { ShowHide = ShowBank, Control = BK[ "Ctr" ] }; end
+	if DN ~= nil then walletControls[ "DN" ] = { ShowHide = ShowDayNight, Control = DN[ "Ctr" ] }; end
+	if RP ~= nil then walletControls[ "RP" ] = { ShowHide = ShowReputation, Control = RP[ "Ctr" ] }; end
+	if LP ~= nil then walletControls[ "LP" ] = { ShowHide = ShowLOTROPoints, Control = LP[ "Ctr" ] }; end
 
 
-for _, currency in pairs(_G.currencies.list) do
-	if _G.CurrencyData[currency.name] ~= nil then
-		WalletControls[currency.name] = {
-			ShowHide = _G.CurrencyData[currency.name].IsVisible,
-			Control = _G.CurrencyData[currency.name].Ctr
-		}
+	for _, currency in pairs(_G.currencies.list) do
+		if _G.CurrencyData[currency.name] ~= nil then
+			walletControls[currency.name] = {
+				ShowHide = _G.CurrencyData[currency.name].IsVisible,
+				Control = _G.CurrencyData[currency.name].Ctr
+			}
+		end
 	end
+	return walletControls;
 end
 
 tFonts = { "Arial12", "TrajanPro13", "TrajanPro14", "TrajanPro15", "TrajanPro16", "TrajanPro18", "TrajanPro19", "TrajanPro20", "TrajanPro21",
@@ -275,7 +278,7 @@ function ResizeControls()
 
 	if TBHeight > 30 then CTRHeight = 30; end--Set control maximum height
 	
-	for ItemID, ShowItem in pairs( WalletControls ) do
+	for ItemID, ShowItem in pairs( GetWalletControls() ) do
 		if ShowItem.ShowHide then ShowItem.Control:SetHeight( CTRHeight ); end
 		AjustIcon( ItemID );
 	end 
@@ -285,7 +288,7 @@ function ResizeControls()
 end
 
 function ResizeIcon()
-	for ItemID, ShowItem in pairs( WalletControls ) do
+	for ItemID, ShowItem in pairs( GetWalletControls() ) do
 		if ShowItem.ShowHide then
 			AjustIcon(ItemID)
 		end
