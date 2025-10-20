@@ -316,12 +316,14 @@ function ImportCtr( value )
                             PlayerReputation[PN]["ReputationAcceleration"].Total = string.format("%.0f", newValue);
                         end
                         local rpPTS = string.match( rpMess, rppPattern );
+                        if (rpPTS) then
+                            -- Replace "," in 1,400 to get 1400 or the "." in 1.400 to get 1400
+                            rpPTS = string.gsub(rpPTS, "[%p]", "");
+                            rpPTS = tonumber(rpPTS);
+                        end
                         if (increaseOrDecrease == L[ "RPDECREASE"]) then
                             rpPTS = -rpPTS;
                         end
-                        -- Reputation points
-                        local rpPTS = string.gsub( rpPTS, ",", "" );
-                        -- Replace "," in 1,400 to get 1400
                         for _, faction in ipairs(_G.Factions.list) do
                             if L[faction.name] == rpName then
                                 local current_points = PlayerReputation[PN][faction.name].Total
