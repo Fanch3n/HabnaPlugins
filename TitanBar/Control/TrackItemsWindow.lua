@@ -63,9 +63,11 @@ function frmTrackItemsWindow()
 	_G.wTI.SearchTextBox:SetMultiline( false );
 	
     _G.wTI.SearchTextBox.TextChanged = function( sender, args )
-        _G.wTI.searchText = string.lower( _G.wTI.SearchTextBox:GetText() );
-        if _G.wTI.searchText == "" then _G.wTI.searchText = nil; end
-        ShowStackableItems();
+        ApplySearch();
+    end
+    -- Needed to handle deleting text with the delete key:
+    _G.wTI.SearchTextBox.KeyUp = function(sender, args)
+        ApplySearch();
     end
 
 	_G.wTI.SearchTextBox.FocusLost = function( sender, args )
@@ -111,6 +113,15 @@ function frmTrackItemsWindow()
 	-- **^
 
 	CheckForStackableItems();
+end
+
+function ApplySearch()
+    local searchTerm = string.lower(_G.wTI.SearchTextBox:GetText());
+
+    if (_G.wTI.searchText ~= searchTerm) then
+        _G.wTI.searchText = searchTerm;
+        ShowStackableItems();
+    end
 end
 
 function CheckForStackableItems()

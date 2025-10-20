@@ -111,6 +111,10 @@ end
 DI["Lbl"].MouseUp = function( sender, args )
 	DI["Ctr"]:SetZOrder( 2 );
 	dragging = false;
+	DI.SavePosition();
+end
+
+DI.SavePosition = function()
 	_G.DILocX = DI["Ctr"]:GetLeft();
 	settings.DurabilityInfos.X = string.format("%.0f", _G.DILocX);
 	_G.DILocY = DI["Ctr"]:GetTop();

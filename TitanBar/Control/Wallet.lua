@@ -79,6 +79,10 @@ end
 WI["Icon"].MouseUp = function( sender, args )
 	WI["Ctr"]:SetZOrder( 2 );
 	dragging = false;
+	WI.SavePosition();
+end
+
+WI.SavePosition = function()
 	_G.WILocX = WI["Ctr"]:GetLeft();
 	settings.Wallet.X = string.format("%.0f", _G.WILocX);
 	_G.WILocY = WI["Ctr"]:GetTop();

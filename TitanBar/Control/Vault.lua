@@ -79,6 +79,10 @@ end
 VT["Icon"].MouseUp = function( sender, args )
 	VT["Ctr"]:SetZOrder( 2 );
 	dragging = false;
+	VT.SavePosition();
+end
+
+VT.SavePosition = function()
 	_G.VTLocX = VT["Ctr"]:GetLeft();
 	settings.Vault.X = string.format("%.0f", _G.VTLocX);
 	_G.VTLocY = VT["Ctr"]:GetTop();

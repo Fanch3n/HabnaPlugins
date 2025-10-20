@@ -126,6 +126,10 @@ end
 PI["Name"].MouseUp = function( sender, args )
 	PI["Ctr"]:SetZOrder( 2 );
 	dragging = false;
+	PI.SavePosition();
+end
+
+PI.SavePosition = function()
 	_G.PILocX = PI["Ctr"]:GetLeft();
 	settings.PlayerInfos.X = string.format("%.0f", _G.PILocX);
 	_G.PILocY = PI["Ctr"]:GetTop();

@@ -355,6 +355,9 @@ function ImportCtr( value )
             RemoveCallback(GetPlayerAttributes(), "DestinyPointsChanged")
         end
     end
+
+    KeepIconControlInBar(value);
+
 end
 
 
@@ -615,8 +618,8 @@ end
 function SavePlayerVault()
     if string.sub( PN, 1, 1 ) == "~" then return end; --Ignore session play
 
-    vaultpackSize = vaultpack:GetCapacity();
-    vaultpackCount = vaultpack:GetCount();
+    local vaultpackSize = vaultpack:GetCapacity();
+    local vaultpackCount = vaultpack:GetCount();
 
     PlayerVault[PN] = {};
 

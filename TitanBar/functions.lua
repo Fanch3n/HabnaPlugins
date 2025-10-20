@@ -612,6 +612,34 @@ function Player:InCombatChanged(sender, args)
 	if TBAutoHide == L["OPAHC"] then AutoHideCtr:SetWantsUpdates( true ); end
 end
 
+--- Make sure if a control was at the bottom of the bar 
+--- and now the bar is shorter that the control stays on the bar.
+---@param controlName string
+function KeepIconControlInBar(controlName)
+	local container = nil;
+	if (_G[controlName] and _G[controlName]["Ctr"]) then container = _G[controlName];
+	elseif (_G.CurrencyData[controlName] and _G.CurrencyData[controlName].Ctr) then container = _G.CurrencyData[controlName];
+	end
+
+	if (container and container["Ctr"]) then
+		local control = container["Ctr"];
+		local saveFunction = container.SavePosition;
+
+		-- if the control exists, make sure it's in the right location:
+		local height = control:GetHeight();
+		local currentBottom = control:GetTop() + height;
+		if (currentBottom > TBHeight) then
+			local newTop = TBHeight - height;
+			-- Don't try and move the control above the bar:
+			if (newTop < 0) then newTop = 0; end
+
+			control:SetTop(newTop);
+
+			if (saveFunction) then saveFunction(); end
+		end
+	end
+end
+
 function AjustIcon(str)
 	--if TBHeight > 30 then CTRHeight = 30; end 
     --Stop ajusting icon size if TitanBar height is > 30px
@@ -702,7 +730,7 @@ function AjustIcon(str)
 		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
 		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
 		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	else
+	elseif (_G.CurrencyData[str] and _G.CurrencyData[str].Icon) then
 		_G.CurrencyData[str].Icon:SetStretchMode(1);
 		if str == "DestinyPoints" then
 			_G.CurrencyData[str].Icon:SetPosition(
@@ -717,6 +745,9 @@ function AjustIcon(str)
 		_G.CurrencyData[str].Icon:SetSize( TBIconSize, TBIconSize );
 		_G.CurrencyData[str].Icon:SetStretchMode(3);
 	end
+
+	KeepIconControlInBar(str);
+
 end
 
 function DecryptMoney( v )
