@@ -79,6 +79,10 @@ end
 RP["Icon"].MouseUp = function( sender, args )
 	RP["Ctr"]:SetZOrder( 2 );
 	dragging = false;
+	RP.SavePosition();
+end
+
+RP.SavePosition = function()
 	_G.RPLocX = RP["Ctr"]:GetLeft();
 	settings.Reputation.X = string.format("%.0f", _G.RPLocX);
 	_G.RPLocY = RP["Ctr"]:GetTop();

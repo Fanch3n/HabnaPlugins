@@ -8,17 +8,39 @@ function ShowVaultToolTip()
 	VaultTTListBox:SetPosition( 20, 20 );
 	VaultTTListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
 
+	_G.ToolTipWin.lblmgs = _G.SS.GetSharedStorageNotFoundLabel(L["VTnd"]);
+	_G.ToolTipWin.lblmgs:SetParent( _G.ToolTipWin );
+	_G.ToolTipWin.lblmgs:SetSize( 350, 39 );
+
 	RefreshVaultTTListBox();
 
 	ApplySkin();
 end
 
 function RefreshVaultTTListBox()
+	local x, y = -5, -15;
+	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
+
 	VaultTTListBox:ClearItems();
-	vaultpackCount=0;
+	local vaultpackCount=0;
 	--VaultItemHeight = 35;
 	
 	for k, v in pairs(PlayerVault[PN]) do vaultpackCount = vaultpackCount + 1; end
+
+	local noItems = vaultpackCount == 0;
+
+	_G.ToolTipWin.lblmgs:SetVisible(noItems);
+	VaultTTListBox:SetVisible(not noItems);
+
+	if (noItems) then
+		_G.ToolTipWin:SetWidth(400);
+		_G.ToolTipWin:SetHeight(115);
+		_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
+		_G.ToolTipWin:SetVisible( true );
+
+		return;
+	end
+
 	for i = 1, vaultpackCount do
 		--local itemName = PlayerVault[PN][tostring(i)].T;
 		
@@ -83,9 +105,7 @@ function RefreshVaultTTListBox()
 	VaultTTListBox:SetHeight( VaultTTHeight - 35 );
 	VaultTTListBox:SetMaxItemsPerLine( MaxItemsPerLine );
 		
-	local x, y = -5, -15;
 	local w = 40 * MaxItemsPerLine + 40;
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
 	
 	if w + mouseX > screenWidth then x = w - 10; end
 	

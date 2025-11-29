@@ -78,6 +78,10 @@ end
 IF["Icon"].MouseUp = function( sender, args )
 	IF["Ctr"]:SetZOrder( 2 );
 	dragging = false;
+	IF.SavePosition();
+end
+
+IF.SavePosition = function()
 	_G.IFLocX = IF["Ctr"]:GetLeft();
 	settings.Infamy.X = string.format("%.0f", _G.IFLocX);
 	_G.IFLocY = IF["Ctr"]:GetTop();

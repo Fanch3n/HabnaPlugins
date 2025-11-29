@@ -79,9 +79,13 @@ end
 SS["Icon"].MouseUp = function( sender, args )
 	SS["Ctr"]:SetZOrder( 2 );
 	dragging = false;
+	SS.SavePosition();
+end
+
+SS.SavePosition = function()
 	_G.SSLocX = SS["Ctr"]:GetLeft();
 	settings.SharedStorage.X = string.format("%.0f", _G.SSLocX);
-	_G.IfLocY = SS["Ctr"]:GetTop();
+	_G.SSLocY = SS["Ctr"]:GetTop();
 	settings.SharedStorage.Y = string.format("%.0f", _G.SSLocY);
 	SaveSettings( false );
 end
@@ -101,4 +105,14 @@ function MoveSSCtr(sender, args)
 
 	SS["Ctr"]:SetPosition( CtrLocX, CtrLocY );
 	WasDrag = true;
+end
+
+_G.SS.GetSharedStorageNotFoundLabel = function(message)
+	local lblmgs = Turbine.UI.Label();
+	lblmgs:SetText( message );
+	lblmgs:SetPosition( 17, 40 );
+	lblmgs:SetForeColor( Color["green"] );
+	lblmgs:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
+	lblmgs:SetZOrder(2);
+	return lblmgs;
 end

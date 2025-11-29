@@ -79,6 +79,10 @@ end
 TI["Icon"].MouseUp = function( sender, args )
 	TI["Ctr"]:SetZOrder( 2 );
 	dragging = false;
+	TI.SavePosition();
+end
+
+TI.SavePosition = function()
 	_G.TILocX = TI["Ctr"]:GetLeft();
 	settings.TrackItems.X = string.format("%.0f", _G.TILocX);
 	_G.TILocY = TI["Ctr"]:GetTop();

@@ -97,6 +97,10 @@ end
 BI["Lbl"].MouseUp = function( sender, args )
 	BI["Ctr"]:SetZOrder( 2 );
 	dragging = false;
+	BI.SavePosition();
+end
+
+BI.SavePosition = function()
 	_G.BILocX = BI["Ctr"]:GetLeft();
 	settings.BagInfos.X = string.format("%.0f", _G.BILocX);
 	_G.BILocY = BI["Ctr"]:GetTop();

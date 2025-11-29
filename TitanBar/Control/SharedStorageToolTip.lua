@@ -8,17 +8,39 @@ function ShowSharedToolTip()
 	SharedTTListBox:SetPosition( 20, 20 );
 	SharedTTListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
 
+	_G.ToolTipWin.lblmgs = _G.SS.GetSharedStorageNotFoundLabel(L["SSnd"]);
+	_G.ToolTipWin.lblmgs:SetParent( _G.ToolTipWin );
+	_G.ToolTipWin.lblmgs:SetSize( 350, 39 );
+
 	RefreshSharedTTListBox();
 
 	ApplySkin();
 end
 
 function RefreshSharedTTListBox()
+	local x, y = -5, -15;
+	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
+
 	SharedTTListBox:ClearItems();
-	sharedpackCount=0;
+	local sharedpackCount=0;
 	--VaultItemHeight = 35;
 	
 	for k, v in pairs(PlayerSharedStorage) do sharedpackCount = sharedpackCount + 1; end
+
+	local noItems = sharedpackCount == 0;
+
+	_G.ToolTipWin.lblmgs:SetVisible(noItems);
+	SharedTTListBox:SetVisible(not noItems);
+
+	if (noItems) then
+		_G.ToolTipWin:SetWidth(400);
+		_G.ToolTipWin:SetHeight(115);
+		_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
+		_G.ToolTipWin:SetVisible( true );
+
+		return;
+	end
+
 	for i = 1, sharedpackCount do
 		--local itemName = PlayerSharedStorage[tostring(i)].T;
 		
@@ -83,9 +105,7 @@ function RefreshSharedTTListBox()
 	SharedTTListBox:SetHeight( SharedTTHeight - 35 );
 	SharedTTListBox:SetMaxItemsPerLine( MaxItemsPerLine );
 		
-	local x, y = -5, -15;
 	local w = 40 * MaxItemsPerLine + 40;
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
 	
 	if w + mouseX > screenWidth then x = w - 10; end
 	

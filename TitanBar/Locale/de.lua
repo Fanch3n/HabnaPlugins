@@ -92,14 +92,14 @@ L[ "StarsOfMerith" ] = "Eure Sterne des Verdienst";
 L[ "MCentralGondorSilverPiece" ] = "Zentralgondorisches Silberst\195\188ck";
 L[ "CentralGondorSilverPieceh" ] = "Eure Zentralgondorischen Silberst\195\188cke";
 -- Gift giver's Brand control
-L[ "MGiftgiversBrand" ] = "Zeichen des Schenkenden";
-L[ "GiftgiversBrandh" ] = "Eure Zeichen des Schenkenden";
+L[ "MGiftGiversBrand" ] = "Zeichen des Schenkenden";
+L[ "GiftGiversBrandh" ] = "Eure Zeichen des Schenkenden";
 -- Motes of Enchantment control
 L[ "MMotesOfEnchantment" ] = "Staub der Verzauberung";
 L[ "MotesOfEnchantmenth" ] = "Euer Staub der Verzauberung";
 -- Embers of Enchantment control
-L[ "MEmbersOfEnchantment" ] = "Asche der Verzauberung";
-L[ "EmbersOfEnchantmenth" ] = "Eure Asche der Verzauberung";
+L[ "MEmbersOfEnchantment" ] = "Funken der Verzauberung";
+L[ "EmbersOfEnchantmenth" ] = "Eure Funken der Verzauberung";
 -- Figments of Splendour control
 L[ "MFigmentsOfSplendour" ] = "Prachtst\195\188ck des Glanzes";
 L[ "FigmentsOfSplendourh" ] = "Eure Prachtst\195\188cke des Glanzes";
@@ -342,8 +342,8 @@ L[ "CouncilOfTheNorth" ]    = "Rat des Nordens";
 L[ "TheWardensOfAnnuminas" ]   = "Die H\195\188ter von Ann\195\186minas";
 L[ "LossothOfForochel" ]    = "Lossoth von Forochel";
 L[ "TheEglain" ]   = "Die Eglain";
-L[ "IronGarrisonGuards" ]   = "W\195\164chter der eisernen Garnison";
-L[ "IronGarrisonMiners" ]   = "Minenbauer der Eisernen Garnison";
+L[ "IronGarrisonGuards" ]   = "Wächter der eisernen Garnison";
+L[ "IronGarrisonMiners" ]   = "Bergarbeiter der Eisernen Garnison";
 L[ "AlgraigMenOfEnedwaith" ]   = "Algraig, Menschen von Enedwaith";
 L[ "TheGreyCompany" ]   = "Die Graue Schar";
 L[ "Galadhrim" ]     = "Galadhrim";
@@ -591,13 +591,12 @@ L[ "PICHAR" ]  = "Charakter";
 L[ "PIRACE" ]  = "Volk";
 L[ "PICLASS" ]  = "Klasse";
 L[ "PILEVEL" ]  = "Stufe";
-L[ "PILVLXP" ]  = "EP ben./erh.";
+L[ "PILVLXP" ]  = "EP benöt./erreicht";
 L[ "PILVLXPCAP" ] = "am Max"
 L[ "PILIREF" ]  = "LI Neu schmieden";
 L[ "PILIREFFMT" ]  = "iLvl #iLvl @ #cLvl";
 L[ "PIVITALS" ]  = "Vitale Werte";
-L[ "PIBASE" ] = "Basis";
-L[ "PITOTAL" ] = "Gesamt";
+L[ "PICURR" ] = "Akt.";
 L[ "PIMORALE" ]  = "Maximum Moral";
 L[ "PIICMR" ]  = "Moralreg. im K.";
 L[ "PINCMR" ]  = "Moralreg. au\195\159 K.";

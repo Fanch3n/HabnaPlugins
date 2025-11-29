@@ -96,6 +96,10 @@ end
 DN["Lbl"].MouseUp = function( sender, args )
 	DN["Ctr"]:SetZOrder( 2 );
 	dragging = false;
+	DN.SavePosition();
+end
+
+DN.SavePosition = function()
 	_G.DNLocX = DN["Ctr"]:GetLeft();
 	settings.DayNight.X = string.format("%.0f", _G.DNLocX);
 	_G.DNLocY = DN["Ctr"]:GetTop();

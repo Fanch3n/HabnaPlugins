@@ -174,7 +174,7 @@ function CreateVIComboBox()
 end
 
 function CountVIItems()
-	vaultpackCount = 0;
+	local vaultpackCount = 0;
 	_G.wVT.ListBox:ClearItems();
 	itemCtl = {};
 
@@ -182,7 +182,7 @@ function CountVIItems()
 		_G.wVT.ButtonDelete:SetEnabled( false );
         for i in pairs(PlayerVault) do
 			for k, v in pairs(PlayerVault[i]) do vaultpackCount = vaultpackCount + 1; end
-            AddVaultPack(i, true);
+            AddVaultPack(i, true, vaultpackCount);
 			vaultpackCount = 0;
         end
     else
@@ -190,7 +190,7 @@ function CountVIItems()
 		else _G.wVT.ButtonDelete:SetEnabled( true ); end
 		for k, v in pairs(PlayerVault[SelCN]) do vaultpackCount = vaultpackCount + 1; end
 		if vaultpackCount == 0 then SetEmptyVault();
-		else AddVaultPack(SelCN, false); end
+		else AddVaultPack(SelCN, false, vaultpackCount); end
     end
  
     _G.wVT.ButtonDelete:SetPosition( _G.wVT:GetWidth()/2 - _G.wVT.ButtonDelete:GetWidth()/2, _G.wVT.ListBox:GetTop()+_G.wVT.ListBox:GetHeight()+10 );
@@ -219,7 +219,7 @@ function SetEmptyVault()
 	_G.wVT:SetHeight( itemCtl:GetHeight() + 85 );
 end
 
-function AddVaultPack(n, addCharacterName)
+function AddVaultPack(n, addCharacterName, vaultpackCount)
 	for i = 1, vaultpackCount do
 		local itemName = PlayerVault[n][tostring(i)].T;
 		if not _G.wVT.searchText or string.find(string.lower( itemName ), _G.wVT.searchText, 1, true) then
