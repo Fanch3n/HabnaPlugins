@@ -2,6 +2,17 @@ This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Te
 
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
+Version 1.44 (December ??, 2025)
+- Import reputation from Lotro Companion
+	- Open the ImportReputationFromLotroCompanion.hta file in \Plugins\HabnaPlugins\TitanBar
+	- Choose characters for which to import reputation
+	- When the plugin is next loaded, reputation is automatically imported
+- Improvements to the Player Info menu (thanks Giseldah)
+- Fix spelling mismatch for GiftGivers Brand (thanks b414213562)
+- Fix misplaced background on some items (thanks b414213562)
+- Fix for failing to recognize reputation change for large values (thanks b414213562)
+- Prevent controls displayed outside of TitanBar (thanks b414213562)
+=================================================
 Version 1.43 (May 16, 2025)
 - Overhaul of the Player Info menu (thanks Giseldah)
 - Added Herbalism Phials (thanks b414213562)
