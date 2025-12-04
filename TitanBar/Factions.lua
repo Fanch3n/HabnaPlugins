@@ -1481,6 +1481,73 @@ _G.Factions = {
       }
     },
     {
+      name = "KintaiOfSulMadash",
+      id = "1879506212",
+      initialRank = "Neutral",
+      ranks = {
+        {name = "Enemy", requiredReputation = "0"},
+        {name = "Outsider", requiredReputation = "10000"},
+        {name = "Neutral", requiredReputation = "20000"},
+        {name = "Acquaintance", requiredReputation = "30000"},
+        {name = "Friend", requiredReputation = "50000"},
+        {name = "Ally", requiredReputation = "75000"},
+        {name = "Kindred", requiredReputation = "105000"}
+      }
+    },
+    {
+      name = "CityOfZajana",
+      id = "1879506206",
+      initialRank = "Outsider",
+      ranks = {
+        {name = "Enemy", requiredReputation = "0"},
+        {name = "Outsider", requiredReputation = "10000"},
+        {name = "Neutral", requiredReputation = "20000"},
+        {name = "Acquaintance", requiredReputation = "30000"},
+        {name = "Friend", requiredReputation = "50000"},
+        {name = "Ally", requiredReputation = "75000"}
+      }
+    },
+    {
+      name = "TemamirOfJiretMenesh",
+      id = "1879506198",
+      initialRank = "Outsider",
+      ranks = {
+        {name = "Enemy", requiredReputation = "0"},
+        {name = "Outsider", requiredReputation = "10000"},
+        {name = "Neutral", requiredReputation = "20000"},
+        {name = "Acquaintance", requiredReputation = "30000"},
+        {name = "Friend", requiredReputation = "50000"},
+        {name = "Ally", requiredReputation = "75000"}
+      }
+    },
+    {
+      name = "HamatRenewed",
+      id = "1879508769",
+      initialRank = "Acquaintance",
+      ranks = {
+        {name = "Enemy", requiredReputation = "0"},
+        {name = "Outsider", requiredReputation = "10000"},
+        {name = "Neutral", requiredReputation = "20000"},
+        {name = "Acquaintance", requiredReputation = "30000"},
+        {name = "Friend", requiredReputation = "50000"},
+        {name = "Ally", requiredReputation = "75000"},
+        {name = "Kindred", requiredReputation = "105000"},
+        {name = "Respected", requiredReputation = "150000"}
+      }
+    },
+    {
+      name = "HuntersGuildOfMurGhala",
+      id = "1879519543",
+      initialRank = "Outsider",
+      ranks = {
+        {name = "Enemy", requiredReputation = "0"},
+        {name = "Outsider", requiredReputation = "10000"},
+        {name = "Neutral", requiredReputation = "20000"},
+        {name = "Acquaintance", requiredReputation = "30000"},
+        {name = "Friend", requiredReputation = "50000"}
+      }
+    },
+    {
       name = "ReputationAcceleration",
       legacyTitanbarName = "RPACC",
       initialRank = "BonusRemaining",

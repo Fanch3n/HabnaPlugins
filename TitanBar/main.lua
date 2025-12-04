@@ -113,7 +113,8 @@ if PlayerAlign == 1 then
 		L["MMinasTirithSilverPiece"], L["MCrackedEasterlingSceptre"], L["MGrimOrkishBrand"], L["MSandWornCopperToken"], L["MFrigidSteelSignetRing"],
 		L["MEngravedOnyxSigil"], L["MSandSmoothedBurl"], L["MLumpOfRedRockSalt"], L["MIronSignetOfTheSeaShadow"],	L["MIronSignetOfTheFist"],
 		L["MIronSignetOfTheAxe"],	L["MIronSignetOfTheBlackMoon"],	L["MIronSignetOfTheNecromancer"],	L["MIronSignetOfTheTwinFlame"],
-        L["MPhialCrimsonExtract"], L["MPhialUmberExtract"], L["MPhialVerdantExtract"], L["MPhialGoldenExtract"], L["MPhialVioletExtract"], L["MPhialAmberExtract"], L["MPhialSapphireExtract"],
+    L["MPhialCrimsonExtract"], L["MPhialUmberExtract"], L["MPhialVerdantExtract"], L["MPhialGoldenExtract"], L["MPhialVioletExtract"], L["MPhialAmberExtract"],
+		L["MPhialSapphireExtract"], L["MHamatiUrgul"], L["MMurGhalaSarz"], L["MSilverSerpent"], L["MHuntersGuildMark"], L["MBlightedRelic"]
 	}
 else
 	MenuItem = { L["MCommendation"], L["MLotroPoints"] }
@@ -183,13 +184,18 @@ _G.CurrencyLangMap = { -- reverse lookup table necessary to get the internal ite
 	[L["MIronSignetOfTheBlackMoon"]] = "IronSignetOfTheBlackMoon",
 	[L["MIronSignetOfTheNecromancer"]] = "IronSignetOfTheNecromancer",
 	[L["MIronSignetOfTheTwinFlame"]] = "IronSignetOfTheTwinFlame",
-    [L["MPhialCrimsonExtract"]] = "PhialCrimsonExtract",
-    [L["MPhialUmberExtract"]] = "PhialUmberExtract",
-    [L["MPhialVerdantExtract"]] = "PhialVerdantExtract",
-    [L["MPhialGoldenExtract"]] = "PhialGoldenExtract",
-    [L["MPhialVioletExtract"]] = "PhialVioletExtract",
-    [L["MPhialAmberExtract"]] = "PhialAmberExtract",
-    [L["MPhialSapphireExtract"]] = "PhialSapphireExtract",
+	[L["MPhialCrimsonExtract"]] = "PhialCrimsonExtract",
+	[L["MPhialUmberExtract"]] = "PhialUmberExtract",
+	[L["MPhialVerdantExtract"]] = "PhialVerdantExtract",
+	[L["MPhialGoldenExtract"]] = "PhialGoldenExtract",
+	[L["MPhialVioletExtract"]] = "PhialVioletExtract",
+	[L["MPhialAmberExtract"]] = "PhialAmberExtract",
+	[L["MPhialSapphireExtract"]] = "PhialSapphireExtract",
+	[L["MHamatiUrgul"]] = "HamatiUrgul",
+	[L["MMurGhalaSarz"]] = "MurGhalaSarz",
+	[L["MSilverSerpent"]] = "SilverSerpent",
+	[L["MHuntersGuildMark"]] = "HuntersGuildMark",
+	[L["MBlightedRelic"]] = "BlightedRelic",
 }
 
 function CheckForReputationImport()

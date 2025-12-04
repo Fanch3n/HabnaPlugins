@@ -192,7 +192,7 @@ L[ "CrackedEasterlingSceptreh" ] = "Your Cracked Easterling Sceptres";
 -- Grim Orkish Brand
 L[ "MGrimOrkishBrand" ] = "Grim Orkish Brand";
 L[ "GrimOrkishBrandh" ] = "Your Grim Orkish Brands";
--- Sand-work Copper Token
+-- Sand-worn Copper Token
 L[ "MSandWornCopperToken" ] = "Sand-worn Copper Token";
 L[ "SandWornCopperTokenh" ] = "Your Sand-worn Copper Tokens";
 -- Frigid Steel Signet Ring
@@ -246,6 +246,21 @@ L[ "PhialAmberExtracth" ] = "Your Phials of Amber Extract";
 -- Phial of Sapphire Extract
 L[ "MPhialSapphireExtract" ] = "Phial of Sapphire Extract";
 L[ "PhialSapphireExtracth" ] = "Your Phials of Sapphire Extract";
+-- Hamâti Urgûl
+L["MHamatiUrgul"] = "Hamâti Urgûl";
+L["HamatiUrgulh"] = "Your Hamâti Urgûl";
+-- Mûr Ghala Sârz
+L["MMurGhalaSarz"] = "Mûr Ghala Sârz";
+L["MurGhalaSarzh"] = "Your Mûr Ghala Sârzai";
+-- Silver Serpent
+L["MSilverSerpent"] = "Silver Serpent";
+L["SilverSerpenth"] = "Your Silver Serpents";
+-- Hunter's Guild Mark
+L["MHuntersGuildMark"] = "Hunter's Guild Mark";
+L["HuntersGuildMarkh"] = "Your Hunter's Guild Marks";
+-- Blighted Relic
+L["MBlightedRelic"] = "Blighted Relic";
+L["BlightedRelich"] = "Your Blighted Relics";
 
 -- Control Menu
 L[ "MCU" ] = "Unload ...";
@@ -434,6 +449,11 @@ L["TheAdurhid"] = "The Adúrhid"
 L["ThePathOfValour"] = "The Path of Valour"
 L["AmeliasStudies"] = "Amelia's Studies"
 L["MoriaBountyHunters"] = "Moria Bounty Hunters"
+L["KintaiOfSulMadash"] = "Kintai of Sul Madásh"
+L["CityOfZajana"] = "City of Zajâna"
+L["TemamirOfJiretMenesh"] = "Temámir of Jiret-menêsh"
+L["HamatRenewed"] = "Hamât Renewed"
+L["HuntersGuildOfMurGhala"] = "Hunter's Guild of Mûr Ghala"
 
 -- All reputation standings
 L[ "RPMSR" ]  = "Maximum standing reached"
