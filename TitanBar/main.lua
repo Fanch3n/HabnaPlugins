@@ -113,7 +113,8 @@ if PlayerAlign == 1 then
 		L["MMinasTirithSilverPiece"], L["MCrackedEasterlingSceptre"], L["MGrimOrkishBrand"], L["MSandWornCopperToken"], L["MFrigidSteelSignetRing"],
 		L["MEngravedOnyxSigil"], L["MSandSmoothedBurl"], L["MLumpOfRedRockSalt"], L["MIronSignetOfTheSeaShadow"],	L["MIronSignetOfTheFist"],
 		L["MIronSignetOfTheAxe"],	L["MIronSignetOfTheBlackMoon"],	L["MIronSignetOfTheNecromancer"],	L["MIronSignetOfTheTwinFlame"],
-        L["MPhialCrimsonExtract"], L["MPhialUmberExtract"], L["MPhialVerdantExtract"], L["MPhialGoldenExtract"], L["MPhialVioletExtract"], L["MPhialAmberExtract"], L["MPhialSapphireExtract"],
+    L["MPhialCrimsonExtract"], L["MPhialUmberExtract"], L["MPhialVerdantExtract"], L["MPhialGoldenExtract"], L["MPhialVioletExtract"], L["MPhialAmberExtract"],
+		L["MPhialSapphireExtract"], L["MHamatiUrgul"], L["MMurGhalaSarz"], L["MSilverSerpent"], L["MHuntersGuildMark"], L["MBlightedRelic"]
 	}
 else
 	MenuItem = { L["MCommendation"], L["MLotroPoints"] }
@@ -183,45 +184,82 @@ _G.CurrencyLangMap = { -- reverse lookup table necessary to get the internal ite
 	[L["MIronSignetOfTheBlackMoon"]] = "IronSignetOfTheBlackMoon",
 	[L["MIronSignetOfTheNecromancer"]] = "IronSignetOfTheNecromancer",
 	[L["MIronSignetOfTheTwinFlame"]] = "IronSignetOfTheTwinFlame",
-    [L["MPhialCrimsonExtract"]] = "PhialCrimsonExtract",
-    [L["MPhialUmberExtract"]] = "PhialUmberExtract",
-    [L["MPhialVerdantExtract"]] = "PhialVerdantExtract",
-    [L["MPhialGoldenExtract"]] = "PhialGoldenExtract",
-    [L["MPhialVioletExtract"]] = "PhialVioletExtract",
-    [L["MPhialAmberExtract"]] = "PhialAmberExtract",
-    [L["MPhialSapphireExtract"]] = "PhialSapphireExtract",
+	[L["MPhialCrimsonExtract"]] = "PhialCrimsonExtract",
+	[L["MPhialUmberExtract"]] = "PhialUmberExtract",
+	[L["MPhialVerdantExtract"]] = "PhialVerdantExtract",
+	[L["MPhialGoldenExtract"]] = "PhialGoldenExtract",
+	[L["MPhialVioletExtract"]] = "PhialVioletExtract",
+	[L["MPhialAmberExtract"]] = "PhialAmberExtract",
+	[L["MPhialSapphireExtract"]] = "PhialSapphireExtract",
+	[L["MHamatiUrgul"]] = "HamatiUrgul",
+	[L["MMurGhalaSarz"]] = "MurGhalaSarz",
+	[L["MSilverSerpent"]] = "SilverSerpent",
+	[L["MHuntersGuildMark"]] = "HuntersGuildMark",
+	[L["MBlightedRelic"]] = "BlightedRelic",
 }
 
-function TitanBarCommand:Execute( command, arguments )
-	if ( arguments == L["SCa1"] or arguments == "opt") then
-		TitanBarMenu:ShowMenu();
-	elseif ( arguments == L["SCa2"] or arguments == "u" ) then
-		UnloadTitanBar();
-	elseif ( arguments == L["SCa3"] or arguments == "r" ) then
-		ReloadTitanBar();
-	elseif ( arguments == L["SCa4"] or arguments == "ra" ) then
-		ResetSettings();
-	elseif ( arguments == L["SCa13"] or arguments == "?" or arguments == "sc" ) 
-        then
-		HelpInfo();
-	--elseif ( arguments == L["SCa??"] or arguments == "ab") then
-		--AboutTitanBar();
-	elseif ( arguments == "pw" ) then
-		write("");
-		write("This is your currency:");
-		write("-----v----------------------");
-		ShowTableContent( PlayerCurrency );
-		write("-----^----------------------");
-		write("You may request to add a currency if it's not listed in the " .. 
-            "wallet menu! Give both the 'key' and 'value' texts to the maintainer so it can be added" .. 
-            " into future version of TitanBar. Thanks!");
-		write("");
-	else
-		ShowNS = true;
+function CheckForReputationImport()
+	local reputationImport = Turbine.PluginData.Load(Turbine.DataScope.Character, "TitanBar_CompanionImport");
+	local emptyReputation = {};
+	emptyReputation["SKIP"] = true;
+	if type(reputationImport) == "table" and reputationImport["SKIP"] == nil then
+		for _, faction in ipairs(_G.Factions.list) do
+			if faction.id and faction.name then
+				PlayerReputation[PN][faction.name].Total = reputationImport[faction.id];
+			end
+		end
+		Turbine.PluginData.Save(Turbine.DataScope.Character, "TitanBar_CompanionImport", emptyReputation);
+		write("TitanBar: Reputation import complete");
+	end
+end
+
+CheckForReputationImport()
+
+function TitanBarCommand:Execute(command, arguments)
+	local function tokenize(str)
+		local parts = {}
+		for token in string.gmatch(str, "%S+") do
+			table.insert(parts, token)
+		end
+		return parts
 	end
 
-	if ShowNS then write( "TitanBar: " .. L["SC0"] ); ShowNS = nil; end 
-        -- Command not supported
+	local commands = {
+		-- options menu
+		[L["SCa1"]] = function() TitanBarMenu:ShowMenu() end,
+		["opt"]     = function() TitanBarMenu:ShowMenu() end,
+
+		[L["SCa2"]] = UnloadTitanBar, ["u"]  = UnloadTitanBar,
+		[L["SCa3"]] = ReloadTitanBar, ["r"]  = ReloadTitanBar,
+		[L["SCa4"]] = ResetSettings,  ["ra"] = ResetSettings,
+
+		["sc"] = function() HelpInfo() end,
+		["?"]  = function() HelpInfo() end,
+
+		["pw"] = function()
+			write("")
+			write("This is your currency:")
+			write("-----v----------------------")
+			ShowTableContent(PlayerCurrency)
+			write("-----^----------------------")
+			write("You may request to add a currency if it's not listed in the wallet menu!")
+			write("Provide both the 'key' and 'value' to the maintainer.")
+			write("")
+		end,
+	}
+
+	local args = tokenize(arguments:lower());
+	local cmd = args[1];
+	local handled = false;
+
+	if commands[cmd] then
+		commands[cmd]();
+		handled = true
+	end
+
+	if not handled then
+		write("TitanBar: " .. L["SC0"]);
+	end
 end
 
 Turbine.Shell.AddCommand('TitanBar', TitanBarCommand)

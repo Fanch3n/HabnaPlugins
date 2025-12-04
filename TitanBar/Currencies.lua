@@ -361,6 +361,31 @@ _G.currencies = {
       visibleInMonsterPlay = false,
       icon = 0x411A2B7C,
     },
+    {
+      name = "HamatiUrgul",
+      visibleInMonsterPlay = false,
+      icon = 0x41261EC4,
+    },
+    {
+      name = "MurGhalaSarz",
+      visibleInMonsterPlay = false,
+      icon = 0x41263C21,
+    },
+    {
+      name = "SilverSerpent",
+      visibleInMonsterPlay = false,
+      icon = 0x4125D0B7,
+    },
+    {
+      name = "HuntersGuildMark",
+      visibleInMonsterPlay = false,
+      icon = 0x4126D528,
+    },
+    {
+      name = "BlightedRelic",
+      visibleInMonsterPlay = false,
+      icon = 0x4125E425,
+    },
   },
   byName = {}
 }
