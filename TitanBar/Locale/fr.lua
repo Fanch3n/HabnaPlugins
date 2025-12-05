@@ -246,6 +246,9 @@ L[ "PhialAmberExtracth" ] = "Ce sont vos Fioles d'extrait d'ambre";
 -- Phial of Sapphire Extract
 L[ "MPhialSapphireExtract" ] = "Fiole d'extrait de saphir";
 L[ "PhialSapphireExtracth" ] = "Ce sont vos Fioles d'extrait de saphir";
+-- Shagâni Ghín
+L["MShaganiGhin"] = "Shagâni Ghín";
+L["ShaganiGhinh"] = "Ce sont vos Shagâni Ghín"
 -- Hamâti Urgûl
 L["MHamatiUrgul"] = "Urgûl hamâti";
 L["HamatiUrgulh"] = "Ce sont vos Urgûl hamâti";

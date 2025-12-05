@@ -114,7 +114,7 @@ if PlayerAlign == 1 then
 		L["MEngravedOnyxSigil"], L["MSandSmoothedBurl"], L["MLumpOfRedRockSalt"], L["MIronSignetOfTheSeaShadow"],	L["MIronSignetOfTheFist"],
 		L["MIronSignetOfTheAxe"],	L["MIronSignetOfTheBlackMoon"],	L["MIronSignetOfTheNecromancer"],	L["MIronSignetOfTheTwinFlame"],
     L["MPhialCrimsonExtract"], L["MPhialUmberExtract"], L["MPhialVerdantExtract"], L["MPhialGoldenExtract"], L["MPhialVioletExtract"], L["MPhialAmberExtract"],
-		L["MPhialSapphireExtract"], L["MHamatiUrgul"], L["MMurGhalaSarz"], L["MSilverSerpent"], L["MHuntersGuildMark"], L["MBlightedRelic"]
+		L["MPhialSapphireExtract"], L["MShaganiGhin"], L["MHamatiUrgul"], L["MMurGhalaSarz"], L["MSilverSerpent"], L["MHuntersGuildMark"], L["MBlightedRelic"]
 	}
 else
 	MenuItem = { L["MCommendation"], L["MLotroPoints"] }
@@ -191,6 +191,7 @@ _G.CurrencyLangMap = { -- reverse lookup table necessary to get the internal ite
 	[L["MPhialVioletExtract"]] = "PhialVioletExtract",
 	[L["MPhialAmberExtract"]] = "PhialAmberExtract",
 	[L["MPhialSapphireExtract"]] = "PhialSapphireExtract",
+	[L["MShaganiGhin"]] = "ShaganiGhin",
 	[L["MHamatiUrgul"]] = "HamatiUrgul",
 	[L["MMurGhalaSarz"]] = "MurGhalaSarz",
 	[L["MSilverSerpent"]] = "SilverSerpent",

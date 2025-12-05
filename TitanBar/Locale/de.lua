@@ -246,6 +246,9 @@ L[ "PhialAmberExtracth" ] = "Eure Phiolen mit bernsteinfarbenem Extrakt";
 -- Phial of Sapphire Extract
 L[ "MPhialSapphireExtract" ] = "Phiole mit saphirfarbenem Extrakt";
 L[ "PhialSapphireExtracth" ] = "Eure Phiolen mit saphirfarbenem Extrakt";
+-- Shagâni Ghín
+L["MShaganiGhin"] = "Shagâni Ghín";
+L["ShaganiGhinh"] = "Eure Shagâni Ghín"
 -- Hamâti Urgûl
 L["MHamatiUrgul"] = "Hamâti-Urgûl";
 L["HamatiUrgulh"] = "Eure Hamâti-Urgûl";
