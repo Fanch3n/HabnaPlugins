@@ -224,12 +224,12 @@ local function GetPlayerData()
 			aPlayerData[PD.CALCTYPE_NONPHYMIT] =	aCalcTypeMit[CalcStat(sCS_ClassName.."CDCalcTypeNonPhyMit",	nCS_CharLevel)]
 			aPlayerData[PD.CALCTYPE_TACMIT] =		aCalcTypeMit[CalcStat(sCS_ClassName.."CDCalcTypeTacMit",	nCS_CharLevel)]
 			-- Penetrations
-			aPlayerData[PD.PENARMOUR] =	{T1 = CalcStat("TPenArmour",nCS_CharLevel,1),	T2 = CalcStat("TPenArmour",	nCS_CharLevel,2),	T3 = CalcStat("TPenArmour",	nCS_CharLevel,3),	EnhIII = CalcStat("T2PenArmour",nCS_CharLevel)}
-			aPlayerData[PD.PENBPE] =	{T1 = CalcStat("TPenBPE",	nCS_CharLevel,1),	T2 = CalcStat("TPenBPE",	nCS_CharLevel,2),	T3 = CalcStat("TPenBPE",	nCS_CharLevel,3),	EnhIII = CalcStat("T2PenBPE",	nCS_CharLevel)}
-			aPlayerData[PD.PENRESIST] =	{T1 = CalcStat("TPenResist",nCS_CharLevel,1),	T2 = CalcStat("TPenResist",	nCS_CharLevel,2),	T3 = CalcStat("TPenResist",	nCS_CharLevel,3),	EnhIII = CalcStat("T2PenResist",nCS_CharLevel)}
+			aPlayerData[PD.PENARMOUR] =	{T1 = CalcStat("TPenArmour",nCS_CharLevel,1),	T2 = CalcStat("TPenArmour",	nCS_CharLevel,2),	T3 = CalcStat("TPenArmour",	nCS_CharLevel,3)}
+			aPlayerData[PD.PENBPE] =	{T1 = CalcStat("TPenBPE",	nCS_CharLevel,1),	T2 = CalcStat("TPenBPE",	nCS_CharLevel,2),	T3 = CalcStat("TPenBPE",	nCS_CharLevel,3)}
+			aPlayerData[PD.PENRESIST] =	{T1 = CalcStat("TPenResist",nCS_CharLevel,1),	T2 = CalcStat("TPenResist",	nCS_CharLevel,2),	T3 = CalcStat("TPenResist",	nCS_CharLevel,3)}
 		end
 	end
-	
+
 	return aPlayerData
 end
 
