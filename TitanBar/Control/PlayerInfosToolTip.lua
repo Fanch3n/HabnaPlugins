@@ -302,7 +302,6 @@ CAPCOLOR.CAPPED = Color["yellow"]
 CAPCOLOR.T1 = Color["yellow"] -- T1 only exists in The Hoard (mitigations only), no different color for now
 CAPCOLOR.T2 = Color["orange"]
 CAPCOLOR.T3 = Color["red"]
-CAPCOLOR.ENHIII = Color["purple"]
 
 -- calculates reached caps and returns approp. color
 -- needs CalcStat for caps
@@ -311,9 +310,7 @@ local function GetRatCapColor(sCSRatName,nRating,aCSPenRats)
 		nPRatPCapR = CalcStat(sCSRatName.."PRatPCapR",aPlayerData[PD.LEVEL]) -- (normal) cap rating
 		if aCSPenRats then
 			-- penetration ratings are negative values, so need to be substracted here to calculate the compensated cap rating
-			if nRating >= nPRatPCapR-aCSPenRats.EnhIII then
-				return CAPCOLOR.ENHIII
-			elseif nRating >= nPRatPCapR-aCSPenRats.T3 then
+			if nRating >= nPRatPCapR-aCSPenRats.T3 then
 				return CAPCOLOR.T3
 			elseif nRating >= nPRatPCapR-aCSPenRats.T2 then
 				return CAPCOLOR.T2
@@ -568,14 +565,13 @@ local function GetFreepLayoutDefinition()
 			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PICRITDEF" ],	SubIndent = false,	CurrRating = PD.CRITDEF,		CSRatName = "CritDef"},
 			{RowFormat = ROWFORMAT.RATPERC_STAT,	LabelText = L[ "PIRESIST" ],	SubIndent = false,	CurrRating = PD.RESIST,			CSRatName = "Resist",				CSPenRats = PD.PENRESIST}, -- with resistance penetration
 			{RowFormat = ROWFORMAT.EMPTY},
+			{RowFormat = ROWFORMAT.EMPTY},
 			useCalcStat and
-			{RowFormat = ROWFORMAT.COLORCENTER_TEXT,LabelText = L[ "PICAPPED1" ],	TextColor = CAPCOLOR.CAPPED} or	{RowFormat = ROWFORMAT.EMPTY},
+			{RowFormat = ROWFORMAT.COLORCENTER_TEXT,LabelText = L[ "PICAPPED1" ],	TextColor = CAPCOLOR.CAPPED} or		{RowFormat = ROWFORMAT.EMPTY},
 			useCalcStat and
 			{RowFormat = ROWFORMAT.COLORCENTER_TEXT,LabelText = L[ "PICAPPED2" ],	TextColor = CAPCOLOR.T2} or			{RowFormat = ROWFORMAT.COLORCENTER_TEXT,LabelText = L[ "PICSDEP" ],		TextColor = Color["yellow"]},
 			useCalcStat and
-			{RowFormat = ROWFORMAT.COLORCENTER_TEXT,LabelText = L[ "PICAPPED3" ],	TextColor = CAPCOLOR.T3} or			{RowFormat = ROWFORMAT.EMPTY},
-			useCalcStat and
-			{RowFormat = ROWFORMAT.COLORCENTER_TEXT,LabelText = L[ "PICAPPED4" ],	TextColor = CAPCOLOR.ENHIII} or		{RowFormat = ROWFORMAT.EMPTY}
+			{RowFormat = ROWFORMAT.COLORCENTER_TEXT,LabelText = L[ "PICAPPED3" ],	TextColor = CAPCOLOR.T3} or			{RowFormat = ROWFORMAT.EMPTY}
 		}
 	})
 
