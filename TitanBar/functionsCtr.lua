@@ -976,3 +976,13 @@ function GetCurrency(localizedCurrencyName)
 
     return CurQuantity
 end
+
+function GetLabel(message)
+	local lblmgs = Turbine.UI.Label();
+	lblmgs:SetText( message );
+	lblmgs:SetPosition( 17, 40 );
+	lblmgs:SetForeColor( Color["green"] );
+	lblmgs:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
+	lblmgs:SetZOrder(2);
+	return lblmgs;
+end

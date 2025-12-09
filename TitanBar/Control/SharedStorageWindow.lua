@@ -114,7 +114,7 @@ function frmSharedStorage()
 		_G.wSS.SearchTextBox:SetVisible( false );
 		_G.wSS.DelIcon:SetVisible( false );
 		
-		local lblmgs = _G.SS.GetSharedStorageNotFoundLabel(_G.wSS);
+		local lblmgs = GetLabel(L["SSnd"]);
 		lblmgs:SetParent( _G.wSS );
 		lblmgs:SetSize( _G.wSS:GetWidth()-32, 39 );
 		

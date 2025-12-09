@@ -8,7 +8,7 @@ function ShowSharedToolTip()
 	SharedTTListBox:SetPosition( 20, 20 );
 	SharedTTListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
 
-	_G.ToolTipWin.lblmgs = _G.SS.GetSharedStorageNotFoundLabel(L["SSnd"]);
+	_G.ToolTipWin.lblmgs = GetLabel(L["SSnd"]);
 	_G.ToolTipWin.lblmgs:SetParent( _G.ToolTipWin );
 	_G.ToolTipWin.lblmgs:SetSize( 350, 39 );
 

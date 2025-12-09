@@ -8,7 +8,7 @@ function ShowVaultToolTip()
 	VaultTTListBox:SetPosition( 20, 20 );
 	VaultTTListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
 
-	_G.ToolTipWin.lblmgs = _G.SS.GetSharedStorageNotFoundLabel(L["VTnd"]);
+	_G.ToolTipWin.lblmgs = GetLabel(L["VTnd"]);
 	_G.ToolTipWin.lblmgs:SetParent( _G.ToolTipWin );
 	_G.ToolTipWin.lblmgs:SetSize( 350, 39 );
 
