@@ -362,6 +362,11 @@ _G.currencies = {
       icon = 0x411A2B7C,
     },
     {
+      name = "ShaganiGhin",
+      visibleInMonsterPlay = false,
+      icon = 0x41250E36,
+    },
+    {
       name = "HamatiUrgul",
       visibleInMonsterPlay = false,
       icon = 0x41261EC4,
