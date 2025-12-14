@@ -253,17 +253,17 @@ L["ShaganiGhinh"] = "Ce sont vos Shagâni Ghín"
 L["MHamatiUrgul"] = "Urgûl hamâti";
 L["HamatiUrgulh"] = "Ce sont vos Urgûl hamâti";
 -- Mûr Ghala Sârz
-L["MMurGhalaSarz"] = "Mûr Ghala Sârz";              -- "TBD" is used in-game
-L["MurGhalaSarzh"] = "Ce sont vos Mûr Ghala Sârzai";
+L["MMurGhalaSarz"] = "Sârz de Mûr Ghala";
+L["MurGhalaSarzh"] = "Ce sont vos Sârzai de Mûr Ghala";
 -- Silver Serpent
-L["MSilverSerpent"] = "Silver Serpent";
-L["SilverSerpenth"] = "Ce sont vos Silver Serpents";
+L["MSilverSerpent"] = "Serpents argentés";
+L["SilverSerpenth"] = "Ce sont vos Serpents argentés";
 -- Hunter's Guild Mark
-L["MHuntersGuildMark"] = "Hunter's Guild Mark";
-L["HuntersGuildMarkh"] = "Ce sont vos Hunter's Guild Marks";
+L["MHuntersGuildMark"] = "Marque de la guilde des chasseurs";
+L["HuntersGuildMarkh"] = "Ce sont vos Marques de la guilde des chasseurs";
 -- Blighted Relic
-L["MBlightedRelic"] = "Blighted Relic";
-L["BlightedRelich"] = "Ce sont vos Blighted Relics";
+L["MBlightedRelic"] = "Relique infectée";
+L["BlightedRelich"] = "Ce sont vos Reliques infectées";
 
 -- Control Menu
 L[ "MCU" ] = "D\195\169charger ...";
