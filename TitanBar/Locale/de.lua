@@ -53,8 +53,8 @@ L[ "LotroPointsh" ] = "Eure HdRO-Punkte";
 L[ "MMithrilCoins" ] = "Mithril-M\195\188nze";
 L[ "MithrilCoinsh" ] = "Eure Mithril-M\195\188nzen";
 -- Yule Tokens control
-L[ "MYuleToken" ] = "Julfest-M\195\188nze";
-L[ "YuleTokenh" ] = "Eure Julfest-M\195\188nzen";
+L[ "MYuleToken" ] = "Julfestmarke";
+L[ "YuleTokenh" ] = "Eure Julfestmarken";
 -- Anniversary Tokens control
 L[ "MAnniversaryToken" ] = "Jubil\195\164umsm\195\188nze";
 L[ "AnniversaryTokenh" ] = "Eure Jubil\195\164umsm\195\188nzen";
