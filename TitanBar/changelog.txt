@@ -2,6 +2,13 @@ This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Te
 
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
+Version 1.45 (December 14, 2025)
+- Add Shagâni Ghín
+- Fixes display bug of Enh.III cap which is not supported any longer (thanks Giseldah)
+- Fix label for shared storage (thanks, b414213562)
+- Fix german name for Yule Festival Token
+- Fix french names for new currencies
+=================================================
 Version 1.44 (December 04, 2025)
 - Import reputation from Lotro Companion
 	- Open the ImportReputationFromLotroCompanion.hta file in \Plugins\HabnaPlugins\TitanBar
