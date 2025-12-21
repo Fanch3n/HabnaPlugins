@@ -47,15 +47,13 @@ function frmReputationWindow()
     RPFilterlbl:SetPosition(20,75);
     RPFilterlbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
     RPFilterlbl:SetText("Search:");
-    local RPFiltertxt = Turbine.UI.Lotro.TextBox();
-    RPFiltertxt:SetParent(_G.wRP);
-    RPFiltertxt:SetFont(Turbine.UI.Lotro.Font.Verdana16);
-    RPFiltertxt:SetMultiline(false);
-    RPFiltertxt:SetPosition(80,75);
-    RPFiltertxt:SetSize(_G.wRP:GetWidth() - 120, 20);
-    RPFiltertxt.Text = "";
-    RPFiltertxt.TextChanged = function()
-        -- Use the textbox text directly and call RPFilter with that value.
+
+    -- Use factory helper to create a search TextBox + delete icon
+    local rpSearch = CreateSearchControl(_G.wRP, RPFilterlbl:GetLeft() + RPFilterlbl:GetWidth(), RPFilterlbl:GetTop(), _G.wRP:GetWidth() - 120, 20, Turbine.UI.Lotro.Font.Verdana16, resources)
+    local RPFiltertxt = rpSearch.TextBox
+    _G.wRP.RPFilterDelIcon = rpSearch.DelIcon
+    RPFiltertxt.Text = ""
+    RPFiltertxt.TextChanged = function(sender, args)
         local txt = RPFiltertxt:GetText() or ""
         RPFilter(txt)
     end
@@ -100,24 +98,23 @@ function frmReputationWindow()
     end
 --]]
 
-    -- **v Set the reputation listbox v**
-    RPListBox = Turbine.UI.ListBox();
-    RPListBox:SetParent(_G.wRP);
-    RPListBox:SetZOrder(1);
-    RPListBox:SetPosition(20, 115);
-    RPListBox:SetSize(_G.wRP:GetWidth() - 40, _G.wRP:GetHeight() - 130);
-    RPListBox:SetMaxItemsPerLine(1);
-    RPListBox:SetOrientation(Turbine.UI.Orientation.Horizontal);
-    --RPListBox:SetBackColor(Color["red"]); --debug purpose
-    -- **^
-    -- **v Set the listbox scrollbar v**
-    RPListBoxScrollBar = Turbine.UI.Lotro.ScrollBar();
-    RPListBoxScrollBar:SetParent(RPListBox);
-    RPListBoxScrollBar:SetZOrder(1);
-    RPListBoxScrollBar:SetOrientation(Turbine.UI.Orientation.Vertical);
-    RPListBox:SetVerticalScrollBar(RPListBoxScrollBar);
-    RPListBoxScrollBar:SetPosition(RPListBox:GetWidth() - 10, 0);
-    RPListBoxScrollBar:SetSize(12, RPListBox:GetHeight());
+    -- **v Set the reputation listbox v (using WindowFactory helper) **
+    local rpLeft, rpTop = 20, 115
+    local rpWidth, rpHeight = _G.wRP:GetWidth() - 40, _G.wRP:GetHeight() - 130
+    local rplb = CreateListBoxWithBorder(_G.wRP, rpLeft, rpTop, rpWidth, rpHeight, nil)
+    RPListBox = rplb.ListBox
+    RPListBox:SetParent(_G.wRP)
+    RPListBox:SetZOrder(1)
+    RPListBox:SetMaxItemsPerLine(1)
+    RPListBox:SetOrientation(Turbine.UI.Orientation.Horizontal)
+    RPListBox:SetBackColor(Color["black"])
+    RPListBoxScrollBar = rplb.ScrollBar
+    RPListBoxScrollBar:SetParent(RPListBox)
+    RPListBoxScrollBar:SetZOrder(1)
+    RPListBoxScrollBar:SetOrientation(Turbine.UI.Orientation.Vertical)
+    RPListBox:SetVerticalScrollBar(RPListBoxScrollBar)
+    RPListBoxScrollBar:SetPosition(RPListBox:GetWidth() - 10, 0)
+    RPListBoxScrollBar:SetSize(12, RPListBox:GetHeight())
     -- **^
 
     RPWCtr = Turbine.UI.Control();

@@ -17,6 +17,10 @@ local DEFAULT_WINDOW_CONFIG = {
     onKeyDown = nil,
 }
 
+-- Create a search control: a TextBox with a delete icon to clear it.
+-- Returns { TextBox = tb, DelIcon = del, Container = container }
+import(AppDirD .. "UIHelpers")
+
 function CreateWindow(windowSettings)
     local config = windowSettings.config or {}
     

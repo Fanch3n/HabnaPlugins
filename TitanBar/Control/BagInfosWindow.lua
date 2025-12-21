@@ -73,70 +73,38 @@ function frmBagInfos()
 	-- **^
 	-- **v search label & text box v**
 	_G.wBI.searchLabel = Turbine.UI.Label();
-    _G.wBI.searchLabel:SetParent( _G.wBI );
-    _G.wBI.searchLabel:SetText( L["VTSe"] );
-    _G.wBI.searchLabel:SetPosition( 15, 60 );
-    _G.wBI.searchLabel:SetSize( _G.wBI.searchLabel:GetTextLength() * 8, 18 ); --Auto size with text lenght
-    _G.wBI.searchLabel:SetFont( Turbine.UI.Lotro.Font.TrajanPro15 );
-    _G.wBI.searchLabel:SetForeColor( Color["gold"] );
-	 
-    _G.wBI.SearchTextBox = Turbine.UI.Lotro.TextBox();
-    _G.wBI.SearchTextBox:SetParent( _G.wBI );
-    _G.wBI.SearchTextBox:SetPosition(  _G.wBI.searchLabel:GetLeft() +  _G.wBI.searchLabel:GetWidth(),  _G.wBI.searchLabel:GetTop() );
-    _G.wBI.SearchTextBox:SetSize( _G.wBI:GetWidth() - 150, 18 );
-    _G.wBI.SearchTextBox:SetFont( Turbine.UI.Lotro.Font.Verdana14 );
-	_G.wBI.SearchTextBox:SetMultiline( false );
-	
-    _G.wBI.SearchTextBox.TextChanged = function( sender, args )
-        _G.wBI.searchText = string.lower( _G.wBI.SearchTextBox:GetText() );
-        if _G.wBI.searchText == "" then _G.wBI.searchText = nil; end
-        CountBIItems();
-    end
+	_G.wBI.searchLabel:SetParent( _G.wBI );
+	_G.wBI.searchLabel:SetText( L["VTSe"] );
+	_G.wBI.searchLabel:SetPosition( 15, 60 );
+	_G.wBI.searchLabel:SetSize( _G.wBI.searchLabel:GetTextLength() * 8, 18 ); --Auto size with text lenght
+	_G.wBI.searchLabel:SetFont( Turbine.UI.Lotro.Font.TrajanPro15 );
+	_G.wBI.searchLabel:SetForeColor( Color["gold"] );
+
+	-- Use the factory helper to create a search TextBox + DelIcon
+	local searchLeft = _G.wBI.searchLabel:GetLeft() + _G.wBI.searchLabel:GetWidth()
+	local searchWidth = _G.wBI:GetWidth() - 150
+	local search = CreateSearchControl(_G.wBI, searchLeft, _G.wBI.searchLabel:GetTop(), searchWidth + 24, 18, Turbine.UI.Lotro.Font.Verdana14, resources)
+	_G.wBI.SearchTextBox = search.TextBox
+	_G.wBI.DelIcon = search.DelIcon
+
+	_G.wBI.SearchTextBox.TextChanged = function( sender, args )
+		_G.wBI.searchText = string.lower( _G.wBI.SearchTextBox:GetText() );
+		if _G.wBI.searchText == "" then _G.wBI.searchText = nil; end
+		CountBIItems();
+	end
 
 	_G.wBI.SearchTextBox.FocusLost = function( sender, args )
-		
 	end
-	-- **^
-	--**v clear search text box icon v**
-	_G.wBI.DelIcon = Turbine.UI.Label();
-	_G.wBI.DelIcon:SetParent( _G.wBI );
-	_G.wBI.DelIcon:SetPosition( _G.wBI.SearchTextBox:GetLeft() + _G.wBI.SearchTextBox:GetWidth() + 5, _G.wBI.SearchTextBox:GetTop() );
-	_G.wBI.DelIcon:SetSize( 16, 16 );
-	_G.wBI.DelIcon:SetBackground( resources.DelIcon );
-	_G.wBI.DelIcon:SetBlendMode( 4 );
-	_G.wBI.DelIcon:SetVisible( true );
-				
-	_G.wBI.DelIcon.MouseClick = function( sender, args )
-		_G.wBI.SearchTextBox:SetText( "" );
-		_G.wBI.SearchTextBox.TextChanged( sender, args );
-		_G.wBI.SearchTextBox:Focus();
-	end
-	-- **^
-	-- **v Set the item listbox border v**
-	_G.wBI.ListBoxBorder = Turbine.UI.Control();
-	_G.wBI.ListBoxBorder:SetParent( _G.wBI );
-	_G.wBI.ListBoxBorder:SetPosition( 15, _G.wBI.SearchTextBox:GetTop() + _G.wBI.SearchTextBox:GetHeight() + 5 );
-	_G.wBI.ListBoxBorder:SetSize( _G.wBI:GetWidth() - 30, 392 );
-	_G.wBI.ListBoxBorder:SetBackColor( Color["grey"] );
-	_G.wBI.ListBoxBorder:SetVisible( true );
-	-- **^
-	-- **v Set the item listbox v**
-	_G.wBI.ListBox = Turbine.UI.ListBox();
-	_G.wBI.ListBox:SetParent( _G.wBI );
-	_G.wBI.ListBox:SetPosition( _G.wBI.ListBoxBorder:GetLeft() + 2, _G.wBI.ListBoxBorder:GetTop() + 2 );
-	_G.wBI.ListBox:SetSize( _G.wBI.ListBoxBorder:GetWidth() - 4, _G.wBI.ListBoxBorder:GetHeight() - 4 );
+
+	-- Create list box area via helper
+	local lbTop = _G.wBI.SearchTextBox:GetTop() + _G.wBI.SearchTextBox:GetHeight() + 5
+	local lb = CreateListBoxWithBorder(_G.wBI, 15, lbTop, _G.wBI:GetWidth() - 30, 392, Color["grey"])
+	_G.wBI.ListBoxBorder = lb.Border
+	_G.wBI.ListBox = lb.ListBox
+	_G.wBI.ListBoxScrollBar = lb.ScrollBar
 	_G.wBI.ListBox:SetMaxItemsPerLine( 1 );
 	_G.wBI.ListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
 	_G.wBI.ListBox:SetBackColor( Color["black"] );
-	-- **^
-	-- **v Set the listbox scrollbar v**
-	_G.wBI.ListBoxScrollBar = Turbine.UI.Lotro.ScrollBar();
-	_G.wBI.ListBoxScrollBar:SetParent( _G.wBI.ListBox );
-	_G.wBI.ListBoxScrollBar:SetPosition( _G.wBI.ListBox:GetWidth() - 10, 0 );
-	_G.wBI.ListBoxScrollBar:SetSize( 12, _G.wBI.ListBox:GetHeight() );
-	_G.wBI.ListBoxScrollBar:SetOrientation( Turbine.UI.Orientation.Vertical );
-	_G.wBI.ListBox:SetVerticalScrollBar( _G.wBI.ListBoxScrollBar );
-	-- **^
 	-- **v Show used slot info in tooltip? v**
 	_G.wBI.UsedSlots = Turbine.UI.Lotro.CheckBox();
 	_G.wBI.UsedSlots:SetParent( _G.wBI );
@@ -239,79 +207,22 @@ function AddBagsPack(n, addCharacterName)
 		else titem = PlayerBags[n][tostring(i)]; itemName = PlayerBags[n][tostring(i)].T; end
 
 		if not _G.wBI.searchText or string.find(string.lower( itemName ), _G.wBI.searchText, 1, true) then
-			-- Item control
-			itemCtl[i] = Turbine.UI.Control();
-			itemCtl[i]:SetSize( _G.wBI.ListBox:GetWidth() - 10, 35 );
-
-			if n == PN then
-				-- Item Background/Underlay/Shadow/Image
-				local itemBG = Turbine.UI.Lotro.ItemControl( titem );
-				itemBG:SetParent( itemCtl[i] );
-				itemBG:SetSize( 34, 34 );
-				itemBG:SetPosition( 0, 0 );
-			else
-				-- Item Background
-				local itemBG = Turbine.UI.Control();
-				itemBG:SetParent( itemCtl[i] );
-				itemBG:SetSize( 32, 32 );
-				itemBG:SetPosition( 3, 3 );
-				if PlayerBags[n][tostring(i)].B ~= "0" then itemBG:SetBackground( tonumber(PlayerBags[n][tostring(i)].B) ); end
-				itemBG:SetBlendMode( Turbine.UI.BlendMode.Overlay );
-			
-				-- Item Underlay
-				local itemU = Turbine.UI.Control();
-				itemU:SetParent( itemCtl[i] );
-				itemU:SetSize( 32, 32 );
-				itemU:SetPosition( 3, 3 );
-				if PlayerBags[n][tostring(i)].U ~= "0" then itemU:SetBackground( tonumber(PlayerBags[n][tostring(i)].U) ); end
-				itemU:SetBlendMode( Turbine.UI.BlendMode.Overlay );
-			
-				-- Item Shadow
-				local itemS = Turbine.UI.Control();
-				itemS:SetParent( itemCtl[i] );
-				itemS:SetSize( 32, 32 );
-				itemS:SetPosition( 3, 3 );
-				if PlayerBags[n][tostring(i)].S ~= "0" then itemS:SetBackground( tonumber(PlayerBags[n][tostring(i)].S) ); end
-				itemS:SetBlendMode( Turbine.UI.BlendMode.Overlay );
-			
-				-- Item Image
-				local item = Turbine.UI.Control();
-				item:SetParent( itemCtl[i] );
-				item:SetSize( 32, 32 );
-				item:SetPosition( 3, 3 );
-				if PlayerBags[n][tostring(i)].I ~= "0" then item:SetBackground( tonumber(PlayerBags[n][tostring(i)].I) ); end
-				item:SetBlendMode( Turbine.UI.BlendMode.Overlay );
-
-				-- Item Quantity
-				local itemQTE = Turbine.UI.Label();
-				itemQTE:SetParent( itemCtl[i] );
-				itemQTE:SetSize( 32, 15 );
-				itemQTE:SetPosition( -4, 16 );
-				itemQTE:SetFont( Turbine.UI.Lotro.Font.Verdana12 );
-				itemQTE:SetFontStyle( Turbine.UI.FontStyle.Outline );
-				itemQTE:SetOutlineColor( Color["black"] );
-				itemQTE:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
-				itemQTE:SetBackColorBlendMode( Turbine.UI.BlendMode.Overlay );
-				itemQTE:SetForeColor( Color["nicegold"] );
-				itemQTE:SetText( tonumber(PlayerBags[n][tostring(i)].N) );
+			-- Use CreateItemRow helper to build the item row
+			local row = CreateItemRow(_G.wBI.ListBox, _G.wBI.ListBox:GetWidth(), 35, (n == PN), (n == PN) and titem or PlayerBags[n][tostring(i)])
+			itemCtl[i] = row.Container
+			local itemLbl = row.ItemLabel
+			if row.ItemQuantity and not (n == PN) then
+				-- Ensure quantity is set from saved data
+				local data = PlayerBags[n] and PlayerBags[n][tostring(i)]
+				if data and data.N then row.ItemQuantity:SetText( tonumber(data.N) ) end
 			end
 
-			-- Item name
-			local itemLbl = Turbine.UI.Label();
-			itemLbl:SetParent( itemCtl[i] );
-			itemLbl:SetSize( itemCtl[i]:GetWidth() - 35, 35 );
-			itemLbl:SetPosition( 37, 2 );
-			itemLbl:SetFont( Turbine.UI.Lotro.Font.TrajanPro16 );
-			itemLbl:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-			itemLbl:SetBackColorBlendMode( Turbine.UI.BlendMode.Overlay );
-			itemLbl:SetForeColor( Color["white"] );
-
-			if titem ~= nil then
-				itemLbl:SetText( itemName );
-				_G.wBI.ListBox:AddItem( itemCtl[i] );
+			if (n == PN and titem ~= nil) or (n ~= PN and PlayerBags[n] and PlayerBags[n][tostring(i)]) then
+				itemLbl:SetText( itemName )
+				_G.wBI.ListBox:AddItem( itemCtl[i] )
 			end
 
-			if addCharacterName then itemLbl:AppendText( " (" .. n .. ")" ); end
+			if addCharacterName then itemLbl:AppendText( " (" .. n .. ")" ) end
 		end
 	end
 end

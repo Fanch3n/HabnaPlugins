@@ -51,25 +51,24 @@ function frmWalletWindow()
 	WIlbltext:SetForeColor( Color["green"] );
 
 	local WIFilterlblHeight = 20;
-    local WIFilterlbl = Turbine.UI.Label();
-    WIFilterlbl:SetParent(_G.wWI);
-    WIFilterlbl:SetSize(60,WIFilterlblHeight);
-    WIFilterlbl:SetPosition(20,75);
-    WIFilterlbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
-    WIFilterlbl:SetText("Search:");
-    local WIFiltertxt = Turbine.UI.Lotro.TextBox();
-    WIFiltertxt:SetParent(_G.wWI);
-    WIFiltertxt:SetFont(Turbine.UI.Lotro.Font.Verdana16);
-    WIFiltertxt:SetMultiline(false);
-    WIFiltertxt:SetPosition(80,75);
-    WIFiltertxt:SetSize(_G.wWI:GetWidth() - 120, 20);
-    WIFiltertxt.Text = "";
-    WIFiltertxt.TextChanged = function()
-        if WIFiltertxt.Text ~= WIFiltertxt:GetText() then
-            WIFiltertxt.Text = WIFiltertxt:GetText();
-            WIFilter(WIFiltertxt.Text);
-        end
-    end
+	local WIFilterlbl = Turbine.UI.Label();
+	WIFilterlbl:SetParent(_G.wWI);
+	WIFilterlbl:SetSize(60,WIFilterlblHeight);
+	WIFilterlbl:SetPosition(20,75);
+	WIFilterlbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
+	WIFilterlbl:SetText("Search:");
+
+	-- Use factory helper to create the search TextBox + delete icon
+	local wSearch = CreateSearchControl(_G.wWI, WIFilterlbl:GetLeft() + WIFilterlbl:GetWidth(), WIFilterlbl:GetTop(), _G.wWI:GetWidth() - 120, 20, Turbine.UI.Lotro.Font.Verdana16, resources)
+	local WIFiltertxt = wSearch.TextBox
+	_G.wWI.WIFilterDelIcon = wSearch.DelIcon
+	WIFiltertxt.Text = "";
+	WIFiltertxt.TextChanged = function()
+		if WIFiltertxt.Text ~= WIFiltertxt:GetText() then
+			WIFiltertxt.Text = WIFiltertxt:GetText();
+			WIFilter(WIFiltertxt.Text);
+		end
+	end
 
    function WIFilter()
         filterText = string.lower(WIFiltertxt.Text);
@@ -83,21 +82,19 @@ function frmWalletWindow()
         end
     end
 
-	-- **v Set the Wallet listbox v**
-	local WIListBoxHeight = 
-		_G.wWI:GetHeight()-95 - WIlbltextHeight - WIFilterlblHeight;
-	WIListBox = Turbine.UI.ListBox();
+	-- **v Set the Wallet listbox v (use helper for border/list/scroll)
+	local WIListBoxHeight = _G.wWI:GetHeight()-95 - WIlbltextHeight - WIFilterlblHeight;
+	local wileft, witop = 20, 115
+	local wilb = CreateListBoxWithBorder(_G.wWI, wileft, witop, _G.wWI:GetWidth()-40, WIListBoxHeight, nil)
+	WIListBox = wilb.ListBox
 	WIListBox:SetParent( _G.wWI );
 	WIListBox:SetZOrder( 1 );
 	WIListBox:SetPosition( 20, 115 );
-	--WIListBox:SetPosition( 20, WIlbltext:GetTop()+WIlbltext:GetHeight()+5 );
 	WIListBox:SetSize( _G.wWI:GetWidth()-40, WIListBoxHeight );
 	WIListBox:SetMaxItemsPerLine( 1 );
 	WIListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
-	--WIListBox:SetBackColor( Color["red"] ); --debug purpose
-	-- **^
-	-- **v Set the listbox scrollbar v**
-	WIListBoxScrollBar = Turbine.UI.Lotro.ScrollBar();
+	WIListBox:SetBackColor( Color["black"] );
+	WIListBoxScrollBar = wilb.ScrollBar
 	WIListBoxScrollBar:SetParent( WIListBox );
 	WIListBoxScrollBar:SetZOrder( 1 );
 	WIListBoxScrollBar:SetOrientation( Turbine.UI.Orientation.Vertical );

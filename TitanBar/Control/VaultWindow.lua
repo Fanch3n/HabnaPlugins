@@ -52,68 +52,38 @@ function frmVault()
 	CreateVIComboBox();
 	-- **^
 	-- **v search label & text box v**
+	-- **v search label & text box v**
 	_G.wVT.searchLabel = Turbine.UI.Label();
-    _G.wVT.searchLabel:SetParent( _G.wVT );
-    _G.wVT.searchLabel:SetText( L["VTSe"] );
-    _G.wVT.searchLabel:SetPosition( 15, 60 );
-    _G.wVT.searchLabel:SetSize( _G.wVT.searchLabel:GetTextLength() * 8, 18 ); --Auto size with text lenght
-    _G.wVT.searchLabel:SetFont( Turbine.UI.Lotro.Font.TrajanPro15 );
-    _G.wVT.searchLabel:SetForeColor( Color["gold"] );
-	 
-    _G.wVT.SearchTextBox = Turbine.UI.Lotro.TextBox();
-    _G.wVT.SearchTextBox:SetParent( _G.wVT );
-    _G.wVT.SearchTextBox:SetPosition(  _G.wVT.searchLabel:GetLeft() +  _G.wVT.searchLabel:GetWidth(),  _G.wVT.searchLabel:GetTop() );
-    _G.wVT.SearchTextBox:SetSize( _G.wVT:GetWidth() - 150, 18 );
-    _G.wVT.SearchTextBox:SetFont( Turbine.UI.Lotro.Font.Verdana14 );
-	_G.wVT.SearchTextBox:SetMultiline( false );
-	
-    _G.wVT.SearchTextBox.TextChanged = function( sender, args )
-        _G.wVT.searchText = string.lower( _G.wVT.SearchTextBox:GetText() );
-        if _G.wVT.searchText == "" then _G.wVT.searchText = nil; end
-        CountVIItems();
-    end
+	_G.wVT.searchLabel:SetParent( _G.wVT );
+	_G.wVT.searchLabel:SetText( L["VTSe"] );
+	_G.wVT.searchLabel:SetPosition( 15, 60 );
+	_G.wVT.searchLabel:SetSize( _G.wVT.searchLabel:GetTextLength() * 8, 18 ); --Auto size with text lenght
+	_G.wVT.searchLabel:SetFont( Turbine.UI.Lotro.Font.TrajanPro15 );
+	_G.wVT.searchLabel:SetForeColor( Color["gold"] );
+
+	local searchLeft = _G.wVT.searchLabel:GetLeft() + _G.wVT.searchLabel:GetWidth()
+	local searchWidth = _G.wVT:GetWidth() - 150
+	local search = CreateSearchControl(_G.wVT, searchLeft, _G.wVT.searchLabel:GetTop(), searchWidth + 24, 18, Turbine.UI.Lotro.Font.Verdana14, resources)
+	_G.wVT.SearchTextBox = search.TextBox
+	_G.wVT.DelIcon = search.DelIcon
+
+	_G.wVT.SearchTextBox.TextChanged = function( sender, args )
+		_G.wVT.searchText = string.lower( _G.wVT.SearchTextBox:GetText() );
+		if _G.wVT.searchText == "" then _G.wVT.searchText = nil; end
+		CountVIItems();
+	end
 
 	_G.wVT.SearchTextBox.FocusLost = function( sender, args )
-		
 	end
-	-- **^
-	--**v clear search text box icon v**
-	_G.wVT.DelIcon = Turbine.UI.Label();
-	_G.wVT.DelIcon:SetParent( _G.wVT );
-	_G.wVT.DelIcon:SetPosition( _G.wVT.SearchTextBox:GetLeft() + _G.wVT.SearchTextBox:GetWidth() + 5, _G.wVT.SearchTextBox:GetTop() );
-	_G.wVT.DelIcon:SetSize( 16, 16 );
-	_G.wVT.DelIcon:SetBackground( resources.DelIcon );
-	_G.wVT.DelIcon:SetBlendMode( 4 );
-	_G.wVT.DelIcon:SetVisible( true );
-				
-	_G.wVT.DelIcon.MouseClick = function( sender, args )
-		_G.wVT.SearchTextBox:SetText( "" );
-		_G.wVT.SearchTextBox.TextChanged( sender, args );
-		_G.wVT.SearchTextBox:Focus();
-	end
-	-- **^
-	-- **v Set the item listbox border v**
-	_G.wVT.ListBoxBorder = Turbine.UI.Control();
-	_G.wVT.ListBoxBorder:SetParent( _G.wVT );
-	_G.wVT.ListBoxBorder:SetWidth( _G.wVT:GetWidth() - 30 );
-	_G.wVT.ListBoxBorder:SetBackColor( Color["grey"] );
-	-- **^
-	-- **v Set the item listbox v**
-	_G.wVT.ListBox = Turbine.UI.ListBox();
-	_G.wVT.ListBox:SetParent( _G.wVT );
-	_G.wVT.ListBox:SetWidth( _G.wVT.ListBoxBorder:GetWidth() - 4 );
+
+	local lbTop = 60
+	local lb = CreateListBoxWithBorder(_G.wVT, 15, lbTop, _G.wVT:GetWidth() - 30, 392, Color["grey"])
+	_G.wVT.ListBoxBorder = lb.Border
+	_G.wVT.ListBox = lb.ListBox
+	_G.wVT.ListBoxScrollBar = lb.ScrollBar
 	_G.wVT.ListBox:SetMaxItemsPerLine( 1 );
 	_G.wVT.ListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
 	_G.wVT.ListBox:SetBackColor( Color["black"] );
-	-- **^
-	-- **v Set the listbox scrollbar v**
-	_G.wVT.ListBoxScrollBar = Turbine.UI.Lotro.ScrollBar();
-	_G.wVT.ListBoxScrollBar:SetParent( _G.wVT.ListBox );
-	_G.wVT.ListBoxScrollBar:SetPosition( _G.wVT.ListBox:GetWidth() - 10, 0 );
-	_G.wVT.ListBoxScrollBar:SetWidth( 12 );
-	_G.wVT.ListBoxScrollBar:SetOrientation( Turbine.UI.Orientation.Vertical );
-	_G.wVT.ListBox:SetVerticalScrollBar( _G.wVT.ListBoxScrollBar );
-	-- **^
 	-- **v Delete character infos button v**
 	_G.wVT.ButtonDelete = Turbine.UI.Lotro.Button();
 	_G.wVT.ButtonDelete:SetParent( _G.wVT );
@@ -207,68 +177,14 @@ function AddVaultPack(n, addCharacterName, vaultpackCount)
 	for i = 1, vaultpackCount do
 		local itemName = PlayerVault[n][tostring(i)].T;
 		if not _G.wVT.searchText or string.find(string.lower( itemName ), _G.wVT.searchText, 1, true) then
-			-- Item control
-			itemCtl[i] = Turbine.UI.Control();
-			itemCtl[i]:SetSize( _G.wVT.ListBox:GetWidth() - 10, 35 );
-
-			-- Item Background
-			local itemBG = Turbine.UI.Control();
-			itemBG:SetParent( itemCtl[i] );
-			itemBG:SetSize( 32, 32 );
-			itemBG:SetPosition( 3, 3 );
-			if PlayerVault[n][tostring(i)].B ~= "0" then itemBG:SetBackground( tonumber(PlayerVault[n][tostring(i)].B) ); end
-			itemBG:SetBlendMode( Turbine.UI.BlendMode.Overlay );
-			
-			-- Item Underlay
-			local itemU = Turbine.UI.Control();
-			itemU:SetParent( itemCtl[i] );
-			itemU:SetSize( 32, 32 );
-			itemU:SetPosition( 3, 3 );
-			if PlayerVault[n][tostring(i)].U ~= "0" then itemU:SetBackground( tonumber(PlayerVault[n][tostring(i)].U) ); end
-			itemU:SetBlendMode( Turbine.UI.BlendMode.Overlay );
-
-			-- Item Shadow
-			local itemS = Turbine.UI.Control();
-			itemS:SetParent( itemCtl[i] );
-			itemS:SetSize( 32, 32 );
-			itemS:SetPosition( 3, 3 );
-			if PlayerVault[n][tostring(i)].S ~= "0" then itemS:SetBackground( tonumber(PlayerVault[n][tostring(i)].S) ); end
-			itemS:SetBlendMode( Turbine.UI.BlendMode.Overlay );
-
-			-- Item
-			local item = Turbine.UI.Control();
-			item:SetParent( itemCtl[i] );
-			item:SetSize( 32, 32 );
-			item:SetPosition( 3, 3 );
-			if PlayerVault[n][tostring(i)].I ~= "0" then item:SetBackground( tonumber(PlayerVault[n][tostring(i)].I) ); end
-			item:SetBlendMode( Turbine.UI.BlendMode.Overlay );
-
-			-- Item Quantity
-			local itemQTE = Turbine.UI.Label();
-			itemQTE:SetParent( itemCtl[i] );
-			itemQTE:SetSize( 32, 15 );
-			itemQTE:SetPosition( -4, 16 );
-			itemQTE:SetFont( Turbine.UI.Lotro.Font.Verdana12 );
-			itemQTE:SetFontStyle( Turbine.UI.FontStyle.Outline );
-			itemQTE:SetOutlineColor( Color["black"] );
-			itemQTE:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
-			itemQTE:SetBackColorBlendMode( Turbine.UI.BlendMode.Overlay );
-			itemQTE:SetForeColor( Color["nicegold"] );
-			itemQTE:SetText( tonumber(PlayerVault[n][tostring(i)].N) );
-
-			-- Item name
-			local itemLbl = Turbine.UI.Label();
-			itemLbl:SetParent( itemCtl[i] );
-			itemLbl:SetSize( itemCtl[i]:GetWidth() - 35, 35 );
-			itemLbl:SetPosition( 37, 2 );
-			itemLbl:SetFont( Turbine.UI.Lotro.Font.TrajanPro16 );
-			itemLbl:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-			itemLbl:SetBackColorBlendMode( Turbine.UI.BlendMode.Overlay );
-			itemLbl:SetForeColor( Color["white"] );
-			itemLbl:SetText( PlayerVault[n][tostring(i)].T );
-			if addCharacterName then itemLbl:AppendText( " (" .. n .. ")" ); end
-
-			_G.wVT.ListBox:AddItem( itemCtl[i] );
+			-- Use CreateItemRow for vault item
+			local data = PlayerVault[n][tostring(i)]
+			local row = CreateItemRow(_G.wVT.ListBox, _G.wVT.ListBox:GetWidth(), 35, false, data)
+			itemCtl[i] = row.Container
+			if row.ItemQuantity and data and data.N then row.ItemQuantity:SetText( tonumber(data.N) ) end
+			row.ItemLabel:SetText( data.T )
+			if addCharacterName then row.ItemLabel:AppendText( " (" .. n .. ")" ) end
+			_G.wVT.ListBox:AddItem( itemCtl[i] )
 			_G.wVT.ButtonDelete:SetVisible( true );
 		end
 	end
