@@ -101,11 +101,11 @@ function ImportCtr( value )
                 plMess = args.Message;
                 if plMess ~= nil then
                     if GLocale == "en" then
-                        plPattern = "Entered the ([%a%p%u%l%s]*) %-";
+                        plPattern = "Entered the%s+(.-)%s*%-";
                     elseif GLocale == "fr" then
-                        plPattern = "Canal ([%a%p%u%l%s]*) %-";
+                        plPattern = "Canal%s+(.-)%s*%-";
                     elseif GLocale == "de" then
-                        plPattern = "Chat%-Kanal '([%a%p%u%l%s]*) %-";
+                        plPattern = "Chat%-Kanal%s+'(.-)%s*%-";
                     end
 
                     local tmpPL = string.match( plMess, plPattern );
