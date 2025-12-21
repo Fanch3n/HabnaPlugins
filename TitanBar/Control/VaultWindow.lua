@@ -53,13 +53,7 @@ function frmVault()
 	-- **^
 	-- **v search label & text box v**
 	-- **v search label & text box v**
-	_G.wVT.searchLabel = Turbine.UI.Label();
-	_G.wVT.searchLabel:SetParent( _G.wVT );
-	_G.wVT.searchLabel:SetText( L["VTSe"] );
-	_G.wVT.searchLabel:SetPosition( 15, 60 );
-	_G.wVT.searchLabel:SetSize( _G.wVT.searchLabel:GetTextLength() * 8, 18 ); --Auto size with text lenght
-	_G.wVT.searchLabel:SetFont( Turbine.UI.Lotro.Font.TrajanPro15 );
-	_G.wVT.searchLabel:SetForeColor( Color["gold"] );
+	_G.wVT.searchLabel = CreateTitleLabel(_G.wVT, L["VTSe"], 15, 60, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
 
 	local searchLeft = _G.wVT.searchLabel:GetLeft() + _G.wVT.searchLabel:GetWidth()
 	local searchWidth = _G.wVT:GetWidth() - 150
@@ -118,12 +112,8 @@ function CreateVIComboBox()
 		if string.sub( i, 1, 1 ) == "~" then PlayerVault[i] = nil; else table.insert(newt,i); end --Delete session play character
 	end
 	table.sort(newt);
-	VICB.listBox:ClearItems();
-	VICB:AddItem( L["VTAll"], 0 );
-	for k,v in pairs(newt) do
-		VICB:AddItem(v, k);
-		if v == PN then VICB:SetSelection(k); end
-	end
+	-- Use PopulateDropDown helper (adds All and selects PN if present)
+	PopulateDropDown(VICB, newt, true, L["VTAll"], PN)
 	-- **^
 end
 

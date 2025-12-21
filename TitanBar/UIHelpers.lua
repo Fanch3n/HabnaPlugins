@@ -132,3 +132,64 @@ function CreateItemRow(parent, width, height, isPlayerItem, itemSpec)
 
     return { Container = ctl, ItemLabel = itemLbl, ItemQuantity = itemQTE }
 end
+
+-- Populate a dropdown from a simple array-like table.
+-- Parameters:
+--  dropdown: the ComboBox instance
+--  items: an array-like table of strings
+--  includeAll: boolean, whether to add an "All" entry at the start
+--  allLabel: label for the All entry (defaults to L["VTAll"] when includeAll)
+--  selectedValue: optional string to auto-select; returns the selected index or nil
+function PopulateDropDown(dropdown, items, includeAll, allLabel, selectedValue)
+    if not dropdown then return nil end
+    dropdown.listBox:ClearItems()
+    local startIndex = 1
+    if includeAll then
+        dropdown:AddItem(allLabel or L["VTAll"], 0)
+        startIndex = 2
+    end
+
+    local selIndex = nil
+    local idx = startIndex
+    for _, entry in ipairs(items) do
+        if type(entry) == "string" then
+            dropdown:AddItem(entry, idx)
+            if selectedValue and entry == selectedValue then selIndex = idx end
+        elseif type(entry) == "table" then
+            -- support { label = "...", value = "..." } or { "label", "value" }
+            local label = entry.label or entry[1]
+            local value = entry.value or entry[2] or idx
+            dropdown:AddItem(label, value)
+            if selectedValue and value == selectedValue then selIndex = idx end
+        end
+        idx = idx + 1
+    end
+
+    if selIndex then dropdown:SetSelection(selIndex) end
+    return selIndex
+end
+
+-- Create a standardized title/label used for headings and small descriptors.
+-- Parameters:
+--  parent, text, left, top
+--  font: a Turbine font (optional)
+--  foreColor: Color table entry (optional)
+--  autosizeFactor: if number, width = textLength * autosizeFactor; otherwise `width` must be supplied
+--  width, height: explicit sizes if autosizeFactor is nil
+--  alignment: Turbine.UI.ContentAlignment value (optional)
+function CreateTitleLabel(parent, text, left, top, font, foreColor, autosizeFactor, width, height, alignment)
+    local lbl = Turbine.UI.Label()
+    lbl:SetParent(parent)
+    lbl:SetText(text)
+    lbl:SetPosition(left, top)
+    local h = height or 18
+    if autosizeFactor and type(autosizeFactor) == "number" then
+        lbl:SetSize(string.len(text) * autosizeFactor, h)
+    else
+        lbl:SetSize(width or 100, h)
+    end
+    if font then lbl:SetFont(font) end
+    if foreColor then lbl:SetForeColor(foreColor) end
+    if alignment then lbl:SetTextAlignment(alignment) end
+    return lbl
+end

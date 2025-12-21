@@ -145,17 +145,7 @@ function RefreshMIListBox()
 		--MsgCtr:SetBackColor( Color["red"] ); -- Debug purpose
 		--**^
 		--**v Message v**
-		local MsgLbl = Turbine.UI.Label();
-		MsgLbl:SetParent( MsgCtr );
-		--MsgLbl:SetForeColor( Color["white"] );
-		MsgLbl:SetPosition( 0, 0 );
-		MsgLbl:SetText( L["MIMsg"] );
-		MsgLbl:SetSize( MsgCtr:GetWidth(), MsgCtr:GetHeight() );
-		--MsgLbl:SetFontStyle( Turbine.UI.FontStyle.Outline );
-		MsgLbl:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
-		MsgLbl:SetForeColor( Color["red"] );
-		--MsgLbl:SetBackColor( Color["white"] ); -- Debug purpose
-		--**^
+		local MsgLbl = CreateTitleLabel(MsgCtr, L["MIMsg"], 0, 0, nil, Color["red"], nil, MsgCtr:GetWidth(), MsgCtr:GetHeight(), Turbine.UI.ContentAlignment.MiddleCenter)
 
 		MIListBox:AddItem( MsgCtr );
 		MIPosY = MIPosY + 19;

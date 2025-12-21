@@ -48,12 +48,7 @@ function frmDayNightWindow()
 	end
 	-- **^
 	-- **v Timer seed - Label v**
-	TAjustlbl = Turbine.UI.Label();
-	TAjustlbl:SetParent( _G.wDN );
-	TAjustlbl:SetPosition( NextTimeCB:GetLeft(), NextTimeCB:GetTop() + 30 );
-	TAjustlbl:SetText( L["TAjustL"] );
-	TAjustlbl:SetSize( TAjustlbl:GetTextLength() * 8.5, 20 );
-	TAjustlbl:SetForeColor( Color["rustedgold"] );
+	local TAjustlbl = CreateTitleLabel(_G.wDN, L["TAjustL"], NextTimeCB:GetLeft(), NextTimeCB:GetTop() + 30, nil, Color["rustedgold"], 8.5, nil, 20)
 	-- **^
 	-- **v Timer seed - Text box v**
 	local TAjustTB = Turbine.UI.Lotro.TextBox();

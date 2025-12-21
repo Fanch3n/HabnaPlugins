@@ -42,13 +42,8 @@ function frmWalletWindow()
 
 	
 	local WIlbltextHeight = 35;
-	local WIlbltext = Turbine.UI.Label();
-	WIlbltext:SetParent( _G.wWI );
-	WIlbltext:SetText( L["WIt"] );
-	WIlbltext:SetPosition( 20, 35);
-	WIlbltext:SetSize( _G.wWI:GetWidth()-40 , WIlbltextHeight );
-	WIlbltext:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
-	WIlbltext:SetForeColor( Color["green"] );
+	-- Use CreateTitleLabel for the centered wallet title
+	local WIlbltext = CreateTitleLabel(_G.wWI, L["WIt"], 20, 35, nil, Color["green"], nil, _G.wWI:GetWidth()-40, WIlbltextHeight, Turbine.UI.ContentAlignment.MiddleCenter)
 
 	local WIFilterlblHeight = 20;
 	local WIFilterlbl = Turbine.UI.Label();
@@ -140,7 +135,8 @@ function frmWalletWindow()
 	WIDD.dropDownWindow:SetPosition(WIDD:GetLeft(), WIDD:GetTop() + WIDD:GetHeight()+2);
 	-- **^
 	
-	for k,v in pairs(WICBO) do WIDD:AddItem(v, k); end
+	-- Populate the wallet combobox using the helper
+	PopulateDropDown(WIDD, WICBO, false, nil, nil)
 
 	--** LOTRO Point box
 	LPWCtr = Turbine.UI.Control();

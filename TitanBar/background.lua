@@ -7,6 +7,8 @@ function frmBackground()
 	sFrom = _G.sFromCtr;
 	curColor = {};
 	bClick = false;
+
+	import(AppDirD .. "WindowFactory")
 	
 	-- **v Set some window stuff v**
 	wBackground = Turbine.UI.Lotro.Window();
@@ -39,13 +41,7 @@ function frmBackground()
 	-- **^
 
 	-- **v Currently set color - label v**
-	local CurSetColorLbl = Turbine.UI.Label();
-	CurSetColorLbl:SetParent( wBackground );
-	CurSetColorLbl:SetPosition( 305, 35 );
-	CurSetColorLbl:SetSize( 80, 30 );
-	CurSetColorLbl:SetText( L["BWCurSetColor"] );
-	CurSetColorLbl:SetVisible( true );
-	CurSetColorLbl:SetForeColor( Color["rustedgold"] );
+	local CurSetColorLbl = CreateTitleLabel(wBackground, L["BWCurSetColor"], 305, 35, nil, Color["rustedgold"], nil, 80, 30)
 	-- **^
 	-- **v Currently Selected color - box v**
 	curSelColorBorder = Turbine.UI.Label();

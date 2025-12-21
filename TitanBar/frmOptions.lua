@@ -96,12 +96,7 @@ function frmOptions()
 
 	
 	-- **v TitanBar Height - label v**
-	local lblHeight = Turbine.UI.Label();
-	lblHeight:SetParent( wOptions );
-	lblHeight:SetPosition( 25, 40 );
-	lblHeight:SetText( L[ "OPHText" ] );
-	lblHeight:SetSize( wOptions:GetWidth() - 25, 15 );
-	lblHeight:SetForeColor( Color[ "rustedgold" ] );
+	local lblHeight = CreateTitleLabel(wOptions, L["OPHText"], 25, 40, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	-- **^
 	-- **v Set the scrollbar v**
 	wScrollBar = Turbine.UI.Lotro.ScrollBar();
@@ -126,21 +121,11 @@ function frmOptions()
 	end
 	-- **^
 	-- **v TitanBar Height Value - label v**
-	lblHeightV = Turbine.UI.Label();
-	lblHeightV:SetParent( wOptions );
-	lblHeightV:SetPosition( wScrollBar:GetLeft() + wScrollBar:GetWidth() + 5, wScrollBar:GetTop() );
-	lblHeightV:SetText( wScrollBar:GetValue() );
-	lblHeightV:SetSize( 20, 15 );
-	lblHeightV:SetForeColor( Color["rustedgold"] );
+	lblHeightV = CreateTitleLabel(wOptions, wScrollBar:GetValue(), wScrollBar:GetLeft() + wScrollBar:GetWidth() + 5, wScrollBar:GetTop(), nil, Color["rustedgold"], nil, 20, 15)
 	-- **^
 
 	-- **v TitanBar Font - label & DropDown box v**
-	lblFont = Turbine.UI.Label();
-	lblFont:SetParent( wOptions );
-	lblFont:SetPosition( 25, wScrollBar:GetTop() + 20 );
-	lblFont:SetText( L[ "OPFText" ] );
-	lblFont:SetSize( wOptions:GetWidth() - 25, 15 );
-	lblFont:SetForeColor( Color[ "rustedgold" ] );
+	lblFont = CreateTitleLabel(wOptions, L["OPFText"], 25, wScrollBar:GetTop() + 20, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	
 	FontDD:SetParent( wOptions );
 	FontDD:SetSize( 159, 19 );
@@ -165,12 +150,7 @@ function frmOptions()
 	-- **^
 
 	-- **v TitanBar Auto hide - label & DropDown box v**
-	lblAuto = Turbine.UI.Label();
-	lblAuto:SetParent( wOptions );
-	lblAuto:SetPosition( 25, FontDD:GetTop() + 30 );
-	lblAuto:SetText( L[ "OPAText" ] );
-	lblAuto:SetSize( wOptions:GetWidth() - 25, 15 );
-	lblAuto:SetForeColor( Color[ "rustedgold" ] );
+	lblAuto = CreateTitleLabel(wOptions, L["OPAText"], 25, FontDD:GetTop() + 30, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	
 	AutoDD = HabnaPlugins.TitanBar.Class.ComboBox();
 	AutoDD:SetParent( wOptions );
@@ -195,12 +175,7 @@ function frmOptions()
 	end
 	-- **^
 	-- **v TitanBar Icon Size - label & DropDown box v**
-	lblIconSize = Turbine.UI.Label();
-	lblIconSize:SetParent( wOptions );
-	lblIconSize:SetPosition( 25, AutoDD:GetTop() + 30 );
-	lblIconSize:SetText( L[ "OPIText" ] );
-	lblIconSize:SetSize( wOptions:GetWidth() - 25, 15 );
-	lblIconSize:SetForeColor( Color[ "rustedgold" ] );
+	lblIconSize = CreateTitleLabel(wOptions, L["OPIText"], 25, AutoDD:GetTop() + 30, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	
 	wIconScrollBar = Turbine.UI.Lotro.ScrollBar();
 	wIconScrollBar:SetParent( wOptions );
@@ -221,12 +196,7 @@ function frmOptions()
 	end
 	-- **^
 	-- **v TitanBar Icon Size Value - label v**
-	lblIconSizeV = Turbine.UI.Label();
-	lblIconSizeV:SetParent( wOptions );
-	lblIconSizeV:SetPosition( wIconScrollBar:GetLeft() + wIconScrollBar:GetWidth() + 5, wIconScrollBar:GetTop() );
-	lblIconSizeV:SetText( wIconScrollBar:GetValue() );
-	lblIconSizeV:SetSize( 20, 15 );
-	lblIconSizeV:SetForeColor( Color[ "rustedgold" ] );
+	lblIconSizeV = CreateTitleLabel(wOptions, wIconScrollBar:GetValue(), wIconScrollBar:GetLeft() + wIconScrollBar:GetWidth() + 5, wIconScrollBar:GetTop(), nil, Color["rustedgold"], nil, 20, 15)
 	-- **^
 	-- **v Set TitanBar at Top of screen - Check box v**
 	local TBTopCB = Turbine.UI.Lotro.CheckBox();

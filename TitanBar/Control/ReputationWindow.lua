@@ -33,13 +33,8 @@ function frmReputationWindow()
     })
    
 
-    local RPlbltext = Turbine.UI.Label();
-    RPlbltext:SetParent(_G.wRP);
-    RPlbltext:SetText(L["RPt"]);
-    RPlbltext:SetPosition(20, 35);
-    RPlbltext:SetSize(_G.wRP:GetWidth() - 40 , 35);
-    RPlbltext:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleCenter);
-    RPlbltext:SetForeColor(Color["green"]);
+    -- Use CreateTitleLabel for the reputation header
+    local RPlbltext = CreateTitleLabel(_G.wRP, L["RPt"], 20, 35, nil, Color["green"], nil, _G.wRP:GetWidth() - 40, 35, Turbine.UI.ContentAlignment.MiddleCenter)
 
     local RPFilterlbl = Turbine.UI.Label();
     RPFilterlbl:SetParent(_G.wRP);
@@ -285,12 +280,12 @@ function RefreshRPListBox()
 
                 RPtxtTotal:SetText(tostring(currentRankPoints));
                 RPDD:ClearItems();
-                
+                -- Build label/value entries for the dropdown and populate via helper
+                local rankEntries = {}
                 for _, rank in ipairs(faction.ranks) do
-                    RPDD:AddItem(L[rank.name], rank.name)
+                    table.insert(rankEntries, { label = L[rank.name], value = rank.name })
                 end
-
-                RPDD:SetSelection(currentRank)
+                PopulateDropDown(RPDD, rankEntries, false, nil, currentRank)
                 RPWCtr:SetVisible(true);
                 RPWCtr:SetZOrder(2);
                 RPtxtTotal:Focus();

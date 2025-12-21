@@ -28,13 +28,7 @@ function frmSharedStorage()
 
 
 	-- **v search label & text box v**
-	_G.wSS.searchLabel = Turbine.UI.Label();
-	_G.wSS.searchLabel:SetParent( _G.wSS );
-	_G.wSS.searchLabel:SetText( L["VTSe"] );
-	_G.wSS.searchLabel:SetPosition( 15, 40 );
-	_G.wSS.searchLabel:SetSize( _G.wSS.searchLabel:GetTextLength() * 8, 18 ); --Auto size with text lenght
-	_G.wSS.searchLabel:SetFont( Turbine.UI.Lotro.Font.TrajanPro15 );
-	_G.wSS.searchLabel:SetForeColor( Color["gold"] );
+	_G.wSS.searchLabel = CreateTitleLabel(_G.wSS, L["VTSe"], 15, 40, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
 
 	local searchLeft = _G.wSS.searchLabel:GetLeft() + _G.wSS.searchLabel:GetWidth()
 	local searchWidth = _G.wSS:GetWidth() - 150

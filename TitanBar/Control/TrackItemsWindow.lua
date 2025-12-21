@@ -39,13 +39,7 @@ function frmTrackItemsWindow()
 
 	-- **v search label & text box v**
 	-- **v search label & text box v**
-	_G.wTI.searchLabel = Turbine.UI.Label();
-	_G.wTI.searchLabel:SetParent( _G.wTI );
-	_G.wTI.searchLabel:SetText( L["VTSe"] );
-	_G.wTI.searchLabel:SetPosition( 15, 60 );
-	_G.wTI.searchLabel:SetSize( _G.wTI.searchLabel:GetTextLength() * 8, 18 ); --Auto size with text lenght
-	_G.wTI.searchLabel:SetFont( Turbine.UI.Lotro.Font.TrajanPro15 );
-	_G.wTI.searchLabel:SetForeColor( Color["gold"] );
+	_G.wTI.searchLabel = CreateTitleLabel(_G.wTI, L["VTSe"], 15, 60, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
 
 	local searchLeft = _G.wTI.searchLabel:GetLeft() + _G.wTI.searchLabel:GetWidth()
 	local searchWidth = _G.wTI:GetWidth() - 150

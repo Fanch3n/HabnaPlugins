@@ -56,29 +56,13 @@ function frmBagInfos()
 		end
 		table.sort(newt)
 
-		bagInfosDropdown.listBox:ClearItems()
-		bagInfosDropdown:AddItem(L["VTAll"], 0)
-
-		local selIndex = nil
-		for k, v in ipairs(newt) do
-			bagInfosDropdown:AddItem(v, k)
-			if v == PN then selIndex = k end
-		end
-
-		if selIndex then
-			bagInfosDropdown:SetSelection(selIndex)
-		end
+		-- Use PopulateDropDown helper: include an "All" option and select current player if present
+		PopulateDropDown(bagInfosDropdown, newt, true, L["VTAll"], PN)
 	end
 	CreateBIComboBox()
 	-- **^
 	-- **v search label & text box v**
-	_G.wBI.searchLabel = Turbine.UI.Label();
-	_G.wBI.searchLabel:SetParent( _G.wBI );
-	_G.wBI.searchLabel:SetText( L["VTSe"] );
-	_G.wBI.searchLabel:SetPosition( 15, 60 );
-	_G.wBI.searchLabel:SetSize( _G.wBI.searchLabel:GetTextLength() * 8, 18 ); --Auto size with text lenght
-	_G.wBI.searchLabel:SetFont( Turbine.UI.Lotro.Font.TrajanPro15 );
-	_G.wBI.searchLabel:SetForeColor( Color["gold"] );
+	_G.wBI.searchLabel = CreateTitleLabel(_G.wBI, L["VTSe"], 15, 60, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
 
 	-- Use the factory helper to create a search TextBox + DelIcon
 	local searchLeft = _G.wBI.searchLabel:GetLeft() + _G.wBI.searchLabel:GetWidth()
