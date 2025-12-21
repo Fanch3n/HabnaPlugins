@@ -37,15 +37,7 @@ function frmLOTROPointsWindow()
 	LPWCtr:SetZOrder( 2 );
 	--LPWCtr:SetBackColor( Color["red"] ); -- debug purpose
 
-	local lblLOTROPTS = Turbine.UI.Label();
-	lblLOTROPTS:SetParent( LPWCtr );
-	--lblLOTROPTS:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
-	lblLOTROPTS:SetText( L["MLotroPoints"] );
-	lblLOTROPTS:SetPosition( 0, 2 );
-	lblLOTROPTS:SetSize( lblLOTROPTS:GetTextLength() * 7.5, 15 ); --Auto size with text lenght
-	lblLOTROPTS:SetForeColor( Color["rustedgold"] );
-	lblLOTROPTS:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-	--lblLOTROPTS:SetBackColor( Color["red"] ); -- debug purpose
+	local lblLOTROPTS = CreateTitleLabel(LPWCtr, L["MLotroPoints"], 0, 2, nil, Color["rustedgold"], 7.5, nil, 15, Turbine.UI.ContentAlignment.MiddleLeft)
 
 	local txtLOTROPTS = Turbine.UI.Lotro.TextBox();
 	txtLOTROPTS:SetParent( LPWCtr );
@@ -78,7 +70,7 @@ function frmLOTROPointsWindow()
 		end
 	end
 
-	buttonSave = Turbine.UI.Lotro.Button();
+	local buttonSave = Turbine.UI.Lotro.Button();
 	buttonSave:SetParent( LPWCtr );
 	buttonSave:SetText( L["PWSave"] );
 	buttonSave:SetSize( buttonSave:GetTextLength() * 10, 15 ); --Auto size with text lenght

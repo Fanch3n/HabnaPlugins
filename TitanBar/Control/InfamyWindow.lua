@@ -37,15 +37,7 @@ function frmInfamyWindow()
 	IFWCtr:SetZOrder( 2 );
 	--IFWCtr:SetBackColor( Color["red"] ); -- debug purpose
 
-	local lblName = Turbine.UI.Label();
-	lblName:SetParent( IFWCtr );
-	--lblName:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
-	lblName:SetText( L["IFIF"] );
-	lblName:SetPosition( 0, 2 );
-	lblName:SetSize( lblName:GetTextLength() * 7.5, 15 ); --Auto size with text lenght
-	lblName:SetForeColor( Color["rustedgold"] );
-	lblName:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-	--lblName:SetBackColor( Color["red"] ); -- debug purpose
+	local lblName = CreateTitleLabel(IFWCtr, L["IFIF"], 0, 2, nil, Color["rustedgold"], 7.5, nil, 15, Turbine.UI.ContentAlignment.MiddleLeft)
 
 	local txtInfamy = Turbine.UI.Lotro.TextBox();
 	txtInfamy:SetParent( IFWCtr );
@@ -79,7 +71,7 @@ function frmInfamyWindow()
 		end
 	end
 
-	buttonSave = Turbine.UI.Lotro.Button();
+	local buttonSave = Turbine.UI.Lotro.Button();
 	buttonSave:SetParent( IFWCtr );
 	buttonSave:SetText( L["PWSave"] );
 	buttonSave:SetSize( buttonSave:GetTextLength() * 10, 15 ); --Auto size with text lenght

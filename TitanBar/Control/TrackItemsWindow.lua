@@ -106,16 +106,10 @@ function CheckForStackableItems()
 end
 
 function SetEmptyTrackList()
-	itemCtl = Turbine.UI.Control();
+	local itemCtl = Turbine.UI.Control();
 	itemCtl:SetSize( _G.wTI.ListBox:GetWidth(), 35 );
 
-	local lblmgs = Turbine.UI.Label();
-	lblmgs:SetParent( itemCtl );
-	lblmgs:SetText( L["BIMsg"] );
-	lblmgs:SetPosition( 0, 0 );
-	lblmgs:SetSize( itemCtl:GetWidth(), itemCtl:GetHeight() );
-	lblmgs:SetForeColor( Color["red"] );
-	lblmgs:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
+	local lblmgs = CreateTitleLabel(itemCtl, L["BIMsg"], 0, 0, nil, Color["red"], nil, itemCtl:GetWidth(), itemCtl:GetHeight(), Turbine.UI.ContentAlignment.MiddleCenter)
 
 	_G.wTI.ListBoxBorder:SetPosition( 15, 60 );
 	_G.wTI.ListBoxBorder:SetHeight( lblmgs:GetHeight() + 4 );

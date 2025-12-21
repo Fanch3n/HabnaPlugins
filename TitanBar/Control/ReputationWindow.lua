@@ -36,12 +36,7 @@ function frmReputationWindow()
     -- Use CreateTitleLabel for the reputation header
     local RPlbltext = CreateTitleLabel(_G.wRP, L["RPt"], 20, 35, nil, Color["green"], nil, _G.wRP:GetWidth() - 40, 35, Turbine.UI.ContentAlignment.MiddleCenter)
 
-    local RPFilterlbl = Turbine.UI.Label();
-    RPFilterlbl:SetParent(_G.wRP);
-    RPFilterlbl:SetSize(60,20);
-    RPFilterlbl:SetPosition(20,75);
-    RPFilterlbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
-    RPFilterlbl:SetText("Search:");
+    local RPFilterlbl = CreateFieldLabel(_G.wRP, "Search:", 20, 75, 8, 60)
 
     -- Use factory helper to create a search TextBox + delete icon
     local rpSearch = CreateSearchControl(_G.wRP, RPFilterlbl:GetLeft() + RPFilterlbl:GetWidth(), RPFilterlbl:GetTop(), _G.wRP:GetWidth() - 120, 20, Turbine.UI.Lotro.Font.Verdana16, resources)

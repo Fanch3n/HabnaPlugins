@@ -46,12 +46,7 @@ function frmWalletWindow()
 	local WIlbltext = CreateTitleLabel(_G.wWI, L["WIt"], 20, 35, nil, Color["green"], nil, _G.wWI:GetWidth()-40, WIlbltextHeight, Turbine.UI.ContentAlignment.MiddleCenter)
 
 	local WIFilterlblHeight = 20;
-	local WIFilterlbl = Turbine.UI.Label();
-	WIFilterlbl:SetParent(_G.wWI);
-	WIFilterlbl:SetSize(60,WIFilterlblHeight);
-	WIFilterlbl:SetPosition(20,75);
-	WIFilterlbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
-	WIFilterlbl:SetText("Search:");
+	local WIFilterlbl = CreateFieldLabel(_G.wWI, "Search:", 20, 75, 8, 60)
 
 	-- Use factory helper to create the search TextBox + delete icon
 	local wSearch = CreateSearchControl(_G.wWI, WIFilterlbl:GetLeft() + WIFilterlbl:GetWidth(), WIFilterlbl:GetTop(), _G.wWI:GetWidth() - 120, 20, Turbine.UI.Lotro.Font.Verdana16, resources)

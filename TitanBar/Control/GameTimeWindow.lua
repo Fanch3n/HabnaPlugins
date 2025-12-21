@@ -109,7 +109,7 @@ function frmGameTimeWindow()
 	end
 	-- **^
 	-- **v Show both time - Check box v**
-	ShowBTcb = Turbine.UI.Lotro.CheckBox();
+	local ShowBTcb = Turbine.UI.Lotro.CheckBox();
 	ShowBTcb:SetParent( _G.wGT );
 	ShowBTcb:SetPosition( 35, ShowSTcb:GetTop() + 20 );
 	ShowBTcb:SetText( L["GTWSBT"] );

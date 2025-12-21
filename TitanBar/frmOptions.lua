@@ -55,8 +55,6 @@ function frmOptions()
 	import ( AppClassD .. "ComboBox" );
 	FontDD = HabnaPlugins.TitanBar.Class.ComboBox();
 
-	local dragging = false;
-
 	-- **v Set some window stuff v**
 	import(AppDirD .. "WindowFactory")
 
@@ -73,17 +71,10 @@ function frmOptions()
 			onPositionChanged = function(left, top)
 				OPWLeft, OPWTop = left, top
 			end,
-			onMouseDown = function(sender, args)
-				if ( args.Button == Turbine.UI.MouseButton.Left ) then dragging = true; end
-			end,
 			onMouseMove = function(sender, args)
-				if dragging then
-					if FontDD and FontDD.dropped then FontDD:CloseDropDown(); end
-					if AutoDD and AutoDD.dropped then AutoDD:CloseDropDown(); end
-				end
-			end,
-			onMouseUp = function(sender, args)
-				dragging = false
+				-- Close dropdowns when window is being dragged
+				if FontDD and FontDD.dropped then FontDD:CloseDropDown(); end
+				if AutoDD and AutoDD.dropped then AutoDD:CloseDropDown(); end
 			end,
 			onClosing = function( sender, args )
 				if FontDD and FontDD.dropDownWindow then FontDD.dropDownWindow:SetVisible( false ); end

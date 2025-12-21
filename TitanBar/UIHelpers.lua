@@ -11,15 +11,15 @@ function CreateSearchControl(parent, left, top, width, height, font, resources)
     container:SetSize(width, height)
 
     local tb = Turbine.UI.Lotro.TextBox()
-    tb:SetParent(parent)
-    tb:SetPosition(left, top)
+    tb:SetParent(container)
+    tb:SetPosition(0, 0)
     tb:SetSize(width - 24, height)
     if font then tb:SetFont(font) end
     tb:SetMultiline(false)
 
     local del = Turbine.UI.Label()
-    del:SetParent(parent)
-    del:SetPosition(left + (width - 20), top)
+    del:SetParent(container)
+    del:SetPosition(width - 20, 0)
     del:SetSize(16, 16)
     if resources and resources.DelIcon then
         del:SetBackground(resources.DelIcon)
@@ -192,4 +192,16 @@ function CreateTitleLabel(parent, text, left, top, font, foreColor, autosizeFact
     if foreColor then lbl:SetForeColor(foreColor) end
     if alignment then lbl:SetTextAlignment(alignment) end
     return lbl
+end
+
+-- Create a compact field label for form inputs (smaller, standard styling).
+-- Parameters:
+--  parent, text, left, top
+--  autosizeFactor: if number, width = textLength * autosizeFactor (default 8.5)
+--  width: explicit width if autosizeFactor is nil
+--  foreColor: defaults to Color["rustedgold"]
+function CreateFieldLabel(parent, text, left, top, autosizeFactor, width, foreColor)
+    local factor = autosizeFactor or 8.5
+    local color = foreColor or Color["rustedgold"]
+    return CreateTitleLabel(parent, text, left, top, nil, color, factor, width, 20, Turbine.UI.ContentAlignment.MiddleLeft)
 end

@@ -74,10 +74,11 @@ function CreateWindow(windowSettings)
         
         -- Save position
         if config.settingsKey then
-            settings[config.settingsKey].L = string.format("%.0f", window:GetLeft())
-            settings[config.settingsKey].T = string.format("%.0f", window:GetTop())
+            local left, top = window:GetPosition()
+            settings[config.settingsKey].L = string.format("%.0f", left)
+            settings[config.settingsKey].T = string.format("%.0f", top)
             if config.onPositionChanged then
-                config.onPositionChanged(window:GetPosition())
+                config.onPositionChanged(left, top)
             end
             SaveSettings(false)
         end

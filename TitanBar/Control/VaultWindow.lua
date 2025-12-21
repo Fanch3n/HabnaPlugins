@@ -141,16 +141,10 @@ function CountVIItems()
 end
 
 function SetEmptyVault()
-	itemCtl = Turbine.UI.Control();
+	local itemCtl = Turbine.UI.Control();
 	itemCtl:SetSize( _G.wVT.ListBox:GetWidth(), 35 );
 
-	local lblmgs = Turbine.UI.Label();
-	lblmgs:SetParent( itemCtl );
-	lblmgs:SetText( L["VTnd"] );
-	lblmgs:SetPosition( 0, 0 );
-	lblmgs:SetSize( itemCtl:GetWidth(), itemCtl:GetHeight() );
-	lblmgs:SetForeColor( Color["green"] );
-	lblmgs:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
+	local lblmgs = CreateTitleLabel(itemCtl, L["VTnd"], 0, 0, nil, Color["green"], nil, itemCtl:GetWidth(), itemCtl:GetHeight(), Turbine.UI.ContentAlignment.MiddleCenter)
 
 	_G.wVT.ListBox:AddItem( itemCtl );
 	_G.wVT.ButtonDelete:SetVisible( false );
