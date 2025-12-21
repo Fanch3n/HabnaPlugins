@@ -4,39 +4,28 @@
 
 function frmSharedStorage()
 	tsspack = sspack;
-	_G.wSS = Turbine.UI.Lotro.Window()
+	import(AppDirD .. "WindowFactory")
 
-	-- **v Set some window stuff v**
-	_G.wSS:SetText( L["MStorage"] );
-	_G.wSS:SetPosition( SSWLeft, SSWTop );
-	_G.wSS:SetWidth( 390 );
-	_G.wSS:SetWantsKeyEvents( true );
-	_G.wSS:SetVisible( true );
-	--_G.wSS:SetZOrder( 2 );
-	_G.wSS:Activate();
+	-- Create window via factory
+	_G.wSS = CreateWindow({
+		text = L["MStorage"],
+		width = 390,
+		height = 475,
+		left = SSWLeft,
+		top = SSWTop,
+		config = {
+			settingsKey = "SharedStorage",
+			windowGlobalVar = "wSS",
+			formGlobalVar = "frmSS",
+			onPositionChanged = function(left, top)
+				SSWLeft, SSWTop = left, top
+			end,
+			onClosing = function(sender, args)
+				RemoveCallback( tsspack, "CountChanged" );
+			end,
+		}
+	})
 
-	_G.wSS.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wSS:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			_G.wSS:SetVisible( not _G.wSS:IsVisible() );
-		end
-	end
-
-	_G.wSS.MouseUp = function( sender, args )
-		settings.SharedStorage.L = string.format("%.0f", _G.wSS:GetLeft());
-		settings.SharedStorage.T = string.format("%.0f", _G.wSS:GetTop());
-		SSWLeft, SSWTop = _G.wSS:GetPosition();
-		SaveSettings( false );
-	end
-
-	_G.wSS.Closing = function( sender, args ) -- Function for the Upper right X icon
-		_G.wSS:SetWantsKeyEvents( false );
-		RemoveCallback( tsspack, "CountChanged" );
-		_G.wSS = nil;
-		_G.frmSS = nil;
-	end
-	-- **^
 
 	-- **v search label & text box v**
 	_G.wSS.searchLabel = Turbine.UI.Label();
@@ -104,7 +93,7 @@ function frmSharedStorage()
 	_G.wSS.ListBox:SetVerticalScrollBar( _G.wSS.ListBoxScrollBar );
 	-- **^
 	
-	sspackCount = 0;
+	local sspackCount = 0;
 	if PlayerSharedStorage ~= nil then for k, v in pairs(PlayerSharedStorage) do sspackCount = sspackCount + 1; end end
 
 	if sspackCount == 0 then --Shared storage is empty

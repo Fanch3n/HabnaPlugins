@@ -7,37 +7,28 @@ local backpack = player:GetBackpack();
 local size = backpack:GetSize();
 
 function frmTrackItemsWindow()
-	-- **v Set some window stuff v**
-	_G.wTI = Turbine.UI.Lotro.Window();
-	_G.wTI:SetWidth( 390 );
-    _G.wTI:SetPosition( BIWLeft, BIWTop );
-	_G.wTI:SetText( L["BIIL"] );
-	_G.wTI:SetVisible( true );
-	_G.wTI:SetWantsKeyEvents( true );
-	--_G.wTI:SetZOrder( 2 );
-	_G.wTI:Activate();
+	import(AppDirD .. "WindowFactory")
 
-	_G.wTI.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wTI:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			_G.wTI:SetVisible( not _G.wTI:IsVisible() );
-		end
-	end
+	-- Create window via factory
+	_G.wTI = CreateWindow({
+		text = L["BIIL"],
+		width = 390,
+		height = 498,
+		left = BIWLeft,
+		top = BIWTop,
+		config = {
+			settingsKey = "BagInfos",
+			windowGlobalVar = "wTI",
+			formGlobalVar = "frmTI",
+			onPositionChanged = function(left, top)
+				BIWLeft, BIWTop = left, top
+			end,
+			onClosing = function(sender, args)
+				-- Nothing extra required
+			end,
+		}
+	})
 
-	_G.wTI.MouseUp = function( sender, args )
-		settings.BagInfos.L = string.format("%.0f", _G.wTI:GetLeft());
-		settings.BagInfos.T = string.format("%.0f", _G.wTI:GetTop());
-		BIWLeft, BIWTop = _G.wTI:GetPosition();
-		SaveSettings( false );
-	end
-
-	_G.wTI.Closing = function( sender, args )
-		_G.wTI:SetWantsKeyEvents( false );
-		_G.wTI = nil;
-		_G.frmTI = nil;
-	end
-	
 	_G.wTI.lblBackPack = Turbine.UI.Label();
 	_G.wTI.lblBackPack:SetParent( _G.wTI );
 	_G.wTI.lblBackPack:SetText( L["BIT"] );

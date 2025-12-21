@@ -5,54 +5,32 @@
 function frmReputationWindow()
     _G.SelectedFaction = nil;
     import(AppClassD.."ComboBox");
+    import(AppDirD .. "WindowFactory")
     RPDD = HabnaPlugins.TitanBar.Class.ComboBox();
 
-    -- **v Set some window stuff v**
-    _G.wRP = Turbine.UI.Lotro.Window();
-    _G.wRP:SetSize(480, 640);
-    _G.wRP:SetPosition(RPWLeft, RPWTop);
-    _G.wRP:SetText(L["MReputation"]);
-    _G.wRP:SetVisible(true);
-    _G.wRP:SetWantsKeyEvents(true);
-    --_G.wRP:SetZOrder(2);
-    _G.wRP:Activate();
-
-    _G.wRP.KeyDown = function(sender, args)
-        if (args.Action == Turbine.UI.Lotro.Action.Escape) then
-            _G.wRP:Close();
-        elseif (args.Action == 268435635) or (args.Action == 268435579) then
-        -- Hide if F12 key is press or reposition UI
-            _G.wRP:SetVisible(not _G.wRP:IsVisible());
-        elseif (args.Action == 162) then -- Enter key was pressed
-            RPbutSave.Click(sender, args);
-        end
-    end
-
-    _G.wRP.MouseDown = function(sender, args)
-        if (args.Button == Turbine.UI.MouseButton.Left) then 
-            dragging = true; 
-        end
-    end
-
-    _G.wRP.MouseMove = function(sender, args)
-        if dragging then if RPDD.dropped then RPDD:CloseDropDown(); end end
-    end
-
-    _G.wRP.MouseUp = function(sender, args)
-        dragging = false;
-        settings.Reputation.L = string.format("%.0f", _G.wRP:GetLeft());
-        settings.Reputation.T = string.format("%.0f", _G.wRP:GetTop());
-        RPWLeft, RPWTop = _G.wRP:GetPosition();
-        SaveSettings(false);
-    end
-
-    _G.wRP.Closing = function(sender, args)
-        RPDD.dropDownWindow:SetVisible(false);
-        _G.wRP:SetWantsKeyEvents(false);
-        _G.wRP = nil;
-        _G.frmRP = nil;
-    end
-    -- **^
+    -- Create window via WindowFactory for consistent behavior
+    _G.wRP = CreateWindow({
+        text = L["MReputation"],
+        width = 480,
+        height = 640,
+        left = RPWLeft,
+        top = RPWTop,
+        config = {
+            dropdown = RPDD,
+            settingsKey = "Reputation",
+            windowGlobalVar = "wRP",
+            formGlobalVar = "frmRP",
+            onPositionChanged = function(left, top)
+                RPWLeft, RPWTop = left, top
+            end,
+            onClosing = function(sender, args)
+                -- ensure dropdown hidden and any extra cleanup
+                if RPDD and RPDD.dropDownWindow then
+                    RPDD.dropDownWindow:SetVisible(false)
+                end
+            end
+        }
+    })
    
 
     local RPlbltext = Turbine.UI.Label();
@@ -77,20 +55,28 @@ function frmReputationWindow()
     RPFiltertxt:SetSize(_G.wRP:GetWidth() - 120, 20);
     RPFiltertxt.Text = "";
     RPFiltertxt.TextChanged = function()
-        if RPFiltertxt.Text ~= RPFiltertxt:GetText() then
-            RPFiltertxt.Text = RPFiltertxt:GetText();
-            RPFilter(RPFiltertxt.Text);
-        end
+        -- Use the textbox text directly and call RPFilter with that value.
+        local txt = RPFiltertxt:GetText() or ""
+        RPFilter(txt)
     end
 
-    function RPFilter()
-        filterText = string.lower(RPFiltertxt.Text);
-        for i=1,RPListBox:GetItemCount() do
-            local row = RPListBox:GetItem(i);
-            if string.find(string.lower(row.repLbl:GetText()),filterText) == nil then
-                row:SetHeight(0);
-            else
-                row:SetHeight(20);
+    -- RPFilter: hide/show list rows based on filter string.
+    -- Accepts an optional filter parameter; if nil, reads the current textbox value.
+    function RPFilter(filter)
+        local f = filter
+        if f == nil then f = RPFiltertxt:GetText() or "" end
+        f = string.lower(f)
+
+        local count = RPListBox:GetItemCount() or 0
+        for i = 1, count do
+            local row = RPListBox:GetItem(i)
+            if row and row.repLbl and row.repLbl:GetText() then
+                local name = string.lower(row.repLbl:GetText())
+                if string.find(name, f, 1, true) == nil then
+                    row:SetHeight(0)
+                else
+                    row:SetHeight(20)
+                end
             end
         end
     end

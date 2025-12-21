@@ -3,39 +3,33 @@
 
 
 function frmInfamyWindow()
-	-- **v Set some window stuff v**
-	_G.wIF = Turbine.UI.Lotro.Window()
-	_G.wIF:SetPosition( IFWLeft, IFWTop );
-	--_G.wIF:SetSize( 300, 80 );
-	_G.wIF:SetText( L["IFWTitle"] );
-	_G.wIF:SetWantsKeyEvents( true );
-	_G.wIF:SetVisible( true );
-	--_G.wIF:SetZOrder( 2 );
-	_G.wIF:Activate();
+	import(AppDirD .. "WindowFactory")
 
-	_G.wIF.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wIF:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			_G.wIF:SetVisible( not _G.wIF:IsVisible() );
-		elseif ( args.Action == 162 ) then --Enter key was pressed
-			buttonSave.Click( sender, args );
-		end
-	end
-
-	_G.wIF.MouseUp = function( sender, args )
-		settings.Infamy.L = string.format("%.0f", _G.wIF:GetLeft());
-		settings.Infamy.T = string.format("%.0f", _G.wIF:GetTop());
-		IFWLeft, IFWTop = _G.wIF:GetPosition();
-		SaveSettings( false );
-	end
-
-	_G.wIF.Closing = function( sender, args ) -- Function for the Upper right X icon
-		_G.wIF:SetWantsKeyEvents( false );
-		_G.wIF = nil;
-		_G.frmIF = nil;
-	end
-	-- **^
+	-- Create window via factory
+	_G.wIF = CreateWindow({
+		text = L["IFWTitle"],
+		width = 300,
+		height = 80,
+		left = IFWLeft,
+		top = IFWTop,
+		config = {
+			settingsKey = "Infamy",
+			windowGlobalVar = "wIF",
+			formGlobalVar = "frmIF",
+			onPositionChanged = function(left, top)
+				IFWLeft, IFWTop = left, top
+			end,
+			onClosing = function(sender, args)
+				-- No extra cleanup required; factory will nil globals
+			end,
+			onKeyDown = function(sender, args)
+				if args.Action == 162 then -- Enter
+					if buttonSave then buttonSave.Click(sender, args) end
+					return
+				end
+			end,
+		}
+	})
 
 	local IFWCtr = Turbine.UI.Control();
 	IFWCtr:SetParent( _G.wIF );

@@ -5,55 +5,41 @@
 function frmWalletWindow()
 	wcur = nil;
 	import (AppClassD.."ComboBox");
+	import(AppDirD .. "WindowFactory")
 	WIDD = HabnaPlugins.TitanBar.Class.ComboBox();
 
-	-- **v Set some window stuff v**
-	_G.wWI = Turbine.UI.Lotro.Window();
-    local w = 320;
+	-- **v Create window via factory v**
+	local w = 320;
 	if GLocale == "de" then w = 360;
-    elseif GLocale == "fr" then w = 360;
-    end
-	_G.wWI:SetSize( w, 640 ); --280x260
-    _G.wWI:SetPosition( WIWLeft, WIWTop );
-	_G.wWI:SetText( L["MBag"] );
-	_G.wWI:SetVisible( true );
-	_G.wWI:SetWantsKeyEvents( true );
-	--_G.wWI:SetZOrder( 2 );
-	_G.wWI:Activate();
-
-	_G.wWI.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wWI:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key or 'ctrl + \' is press
-			_G.wWI:SetVisible( not _G.wWI:IsVisible() );
-		elseif ( args.Action == 162 ) then --Enter key was pressed
-			WIbutSave.Click( sender, args );
-		end
+	elseif GLocale == "fr" then w = 360;
 	end
 
-	_G.wWI.MouseDown = function( sender, args )
-		if ( args.Button == Turbine.UI.MouseButton.Left ) then dragging = true; end
-	end
+	_G.wWI = CreateWindow({
+		text = L["MBag"],
+		width = w,
+		height = 640,
+		left = WIWLeft,
+		top = WIWTop,
+		config = {
+			dropdown = WIDD,
+			settingsKey = "Wallet",
+			windowGlobalVar = "wWI",
+			formGlobalVar = "frmWI",
+			onPositionChanged = function(left, top)
+				WIWLeft, WIWTop = left, top
+			end,
+			onClosing = function(sender, args)
+				if WIDD and WIDD.dropDownWindow then WIDD.dropDownWindow:SetVisible(false) end
+			end
+			,onKeyDown = function(sender, args)
+				if args.Action == 162 then -- Enter
+					if WIbutSave then WIbutSave.Click(sender, args) end
+					return
+				end
+			end
+		}
+	})
 
-	_G.wWI.MouseMove = function( sender, args )
-		if dragging then if WIDD.dropped then WIDD:CloseDropDown(); end end
-	end
-
-	_G.wWI.MouseUp = function( sender, args )
-		dragging = false;
-		settings.Wallet.L = string.format("%.0f", _G.wWI:GetLeft());
-		settings.Wallet.T = string.format("%.0f", _G.wWI:GetTop());
-		WIWLeft, WIWTop = _G.wWI:GetPosition();
-		SaveSettings( false );
-	end
-
-	_G.wWI.Closing = function( sender, args )
-		WIDD.dropDownWindow:SetVisible(false);
-		_G.wWI:SetWantsKeyEvents( false );
-		_G.wWI = nil;
-		_G.frmWI = nil;
-	end
-	-- **^
 	
 	local WIlbltextHeight = 35;
 	local WIlbltext = Turbine.UI.Label();

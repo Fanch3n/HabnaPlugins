@@ -55,52 +55,45 @@ function frmOptions()
 	import ( AppClassD .. "ComboBox" );
 	FontDD = HabnaPlugins.TitanBar.Class.ComboBox();
 
+	local dragging = false;
+
 	-- **v Set some window stuff v**
-	wOptions = Turbine.UI.Lotro.Window()
-	wOptions:SetSize( 275, 275 );
-	wOptions:SetPosition( OPWLeft, OPWTop );
-	wOptions:SetText( L[ "OPWTitle" ] );
-	wOptions:SetWantsKeyEvents( true );
-	wOptions:SetVisible( true );
-	--wOptions:SetZOrder( 2 );
-	--wOptions:Activate();
+	import(AppDirD .. "WindowFactory")
 
-	wOptions.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			wOptions:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			wOptions:SetVisible( not wOptions:IsVisible() );
-		end
-	end
+	-- Create options window via factory
+	wOptions = CreateWindow({
+		text = L[ "OPWTitle" ],
+		width = 275,
+		height = 275,
+		left = OPWLeft,
+		top = OPWTop,
+		config = {
+			settingsKey = "Options",
+			windowGlobalVar = "wOptions",
+			onPositionChanged = function(left, top)
+				OPWLeft, OPWTop = left, top
+			end,
+			onMouseDown = function(sender, args)
+				if ( args.Button == Turbine.UI.MouseButton.Left ) then dragging = true; end
+			end,
+			onMouseMove = function(sender, args)
+				if dragging then
+					if FontDD and FontDD.dropped then FontDD:CloseDropDown(); end
+					if AutoDD and AutoDD.dropped then AutoDD:CloseDropDown(); end
+				end
+			end,
+			onMouseUp = function(sender, args)
+				dragging = false
+			end,
+			onClosing = function( sender, args )
+				if FontDD and FontDD.dropDownWindow then FontDD.dropDownWindow:SetVisible( false ); end
+				if AutoDD and AutoDD.dropDownWindow then AutoDD.dropDownWindow:SetVisible( false ); end
+				if TBAutoHide == L[ "OPAHE" ] then windowOpen = true; TB[ "win" ].MouseLeave(); end
+				opt_options:SetEnabled( true );
+			end,
+		}
+	})
 
-	wOptions.MouseDown = function( sender, args )
-		if ( args.Button == Turbine.UI.MouseButton.Left ) then dragging = true; end
-	end
-
-	wOptions.MouseMove = function( sender, args )
-		if dragging then
-			if FontDD.dropped then FontDD:CloseDropDown(); end
-			if AutoDD.dropped then AutoDD:CloseDropDown(); end
-		end
-	end
-
-	wOptions.MouseUp = function( sender, args )
-		dragging = false;
-		settings.Options.L = string.format( "%.0f", wOptions:GetLeft() );
-		settings.Options.T = string.format( "%.0f", wOptions:GetTop() );
-		OPWLeft, OPWTop = wOptions:GetPosition();
-		SaveSettings( false );
-	end
-
-	wOptions.Closing = function( sender, args ) -- Function for the Upper right X icon
-		FontDD.dropDownWindow:SetVisible( false );
-		AutoDD.dropDownWindow:SetVisible( false );
-		wOptions:SetWantsKeyEvents( false );
-		if TBAutoHide == L[ "OPAHE" ] then windowOpen = true; TB[ "win" ].MouseLeave(); end
-		wOptions = nil;
-		opt_options:SetEnabled( true );
-	end
-	-- **^
 	
 	-- **v TitanBar Height - label v**
 	local lblHeight = Turbine.UI.Label();

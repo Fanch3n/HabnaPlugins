@@ -4,36 +4,26 @@
 
 function frmProfile()
 	TB["win"].MouseLeave();
+	import(AppDirD .. "WindowFactory")
 
-	-- **v Set some window stuff v**
-	wProfile = Turbine.UI.Lotro.Window();	
-	wProfile:SetText( L["MPP"] );
-	wProfile:SetWidth( 495 );
-	wProfile:SetVisible( true );
-	wProfile:SetWantsKeyEvents( true );
-	-- wProfile:SetZOrder( 2 );
-	-- wProfile:Activate();
-
-	wProfile.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			wProfile:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			wProfile:SetVisible( not wProfile:IsVisible() );
-		end
-	end
-
-	wProfile.MouseUp = function( sender, args )
-		settings.Profile.L = string.format("%.0f", wProfile:GetLeft());
-		settings.Profile.T = string.format("%.0f", wProfile:GetTop());
-		PPWLeft, PPWTop = wProfile:GetPosition();
-		SaveSettings( false );
-	end
-
-	wProfile.Closing = function( sender, args )
-		wProfile:SetWantsKeyEvents( false );
-		wProfile = nil;
-		opt_profile:SetEnabled( true );
-	end
+	-- Create profile window via factory
+	wProfile = CreateWindow({
+		text = L["MPP"],
+		width = 495,
+		height = 160,
+		left = PPWLeft,
+		top = PPWTop,
+		config = {
+			settingsKey = "Profile",
+			windowGlobalVar = "wProfile",
+			onPositionChanged = function(left, top)
+				PPWLeft, PPWTop = left, top
+			end,
+			onClosing = function( sender, args )
+				opt_profile:SetEnabled( true );
+			end,
+		}
+	})
 
 	ListBox = Turbine.UI.ListBox();
 	ListBox:SetParent( wProfile );

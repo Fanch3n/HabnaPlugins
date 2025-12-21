@@ -1,72 +1,75 @@
 -- BagInfosWindow.lua
 -- written by Habna
 
-
 function frmBagInfos()
-	tbackpack = backpack;
-	SelCN = PN;
-	import (AppClassD.."ComboBox");
-	BICB = HabnaPlugins.TitanBar.Class.ComboBox();
+	import(AppDirD .. "WindowFactory")
+	tbackpack = backpack
+	SelCN = PN
+	import(AppClassD .. "ComboBox")
+	local bagInfosDropdown = HabnaPlugins.TitanBar.Class.ComboBox()
 
-	-- **v Set some window stuff v**
-	_G.wBI = Turbine.UI.Lotro.Window();
-	_G.wBI:SetText( L["BIh"] );
-	_G.wBI:SetPosition( BIWLeft, BIWTop );
-	_G.wBI:SetSize( 390, 560 );
-	_G.wBI:SetWantsKeyEvents( true );
-	_G.wBI:SetVisible( true );
-	--_G.wBI:SetZOrder( 2 );
-	_G.wBI:Activate();
+	-- Create window using factory with custom configuration
+	_G.wBI = CreateWindow({
+		text = L["BIh"],
+		width = 390,
+		height = 560,
+		left = BIWLeft,
+		top = BIWTop,
+		config = {
+			dropdown = bagInfosDropdown,
+			settingsKey = "BagInfos",
+			windowGlobalVar = "wBI",
+			formGlobalVar = "frmBI",
+			onPositionChanged = function(left, top)
+				BIWLeft, BIWTop = left, top
+			end,
+			onClosing = function(sender, args)
+				RemoveCallback(tbackpack, "ItemAdded")
+				RemoveCallback(tbackpack, "ItemRemoved")
+			end
+		}
+	})
 
-	_G.wBI.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wBI:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			_G.wBI:SetVisible( not _G.wBI:IsVisible() );
-		end
-	end
+	-- Set up dropdown after window is created
+	bagInfosDropdown:SetParent(_G.wBI)
+	bagInfosDropdown:SetSize(159, 19)
+	bagInfosDropdown:SetPosition(15, 35)
+	bagInfosDropdown.dropDownWindow:SetParent(_G.wBI)
+	bagInfosDropdown.dropDownWindow:SetPosition(bagInfosDropdown:GetLeft(), bagInfosDropdown:GetTop() + bagInfosDropdown:GetHeight() + 2)
 
-	_G.wBI.MouseMove = function( sender, args )
-		if dragging then BICB:CloseDropDown(); end
-	end
-
-	_G.wBI.MouseDown = function( sender, args )
-		dragging = true;
-	end
-
-	_G.wBI.MouseUp = function( sender, args )
-		dragging = false;
-		settings.BagInfos.L = string.format("%.0f", _G.wBI:GetLeft());
-		settings.BagInfos.T = string.format("%.0f", _G.wBI:GetTop());
-		BIWLeft, BIWTop = _G.wBI:GetPosition();
-		SaveSettings( false );
-	end
-
-	_G.wBI.Closing = function( sender, args ) -- Function for the Upper right X icon
-		BICB.dropDownWindow:SetVisible(false);
-		_G.wBI:SetWantsKeyEvents( false );
-		RemoveCallback( tbackpack, "ItemAdded" );
-		RemoveCallback( tbackpack, "ItemRemoved" );
-		_G.wBI = nil;
-		_G.frmBI = nil;
-	end
-	-- **^
-	-- **v Create drop down box v**
-	BICB:SetParent( _G.wBI );
-	BICB:SetSize( 159, 19 );
-	BICB:SetPosition( 15, 35 );
-
-	BICB.dropDownWindow:SetParent( _G.wBI );
-	BICB.dropDownWindow:SetPosition(BICB:GetLeft(), BICB:GetTop() + BICB:GetHeight()+2);
-
-	BICB.ItemChanged = function () -- The event that's executed when a menu item is clicked.
+	bagInfosDropdown.ItemChanged = function () -- The event that's executed when a menu item is clicked.
 		_G.wBI.SearchTextBox:SetText( "" );
 		_G.wBI.SearchTextBox.TextChanged( sender, args );
-		SelCN = BICB.label:GetText();
+		SelCN = bagInfosDropdown.label:GetText();
 		CountBIItems();
 	end
 
-	CreateBIComboBox();
+	-- CreateBIComboBox: populate the dropdown with character names
+	local function CreateBIComboBox()
+		local newt = {}
+		if type(PlayerBags) == "table" then
+			for i in pairs(PlayerBags) do
+				if string.sub(i,1,1) ~= "~" then
+					table.insert(newt, i)
+				end
+			end
+		end
+		table.sort(newt)
+
+		bagInfosDropdown.listBox:ClearItems()
+		bagInfosDropdown:AddItem(L["VTAll"], 0)
+
+		local selIndex = nil
+		for k, v in ipairs(newt) do
+			bagInfosDropdown:AddItem(v, k)
+			if v == PN then selIndex = k end
+		end
+
+		if selIndex then
+			bagInfosDropdown:SetSelection(selIndex)
+		end
+	end
+	CreateBIComboBox()
 	-- **^
 	-- **v search label & text box v**
 	_G.wBI.searchLabel = Turbine.UI.Label();
@@ -177,7 +180,7 @@ function frmBagInfos()
 		SavePlayerBags();
 		write(SelCN .. L["BID"]);
 		SelCN = PN;
-		BICB.selection = -1;
+		bagInfosDropdown.selection = -1;
 		CreateBIComboBox();
 		CountBIItems();
 	end
@@ -204,22 +207,7 @@ function frmBagInfos()
 	AddCallback(tbackpack, "ItemRemoved", function(sender, args) BIItemRemovedTimer:SetWantsUpdates( true ); end); --Workaround
 
 	CountBIItems();
-end
-
-function CreateBIComboBox()
-	-- **v Create an array of character name, sort it, then use it as a reference - label & DropDown box v**
-	local newt = {}
-	for i in pairs(PlayerBags) do
-		if string.sub( i, 1, 1 ) == "~" then PlayerBags[i] = nil; else table.insert(newt, i); end --Delete session play character
-	end
-	table.sort(newt);
-	BICB.listBox:ClearItems();
-	BICB:AddItem( L["VTAll"], 0 );
-	for k,v in pairs(newt) do
-		BICB:AddItem(v, k);
-		if v == PN then BICB:SetSelection(k); end
-	end
-	-- **^
+    
 end
 
 function CountBIItems()

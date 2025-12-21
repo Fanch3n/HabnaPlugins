@@ -3,40 +3,28 @@
 
 
 function frmDurabilityInfosWindow()
-	-- **v Set some window stuff v**
-	_G.wDI = Turbine.UI.Lotro.Window()
-	_G.wDI:SetSize( 300, 90 );
-	if TBLocale == "fr" then
-		_G.wDI:SetSize( 400, 90 );
-	end
-	_G.wDI:SetPosition( DIWLeft, DIWTop );
-	_G.wDI:SetText( L["DWTitle"] );
-	_G.wDI:SetWantsKeyEvents( true );
-	_G.wDI:SetVisible( true );
-	--_G.wDI:SetZOrder( 2 );
-	_G.wDI:Activate();
+	import(AppDirD .. "WindowFactory")
 
-	_G.wDI.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wDI:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			_G.wDI:SetVisible( not _G.wDI:IsVisible() );
-		end
-	end
+	-- Create window via factory
+	_G.wDI = CreateWindow({
+		text = L["DWTitle"],
+		width = (TBLocale == "fr") and 400 or 300,
+		height = 90,
+		left = DIWLeft,
+		top = DIWTop,
+		config = {
+			settingsKey = "DurabilityInfos",
+			windowGlobalVar = "wDI",
+			formGlobalVar = "frmDI",
+			onPositionChanged = function(left, top)
+				DIWLeft, DIWTop = left, top
+			end,
+			onClosing = function(sender, args)
+				-- nothing extra required
+			end,
+		}
+	})
 
-	_G.wDI.MouseUp = function( sender, args )
-		settings.DurabilityInfos.L = string.format("%.0f", _G.wDI:GetLeft());
-		settings.DurabilityInfos.T = string.format("%.0f", _G.wDI:GetTop());
-		DIWLeft, DIWTop = _G.wDI:GetPosition();
-		SaveSettings( false );
-	end
-
-	_G.wDI.Closing = function( sender, args ) -- Function for the Upper right X icon
-		_G.wDI:SetWantsKeyEvents( false );
-		_G.wDI = nil;
-		_G.frmDI = nil;
-	end
-	-- **^
 	-- **v Show Icon in tooltip? v**
 	local TTIcon = Turbine.UI.Lotro.CheckBox();
 	TTIcon:SetParent( _G.wDI );

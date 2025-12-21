@@ -3,35 +3,26 @@
 -- refactored by 4andreas
 
 function frmMoneyInfosWindow()
-	-- **v Set some window stuff v**
-	_G.wMI = Turbine.UI.Lotro.Window()
-	_G.wMI:SetText( L["MIWTitle"] );
-	_G.wMI:SetWantsKeyEvents( true );
-	_G.wMI:SetVisible( true );
-	_G.wMI:SetWidth( 325 );
-	--_G.wMI:SetZOrder( 2 );
-	_G.wMI:Activate();
-
-	_G.wMI.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wMI:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			_G.wMI:SetVisible( not _G.wMI:IsVisible() );
-		end
-	end
-
-	_G.wMI.MouseUp = function( sender, args )
-		settings.Money.L = string.format("%.0f", _G.wMI:GetLeft());
-		settings.Money.T = string.format("%.0f", _G.wMI:GetTop());
-		MIWLeft, MIWTop = _G.wMI:GetPosition();
-		SaveSettings( false );
-	end
-
-	_G.wMI.Closing = function( sender, args ) -- Function for the Upper right X icon
-		_G.wMI:SetWantsKeyEvents( false );
-		_G.wMI = nil;
-		_G.frmMI = nil;
-	end
+	import(AppDirD .. "WindowFactory")
+	-- **v Create window via factory v**
+	_G.wMI = CreateWindow({
+		text = L["MIWTitle"],
+		width = 325,
+		height = 640,
+		left = MIWLeft,
+		top = MIWTop,
+		config = {
+			settingsKey = "Money",
+			windowGlobalVar = "wMI",
+			formGlobalVar = "frmMI",
+			onPositionChanged = function(left, top)
+				MIWLeft, MIWTop = left, top
+			end,
+			onClosing = function(sender, args)
+				-- nothing extra needed here
+			end
+		}
+	})
 	-- **^
 
 	MIListBox = Turbine.UI.ListBox();
@@ -121,8 +112,8 @@ end
 
 function RefreshMIListBox()
 	MIListBox:ClearItems();
-	MIPosY = 0;
-	iFound = false;
+	local MIPosY = 0;
+	local iFound = false;
 	
 	--Create an array of character name, sort it, then use it as a reference.
 	local a = {};

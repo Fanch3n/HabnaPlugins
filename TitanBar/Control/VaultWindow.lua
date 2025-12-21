@@ -9,46 +9,30 @@ function frmVault()
 	VICB = HabnaPlugins.TitanBar.Class.ComboBox();
 
 	-- **v Set some window stuff v**
-	_G.wVT = Turbine.UI.Lotro.Window()
-	_G.wVT:SetText( L["MVault"] );
-	_G.wVT:SetPosition( VTWLeft, VTWTop );
-	_G.wVT:SetWidth( 390 );
-	_G.wVT:SetWantsKeyEvents( true );
-	_G.wVT:SetVisible( true );
-	--_G.wVT:SetZOrder( 2 );
-	_G.wVT:Activate();
+	import(AppDirD .. "WindowFactory")
 
-	_G.wVT.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wVT:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			_G.wVT:SetVisible( not _G.wVT:IsVisible() );
-		end
-	end
+	-- Create window via factory
+	_G.wVT = CreateWindow({
+		text = L["MVault"],
+		width = 390,
+		height = 520,
+		left = VTWLeft,
+		top = VTWTop,
+		config = {
+			dropdown = VICB,
+			settingsKey = "Vault",
+			windowGlobalVar = "wVT",
+			formGlobalVar = "frmVT",
+			onPositionChanged = function(left, top)
+				VTWLeft, VTWTop = left, top
+			end,
+			onClosing = function(sender, args)
+				if VICB and VICB.dropDownWindow then VICB.dropDownWindow:SetVisible(false) end
+				RemoveCallback( tvaultpack, "CountChanged" )
+			end,
+		}
+	})
 
-	_G.wVT.MouseMove = function( sender, args )
-		if dragging then VICB:CloseDropDown(); end
-	end
-
-	_G.wVT.MouseDown = function( sender, args )
-		dragging = true;
-	end
-
-	_G.wVT.MouseUp = function( sender, args )
-		dragging = false;
-		settings.Vault.L = string.format("%.0f", _G.wVT:GetLeft());
-		settings.Vault.T = string.format("%.0f", _G.wVT:GetTop());
-		VTWLeft, VTWTop = _G.wVT:GetPosition();
-		SaveSettings( false );
-	end
-
-	_G.wVT.Closing = function( sender, args ) -- Function for the Upper right X icon
-		VICB.dropDownWindow:SetVisible(false);
-		_G.wVT:SetWantsKeyEvents( false );
-		RemoveCallback( tvaultpack, "CountChanged" );
-		_G.wVT = nil;
-		_G.frmVT = nil;
-	end
 	-- **^
 	-- **v Create drop down box v**
 	VICB:SetParent( _G.wVT );

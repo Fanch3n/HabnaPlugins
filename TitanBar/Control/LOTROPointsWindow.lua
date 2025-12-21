@@ -3,40 +3,33 @@
 
 
 function frmLOTROPointsWindow()
-	-- **v Set some window stuff v**
-	_G.wLP = Turbine.UI.Lotro.Window()
-	_G.wLP:SetPosition( LPWLeft, LPWTop );
-	--_G.wLP:SetSize( 300, 80 );
-	_G.wLP:SetText( L["MLotroPoints"] );
-	_G.wLP:SetWantsKeyEvents( true );
-	_G.wLP:SetVisible( true );
-	--_G.wLP:SetZOrder( 2 );
-	_G.wLP:Activate();
+	import(AppDirD .. "WindowFactory")
+	_G.wLP = CreateWindow({
+		text = L["MLotroPoints"],
+		width = 300,
+		height = 80,
+		left = LPWLeft,
+		top = LPWTop,
+		config = {
+			settingsKey = "LOTROPoints",
+			windowGlobalVar = "wLP",
+			formGlobalVar = "frmLP",
+			onPositionChanged = function(left, top)
+				LPWLeft, LPWTop = left, top
+			end,
+			onClosing = function(sender, args)
+				-- nothing extra required
+			end,
+			onKeyDown = function(sender, args)
+				if args.Action == 162 then -- Enter
+					if buttonSave then buttonSave.Click(sender, args) end
+					if _G.wLP then _G.wLP:Close() end
+					return
+				end
+			end
+		}
+	})
 
-	_G.wLP.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wLP:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			_G.wLP:SetVisible( not _G.wLP:IsVisible() );
-		elseif ( args.Action == 162 ) then --Enter key was pressed
-			buttonSave.Click( sender, args );
-			_G.wLP:Close()
-		end
-	end
-
-	_G.wLP.MouseUp = function( sender, args )
-		settings.LOTROPoints.L = string.format("%.0f", _G.wLP:GetLeft());
-		settings.LOTROPoints.T = string.format("%.0f", _G.wLP:GetTop());
-		LPWLeft, LPWTop = _G.wLP:GetPosition();
-		SaveSettings( false );
-	end
-
-	_G.wLP.Closing = function( sender, args ) -- Function for the Upper right X icon
-		_G.wLP:SetWantsKeyEvents( false );
-		_G.wLP = nil;
-		_G.frmLP = nil;
-	end
-	-- **^
 
 	local LPWCtr = Turbine.UI.Control();
 	LPWCtr:SetParent( _G.wLP );

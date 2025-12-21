@@ -1,50 +1,35 @@
 -- DayNightWindow.lua
 -- written by Habna
 
-
 function frmDayNightWindow()
-	local prevTS = _G.TS;
-	local bHelp = false;
+	import(AppDirD .. "WindowFactory")
+	local prevTS = _G.TS
+	local bHelp = false
 	
-	-- **v Set some window stuff v**
-	_G.wDN = Turbine.UI.Lotro.Window()
-	_G.wDN:SetPosition( DNWLeft, DNWTop );
-	_G.wDN:SetText( L["MDayNight"] );
-	_G.wDN:SetWantsKeyEvents( true );
-	_G.wDN:SetVisible( true );
-	--_G.wDN:SetZOrder( 2 );
-	--_G.wDN:Activate();
-
-	if TBLocale == "fr" then _G.wDN:SetWidth( 335 );
-	else _G.wDN:SetSize( 290 ); end
-
-	_G.wDN.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wDN:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			_G.wDN:SetVisible( not _G.wDN:IsVisible() );
-		end
-	end
-
-	_G.wDN.MouseUp = function( sender, args )
-		settings.DayNight.L = string.format("%.0f", _G.wDN:GetLeft());
-		settings.DayNight.T = string.format("%.0f", _G.wDN:GetTop());
-		DNWLeft, DNWTop = _G.wDN:GetPosition();
-		SaveSettings( false );
-	end
-
-	_G.wDN.Closing = function( sender, args ) -- Function for the Upper right X icon
-		_G.wDN:SetWantsKeyEvents( false );
-
-		if tonumber(_G.TS) == 0 then _G.TS = tonumber(prevTS); end
-		settings.DayNight.S = string.format("%.0f",_G.TS);
-		SaveSettings( false );
-		UpdateDayNight();
-
-		_G.wDN = nil;
-		_G.frmDN = nil;
-	end
-	-- **^
+	local windowWidth = (TBLocale == "fr") and 335 or 290
+	
+	-- Create window using factory
+	_G.wDN = CreateWindow({
+		text = L["MDayNight"],
+		width = windowWidth,
+		height = 105,
+		left = DNWLeft,
+		top = DNWTop,
+		config = {
+			settingsKey = "DayNight",
+			windowGlobalVar = "wDN",
+			formGlobalVar = "frmDN",
+			onPositionChanged = function(left, top)
+				DNWLeft, DNWTop = left, top
+			end,
+			onClosing = function(sender, args)
+				if tonumber(_G.TS) == 0 then _G.TS = tonumber(prevTS) end
+				settings.DayNight.S = string.format("%.0f", _G.TS)
+				SaveSettings(false)
+				UpdateDayNight()
+			end
+		}
+	})
 	
 	-- **v Show/Hide Next time - Check box v**
 	local NextTimeCB = Turbine.UI.Lotro.CheckBox();

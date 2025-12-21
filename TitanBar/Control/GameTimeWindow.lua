@@ -3,37 +3,28 @@
 
 
 function frmGameTimeWindow()
-	-- **v Set some window stuff v**
-	_G.wGT = Turbine.UI.Lotro.Window()
-	_G.wGT:SetPosition( GTWLeft, GTWTop );
-	_G.wGT:SetHeight( 120 );
-	_G.wGT:SetText( L["GTWTitle"] );
-	_G.wGT:SetWantsKeyEvents( true );
-	_G.wGT:SetVisible( true );
-	--_G.wGT:SetZOrder( 2 );
-	_G.wGT:Activate();
+	import(AppDirD .. "WindowFactory")
 
-	_G.wGT.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wGT:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			_G.wGT:SetVisible( not _G.wGT:IsVisible() );
-		end
-	end
+	-- Create window via factory
+	_G.wGT = CreateWindow({
+		text = L["GTWTitle"],
+		width = 200,
+		height = 120,
+		left = GTWLeft,
+		top = GTWTop,
+		config = {
+			settingsKey = "GameTime",
+			windowGlobalVar = "wGT",
+			formGlobalVar = "frmGT",
+			onPositionChanged = function(left, top)
+				GTWLeft, GTWTop = left, top
+			end,
+			onClosing = function(sender, args)
+				-- nothing extra required
+			end,
+		}
+	})
 
-	_G.wGT.MouseUp = function( sender, args )
-		settings.GameTime.L = string.format("%.0f", _G.wGT:GetLeft());
-		settings.GameTime.T = string.format("%.0f", _G.wGT:GetTop());
-		GTWLeft, GTWTop = _G.wGT:GetPosition();
-		SaveSettings( false );
-	end
-
-	_G.wGT.Closing = function( sender, args ) -- Function for the Upper right X icon
-		_G.wGT:SetWantsKeyEvents( false );
-		_G.wGT = nil;
-		_G.frmGT = nil;
-	end
-	-- **^
 	-- **v 24h clock - Check box v**
 	local GMT = Turbine.UI.Lotro.TextBox();
 	local ShowSTcb = Turbine.UI.Lotro.CheckBox();
