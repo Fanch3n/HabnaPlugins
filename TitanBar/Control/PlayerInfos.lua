@@ -39,6 +39,8 @@ PI["Name"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
 PI["Name"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 --PI["Name"]:SetBackColor( Color["white"] ); -- Debug purpose
 
+local MovePICtr = CreateMoveHandler(PI["Ctr"], PI["Name"])
+
 PI["Name"].MouseMove = function( sender, args )
 	--PI["Name"].MouseLeave( sender, args );
 	TB["win"].MouseMove();
@@ -93,8 +95,3 @@ end
 DelegateMouseEvents(PI.Icon, PI.Name, {"MouseLeave", "MouseClick", "MouseDown", "MouseUp"})
 DelegateMouseEvents(PI.Lvl, PI.Name)
 --**^
-
-function MovePICtr(sender, args)
-	PI["Name"].MouseLeave( sender, args );
-	MoveControlConstrained(PI["Ctr"], args);
-end

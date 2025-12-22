@@ -406,3 +406,21 @@ function CreateDragHandlers(control, settingsTable, xVarName, yVarName)
 		end
 	}
 end
+
+-- Create a move handler function for control dragging
+-- Parameters:
+--  control: the control to move (e.g., WI["Ctr"])
+--  leaveControl: optional control whose MouseLeave should be called (e.g., WI["Icon"])
+-- Returns: function(sender, args) that moves the control
+-- Usage:
+--   local moveHandler = CreateMoveHandler(WI["Ctr"], WI["Icon"])
+--   -- or without MouseLeave:
+--   local moveHandler = CreateMoveHandler(GT["Ctr"])
+function CreateMoveHandler(control, leaveControl)
+	return function(sender, args)
+		if leaveControl and leaveControl.MouseLeave then
+			leaveControl.MouseLeave(sender, args)
+		end
+		MoveControlConstrained(control, args)
+	end
+end

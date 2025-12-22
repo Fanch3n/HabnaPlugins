@@ -38,6 +38,8 @@ BI["Lbl"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
 BI["Lbl"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 --BI["Lbl"]:SetBackColor( Color["white"] ); -- Debug purpose
 
+local MoveBICtr = CreateMoveHandler(BI["Ctr"], BI["Lbl"])
+
 BI["Lbl"].MouseMove = function( sender, args )
 	BI["Lbl"].MouseLeave( sender, args );
 	TB["win"].MouseMove();
@@ -77,8 +79,3 @@ BI["Lbl"].MouseUp = dragHandlers.MouseUp
 -- Delegate Icon events to Lbl
 DelegateMouseEvents(BI["Icon"], BI["Lbl"])
 --**^
-
-function MoveBICtr(sender, args)
-	BI["Lbl"].MouseLeave( sender, args );
-	MoveControlConstrained(BI["Ctr"], args);
-end

@@ -21,6 +21,8 @@ DI["Icon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 DI["Icon"]:SetSize( 32, 32 );
 --DI["Icon"]:SetBackground(  );-- in-game icon 32x32
 --DI["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
+
+local MoveDICtr = CreateMoveHandler(DI["Ctr"], DI["Lbl"])
 	
 DI["Icon"].MouseMove = function( sender, args )
 	DI["Lbl"].MouseLeave( sender, args )
@@ -37,7 +39,7 @@ DI["Lbl"]:SetPosition( 0, 0 );
 DI["Lbl"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
 DI["Lbl"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 --DI["Lbl"]:SetBackColor( Color["white"] ); -- Debug purpose
-	
+
 DI["Lbl"].MouseMove = function( sender, args )
 	--DI["Lbl"].MouseLeave( sender, args );
 	TB["win"].MouseMove();
@@ -83,8 +85,3 @@ DI["Lbl"].MouseUp = dragHandlers.MouseUp
 -- Delegate Icon events to Lbl
 DelegateMouseEvents(DI["Icon"], DI["Lbl"])
 --**^
-
-function MoveDICtr(sender, args)
-	DI["Lbl"].MouseLeave( sender, args );
-	MoveControlConstrained(DI["Ctr"], args);
-end

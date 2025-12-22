@@ -24,6 +24,8 @@ PL["Lbl"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
 PL["Lbl"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 --PL["Lbl"]:SetBackColor( Color["white"] ); -- Debug purpose
 
+local MovePLCtr = CreateMoveHandler(PL["Ctr"])
+
 PL["Lbl"].MouseMove = function( sender, args )
 	PL["Lbl"].MouseLeave( sender, args );
 	TB["win"].MouseMove();
@@ -55,7 +57,3 @@ local dragHandlers = CreateDragHandlers(PL["Ctr"], settings.PlayerLoc, "PLLocX",
 PL["Lbl"].MouseDown = dragHandlers.MouseDown
 PL["Lbl"].MouseUp = dragHandlers.MouseUp
 --**^
-
-function MovePLCtr(sender, args)
-	MoveControlConstrained(PL["Ctr"], args);
-end

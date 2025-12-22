@@ -120,6 +120,8 @@ MI["CIcon"]:SetSize( 27, 21 );
 MI["CIcon"]:SetBackground( resources.MoneyIcon.Copper );-- in-game icon 27x21 (3 coins: 0x41007e80 / 1 coin: 0x41007e7d)
 --MI["CIcon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 
+local MoveMICtr = CreateMoveHandler(MI["Ctr"], MI["CLbl"])
+
 MI["CIcon"].MouseMove = function( sender, args )
 	MI["CLbl"].MouseLeave( sender, args );
 	TB["win"].MouseMove();
@@ -189,8 +191,3 @@ DelegateMouseEvents(MI["SLbl"], MI["CLbl"]);
 DelegateMouseEvents(MI["SIcon"], MI["CLbl"], {"MouseLeave", "MouseClick", "MouseDown", "MouseUp"});
 DelegateMouseEvents(MI["CLblT"], MI["CLbl"]);
 DelegateMouseEvents(MI["CIcon"], MI["CLbl"], {"MouseLeave", "MouseClick", "MouseDown", "MouseUp"});
-
-function MoveMICtr(sender, args)
-	MI["CLbl"].MouseLeave( sender, args );
-	MoveControlConstrained(MI["Ctr"], args);
-end

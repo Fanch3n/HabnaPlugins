@@ -24,6 +24,8 @@ GT["Lbl"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
 GT["Lbl"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
 --GT["Lbl"]:SetBackColor( Color["white"] ); -- Debug purpose
 
+local MoveGTCtr = CreateMoveHandler(GT["Ctr"])
+
 GT["Lbl"].MouseMove = function( sender, args )
 	GT["Lbl"].MouseLeave( sender, args );
 	TB["win"].MouseMove();
@@ -60,7 +62,3 @@ local dragHandlers = CreateDragHandlers(GT["Ctr"], settings.GameTime, "GTLocX", 
 GT["Lbl"].MouseDown = dragHandlers.MouseDown
 GT["Lbl"].MouseUp = dragHandlers.MouseUp
 --**^
-
-function MoveGTCtr(sender, args)
-	MoveControlConstrained(GT["Ctr"], args);
-end

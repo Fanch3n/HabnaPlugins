@@ -22,6 +22,8 @@ SS["Icon"]:SetSize( 32, 32 );
 SS["Icon"]:SetBackground( resources.Storage.Shared );-- in-game icon 32x32
 --SS["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 
+local MoveSSCtr = CreateMoveHandler(SS["Ctr"], SS["Icon"])
+
 SS["Icon"].MouseMove = function( sender, args )
 	--SS["Icon"].MouseLeave( sender, args );
 	TB["win"].MouseMove();
@@ -72,8 +74,3 @@ local dragHandlers = CreateDragHandlers(SS["Ctr"], settings.SharedStorage, "SSLo
 SS["Icon"].MouseDown = dragHandlers.MouseDown
 SS["Icon"].MouseUp = dragHandlers.MouseUp
 --**^
-
-function MoveSSCtr(sender, args)
-	SS["Icon"].MouseLeave( sender, args );
-	MoveControlConstrained(SS["Ctr"], args);
-end

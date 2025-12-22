@@ -22,6 +22,8 @@ TI["Icon"]:SetSize( 32, 32 );
 TI["Icon"]:SetBackground( resources.TrackItems );
 --TI["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 
+local MoveTICtr = CreateMoveHandler(TI["Ctr"], TI["Icon"])
+
 TI["Icon"].MouseMove = function( sender, args )
 	--TI["Icon"].MouseLeave( sender, args );
 	TB["win"].MouseMove();
@@ -64,8 +66,3 @@ local dragHandlers = CreateDragHandlers(TI["Ctr"], settings.TrackItems, "TILocX"
 TI["Icon"].MouseDown = dragHandlers.MouseDown
 TI["Icon"].MouseUp = dragHandlers.MouseUp
 --**^
-
-function MoveTICtr(sender, args)
-	TI["Icon"].MouseLeave( sender, args );
-	MoveControlConstrained(TI["Ctr"], args);
-end

@@ -22,6 +22,8 @@ WI["Icon"]:SetSize( 32, 32 );
 WI["Icon"]:SetBackground( resources.Wallet ); 
 --WI["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 
+local MoveWICtr = CreateMoveHandler(WI["Ctr"], WI["Icon"])
+
 WI["Icon"].MouseMove = function( sender, args )
 	--WI["Icon"].MouseLeave( sender, args );
 	TB["win"].MouseMove();
@@ -64,8 +66,3 @@ local dragHandlers = CreateDragHandlers(WI["Ctr"], settings.Wallet, "WILocX", "W
 WI["Icon"].MouseDown = dragHandlers.MouseDown
 WI["Icon"].MouseUp = dragHandlers.MouseUp
 --**^
-
-function MoveWICtr(sender, args)
-	WI["Icon"].MouseLeave( sender, args );
-	MoveControlConstrained(WI["Ctr"], args);
-end

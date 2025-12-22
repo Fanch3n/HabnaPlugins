@@ -29,32 +29,7 @@ _G.createCurrencyTable = function(currencyName)
 	end
 	currencyData.Icon:SetBackground(_G.currencies.byName[currencyName].icon)
 
-	-- Icon event handlers
-	currencyData.Icon.MouseMove = function(sender, args)
-		currencyData.Lbl.MouseLeave(sender, args)
-		TB.win.MouseMove()
-		if dragging then
-			MoveCurrencyCtr(sender, args, currencyName)
-		else
-			ShowToolTipWin(currencyName)
-		end
-	end
-
-	currencyData.Icon.MouseLeave = function(sender, args)
-		currencyData.Lbl.MouseLeave(sender, args)
-	end
-
-	currencyData.Icon.MouseClick = function(sender, args)
-		currencyData.Lbl.MouseClick(sender, args)
-	end
-
-	currencyData.Icon.MouseDown = function(sender, args)
-		currencyData.Lbl.MouseDown(sender, args)
-	end
-
-	currencyData.Icon.MouseUp = function(sender, args)
-		currencyData.Lbl.MouseUp(sender, args)
-	end
+	-- Icon event handlers will be set up after the label is created
 
 	-- Currency label on TitanBar
 	currencyData.Lbl = Turbine.UI.Label()
@@ -68,12 +43,29 @@ _G.createCurrencyTable = function(currencyName)
 		currencyData.Lbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight)
 	end
 
+	-- Set up move handler and icon event handlers after label is created
+	local MoveCurrencyCtr = CreateMoveHandler(currencyData.Ctr, currencyData.Lbl)
+	
+	currencyData.Icon.MouseMove = function(sender, args)
+		currencyData.Lbl.MouseLeave(sender, args)
+		TB.win.MouseMove()
+		if dragging then
+			MoveCurrencyCtr(sender, args)
+		else
+			ShowToolTipWin(currencyName)
+		end
+	end
+
+	currencyData.Icon.MouseLeave = function(sender, args)
+		currencyData.Lbl.MouseLeave(sender, args)
+	end
+
 	-- Label event handlers
 	currencyData.Lbl.MouseMove = function(sender, args)
 		currencyData.Lbl.MouseLeave(sender, args)
 		TB.win.MouseMove()
 		if dragging then
-			MoveCurrencyCtr(sender, args, currencyName)
+			MoveCurrencyCtr(sender, args)
 		else
 			ShowToolTipWin(currencyName)
 		end
@@ -95,51 +87,10 @@ _G.createCurrencyTable = function(currencyName)
 		_G.WasDrag = false
 	end
 
-	currencyData.Lbl.MouseDown = function(sender, args)
-		if args.Button == Turbine.UI.MouseButton.Left then
-			StartDrag(currencyData.Ctr, args)
-		end
-	end
-
-	currencyData.Lbl.MouseUp = function(sender, args)
-		currencyData.Ctr:SetZOrder(2)
-		_G.dragging = false
-		-- Note: SaveControlPosition expects global var names without _G prefix
-		local globalXVarName = currencyName .. "LocX"
-		local globalYVarName = currencyName .. "LocY"
-		local x = currencyData.Ctr:GetLeft()
-		local y = currencyData.Ctr:GetTop()
-		currencyData.LocX = x
-		currencyData.LocY = y
-		settings[currencyName].X = string.format("%.0f", x)
-		settings[currencyName].Y = string.format("%.0f", y)
-		SaveSettings(false)
-	end
-end
-
-function MoveCurrencyCtr(sender, args, currencyName)
-	local ctr = _G.CurrencyData[currencyName].Ctr
-	local ctrWidth, ctrHeight = ctr:GetSize()
-	local ctrLocX, ctrLocY = ctr:GetPosition()
-
-	-- calculate new position based on mouse movement
-	ctrLocX = ctrLocX + args.X - dragStartX
-	ctrLocY = ctrLocY + args.Y - dragStartY
-
-	-- keep the control within the window bounds
-	if ctrLocX < 0 then
-		ctrLocX = 0
-	elseif ctrLocX + ctrWidth > screenWidth then
-		ctrLocX = screenWidth - ctrWidth
-	end
-
-	if ctrLocY < 0 then
-		ctrLocY = 0
-	elseif ctrLocY + ctrHeight > TB["win"]:GetHeight() then
-		ctrLocY = TB["win"]:GetHeight() - ctrHeight
-	end
-
-	-- set the new position and mark as dragged
-	ctr:SetPosition(ctrLocX, ctrLocY)
-	WasDrag = true
+	local dragHandlers = CreateDragHandlers(currencyData.Ctr, settings[currencyName], currencyName .. "LocX", currencyName .. "LocY")
+	currencyData.Lbl.MouseDown = dragHandlers.MouseDown
+	currencyData.Lbl.MouseUp = dragHandlers.MouseUp
+	
+	-- Delegate Icon events to Lbl (except MouseMove which has custom logic)
+	DelegateMouseEvents(currencyData.Icon, currencyData.Lbl, {"MouseClick", "MouseDown", "MouseUp"})
 end

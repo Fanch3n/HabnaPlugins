@@ -22,6 +22,8 @@ VT["Icon"]:SetSize( 30, 30 );
 VT["Icon"]:SetBackground( resources.Storage.Vault );
 --VT["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 
+local MoveVTCtr = CreateMoveHandler(VT["Ctr"], VT["Icon"])
+
 VT["Icon"].MouseMove = function( sender, args )
 	--VT["Icon"].MouseLeave( sender, args );
 	TB["win"].MouseMove();
@@ -72,8 +74,3 @@ local dragHandlers = CreateDragHandlers(VT["Ctr"], settings.Vault, "VTLocX", "VT
 VT["Icon"].MouseDown = dragHandlers.MouseDown
 VT["Icon"].MouseUp = dragHandlers.MouseUp
 --**^
-
-function MoveVTCtr(sender, args)
-	VT["Icon"].MouseLeave( sender, args );
-	MoveControlConstrained(VT["Ctr"], args);
-end

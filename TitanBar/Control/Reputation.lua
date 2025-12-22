@@ -23,6 +23,8 @@ RP["Icon"]:SetSize( 32, 32 );
 RP["Icon"]:SetBackground( resources.Reputation.Icon );-- in-game icon 32x32
 --RP["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 
+local MoveRPCtr = CreateMoveHandler(RP["Ctr"], RP["Icon"])
+
 RP["Icon"].MouseMove = function( sender, args )
 	--RP["Icon"].MouseLeave( sender, args );
 	TB["win"].MouseMove();
@@ -65,8 +67,3 @@ local dragHandlers = CreateDragHandlers(RP["Ctr"], settings.Reputation, "RPLocX"
 RP["Icon"].MouseDown = dragHandlers.MouseDown
 RP["Icon"].MouseUp = dragHandlers.MouseUp
 --**^
-
-function MoveRPCtr(sender, args)
-	RP["Icon"].MouseLeave( sender, args );
-	MoveControlConstrained(RP["Ctr"], args);
-end

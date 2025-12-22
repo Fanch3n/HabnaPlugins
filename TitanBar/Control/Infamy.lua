@@ -21,6 +21,8 @@ IF["Icon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 IF["Icon"]:SetSize( 32, 32 );
 --IF["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 
+local MoveIFCtr = CreateMoveHandler(IF["Ctr"], IF["Icon"])
+
 IF["Icon"].MouseMove = function( sender, args )
 	--IF["Lbl"].MouseLeave( sender, args );
 	TB["win"].MouseMove();
@@ -63,8 +65,3 @@ local dragHandlers = CreateDragHandlers(IF["Ctr"], settings.Infamy, "IFLocX", "I
 IF["Icon"].MouseDown = dragHandlers.MouseDown
 IF["Icon"].MouseUp = dragHandlers.MouseUp
 --**^
-
-function MoveIFCtr(sender, args)
-	IF["Icon"].MouseLeave( sender, args );
-	MoveControlConstrained(IF["Ctr"], args);
-end

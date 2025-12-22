@@ -22,6 +22,8 @@ EI[ "Icon" ]:SetSize( 32, 32 );
 --EI[ "Icon" ]:SetPosition( 0, 0 );
 EI[ "Icon" ]:SetBackground( 0x410f2ea5 );-- in-game icon 32x32
 
+local MoveEICtr = CreateMoveHandler(EI["Ctr"], EI["Icon"])
+
 EI[ "Icon" ].MouseMove = function( sender, args )
 	TB[ "win" ].MouseMove();
 	if dragging then
@@ -113,7 +115,3 @@ EI["Lbl"].MouseDown = dragHandlers.MouseDown
 EI["Lbl"].MouseUp = dragHandlers.MouseUp
 --**^
 --]]
-function MoveEICtr(sender, args)
-	EI[ "Icon" ].MouseLeave( sender, args );
-	MoveControlConstrained(EI[ "Ctr" ], args);
-end
