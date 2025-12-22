@@ -89,14 +89,14 @@ function RefreshVaultTTListBox()
 	VaultTTHeight = 40 * vaultpackCount / MaxItemsPerLine + 45;
 	if VaultTTHeight > screenHeight then VaultTTHeight = screenHeight - 70; end
 	
-	VaultTTListBox:SetHeight( VaultTTHeight - 35 );
+	VaultTTListBox:SetHeight( VaultTTHeight );
 	VaultTTListBox:SetMaxItemsPerLine( MaxItemsPerLine );
 		
 	local w = 40 * MaxItemsPerLine + 40;
 	
 	if w + mouseX > screenWidth then x = w - 10; end
 	
-	_G.ToolTipWin:SetHeight( VaultTTHeight );
+	_G.ToolTipWin:SetHeight( VaultTTHeight + 20);
 	_G.ToolTipWin:SetWidth( w );
 	_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
 	_G.ToolTipWin:SetVisible( true );
