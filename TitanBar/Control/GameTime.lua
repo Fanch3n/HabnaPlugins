@@ -1,6 +1,7 @@
 -- GameTime.lua
 -- Written by Habna
 
+import(AppDirD .. "UIHelpers")
 
 _G.GT = {}; -- Game Time table in _G
 
@@ -57,25 +58,18 @@ end
 
 GT["Lbl"].MouseDown = function( sender, args )
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		GT["Ctr"]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
+		StartDrag(GT["Ctr"], args)
 	end
 end
 
 GT["Lbl"].MouseUp = function( sender, args )
 	GT["Ctr"]:SetZOrder( 2 );
-	dragging = false;
+	_G.dragging = false;
 	GT.SavePosition();
 end
 
 GT.SavePosition = function()
-	_G.GTLocX = GT["Ctr"]:GetLeft();
-	settings.GameTime.X = string.format("%.0f", _G.GTLocX);
-	_G.GTLocY = GT["Ctr"]:GetTop();
-	settings.GameTime.Y = string.format("%.0f", _G.GTLocY);
-	SaveSettings( false );
+	SaveControlPosition(GT["Ctr"], settings.GameTime, "GTLocX", "GTLocY")
 end
 --**^
 

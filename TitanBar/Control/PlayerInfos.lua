@@ -1,6 +1,7 @@
 -- PlayerInfos.lua
 -- Written by Habna
 
+import(AppDirD .. "UIHelpers")
 
 _G.PI = {}; -- Player Infos table in _G
 
@@ -116,25 +117,18 @@ end
 
 PI["Name"].MouseDown = function( sender, args )
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		PI["Ctr"]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
+		StartDrag(PI["Ctr"], args)
 	end
 end
 
 PI["Name"].MouseUp = function( sender, args )
 	PI["Ctr"]:SetZOrder( 2 );
-	dragging = false;
+	_G.dragging = false;
 	PI.SavePosition();
 end
 
 PI.SavePosition = function()
-	_G.PILocX = PI["Ctr"]:GetLeft();
-	settings.PlayerInfos.X = string.format("%.0f", _G.PILocX);
-	_G.PILocY = PI["Ctr"]:GetTop();
-	settings.PlayerInfos.Y = string.format("%.0f", _G.PILocY);
-	SaveSettings( false );
+	SaveControlPosition(PI["Ctr"], settings.PlayerInfos, "PILocX", "PILocY")
 end
 --**^
 

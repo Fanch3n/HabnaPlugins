@@ -1,6 +1,7 @@
 -- EquipInfos.lua
 -- Written by Habna
 
+import(AppDirD .. "UIHelpers")
 
 _G.EI = {}; -- Equipment Infos table in _G
 
@@ -63,21 +64,14 @@ end
 
 EI[ "Icon" ].MouseDown = function( sender, args )
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		EI[ "Ctr" ]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
+		StartDrag(EI[ "Ctr" ], args)
 	end
 end
 
 EI[ "Icon" ].MouseUp = function( sender, args )
 	EI[ "Ctr" ]:SetZOrder( 2 );
-	dragging = false;
-	_G.EILocX = EI[ "Ctr" ]:GetLeft();
-	settings.EquipInfos.X = string.format("%.0f", _G.EILocX);
-	_G.EILocY = EI[ "Ctr" ]:GetTop();
-	settings.EquipInfos.Y = string.format("%.0f", _G.EILocY);
-	SaveSettings( false );
+	_G.dragging = false;
+	SaveControlPosition(EI[ "Ctr" ], settings.EquipInfos, "EILocX", "EILocY")
 end
 
 --[[--]]-- I don't know why this label was commented out... But it's breaking things commented out - so let's uncomment and see what happens.
@@ -100,15 +94,7 @@ EI["Lbl"].MouseMove = function( sender, args )
 			EITT = true;
 			ShowEIWindow();
 		else
-			local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-			
-			if _G.ToolTipWin:GetWidth() + mouseX + 5 > screenWidth then x = _G.ToolTipWin:GetWidth() - 10;
-			else x = -5; end
-			
-			if TBTop then y = -15;
-			else y = _G.ToolTipWin:GetHeight() end
-
-			_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
+			PositionToolTipWindow();
 		end
 	end
 end
@@ -133,25 +119,18 @@ end
 
 EI["Lbl"].MouseDown = function( sender, args )
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		EI[ "Ctr" ]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
+		StartDrag(EI[ "Ctr" ], args)
 	end
 end
 
 EI["Lbl"].MouseUp = function( sender, args )
 	EI[ "Ctr" ]:SetZOrder( 2 );
-	dragging = false;
+	_G.dragging = false;
 	EI.SavePosition();
 end
 
 EI.SavePosition = function()
-	_G.EILocX = EI[ "Ctr" ]:GetLeft();
-	settings.EquipInfos.X = string.format("%.0f", _G.EILocX);
-	_G.EILocY = EI[ "Ctr" ]:GetTop();
-	settings.EquipInfos.Y = string.format("%.0f", _G.EILocY);
-	SaveSettings( false );
+	SaveControlPosition(EI[ "Ctr" ], settings.EquipInfos, "EILocX", "EILocY")
 end
 --**^
 --]]

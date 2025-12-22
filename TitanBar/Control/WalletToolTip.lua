@@ -2,6 +2,8 @@
 -- written by Habna
 -- rewritten by many
 
+import(AppDirD .. "UIHelpers")
+
 
 function ShowWIToolTip()
 	-- ( offsetX, offsetY, width, height, bubble side )
@@ -86,10 +88,7 @@ function RefreshWITTListBox()
 					--lblQte:SetBackColor( Color["red"] ); -- debug purpose
 					--**^
 					--**v Icon v**
-					local ttIcon = Turbine.UI.Control();
-					ttIcon:SetParent( WITTCtr );
-					ttIcon:SetPosition( lblQte:GetLeft()+lblQte:GetWidth()-2, 5 );
-					ttIcon:SetSize( 27, 21 );
+					local ttIcon = CreateControl(Turbine.UI.Control, WITTCtr, lblQte:GetLeft()+lblQte:GetWidth()-2, 5, 27, 21)
 					ttIcon:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 					ttIcon:SetBackground( resources.MoneyIcon[w] ); --tonumber(twmoneyi[w]) );
 					tmWidth = tmWidth + ttIcon:GetWidth()-2;
@@ -106,9 +105,7 @@ function RefreshWITTListBox()
 				--**
 			else --All other control
 				--**v Icon v**
-				local ttIcon = Turbine.UI.Control();
-				ttIcon:SetParent( WITTCtr );
-				ttIcon:SetPosition( 0, 0 );
+				local ttIcon = CreateControl(Turbine.UI.Control, WITTCtr, 0, 0, 0, 0)
 				ttIcon:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 			
 				if wttcur == L["MSL"] or wttcur == L["MLotroPoints"] then ttIcon:SetBackground( CtrIconCodeIs );
@@ -168,15 +165,7 @@ function RefreshWITTListBox()
 	end
 
 	WITTListBox:SetHeight( WITTPosY );
-	_G.ToolTipWin:SetHeight( WITTPosY + 37 );
+	_G.ToolTipWin:SetSize( _G.ToolTipWin:GetWidth(), WITTPosY + 37 );
 
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-			
-	if _G.ToolTipWin:GetWidth() + mouseX + 5 > screenWidth then x = _G.ToolTipWin:GetWidth() - 10;
-	else x = -5; end
-			
-	if TBTop then y = -15;
-	else y = _G.ToolTipWin:GetHeight() end
-
-	_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
+	PositionToolTipWindow();
 end

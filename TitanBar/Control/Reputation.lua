@@ -2,6 +2,8 @@
 -- Written by Habna
 
 if resources == nil then import "HabnaPlugins.TitanBar.TBresources"; end;
+import(AppDirD .. "UIHelpers")
+
 _G.RP = {}; -- Reputation table in _G
 
 --**v Reputation Control v**
@@ -31,15 +33,7 @@ RP["Icon"].MouseMove = function( sender, args )
 			RPTT = true;
 			ShowRPWindow();
 		else
-			local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-			
-			if _G.ToolTipWin:GetWidth() + mouseX + 5 > screenWidth then x = _G.ToolTipWin:GetWidth() - 10;
-			else x = -5; end
-			
-			if TBTop then y = -15;
-			else y = _G.ToolTipWin:GetHeight() end
-
-			_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
+			PositionToolTipWindow();
 		end
 	end
 end
@@ -69,25 +63,18 @@ end
 
 RP["Icon"].MouseDown = function( sender, args )
 	if args.Button == Turbine.UI.MouseButton.Left then
-		RP["Ctr"]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
+		StartDrag(RP["Ctr"], args)
 	end
 end
 
 RP["Icon"].MouseUp = function( sender, args )
 	RP["Ctr"]:SetZOrder( 2 );
-	dragging = false;
+	_G.dragging = false;
 	RP.SavePosition();
 end
 
 RP.SavePosition = function()
-	_G.RPLocX = RP["Ctr"]:GetLeft();
-	settings.Reputation.X = string.format("%.0f", _G.RPLocX);
-	_G.RPLocY = RP["Ctr"]:GetTop();
-	settings.Reputation.Y = string.format("%.0f", _G.RPLocY);
-	SaveSettings( false );
+	SaveControlPosition(RP["Ctr"], settings.Reputation, "RPLocX", "RPLocY")
 end
 --**^
 

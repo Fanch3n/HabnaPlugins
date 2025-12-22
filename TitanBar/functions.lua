@@ -2,6 +2,8 @@
 -- Written By Habna
 -- rewritten by many
 
+import(AppDirD .. "UIHelpers")
+
 function AddCallback(object, event, callback)
 	if object[event] == nil then
 		object[event] = callback;
@@ -39,10 +41,7 @@ function ApplySkin() --Tooltip skin
 
 	-- Create and position tooltip corners and edges
 	local function createTooltipPart(name, x, y, width, height, background)
-		local part = Turbine.UI.Control()
-		part:SetParent(ToolTipWin)
-		part:SetPosition(x, y)
-		part:SetSize(width, height)
+		local part = CreateControl(Turbine.UI.Control, ToolTipWin, x, y, width, height)
 		part:SetBackground(background)
 	end
 
@@ -72,10 +71,7 @@ function createToolTipWin( xOffset, yOffset, xSize, ySize, side, header, text1,
 	ApplySkin();
 
 	--**v Text in Header v**
-	lblheader = Turbine.UI.Label();
-	lblheader:SetParent( _G.ToolTipWin );
-	lblheader:SetPosition( 40, 7 ); --10
-	lblheader:SetSize( xSize, ySize );
+	lblheader = CreateControl(Turbine.UI.Label, _G.ToolTipWin, 40, 7, xSize, ySize);
 	lblheader:SetForeColor( Color["green"] );
 	lblheader:SetFont(Turbine.UI.Lotro.Font.Verdana16);
 	lblheader:SetText( header );
@@ -85,10 +81,7 @@ function createToolTipWin( xOffset, yOffset, xSize, ySize, side, header, text1,
 	
 	--**v Text v**
 	for i = 1, #txt do
-		local lbltext = Turbine.UI.Label();
-		lbltext:SetParent( _G.ToolTipWin );
-		lbltext:SetPosition( 40, YPos ); --10
-		lbltext:SetSize( xSize, 15 );
+		local lbltext = CreateControl(Turbine.UI.Label, _G.ToolTipWin, 40, YPos, xSize, 15);
 		lbltext:SetForeColor( Color["white"] );
 		lbltext:SetFont(Turbine.UI.Lotro.Font.Verdana14);
 		lbltext:SetText( txt[i] );

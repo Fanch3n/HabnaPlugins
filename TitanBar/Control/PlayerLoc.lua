@@ -1,6 +1,7 @@
 -- PlayerLoc.lua
 -- Written by Habna
 
+import(AppDirD .. "UIHelpers")
 
 _G.PL = {}; -- Player Location table in _G
 
@@ -52,25 +53,18 @@ end
 
 PL["Lbl"].MouseDown = function( sender, args )
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		PL["Ctr"]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
+		StartDrag(PL["Ctr"], args)
 	end
 end
 
 PL["Lbl"].MouseUp = function( sender, args )
 	PL["Ctr"]:SetZOrder( 2 );
-	dragging = false;
+	_G.dragging = false;
 	PL.SavePosition();
 end
 
 PL.SavePosition = function()
-	_G.PLLocX = PL["Ctr"]:GetLeft();
-	settings.PlayerLoc.X = string.format("%.0f", _G.PLLocX);
-	_G.PLLocY = PL["Ctr"]:GetTop();
-	settings.PlayerLoc.Y = string.format("%.0f", _G.PLLocY);
-	SaveSettings( false );
+	SaveControlPosition(PL["Ctr"], settings.PlayerLoc, "PLLocX", "PLLocY")
 end
 --**^
 

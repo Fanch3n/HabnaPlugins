@@ -45,14 +45,13 @@ function frmSharedStorage()
 	_G.wSS.SearchTextBox.FocusLost = function( sender, args )
 	end
 
-	local lbTop = _G.wSS.SearchTextBox:GetTop() + _G.wSS.SearchTextBox:GetHeight()+5
-	local lb = CreateListBoxWithBorder(_G.wSS, 15, lbTop, _G.wSS:GetWidth() - 30, 392, Color["grey"])
+	local lbTop = 80
+	local lb = CreateListBoxWithBorder(_G.wSS, 15, lbTop, _G.wSS:GetWidth() - 30, 370, Color["grey"])
 	_G.wSS.ListBoxBorder = lb.Border
 	_G.wSS.ListBox = lb.ListBox
 	_G.wSS.ListBoxScrollBar = lb.ScrollBar
 	_G.wSS.ListBox:SetMaxItemsPerLine( 1 );
-	_G.wSS.ListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
-	_G.wSS.ListBox:SetBackColor( Color["black"] );
+	ConfigureListBox(_G.wSS.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
 	
 	sspackCount = 0;
 	if PlayerSharedStorage ~= nil then for k, v in pairs(PlayerSharedStorage) do sspackCount = sspackCount + 1; end end

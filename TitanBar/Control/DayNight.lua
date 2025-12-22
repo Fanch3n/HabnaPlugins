@@ -1,6 +1,7 @@
 -- DayNight.lua
 -- Written by Habna
 
+import(AppDirD .. "UIHelpers")
 
 _G.DN = {}; -- Day & Night table in _G
 
@@ -86,25 +87,18 @@ end
 
 DN["Lbl"].MouseDown = function( sender, args )
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		DN["Ctr"]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
+		StartDrag(DN["Ctr"], args)
 	end
 end
 
 DN["Lbl"].MouseUp = function( sender, args )
 	DN["Ctr"]:SetZOrder( 2 );
-	dragging = false;
+	_G.dragging = false;
 	DN.SavePosition();
 end
 
 DN.SavePosition = function()
-	_G.DNLocX = DN["Ctr"]:GetLeft();
-	settings.DayNight.X = string.format("%.0f", _G.DNLocX);
-	_G.DNLocY = DN["Ctr"]:GetTop();
-	settings.DayNight.Y = string.format("%.0f", _G.DNLocY);
-	SaveSettings( false );
+	SaveControlPosition(DN["Ctr"], settings.DayNight, "DNLocX", "DNLocY")
 end
 --**^
 

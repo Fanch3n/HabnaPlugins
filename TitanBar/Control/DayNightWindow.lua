@@ -3,6 +3,7 @@
 
 function frmDayNightWindow()
 	import(AppDirD .. "WindowFactory")
+	import(AppDirD .. "UIHelpers")
 	local prevTS = _G.TS
 	local bHelp = false
 	
@@ -51,13 +52,7 @@ function frmDayNightWindow()
 	local TAjustlbl = CreateTitleLabel(_G.wDN, L["TAjustL"], NextTimeCB:GetLeft(), NextTimeCB:GetTop() + 30, nil, Color["rustedgold"], 8.5, nil, 20)
 	-- **^
 	-- **v Timer seed - Text box v**
-	local TAjustTB = Turbine.UI.Lotro.TextBox();
-	TAjustTB:SetParent( _G.wDN );
-	TAjustTB:SetPosition( TAjustlbl:GetLeft() + TAjustlbl:GetWidth(), TAjustlbl:GetTop() - 5 );
-	TAjustTB:SetText( _G.TS );
-	TAjustTB:SetMultiline( false );
-	TAjustTB:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
-	TAjustTB:SetSize( 75, 20 );
+	local TAjustTB = CreateInputTextBox(_G.wDN, _G.TS, TAjustlbl:GetLeft() + TAjustlbl:GetWidth(), TAjustlbl:GetTop() - 5, 75);
 	TAjustTB:SetForeColor( Color["white"] );
 
 	TAjustTB.FocusGained = function( sender, args )

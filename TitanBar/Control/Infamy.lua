@@ -1,6 +1,7 @@
 -- Infamy.lua
 -- Written by Habna
 
+import(AppDirD .. "UIHelpers")
 
 _G.IF = {}; -- Infamy table in _G
 
@@ -30,15 +31,7 @@ IF["Icon"].MouseMove = function( sender, args )
 			IFTT = true;
 			ShowIFWindow();
 		else
-			local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-			
-			if _G.ToolTipWin:GetWidth() + mouseX + 5 > screenWidth then x = _G.ToolTipWin:GetWidth() - 10;
-			else x = -5; end
-			
-			if TBTop then y = -15;
-			else y = _G.ToolTipWin:GetHeight() end
-
-			_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
+			PositionToolTipWindow();
 		end
 	end
 end
@@ -68,25 +61,18 @@ end
 
 IF["Icon"].MouseDown = function( sender, args )
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		IF["Ctr"]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
+		StartDrag(IF["Ctr"], args)
 	end
 end
 
 IF["Icon"].MouseUp = function( sender, args )
 	IF["Ctr"]:SetZOrder( 2 );
-	dragging = false;
+	_G.dragging = false;
 	IF.SavePosition();
 end
 
 IF.SavePosition = function()
-	_G.IFLocX = IF["Ctr"]:GetLeft();
-	settings.Infamy.X = string.format("%.0f", _G.IFLocX);
-	_G.IFLocY = IF["Ctr"]:GetTop();
-	settings.Infamy.Y = string.format("%.0f", _G.IFLocY);
-	SaveSettings( false );
+	SaveControlPosition(IF["Ctr"], settings.Infamy, "IFLocX", "IFLocY")
 end
 --**^
 

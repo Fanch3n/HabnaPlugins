@@ -29,8 +29,7 @@ function frmMoneyInfosWindow()
 	MIListBox:SetParent( _G.wMI );
 	MIListBox:SetPosition( 20, 35 );
 	MIListBox:SetWidth( _G.wMI:GetWidth() - 40 );
-	MIListBox:SetMaxItemsPerLine( 1 );
-	MIListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
+	ConfigureListBox(MIListBox)
 	--MIListBox:SetBackColor( Color["darkgrey"] ); --debug purpose
 	
 	-- **v Display total money - check box v**

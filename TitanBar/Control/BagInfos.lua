@@ -1,6 +1,7 @@
 -- BagInfos.lua
 -- Written by Habna
 
+import(AppDirD .. "UIHelpers")
 
 _G.BI = {}; -- Backpack Infos table in _G
 
@@ -87,25 +88,18 @@ end
 
 BI["Lbl"].MouseDown = function( sender, args )
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		BI["Ctr"]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
+		StartDrag(BI["Ctr"], args)
 	end
 end
 
 BI["Lbl"].MouseUp = function( sender, args )
 	BI["Ctr"]:SetZOrder( 2 );
-	dragging = false;
+	_G.dragging = false;
 	BI.SavePosition();
 end
 
 BI.SavePosition = function()
-	_G.BILocX = BI["Ctr"]:GetLeft();
-	settings.BagInfos.X = string.format("%.0f", _G.BILocX);
-	_G.BILocY = BI["Ctr"]:GetTop();
-	settings.BagInfos.Y = string.format("%.0f", _G.BILocY);
-	SaveSettings( false );
+	SaveControlPosition(BI["Ctr"], settings.BagInfos, "BILocX", "BILocY")
 end
 --**^
 

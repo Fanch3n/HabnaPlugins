@@ -1,6 +1,7 @@
 -- Wallet.lua
 -- Written by Habna
 
+import(AppDirD .. "UIHelpers")
 
 _G.WI = {}; -- Wallet table in _G
 
@@ -31,15 +32,7 @@ WI["Icon"].MouseMove = function( sender, args )
 			WITT = true;
 			ShowWIToolTip();
 		else
-			local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-			
-			if _G.ToolTipWin:GetWidth() + mouseX + 5 > screenWidth then x = _G.ToolTipWin:GetWidth() - 10;
-			else x = -5; end
-			
-			if TBTop then y = -15;
-			else y = _G.ToolTipWin:GetHeight() end
-
-			_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
+			PositionToolTipWindow();
 		end
 	end
 end
@@ -69,25 +62,18 @@ end
 
 WI["Icon"].MouseDown = function( sender, args )
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		WI["Ctr"]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
+		StartDrag(WI["Ctr"], args)
 	end
 end
 
 WI["Icon"].MouseUp = function( sender, args )
 	WI["Ctr"]:SetZOrder( 2 );
-	dragging = false;
+	_G.dragging = false;
 	WI.SavePosition();
 end
 
 WI.SavePosition = function()
-	_G.WILocX = WI["Ctr"]:GetLeft();
-	settings.Wallet.X = string.format("%.0f", _G.WILocX);
-	_G.WILocY = WI["Ctr"]:GetTop();
-	settings.Wallet.Y = string.format("%.0f", _G.WILocY);
-	SaveSettings( false );
+	SaveControlPosition(WI["Ctr"], settings.Wallet, "WILocX", "WILocY")
 end
 --**^
 

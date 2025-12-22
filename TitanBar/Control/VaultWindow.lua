@@ -70,14 +70,13 @@ function frmVault()
 	_G.wVT.SearchTextBox.FocusLost = function( sender, args )
 	end
 
-	local lbTop = 60
-	local lb = CreateListBoxWithBorder(_G.wVT, 15, lbTop, _G.wVT:GetWidth() - 30, 392, Color["grey"])
+	local lbTop = 85
+	local lb = CreateListBoxWithBorder(_G.wVT, 15, lbTop, _G.wVT:GetWidth() - 30, 365, Color["grey"])
 	_G.wVT.ListBoxBorder = lb.Border
 	_G.wVT.ListBox = lb.ListBox
 	_G.wVT.ListBoxScrollBar = lb.ScrollBar
 	_G.wVT.ListBox:SetMaxItemsPerLine( 1 );
-	_G.wVT.ListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
-	_G.wVT.ListBox:SetBackColor( Color["black"] );
+	ConfigureListBox(_G.wVT.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
 	-- **v Delete character infos button v**
 	_G.wVT.ButtonDelete = Turbine.UI.Lotro.Button();
 	_G.wVT.ButtonDelete:SetParent( _G.wVT );
@@ -149,7 +148,7 @@ function SetEmptyVault()
 	_G.wVT.ListBox:AddItem( itemCtl );
 	_G.wVT.ButtonDelete:SetVisible( false );
 
-	_G.wVT.ListBoxBorder:SetPosition( 15, 60 );
+	_G.wVT.ListBoxBorder:SetPosition( 15, 85 );
 	_G.wVT.ListBoxBorder:SetHeight( lblmgs:GetHeight() + 4 );
 	_G.wVT.ListBox:SetPosition( _G.wVT.ListBoxBorder:GetLeft() + 2, _G.wVT.ListBoxBorder:GetTop() + 2 );
 	_G.wVT.ListBox:SetHeight( lblmgs:GetHeight() )
@@ -171,10 +170,10 @@ function AddVaultPack(n, addCharacterName, vaultpackCount)
 			_G.wVT.ListBox:AddItem( itemCtl[i] )
 			_G.wVT.ButtonDelete:SetVisible( true );
 		end
-	end
+		end
 	
-	_G.wVT.ListBoxBorder:SetPosition( 15, _G.wVT.SearchTextBox:GetTop() + _G.wVT.SearchTextBox:GetHeight() + 5 );
-	_G.wVT.ListBoxBorder:SetHeight( 392 );
+	_G.wVT.ListBoxBorder:SetPosition( 15, _G.wVT.searchLabel:GetTop() + _G.wVT.searchLabel:GetHeight() + 5 );
+	_G.wVT.ListBoxBorder:SetHeight( 365 );
 	_G.wVT.ListBox:SetPosition( _G.wVT.ListBoxBorder:GetLeft() + 2, _G.wVT.ListBoxBorder:GetTop() + 2 );
 	_G.wVT.ListBox:SetHeight( _G.wVT.ListBoxBorder:GetHeight() - 4 );
 	_G.wVT.ListBoxScrollBar:SetHeight( _G.wVT.ListBox:GetHeight() );

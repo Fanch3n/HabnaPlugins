@@ -1,6 +1,7 @@
 -- SharedStorage.lua
 -- Written by Habna
 
+import(AppDirD .. "UIHelpers")
 
 _G.SS = {}; -- Infamy table in _G
 
@@ -69,25 +70,18 @@ end
 
 SS["Icon"].MouseDown = function( sender, args )
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		SS["Ctr"]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
+		StartDrag(SS["Ctr"], args)
 	end
 end
 
 SS["Icon"].MouseUp = function( sender, args )
 	SS["Ctr"]:SetZOrder( 2 );
-	dragging = false;
+	_G.dragging = false;
 	SS.SavePosition();
 end
 
 SS.SavePosition = function()
-	_G.SSLocX = SS["Ctr"]:GetLeft();
-	settings.SharedStorage.X = string.format("%.0f", _G.SSLocX);
-	_G.SSLocY = SS["Ctr"]:GetTop();
-	settings.SharedStorage.Y = string.format("%.0f", _G.SSLocY);
-	SaveSettings( false );
+	SaveControlPosition(SS["Ctr"], settings.SharedStorage, "SSLocX", "SSLocY")
 end
 --**^
 

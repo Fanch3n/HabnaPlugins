@@ -1,3 +1,5 @@
+import(AppDirD .. "UIHelpers")
+
 function ShowVaultToolTip()
 	_G.ToolTipWin = Turbine.UI.Window();
 	_G.ToolTipWin:SetZOrder( 1 );
@@ -50,42 +52,27 @@ function RefreshVaultTTListBox()
 		itemCtl:SetSize( 40, 40 );
 				
 		-- Item background
-		local itemBG = Turbine.UI.Control();
-		itemBG:SetParent( itemCtl );
-		itemBG:SetPosition( 4, 4 );
-		itemBG:SetSize( 32, 32 );
+		local itemBG = CreateControl(Turbine.UI.Control, itemCtl, 4, 4, 32, 32)
 		if PlayerVault[PN][tostring(i)].B ~= "0" then itemBG:SetBackground( tonumber(PlayerVault[PN][tostring(i)].B) ); end
 		itemBG:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		
 		-- Item Underlay
-		local itemU = Turbine.UI.Control();
-		itemU:SetParent( itemCtl );
-		itemU:SetSize( 32, 32 );
-		itemU:SetPosition( 4, 4 );
+		local itemU = CreateControl(Turbine.UI.Control, itemCtl, 4, 4, 32, 32)
 		if PlayerVault[PN][tostring(i)].U ~= "0" then itemU:SetBackground( tonumber(PlayerVault[PN][tostring(i)].U) ); end
 		itemU:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
 		-- Item Shadow
-		local itemS = Turbine.UI.Control();
-		itemS:SetParent( itemCtl );
-		itemS:SetSize( 32, 32 );
-		itemS:SetPosition( 4, 4 );
+		local itemS = CreateControl(Turbine.UI.Control, itemCtl, 4, 4, 32, 32)
 		if PlayerVault[PN][tostring(i)].S ~= "0" then itemS:SetBackground( tonumber(PlayerVault[PN][tostring(i)].S) ); end
 		itemS:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
 		-- Item
-		local item = Turbine.UI.Control();
-		item:SetParent( itemCtl );
-		item:SetSize( 32, 32 );
-		item:SetPosition( 4, 4 );
+		local item = CreateControl(Turbine.UI.Control, itemCtl, 4, 4, 32, 32)
 		if PlayerVault[PN][tostring(i)].I ~= "0" then item:SetBackground( tonumber(PlayerVault[PN][tostring(i)].I) ); end
 		item:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
 		-- Item Quantity
-		local itemQTE = Turbine.UI.Label();
-		itemQTE:SetParent( itemCtl );
-		itemQTE:SetSize( 32, 15 );
-		itemQTE:SetPosition( 0, 20 );
+		local itemQTE = CreateControl(Turbine.UI.Label, itemCtl, 0, 20, 32, 15)
 		itemQTE:SetFont( Turbine.UI.Lotro.Font.Verdana12 );
 		itemQTE:SetFontStyle( Turbine.UI.FontStyle.Outline );
 		itemQTE:SetOutlineColor( Color["black"] );

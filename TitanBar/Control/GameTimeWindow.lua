@@ -4,6 +4,7 @@
 
 function frmGameTimeWindow()
 	import(AppDirD .. "WindowFactory")
+	import(AppDirD .. "UIHelpers")
 
 	-- Create window via factory
 	_G.wGT = CreateWindow({
@@ -28,15 +29,8 @@ function frmGameTimeWindow()
 	-- **v 24h clock - Check box v**
 	local GMT = Turbine.UI.Lotro.TextBox();
 	local ShowSTcb = Turbine.UI.Lotro.CheckBox();
-	local Clock24Ctr = Turbine.UI.Lotro.CheckBox();
-	Clock24Ctr:SetParent( _G.wGT );
-	Clock24Ctr:SetPosition( 35, 40 );
-	Clock24Ctr:SetText( L["GTW24h"] );
-	Clock24Ctr:SetSize( Clock24Ctr:GetTextLength() * 8, 20 );
-	--Clock24Ctr:SetVisible( true );
-	--Clock24Ctr:SetEnabled( false );
-	Clock24Ctr:SetChecked( _G.Clock24h );
-	Clock24Ctr:SetForeColor( Color["rustedgold"] );
+	local ShowBTcb;  -- Forward declaration
+	local Clock24Ctr = CreateAutoSizedCheckBox(_G.wGT, L["GTW24h"], 35, 40, _G.Clock24h, 8);
 
 	Clock24Ctr.CheckedChanged = function( sender, args )
 		_G.Clock24h = Clock24Ctr:IsChecked();
@@ -109,15 +103,7 @@ function frmGameTimeWindow()
 	end
 	-- **^
 	-- **v Show both time - Check box v**
-	local ShowBTcb = Turbine.UI.Lotro.CheckBox();
-	ShowBTcb:SetParent( _G.wGT );
-	ShowBTcb:SetPosition( 35, ShowSTcb:GetTop() + 20 );
-	ShowBTcb:SetText( L["GTWSBT"] );
-	ShowBTcb:SetSize( ShowBTcb:GetTextLength() * 8.5, 20 );
-	--ShowBTcb:SetVisible( true );
-	--ShowBTcb:SetEnabled( false );
-	ShowBTcb:SetChecked( _G.ShowBT );
-	ShowBTcb:SetForeColor( Color["rustedgold"] );
+	ShowBTcb = CreateAutoSizedCheckBox(_G.wGT, L["GTWSBT"], 35, ShowSTcb:GetTop() + 20, _G.ShowBT);
 
 	ShowBTcb.CheckedChanged = function( sender, args )
 		_G.ShowBT = ShowBTcb:IsChecked();

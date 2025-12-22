@@ -81,9 +81,7 @@ function frmWalletWindow()
 	WIListBox:SetZOrder( 1 );
 	WIListBox:SetPosition( 20, 115 );
 	WIListBox:SetSize( _G.wWI:GetWidth()-40, WIListBoxHeight );
-	WIListBox:SetMaxItemsPerLine( 1 );
-	WIListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
-	WIListBox:SetBackColor( Color["black"] );
+	ConfigureListBox(WIListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
 	WIListBoxScrollBar = wilb.ScrollBar
 	WIListBoxScrollBar:SetParent( WIListBox );
 	WIListBoxScrollBar:SetZOrder( 1 );
@@ -93,10 +91,7 @@ function frmWalletWindow()
 	WIListBoxScrollBar:SetSize( 12, WIListBox:GetHeight() );
 	-- **^
 
-	WIWCtr = Turbine.UI.Control();
-	WIWCtr:SetParent( _G.wWI );
-	WIWCtr:SetPosition( WIListBox:GetLeft(), WIListBox:GetTop() );
-	WIWCtr:SetSize( WIListBox:GetWidth(), WIListBox:GetHeight() );
+	WIWCtr = CreateControl(Turbine.UI.Control, _G.wWI, WIListBox:GetLeft(), WIListBox:GetTop(), WIListBox:GetWidth(), WIListBox:GetHeight());
 	WIWCtr:SetZOrder( 0 );
 	WIWCtr:SetVisible( false );
 	WIWCtr:SetBlendMode( 5 );
@@ -110,10 +105,7 @@ function frmWalletWindow()
 		end
 	end
 	
-	WIlblFN = Turbine.UI.Label();
-	WIlblFN:SetParent( WIWCtr );
-	WIlblFN:SetPosition( 0 , WIWCtr:GetHeight()/2 - 40 );
-	WIlblFN:SetSize( WIWCtr:GetWidth() , 15 );
+	WIlblFN = CreateControl(Turbine.UI.Label, WIWCtr, 0, WIWCtr:GetHeight()/2 - 40, WIWCtr:GetWidth(), 15);
 	WIlblFN:SetFont( Turbine.UI.Lotro.Font.TrajanPro16 );
 	WIlblFN:SetFontStyle( Turbine.UI.FontStyle.Outline );
 	WIlblFN:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
@@ -150,14 +142,8 @@ function frmWalletWindow()
 	WIlblLOTROPTS:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 	--WIlblLOTROPTS:SetBackColor( Color["red"] ); -- debug purpose
 
-	WItxtLOTROPTS = Turbine.UI.Lotro.TextBox();
-	WItxtLOTROPTS:SetParent( LPWCtr );
-	WItxtLOTROPTS:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
+	WItxtLOTROPTS = CreateInputTextBox(LPWCtr, nil, WIlblLOTROPTS:GetLeft()+WIlblLOTROPTS:GetWidth()+5, WIlblLOTROPTS:GetTop()-2);
 	--WItxtLOTROPTS:SetText( _G.LOTROPTS );
-	WItxtLOTROPTS:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-	WItxtLOTROPTS:SetPosition( WIlblLOTROPTS:GetLeft()+WIlblLOTROPTS:GetWidth()+5, WIlblLOTROPTS:GetTop()-2 );
-	WItxtLOTROPTS:SetSize( 80, 20 );
-	WItxtLOTROPTS:SetMultiline( false );
 	if PlayerAlign == 2 then WItxtLOTROPTS:SetBackColor( Color["red"] ); end
 
 	WItxtLOTROPTS.FocusGained = function( sender, args )
@@ -184,11 +170,7 @@ function frmWalletWindow()
 	LPWCtr:SetSize( WIListBox:GetWidth(), 20 );
 	--**
 
-	WIbutSave = Turbine.UI.Lotro.Button();
-	WIbutSave:SetParent( WIWCtr );
-	WIbutSave:SetText( L["PWSave"] );
-	WIbutSave:SetSize( WIbutSave:GetTextLength() * 10, 15 ); --Auto size with text length
-	--WIbutSave:SetEnabled( true );
+	WIbutSave = CreateAutoSizedButton(WIWCtr, L["PWSave"])
 
 	WIbutSave.Click = function( sender, args )
 		WIWCtr:SetVisible( false );

@@ -1,4 +1,6 @@
 -- Create tables in _G
+import(AppDirD .. "UIHelpers")
+
 _G.createCurrencyTable = function(currencyName)
 	local currencyData = _G.CurrencyData[currencyName]
 	currencyData.Ctr = Turbine.UI.Control()
@@ -95,20 +97,22 @@ _G.createCurrencyTable = function(currencyName)
 
 	currencyData.Lbl.MouseDown = function(sender, args)
 		if args.Button == Turbine.UI.MouseButton.Left then
-			currencyData.Ctr:SetZOrder(3)
-			dragStartX = args.X
-			dragStartY = args.Y
-			dragging = true
+			StartDrag(currencyData.Ctr, args)
 		end
 	end
 
 	currencyData.Lbl.MouseUp = function(sender, args)
 		currencyData.Ctr:SetZOrder(2)
-		dragging = false
-		currencyData.LocX = currencyData.Ctr:GetLeft()
-		settings[currencyName].X = string.format("%.0f", currencyData.LocX)
-		currencyData.LocY = currencyData.Ctr:GetTop()
-		settings[currencyName].Y = string.format("%.0f", currencyData.LocY)
+		_G.dragging = false
+		-- Note: SaveControlPosition expects global var names without _G prefix
+		local globalXVarName = currencyName .. "LocX"
+		local globalYVarName = currencyName .. "LocY"
+		local x = currencyData.Ctr:GetLeft()
+		local y = currencyData.Ctr:GetTop()
+		currencyData.LocX = x
+		currencyData.LocY = y
+		settings[currencyName].X = string.format("%.0f", x)
+		settings[currencyName].Y = string.format("%.0f", y)
 		SaveSettings(false)
 	end
 end

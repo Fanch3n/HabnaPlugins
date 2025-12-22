@@ -2,6 +2,7 @@
 -- Written by Habna
 -- Rewritten by many
 
+import(AppDirD .. "UIHelpers")
 
 function frmBackground()
 	sFrom = _G.sFromCtr;
@@ -44,16 +45,10 @@ function frmBackground()
 	local CurSetColorLbl = CreateTitleLabel(wBackground, L["BWCurSetColor"], 305, 35, nil, Color["rustedgold"], nil, 80, 30)
 	-- **^
 	-- **v Currently Selected color - box v**
-	curSelColorBorder = Turbine.UI.Label();
-	curSelColorBorder:SetParent( wBackground );
-	curSelColorBorder:SetSize( 73, 73 );
-	curSelColorBorder:SetPosition( 305, 60 );
+	curSelColorBorder = CreateControl(Turbine.UI.Label, wBackground, 305, 60, 73, 73);
 	curSelColorBorder:SetBackColor( Color["white"] );
 
-	curSelColor = Turbine.UI.Label();
-	curSelColor:SetParent( curSelColorBorder );
-	curSelColor:SetSize( 71, 71 );
-	curSelColor:SetPosition( 1, 1 );
+	curSelColor = CreateControl(Turbine.UI.Label, curSelColorBorder, 1, 1, 71, 71);
 	
 	-- Set backcolor window setting to currently control color
 	if sFrom == "TitanBar" then
@@ -77,11 +72,7 @@ function frmBackground()
 	curSelColor:SetBackColor( Turbine.UI.Color( curSelAlpha, curSelRed, curSelGreen, curSelBlue ) );
 	-- **^
 	-- **v Save button v**
-	local buttonSave = Turbine.UI.Lotro.Button();
-	buttonSave:SetParent( wBackground );
-	buttonSave:SetText( L["BWSave"] );
-	buttonSave:SetSize( buttonSave:GetTextLength() * 10, 15 ); --Auto size with text length
-	buttonSave:SetPosition( wBackground:GetWidth() - buttonSave:GetWidth() - 15 , wBackground:GetHeight() - 34 );
+	local buttonSave = CreateAutoSizedButton(wBackground, L["BWSave"], wBackground:GetWidth() - 110, wBackground:GetHeight() - 34)
 	buttonSave:SetVisible( true );
 
 	buttonSave.Click = function( sender, args )
@@ -102,10 +93,7 @@ function frmBackground()
 	alphalabel:SetBackColor( Color["black"] );
 	alphalabel:SetTextAlignment( Turbine.UI.ContentAlignment.TopCenter );
 	
-	local alphaScrollBar = Turbine.UI.Lotro.ScrollBar();
-	alphaScrollBar:SetParent( alphalabel );
-	alphaScrollBar:SetPosition( 0, 0 );
-	alphaScrollBar:SetSize( 242, 10 );
+	local alphaScrollBar = CreateControl(Turbine.UI.Lotro.ScrollBar, alphalabel, 0, 0, 242, 10);
 	alphaScrollBar:SetMinimum( 0 );
 	alphaScrollBar:SetMaximum( 100 );
 	alphaScrollBar:SetValue( curSelAlpha * 100);
@@ -120,11 +108,7 @@ function frmBackground()
 	end
 	-- **^
 	-- **v Default button v**
-	local buttonDefault = Turbine.UI.Lotro.Button();
-	buttonDefault:SetParent( wBackground );
-	buttonDefault:SetPosition( 23, wBackground:GetHeight() - 34 );
-	buttonDefault:SetText( L["BWDef"] );
-	buttonDefault:SetSize( buttonDefault:GetTextLength() * 10, 15 ); --Auto size with text length
+	local buttonDefault = CreateAutoSizedButton(wBackground, L["BWDef"], 23, wBackground:GetHeight() - 34)
 	buttonDefault:SetVisible( true );
 
 	buttonDefault.Click = function(sender, args)
@@ -140,11 +124,7 @@ function frmBackground()
 	end
 	-- **^
 	-- **v Black button v**
-	local buttonBlack = Turbine.UI.Lotro.Button();
-	buttonBlack:SetParent( wBackground );
-	buttonBlack:SetPosition( buttonDefault:GetLeft() + buttonDefault:GetWidth() + 5, wBackground:GetHeight() - 34 );
-	buttonBlack:SetText( L["BWBlack"] );
-	buttonBlack:SetSize( buttonBlack:GetTextLength() * 10, 15 ); --Auto size with text length
+	local buttonBlack = CreateAutoSizedButton(wBackground, L["BWBlack"], buttonDefault:GetLeft() + buttonDefault:GetWidth() + 5, wBackground:GetHeight() - 34)
 	buttonBlack:SetVisible( true );
 
 	buttonBlack.Click = function(sender, args)
@@ -160,11 +140,7 @@ function frmBackground()
 	end
 	-- **^
 	-- **v Transparent button v**
-	local buttonTrans = Turbine.UI.Lotro.Button();
-	buttonTrans:SetParent( wBackground );
-	buttonTrans:SetPosition( buttonBlack:GetLeft() + buttonBlack:GetWidth() + 5, wBackground:GetHeight() - 34 );
-	buttonTrans:SetText( L["BWTrans"] );
-	buttonTrans:SetSize( buttonTrans:GetTextLength() * 10, 15 ); --Auto size with text length
+	local buttonTrans = CreateAutoSizedButton(wBackground, L["BWTrans"], buttonBlack:GetLeft() + buttonBlack:GetWidth() + 5, wBackground:GetHeight() - 34)
 	buttonTrans:SetVisible( true );
 
 	buttonTrans.Click = function(sender, args)
@@ -180,18 +156,12 @@ function frmBackground()
 	end
 	-- **^
 	-- Create Colour Picker window/border.
-	ColourPickerBorder = Turbine.UI.Label();
-	ColourPickerBorder:SetParent( wBackground );
-	ColourPickerBorder:SetPosition( 40, 60 );
-	ColourPickerBorder:SetSize( 242, 73 );
+	ColourPickerBorder = CreateControl(Turbine.UI.Label, wBackground, 40, 60, 242, 73);
 	ColourPickerBorder:SetBackColor( Turbine.UI.Color( 1, .2, .2, .2  ) );
 	ColourPickerBorder:SetVisible( true );
 	
 	-- Create Colour Picker.
-	ColourPicker = Turbine.UI.Label();
-	ColourPicker:SetParent( ColourPickerBorder );
-	ColourPicker:SetPosition( 1, 1 );
-	ColourPicker:SetSize( 240, 71 );
+	ColourPicker = CreateControl(Turbine.UI.Label, ColourPickerBorder, 1, 1, 240, 71);
 	ColourPicker:SetBackground( resources.Picker ); -- 0x41007e13 / resources.Picker.Background
 
 	ColourPicker.GetColorFromCoord = function( sender, X, Y )

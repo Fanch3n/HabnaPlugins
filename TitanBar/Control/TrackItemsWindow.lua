@@ -58,14 +58,13 @@ function frmTrackItemsWindow()
 	_G.wTI.SearchTextBox.FocusLost = function( sender, args )
 	end
 
-	local lbTop = 60
-	local lb = CreateListBoxWithBorder(_G.wTI, 15, lbTop, _G.wTI:GetWidth() - 30, 392, Color["grey"])
+	local lbTop = 85
+	local lb = CreateListBoxWithBorder(_G.wTI, 15, lbTop, _G.wTI:GetWidth() - 30, 365, Color["grey"])
 	_G.wTI.ListBoxBorder = lb.Border
 	_G.wTI.ListBox = lb.ListBox
 	_G.wTI.ListBoxScrollBar = lb.ScrollBar
 	_G.wTI.ListBox:SetMaxItemsPerLine( 1 );
-	_G.wTI.ListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
-	_G.wTI.ListBox:SetBackColor( Color["black"] );
+	ConfigureListBox(_G.wTI.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
 
 	CheckForStackableItems();
 end
@@ -111,7 +110,7 @@ function SetEmptyTrackList()
 
 	local lblmgs = CreateTitleLabel(itemCtl, L["BIMsg"], 0, 0, nil, Color["red"], nil, itemCtl:GetWidth(), itemCtl:GetHeight(), Turbine.UI.ContentAlignment.MiddleCenter)
 
-	_G.wTI.ListBoxBorder:SetPosition( 15, 60 );
+	_G.wTI.ListBoxBorder:SetPosition( 15, 85 );
 	_G.wTI.ListBoxBorder:SetHeight( lblmgs:GetHeight() + 4 );
 	_G.wTI.ListBox:SetPosition( _G.wTI.ListBoxBorder:GetLeft() + 2, _G.wTI.ListBoxBorder:GetTop() + 2 );
 	_G.wTI.ListBox:SetHeight( lblmgs:GetHeight() );
@@ -223,8 +222,8 @@ function ShowStackableItems()
 		end
 	end
 
-	_G.wTI.ListBoxBorder:SetPosition( 15, _G.wTI.SearchTextBox:GetTop() + _G.wTI.SearchTextBox:GetHeight() + 5 );
-	_G.wTI.ListBoxBorder:SetHeight( 392 );
+	_G.wTI.ListBoxBorder:SetPosition( 15, _G.wTI.searchLabel:GetTop() + _G.wTI.searchLabel:GetHeight() + 5 );
+	_G.wTI.ListBoxBorder:SetHeight( 365 );
 	_G.wTI.ListBox:SetPosition( _G.wTI.ListBoxBorder:GetLeft() + 2, _G.wTI.ListBoxBorder:GetTop() + 2 );
 	_G.wTI.ListBox:SetHeight( _G.wTI.ListBoxBorder:GetHeight() - 4 );
 	_G.wTI.ListBoxScrollBar:SetHeight( _G.wTI.ListBox:GetHeight() );

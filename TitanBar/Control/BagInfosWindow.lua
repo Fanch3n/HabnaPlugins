@@ -3,6 +3,7 @@
 
 function frmBagInfos()
 	import(AppDirD .. "WindowFactory")
+	import(AppDirD .. "UIHelpers")
 	tbackpack = backpack
 	SelCN = PN
 	import(AppClassD .. "ComboBox")
@@ -81,22 +82,14 @@ function frmBagInfos()
 	end
 
 	-- Create list box area via helper
-	local lbTop = _G.wBI.SearchTextBox:GetTop() + _G.wBI.SearchTextBox:GetHeight() + 5
+	local lbTop = _G.wBI.searchLabel:GetTop() + _G.wBI.searchLabel:GetHeight() + 5
 	local lb = CreateListBoxWithBorder(_G.wBI, 15, lbTop, _G.wBI:GetWidth() - 30, 392, Color["grey"])
 	_G.wBI.ListBoxBorder = lb.Border
 	_G.wBI.ListBox = lb.ListBox
 	_G.wBI.ListBoxScrollBar = lb.ScrollBar
-	_G.wBI.ListBox:SetMaxItemsPerLine( 1 );
-	_G.wBI.ListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
-	_G.wBI.ListBox:SetBackColor( Color["black"] );
+	ConfigureListBox(_G.wBI.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
 	-- **v Show used slot info in tooltip? v**
-	_G.wBI.UsedSlots = Turbine.UI.Lotro.CheckBox();
-	_G.wBI.UsedSlots:SetParent( _G.wBI );
-	_G.wBI.UsedSlots:SetPosition( 30, _G.wBI.ListBox:GetTop() + _G.wBI.ListBox:GetHeight() + 6 );
-	_G.wBI.UsedSlots:SetText( L["BIUsed"] );
-	_G.wBI.UsedSlots:SetSize( _G.wBI.UsedSlots:GetTextLength() * 8.5, 20 );
-	_G.wBI.UsedSlots:SetChecked( BIUsed );
-	_G.wBI.UsedSlots:SetForeColor( Color["rustedgold"] );
+	_G.wBI.UsedSlots = CreateAutoSizedCheckBox(_G.wBI, L["BIUsed"], 30, _G.wBI.ListBox:GetTop() + _G.wBI.ListBox:GetHeight() + 6, BIUsed);
 
 	_G.wBI.UsedSlots.CheckedChanged = function( sender, args )
 		_G.BIUsed = _G.wBI.UsedSlots:IsChecked();
@@ -106,13 +99,7 @@ function frmBagInfos()
 	end
 	-- **^
 	-- **v Show max slot in tooltip? v**
-	_G.wBI.MaxSlots = Turbine.UI.Lotro.CheckBox();
-	_G.wBI.MaxSlots:SetParent( _G.wBI );
-	_G.wBI.MaxSlots:SetPosition( 30, _G.wBI.UsedSlots:GetTop() + _G.wBI.UsedSlots:GetHeight() );
-	_G.wBI.MaxSlots:SetText( L["BIMax"] );
-	_G.wBI.MaxSlots:SetSize( _G.wBI.MaxSlots:GetTextLength() * 8.5, 20 );
-	_G.wBI.MaxSlots:SetChecked( BIMax );
-	_G.wBI.MaxSlots:SetForeColor( Color["rustedgold"] );
+	_G.wBI.MaxSlots = CreateAutoSizedCheckBox(_G.wBI, L["BIMax"], 30, _G.wBI.UsedSlots:GetTop() + _G.wBI.UsedSlots:GetHeight(), BIMax);
 
 	_G.wBI.MaxSlots.CheckedChanged = function( sender, args )
 		_G.BIMax = _G.wBI.MaxSlots:IsChecked();

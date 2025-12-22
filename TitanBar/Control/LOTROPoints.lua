@@ -1,6 +1,7 @@
 -- LOTROPoints.lua
 -- Written by Habna
 
+import(AppDirD .. "UIHelpers")
 
 _G.LP = {}; -- LOTRO Points table in _G
 
@@ -94,21 +95,14 @@ end
 
 LP["Lbl"].MouseDown = function( sender, args )
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		LP["Ctr"]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
+		StartDrag(LP["Ctr"], args)
 	end
 end
 
 LP["Lbl"].MouseUp = function( sender, args )
 	LP["Ctr"]:SetZOrder( 2 );
-	dragging = false;
-	_G.LPLocX = LP["Ctr"]:GetLeft();
-	settings.LOTROPoints.X = string.format("%.0f", _G.LPLocX);
-	_G.LPLocY = LP["Ctr"]:GetTop();
-	settings.LOTROPoints.Y = string.format("%.0f", _G.LPLocY);
-	SaveSettings( false );
+	_G.dragging = false;
+	SaveControlPosition(LP["Ctr"], settings.LOTROPoints, "LPLocX", "LPLocY")
 end
 --**^
 

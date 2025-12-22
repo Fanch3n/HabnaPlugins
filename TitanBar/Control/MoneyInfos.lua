@@ -1,6 +1,7 @@
 -- MoneyInfos.lua
 -- Written by Habna
 
+import(AppDirD .. "UIHelpers")
 
 _G.MI = {}; -- Money Infos table in _G
 
@@ -297,15 +298,7 @@ MI["CLbl"].MouseMove = function( sender, args )
 			MITT = true;
 			ShowMIWindow();
 		else
-			local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-			
-			if _G.ToolTipWin:GetWidth() + mouseX + 5 > screenWidth then x = _G.ToolTipWin:GetWidth() - 10;
-			else x = -5; end
-			
-			if TBTop then y = -15;
-			else y = _G.ToolTipWin:GetHeight() end
-
-			_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
+			PositionToolTipWindow();
 		end
 	end
 end
@@ -335,21 +328,14 @@ end
 
 MI["CLbl"].MouseDown = function( sender, args )
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		MI["Ctr"]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
+		StartDrag(MI["Ctr"], args)
 	end
 end
 
 MI["CLbl"].MouseUp = function( sender, args )
 	MI["Ctr"]:SetZOrder( 2 );
-	dragging = false;
-	_G.MILocX = MI["Ctr"]:GetLeft();
-	settings.Money.X = string.format("%.0f", _G.MILocX);
-	_G.MILocY = MI["Ctr"]:GetTop();
-	settings.Money.Y = string.format("%.0f", _G.MILocY);
-	SaveSettings( false );
+	_G.dragging = false;
+	SaveControlPosition(MI["Ctr"], settings.Money, "MILocX", "MILocY")
 end
 --**^
 

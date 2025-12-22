@@ -1,6 +1,7 @@
 -- Vault.lua
 -- Written by Habna
 
+import(AppDirD .. "UIHelpers")
 
 _G.VT = {}; -- Vault table in _G
 
@@ -69,25 +70,18 @@ end
 
 VT["Icon"].MouseDown = function( sender, args )
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		VT["Ctr"]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
+		StartDrag(VT["Ctr"], args)
 	end
 end
 
 VT["Icon"].MouseUp = function( sender, args )
 	VT["Ctr"]:SetZOrder( 2 );
-	dragging = false;
+	_G.dragging = false;
 	VT.SavePosition();
 end
 
 VT.SavePosition = function()
-	_G.VTLocX = VT["Ctr"]:GetLeft();
-	settings.Vault.X = string.format("%.0f", _G.VTLocX);
-	_G.VTLocY = VT["Ctr"]:GetTop();
-	settings.Vault.Y = string.format("%.0f", _G.VTLocY);
-	SaveSettings( false );
+	SaveControlPosition(VT["Ctr"], settings.Vault, "VTLocX", "VTLocY")
 end
 --**^
 

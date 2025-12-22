@@ -6,6 +6,7 @@ function frmReputationWindow()
     _G.SelectedFaction = nil;
     import(AppClassD.."ComboBox");
     import(AppDirD .. "WindowFactory")
+    import(AppDirD .. "UIHelpers")
     RPDD = HabnaPlugins.TitanBar.Class.ComboBox();
 
     -- Create window via WindowFactory for consistent behavior
@@ -95,9 +96,7 @@ function frmReputationWindow()
     RPListBox = rplb.ListBox
     RPListBox:SetParent(_G.wRP)
     RPListBox:SetZOrder(1)
-    RPListBox:SetMaxItemsPerLine(1)
-    RPListBox:SetOrientation(Turbine.UI.Orientation.Horizontal)
-    RPListBox:SetBackColor(Color["black"])
+    ConfigureListBox(RPListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
     RPListBoxScrollBar = rplb.ScrollBar
     RPListBoxScrollBar:SetParent(RPListBox)
     RPListBoxScrollBar:SetZOrder(1)
@@ -107,10 +106,7 @@ function frmReputationWindow()
     RPListBoxScrollBar:SetSize(12, RPListBox:GetHeight())
     -- **^
 
-    RPWCtr = Turbine.UI.Control();
-    RPWCtr:SetParent(_G.wRP);
-    RPWCtr:SetPosition(RPListBox:GetLeft(), RPListBox:GetTop());
-    RPWCtr:SetSize(RPListBox:GetWidth(), RPListBox:GetHeight());
+    RPWCtr = CreateControl(Turbine.UI.Control, _G.wRP, RPListBox:GetLeft(), RPListBox:GetTop(), RPListBox:GetWidth(), RPListBox:GetHeight());
     RPWCtr:SetZOrder(0);
     RPWCtr:SetVisible(false);
     RPWCtr:SetBlendMode(5);
@@ -125,10 +121,7 @@ function frmReputationWindow()
         end
     end
 
-    RPlblFN = Turbine.UI.Label(); -- Faction Name label
-    RPlblFN:SetParent(RPWCtr);
-    RPlblFN:SetPosition(0, 120);
-    RPlblFN:SetSize(RPWCtr:GetWidth(), 15);
+    RPlblFN = CreateControl(Turbine.UI.Label, RPWCtr, 0, 120, RPWCtr:GetWidth(), 15); -- Faction Name label
     RPlblFN:SetFont(Turbine.UI.Lotro.Font.TrajanPro16);
     RPlblFN:SetFontStyle(Turbine.UI.FontStyle.Outline);
     RPlblFN:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleCenter);
@@ -165,15 +158,7 @@ function frmReputationWindow()
     RPlblTotal:SetForeColor(Color["rustedgold"]);
     RPlblTotal:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
 
-    RPtxtTotal = Turbine.UI.Lotro.TextBox();
-    RPtxtTotal:SetParent(RPWCtr);
-    RPtxtTotal:SetPosition( 
-        RPlblTotal:GetLeft() + RPlblTotal:GetWidth() + 5, 
-        RPlblTotal:GetTop() - 2);
-    RPtxtTotal:SetFont(Turbine.UI.Lotro.Font.TrajanPro14);
-    RPtxtTotal:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
-    RPtxtTotal:SetSize(90, 20);
-    RPtxtTotal:SetMultiline(false);
+    RPtxtTotal = CreateInputTextBox(RPWCtr, nil, RPlblTotal:GetLeft() + RPlblTotal:GetWidth() + 5, RPlblTotal:GetTop() - 2, 90);
     if PlayerAlign == 2 then RPtxtTotal:SetBackColor(Color["red"]); end
 
     RPtxtTotal.FocusGained = function(sender, args)
@@ -199,13 +184,7 @@ function frmReputationWindow()
         end
     end
 
-    RPbutSave = Turbine.UI.Lotro.Button();
-    RPbutSave:SetParent(RPWCtr);
-    RPbutSave:SetPosition(
-        RPtxtTotal:GetLeft() + RPtxtTotal:GetWidth() + 5, 
-        RPtxtTotal:GetTop());
-    RPbutSave:SetText(L["PWSave"]);
-    RPbutSave:SetSize(RPbutSave:GetTextLength() * 10, 15); 
+    RPbutSave = CreateAutoSizedButton(RPWCtr, L["PWSave"], RPtxtTotal:GetLeft() + RPtxtTotal:GetWidth() + 5, RPtxtTotal:GetTop())
     RPbutSave.Click = function(sender, args)
         if RPtxtTotal:GetText() == "" then
             RPtxtTotal:SetText("0");

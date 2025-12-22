@@ -4,6 +4,7 @@
 
 function frmDurabilityInfosWindow()
 	import(AppDirD .. "WindowFactory")
+	import(AppDirD .. "UIHelpers")
 
 	-- Create window via factory
 	_G.wDI = CreateWindow({
@@ -26,15 +27,7 @@ function frmDurabilityInfosWindow()
 	})
 
 	-- **v Show Icon in tooltip? v**
-	local TTIcon = Turbine.UI.Lotro.CheckBox();
-	TTIcon:SetParent( _G.wDI );
-	TTIcon:SetPosition( 30, 40 );
-	TTIcon:SetText( L["DIIcon"] );
-	TTIcon:SetSize( TTIcon:GetTextLength() * 8.5, 20 );
-	--TTIcon:SetVisible( true );
-	--TTIcon:SetEnabled( false );
-	TTIcon:SetChecked( DIIcon );
-	TTIcon:SetForeColor( Color["rustedgold"] );
+	local TTIcon = CreateAutoSizedCheckBox(_G.wDI, L["DIIcon"], 30, 40, DIIcon);
 
 	TTIcon.CheckedChanged = function( sender, args )
 		DIIcon = TTIcon:IsChecked();
@@ -43,15 +36,7 @@ function frmDurabilityInfosWindow()
 	end
 	-- **^
 	-- **v Show Item Name in tooltip? v**
-	local TTItemName = Turbine.UI.Lotro.CheckBox();
-	TTItemName:SetParent( _G.wDI );
-	TTItemName:SetPosition( 30, TTIcon:GetTop() + TTIcon:GetHeight() );
-	TTItemName:SetText( L["DIText"] );
-	TTItemName:SetSize( TTItemName :GetTextLength() * 8.5, 20 );
-	--TTItemName:SetVisible( true );
-	--TTItemName:SetEnabled( false );
-	TTItemName:SetChecked( DIText );
-	TTItemName:SetForeColor( Color["rustedgold"] );
+	local TTItemName = CreateAutoSizedCheckBox(_G.wDI, L["DIText"], 30, TTIcon:GetTop() + TTIcon:GetHeight(), DIText);
 
 	TTItemName.CheckedChanged = function( sender, args )
 		DIText = TTItemName:IsChecked();

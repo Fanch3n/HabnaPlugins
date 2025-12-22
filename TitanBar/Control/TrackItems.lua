@@ -1,6 +1,7 @@
 -- TrackItems.lua
 -- Written by Habna
 
+import(AppDirD .. "UIHelpers")
 
 _G.TI = {}; -- TrackItems table in _G
 
@@ -31,15 +32,7 @@ TI["Icon"].MouseMove = function( sender, args )
 			TITT = true;
 			ShowTIWindow();
 		else
-			local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-			
-			if _G.ToolTipWin:GetWidth() + mouseX + 5 > screenWidth then x = _G.ToolTipWin:GetWidth() - 10;
-			else x = -5; end
-			
-			if TBTop then y = -15;
-			else y = _G.ToolTipWin:GetHeight() end
-
-			_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
+			PositionToolTipWindow();
 		end
 	end
 end
@@ -69,25 +62,18 @@ end
 
 TI["Icon"].MouseDown = function( sender, args )
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		TI["Ctr"]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
+		StartDrag(TI["Ctr"], args)
 	end
 end
 
 TI["Icon"].MouseUp = function( sender, args )
 	TI["Ctr"]:SetZOrder( 2 );
-	dragging = false;
+	_G.dragging = false;
 	TI.SavePosition();
 end
 
 TI.SavePosition = function()
-	_G.TILocX = TI["Ctr"]:GetLeft();
-	settings.TrackItems.X = string.format("%.0f", _G.TILocX);
-	_G.TILocY = TI["Ctr"]:GetTop();
-	settings.TrackItems.Y = string.format("%.0f", _G.TILocY);
-	SaveSettings( false );
+	SaveControlPosition(TI["Ctr"], settings.TrackItems, "TILocX", "TILocY")
 end
 --**^
 

@@ -1,6 +1,8 @@
 -- InfamyToolTip.lua
 -- written by Habna
 
+import(AppDirD .. "UIHelpers")
+
 
 function ShowIFWindow()
 	-- ( offsetX, offsetY, width, height, bubble side )
@@ -68,9 +70,7 @@ function RefreshIFToolTip()
 	lblInfamy:SetZOrder( 2 );
 	--lblInfamy:SetBackColor( Color["red"] ); -- debug purpose
 
-	local NextRankCtr = Turbine.UI.Control();
-	NextRankCtr:SetParent( _G.ToolTipWin );
-	NextRankCtr:SetPosition( labelInfamy:GetLeft(), labelInfamy:GetTop()+labelInfamy:GetHeight()+5 )
+	local NextRankCtr = CreateControl(Turbine.UI.Control, _G.ToolTipWin, labelInfamy:GetLeft(), labelInfamy:GetTop()+labelInfamy:GetHeight()+5, 0, 0)
 	NextRankCtr:SetZOrder( 2 );
 	--NextRankCtr:SetBackColor( Color["red"] ); -- debug purpose
 	
@@ -100,23 +100,16 @@ function RefreshIFToolTip()
 	--percentage_done = 1; --debug purpose
 
 	--**v Infamy progress bar v**		
-	local IFPBCTr = Turbine.UI.Control();
-	IFPBCTr:SetParent( _G.ToolTipWin );
-	IFPBCTr:SetPosition( NextRankCtr:GetLeft(), NextRankCtr:GetTop()+NextRankCtr:GetHeight()+5 )
-	IFPBCTr:SetSize( 200, 15 );
+	local IFPBCTr = CreateControl(Turbine.UI.Control, _G.ToolTipWin, NextRankCtr:GetLeft(), NextRankCtr:GetTop()+NextRankCtr:GetHeight()+5, 200, 15)
 	IFPBCTr:SetZOrder( 2 );
 	--IFPBCTr:SetBackColor( Color["red"] ); -- debug purpose
 		
-	local IFPBFill = Turbine.UI.Control();--Filling
-	IFPBFill:SetParent( IFPBCTr );
-	IFPBFill:SetPosition( 9, 3 );
-	IFPBFill:SetSize( (183*percentage_done)/100, 9 );
+	local IFPBFill = CreateControl(Turbine.UI.Control, IFPBCTr, 9, 3, (183*percentage_done)/100, 9)--Filling
 	IFPBFill:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 	IFPBFill:SetBackground( resources.InfamyBG );
 	--IFPBFill:SetBackColor( Color["red"] ); -- debug purpose
 		
-	local IFPB = Turbine.UI.Control(); --Frame
-	IFPB:SetParent( IFPBCTr );
+	local IFPB = CreateControl(Turbine.UI.Control, IFPBCTr, 0, 0, 0, 0) --Frame
 	IFPB:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 	IFPB:SetSize( 200, 15 );
 	IFPB:SetBackground( 0x41007e94 );

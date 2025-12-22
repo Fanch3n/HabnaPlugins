@@ -4,6 +4,7 @@
 
 function frmLOTROPointsWindow()
 	import(AppDirD .. "WindowFactory")
+	import(AppDirD .. "UIHelpers")
 	_G.wLP = CreateWindow({
 		text = L["MLotroPoints"],
 		width = 300,
@@ -39,14 +40,7 @@ function frmLOTROPointsWindow()
 
 	local lblLOTROPTS = CreateTitleLabel(LPWCtr, L["MLotroPoints"], 0, 2, nil, Color["rustedgold"], 7.5, nil, 15, Turbine.UI.ContentAlignment.MiddleLeft)
 
-	local txtLOTROPTS = Turbine.UI.Lotro.TextBox();
-	txtLOTROPTS:SetParent( LPWCtr );
-	txtLOTROPTS:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
-	txtLOTROPTS:SetText( _G.LOTROPTS );
-	txtLOTROPTS:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-	txtLOTROPTS:SetPosition( lblLOTROPTS:GetLeft()+lblLOTROPTS:GetWidth()+5, lblLOTROPTS:GetTop()-2 );
-	txtLOTROPTS:SetSize( 80, 20 );
-	txtLOTROPTS:SetMultiline( false );
+	local txtLOTROPTS = CreateInputTextBox(LPWCtr, _G.LOTROPTS, lblLOTROPTS:GetLeft()+lblLOTROPTS:GetWidth()+5, lblLOTROPTS:GetTop()-2);
 	if PlayerAlign == 2 then txtLOTROPTS:SetBackColor( Color["red"] ); end
 
 	txtLOTROPTS.FocusGained = function( sender, args )
@@ -70,12 +64,7 @@ function frmLOTROPointsWindow()
 		end
 	end
 
-	local buttonSave = Turbine.UI.Lotro.Button();
-	buttonSave:SetParent( LPWCtr );
-	buttonSave:SetText( L["PWSave"] );
-	buttonSave:SetSize( buttonSave:GetTextLength() * 10, 15 ); --Auto size with text lenght
-	buttonSave:SetPosition( txtLOTROPTS:GetLeft()+txtLOTROPTS:GetWidth()+5, txtLOTROPTS:GetTop() );
-	--buttonSave:SetEnabled( true );
+	buttonSave = CreateAutoSizedButton(LPWCtr, L["PWSave"], txtLOTROPTS:GetLeft()+txtLOTROPTS:GetWidth()+5, txtLOTROPTS:GetTop())
 
 	buttonSave.Click = function( sender, args )
 		local parsed_text = txtLOTROPTS:GetText();

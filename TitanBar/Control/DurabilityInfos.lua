@@ -1,6 +1,7 @@
 -- DurabilityInfos.lua
 -- Written by Habna
 
+import(AppDirD .. "UIHelpers")
 
 _G.DI = {}; -- Items Durability Infos table in _G
 
@@ -63,15 +64,7 @@ DI["Lbl"].MouseMove = function( sender, args )
 			DITT = true;
 			ShowDIWindow();
 		else
-			local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-			
-			if _G.ToolTipWin:GetWidth() + mouseX + 5 > screenWidth then x = _G.ToolTipWin:GetWidth() - 10;
-			else x = -5; end
-			
-			if TBTop then y = -15;
-			else y = _G.ToolTipWin:GetHeight() end
-
-			_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
+			PositionToolTipWindow();
 		end
 	end
 end
@@ -101,25 +94,18 @@ end
 
 DI["Lbl"].MouseDown = function( sender, args )
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		DI["Ctr"]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
+		StartDrag(DI["Ctr"], args)
 	end
 end
 
 DI["Lbl"].MouseUp = function( sender, args )
 	DI["Ctr"]:SetZOrder( 2 );
-	dragging = false;
+	_G.dragging = false;
 	DI.SavePosition();
 end
 
 DI.SavePosition = function()
-	_G.DILocX = DI["Ctr"]:GetLeft();
-	settings.DurabilityInfos.X = string.format("%.0f", _G.DILocX);
-	_G.DILocY = DI["Ctr"]:GetTop();
-	settings.DurabilityInfos.Y = string.format("%.0f", _G.DILocY);
-	SaveSettings( false );
+	SaveControlPosition(DI["Ctr"], settings.DurabilityInfos, "DILocX", "DILocY")
 end
 --**
 

@@ -2,6 +2,8 @@
 -- written by Habna
 -- rewritten by many
 
+import(AppDirD .. "UIHelpers")
+
 if _G.Debug then write("frmOptions.lua"); end
 
 function GetWalletControls()
@@ -90,10 +92,7 @@ function frmOptions()
 	local lblHeight = CreateTitleLabel(wOptions, L["OPHText"], 25, 40, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	-- **^
 	-- **v Set the scrollbar v**
-	wScrollBar = Turbine.UI.Lotro.ScrollBar();
-	wScrollBar:SetParent( wOptions );
-	wScrollBar:SetPosition( lblHeight:GetLeft(), lblHeight:GetTop() + 15 );
-	wScrollBar:SetSize( wOptions:GetWidth() - 75, 10 );
+	wScrollBar = CreateControl(Turbine.UI.Lotro.ScrollBar, wOptions, lblHeight:GetLeft(), lblHeight:GetTop() + 15, wOptions:GetWidth() - 75, 10);
 	wScrollBar:SetOrientation( Turbine.UI.Orientation.Horizontal );
 	wScrollBar:SetMinimum( 10 );
 	wScrollBar:SetMaximum( 100 );
@@ -168,10 +167,7 @@ function frmOptions()
 	-- **v TitanBar Icon Size - label & DropDown box v**
 	lblIconSize = CreateTitleLabel(wOptions, L["OPIText"], 25, AutoDD:GetTop() + 30, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	
-	wIconScrollBar = Turbine.UI.Lotro.ScrollBar();
-	wIconScrollBar:SetParent( wOptions );
-	wIconScrollBar:SetPosition( lblIconSize:GetLeft(), lblIconSize:GetTop() + 15 );
-	wIconScrollBar:SetSize( wOptions:GetWidth() - 75, 10 );
+	wIconScrollBar = CreateControl(Turbine.UI.Lotro.ScrollBar, wOptions, lblIconSize:GetLeft(), lblIconSize:GetTop() + 15, wOptions:GetWidth() - 75, 10);
 	wIconScrollBar:SetOrientation( Turbine.UI.Orientation.Horizontal );
 	wIconScrollBar:SetMinimum( 16 );
 	wIconScrollBar:SetMaximum( 32 );
@@ -190,15 +186,7 @@ function frmOptions()
 	lblIconSizeV = CreateTitleLabel(wOptions, wIconScrollBar:GetValue(), wIconScrollBar:GetLeft() + wIconScrollBar:GetWidth() + 5, wIconScrollBar:GetTop(), nil, Color["rustedgold"], nil, 20, 15)
 	-- **^
 	-- **v Set TitanBar at Top of screen - Check box v**
-	local TBTopCB = Turbine.UI.Lotro.CheckBox();
-	TBTopCB:SetParent( wOptions );
-	TBTopCB:SetPosition( wIconScrollBar:GetLeft(), wIconScrollBar:GetTop() + 20 );
-	TBTopCB:SetText( L["OPTBTop"] );
-	TBTopCB:SetSize( TBTopCB:GetTextLength() * 8.5, 20 );
-	--TBTopCB:SetVisible( true );
-	--TBTopCB:SetEnabled( false );
-	TBTopCB:SetChecked( TBTop );
-	TBTopCB:SetForeColor( Color[ "rustedgold" ] );
+	local TBTopCB = CreateAutoSizedCheckBox(wOptions, L["OPTBTop"], wIconScrollBar:GetLeft(), wIconScrollBar:GetTop() + 20, TBTop);
 
 	TBTopCB.CheckedChanged = function( sender, args )
 		TBTop = TBTopCB:IsChecked();
@@ -211,13 +199,7 @@ function frmOptions()
 	end
 	-- **^
 	
-	local PILayoutCB = Turbine.UI.Lotro.CheckBox();
-	PILayoutCB:SetParent( wOptions );
-	PILayoutCB:SetText( L[ "Layout" ] );
-	PILayoutCB:SetPosition(TBTopCB:GetLeft(), TBTopCB:GetTop()+20);
-	PILayoutCB:SetSize( PILayoutCB:GetTextLength() * 8.5, 30 ); --Auto size with text length
-	PILayoutCB:SetChecked( PILayout );
-	PILayoutCB:SetForeColor( Color[ "rustedgold" ] );
+	local PILayoutCB = CreateAutoSizedCheckBox(wOptions, L["Layout"], TBTopCB:GetLeft(), TBTopCB:GetTop()+20, PILayout, 8.5, 30);
 	
 	PILayoutCB.CheckedChanged = function( sender, args )
 		PILayout = PILayoutCB:IsChecked();

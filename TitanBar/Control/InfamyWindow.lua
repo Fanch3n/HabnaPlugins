@@ -4,6 +4,7 @@
 
 function frmInfamyWindow()
 	import(AppDirD .. "WindowFactory")
+	import(AppDirD .. "UIHelpers")
 
 	-- Create window via factory
 	_G.wIF = CreateWindow({
@@ -39,14 +40,7 @@ function frmInfamyWindow()
 
 	local lblName = CreateTitleLabel(IFWCtr, L["IFIF"], 0, 2, nil, Color["rustedgold"], 7.5, nil, 15, Turbine.UI.ContentAlignment.MiddleLeft)
 
-	local txtInfamy = Turbine.UI.Lotro.TextBox();
-	txtInfamy:SetParent( IFWCtr );
-	txtInfamy:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
-	txtInfamy:SetText( InfamyPTS );
-	txtInfamy:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-	txtInfamy:SetPosition( lblName:GetLeft()+lblName:GetWidth()+5, lblName:GetTop()-2 );
-	txtInfamy:SetSize( 80, 20 );
-	txtInfamy:SetMultiline( false );
+	local txtInfamy = CreateInputTextBox(IFWCtr, InfamyPTS, lblName:GetLeft()+lblName:GetWidth()+5, lblName:GetTop()-2);
 	if PlayerAlign == 2 then txtInfamy:SetBackColor( Color["red"] ); end
 
 	txtInfamy.FocusGained = function( sender, args )
@@ -71,12 +65,7 @@ function frmInfamyWindow()
 		end
 	end
 
-	local buttonSave = Turbine.UI.Lotro.Button();
-	buttonSave:SetParent( IFWCtr );
-	buttonSave:SetText( L["PWSave"] );
-	buttonSave:SetSize( buttonSave:GetTextLength() * 10, 15 ); --Auto size with text lenght
-	buttonSave:SetPosition( txtInfamy:GetLeft()+txtInfamy:GetWidth()+5, txtInfamy:GetTop() );
-	--buttonSave:SetEnabled( true );
+	local buttonSave = CreateAutoSizedButton(IFWCtr, L["PWSave"], txtInfamy:GetLeft()+txtInfamy:GetWidth()+5, txtInfamy:GetTop())
 
 	buttonSave.Click = function( sender, args )
 		local parsed_text = txtInfamy:GetText();

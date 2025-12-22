@@ -80,51 +80,27 @@ function CreateItemRow(parent, width, height, isPlayerItem, itemSpec)
             itemBG:SetPosition(0, 0)
         end
     else
-        local itemBG = Turbine.UI.Control()
-        itemBG:SetParent(ctl)
-        itemBG:SetSize(32, 32)
-        itemBG:SetPosition(3, 3)
+        local itemBG = CreateControl(Turbine.UI.Control, ctl, 3, 3, 32, 32)
         if itemSpec and itemSpec.B and itemSpec.B ~= "0" then itemBG:SetBackground(tonumber(itemSpec.B)) end
         itemBG:SetBlendMode(Turbine.UI.BlendMode.Overlay)
 
-        local itemU = Turbine.UI.Control()
-        itemU:SetParent(ctl)
-        itemU:SetSize(32, 32)
-        itemU:SetPosition(3, 3)
+        local itemU = CreateControl(Turbine.UI.Control, ctl, 3, 3, 32, 32)
         if itemSpec and itemSpec.U and itemSpec.U ~= "0" then itemU:SetBackground(tonumber(itemSpec.U)) end
         itemU:SetBlendMode(Turbine.UI.BlendMode.Overlay)
 
-        local itemS = Turbine.UI.Control()
-        itemS:SetParent(ctl)
-        itemS:SetSize(32, 32)
-        itemS:SetPosition(3, 3)
+        local itemS = CreateControl(Turbine.UI.Control, ctl, 3, 3, 32, 32)
         if itemSpec and itemSpec.S and itemSpec.S ~= "0" then itemS:SetBackground(tonumber(itemSpec.S)) end
         itemS:SetBlendMode(Turbine.UI.BlendMode.Overlay)
 
-        local item = Turbine.UI.Control()
-        item:SetParent(ctl)
-        item:SetSize(32, 32)
-        item:SetPosition(3, 3)
+        local item = CreateControl(Turbine.UI.Control, ctl, 3, 3, 32, 32)
         if itemSpec and itemSpec.I and itemSpec.I ~= "0" then item:SetBackground(tonumber(itemSpec.I)) end
         item:SetBlendMode(Turbine.UI.BlendMode.Overlay)
 
-        itemQTE = Turbine.UI.Label()
-        itemQTE:SetParent(ctl)
-        itemQTE:SetSize(32, 15)
-        itemQTE:SetPosition(-4, 16)
-        itemQTE:SetFont(Turbine.UI.Lotro.Font.Verdana12)
-        itemQTE:SetFontStyle(Turbine.UI.FontStyle.Outline)
-        itemQTE:SetOutlineColor(Color["black"])
-        itemQTE:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight)
-        itemQTE:SetBackColorBlendMode(Turbine.UI.BlendMode.Overlay)
-        itemQTE:SetForeColor(Color["nicegold"])
-        if itemSpec and itemSpec.N then itemQTE:SetText(tonumber(itemSpec.N)) end
+        local qtyText = itemSpec and itemSpec.N and tonumber(itemSpec.N) or nil
+        itemQTE = CreateQuantityLabel(ctl, qtyText)
     end
 
-    local itemLbl = Turbine.UI.Label()
-    itemLbl:SetParent(ctl)
-    itemLbl:SetSize(ctl:GetWidth() - 35, height)
-    itemLbl:SetPosition(37, 2)
+    local itemLbl = CreateControl(Turbine.UI.Label, ctl, 37, 2, ctl:GetWidth() - 35, height)
     itemLbl:SetFont(Turbine.UI.Lotro.Font.TrajanPro16)
     itemLbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft)
     itemLbl:SetBackColorBlendMode(Turbine.UI.BlendMode.Overlay)
@@ -204,4 +180,161 @@ function CreateFieldLabel(parent, text, left, top, autosizeFactor, width, foreCo
     local factor = autosizeFactor or 8.5
     local color = foreColor or Color["rustedgold"]
     return CreateTitleLabel(parent, text, left, top, nil, color, factor, width, 20, Turbine.UI.ContentAlignment.MiddleLeft)
+end
+
+-- Create and position a control in one call (consolidates SetParent, SetPosition, SetSize).
+-- Parameters:
+--  controlType: a Turbine control class (e.g., Turbine.UI.Label, Turbine.UI.Control)
+--  parent: parent control
+--  left, top: position
+--  width, height: size
+--  Returns: the configured control instance
+function CreateControl(controlType, parent, left, top, width, height)
+    local ctrl = controlType()
+    ctrl:SetParent(parent)
+    ctrl:SetPosition(left, top)
+    ctrl:SetSize(width, height)
+    return ctrl
+end
+
+-- Create a quantity label for item displays (bottom-right corner with gold text)
+-- Parameters:
+--  parent: parent control
+--  quantity: (optional) the quantity text/number to display
+-- Returns: configured quantity label
+function CreateQuantityLabel(parent, quantity)
+    local lbl = CreateControl(Turbine.UI.Label, parent, -4, 16, 32, 15)
+    lbl:SetFont(Turbine.UI.Lotro.Font.Verdana12)
+    lbl:SetFontStyle(Turbine.UI.FontStyle.Outline)
+    lbl:SetOutlineColor(Color["black"])
+    lbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight)
+    lbl:SetBackColorBlendMode(Turbine.UI.BlendMode.Overlay)
+    lbl:SetForeColor(Color["nicegold"])
+    if quantity then lbl:SetText(tostring(quantity)) end
+    return lbl
+end
+
+-- Configure a listbox with common settings (orientation, items per line, background)
+-- Parameters:
+--  listBox: the listbox to configure
+--  itemsPerLine: (optional) default 1
+--  orientation: (optional) default Horizontal
+--  backColor: (optional) background color
+function ConfigureListBox(listBox, itemsPerLine, orientation, backColor)
+    listBox:SetMaxItemsPerLine(itemsPerLine or 1)
+    listBox:SetOrientation(orientation or Turbine.UI.Orientation.Horizontal)
+    if backColor then listBox:SetBackColor(backColor) end
+end
+
+-- Positions a tooltip window near the mouse cursor, accounting for screen edges and TitanBar position
+function PositionToolTipWindow()
+	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
+	local x, y;
+	
+	if _G.ToolTipWin:GetWidth() + mouseX + 5 > screenWidth then 
+		x = _G.ToolTipWin:GetWidth() - 10;
+	else 
+		x = -5; 
+	end
+	
+	if TBTop then 
+		y = -15;
+	else 
+		y = _G.ToolTipWin:GetHeight();
+	end
+
+	_G.ToolTipWin:SetPosition(mouseX - x, mouseY - y);
+end
+
+-- Save control position to settings
+-- Parameters:
+--  control: the control to get position from
+--  settingsTable: the settings table to update (e.g., settings.Wallet)
+--  globalXVar: the global variable name for X position (e.g., "_G.WILocX")
+--  globalYVar: the global variable name for Y position (e.g., "_G.WILocY")
+function SaveControlPosition(control, settingsTable, globalXVarName, globalYVarName)
+	local x = control:GetLeft()
+	local y = control:GetTop()
+	_G[globalXVarName] = x
+	_G[globalYVarName] = y
+	settingsTable.X = string.format("%.0f", x)
+	settingsTable.Y = string.format("%.0f", y)
+	SaveSettings(false)
+end
+
+-- Initialize drag operation on MouseDown
+-- Parameters:
+--  control: the control to set z-order on
+--  args: the MouseButton event args
+-- Sets global variables: dragStartX, dragStartY, dragging
+function StartDrag(control, args)
+	control:SetZOrder(3)
+	_G.dragStartX = args.X
+	_G.dragStartY = args.Y
+	_G.dragging = true
+end
+
+-- Create an auto-sized button with standard settings
+-- Parameters:
+--  parent: parent control
+--  text: button text
+--  left, top: position (optional)
+--  widthMultiplier: text length multiplier for width calculation (default: 10)
+--  height: button height (default: 15)
+-- Returns: the configured button instance
+function CreateAutoSizedButton(parent, text, left, top, widthMultiplier, height)
+	local btn = Turbine.UI.Lotro.Button()
+	btn:SetParent(parent)
+	btn:SetText(text)
+	local w = btn:GetTextLength() * (widthMultiplier or 10)
+	local h = height or 15
+	btn:SetSize(w, h)
+	if left and top then
+		btn:SetPosition(left, top)
+	end
+	return btn
+end
+
+-- Create a standard input TextBox with common settings
+-- Parameters:
+--  parent: parent control
+--  text: initial text value (optional)
+--  left, top: position
+--  width: textbox width (default: 80)
+--  height: textbox height (default: 20)
+--  font: Turbine font (default: TrajanPro14)
+--  alignment: text alignment (default: MiddleLeft)
+-- Returns: the configured textbox instance
+function CreateInputTextBox(parent, text, left, top, width, height, font, alignment)
+	local tb = Turbine.UI.Lotro.TextBox()
+	tb:SetParent(parent)
+	tb:SetPosition(left, top)
+	tb:SetSize(width or 80, height or 20)
+	tb:SetFont(font or Turbine.UI.Lotro.Font.TrajanPro14)
+	tb:SetTextAlignment(alignment or Turbine.UI.ContentAlignment.MiddleLeft)
+	tb:SetMultiline(false)
+	if text then tb:SetText(text) end
+	return tb
+end
+
+-- Create an auto-sized CheckBox with standard settings
+-- Parameters:
+--  parent: parent control
+--  text: checkbox label text
+--  left, top: position
+--  checked: initial checked state (optional)
+--  widthMultiplier: text length multiplier for width calculation (default: 8.5)
+--  height: checkbox height (default: 20)
+-- Returns: the configured checkbox instance
+function CreateAutoSizedCheckBox(parent, text, left, top, checked, widthMultiplier, height)
+	local cb = Turbine.UI.Lotro.CheckBox()
+	cb:SetParent(parent)
+	cb:SetText(text)
+	cb:SetPosition(left, top)
+	local w = cb:GetTextLength() * (widthMultiplier or 8.5)
+	local h = height or 20
+	cb:SetSize(w, h)
+	cb:SetForeColor(Color["rustedgold"])
+	if checked ~= nil then cb:SetChecked(checked) end
+	return cb
 end
