@@ -53,7 +53,7 @@ end
 VT["Icon"].MouseClick = function( sender, args )
 	TB["win"].MouseMove();
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		if not WasDrag then
+		if not _G.WasDrag then
 			if _G.frmVT then _G.frmVT = false; wVT:Close();
 			else
 				_G.frmVT = true;
@@ -65,38 +65,15 @@ VT["Icon"].MouseClick = function( sender, args )
 		_G.sFromCtr = "VT";
 		ControlMenu:ShowMenu();
 	end
-	WasDrag = false;
+	_G.WasDrag = false;
 end
 
-VT["Icon"].MouseDown = function( sender, args )
-	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		StartDrag(VT["Ctr"], args)
-	end
-end
-
-VT["Icon"].MouseUp = function( sender, args )
-	VT["Ctr"]:SetZOrder( 2 );
-	_G.dragging = false;
-	VT.SavePosition();
-end
-
-VT.SavePosition = function()
-	SaveControlPosition(VT["Ctr"], settings.Vault, "VTLocX", "VTLocY")
-end
+local dragHandlers = CreateDragHandlers(VT["Ctr"], settings.Vault, "VTLocX", "VTLocY")
+VT["Icon"].MouseDown = dragHandlers.MouseDown
+VT["Icon"].MouseUp = dragHandlers.MouseUp
 --**^
 
 function MoveVTCtr(sender, args)
 	VT["Icon"].MouseLeave( sender, args );
-	local CtrLocX = VT["Ctr"]:GetLeft();
-	local CtrWidth = VT["Ctr"]:GetWidth();
-	CtrLocX = CtrLocX + ( args.X - dragStartX );
-	if CtrLocX < 0 then CtrLocX = 0; elseif CtrLocX + CtrWidth > screenWidth then CtrLocX = screenWidth - CtrWidth; end
-
-	local CtrLocY = VT["Ctr"]:GetTop();
-	local CtrHeight = VT["Ctr"]:GetHeight();
-	CtrLocY = CtrLocY + ( args.Y - dragStartY );
-	if CtrLocY < 0 then CtrLocY = 0; elseif CtrLocY + CtrHeight > TB["win"]:GetHeight() then CtrLocY = TB["win"]:GetHeight() - CtrHeight; end
-
-	VT["Ctr"]:SetPosition( CtrLocX, CtrLocY );
-	WasDrag = true;
+	MoveControlConstrained(VT["Ctr"], args);
 end

@@ -86,13 +86,13 @@ _G.createCurrencyTable = function(currencyName)
 	currencyData.Lbl.MouseClick = function(sender, args)
 		TB.win.MouseMove()
 		if args.Button == Turbine.UI.MouseButton.Left then
-			if not WasDrag then
+			if not _G.WasDrag then
 			end
 		elseif args.Button == Turbine.UI.MouseButton.Right then
 			_G.sFromCtr = currencyName
 			ControlMenu:ShowMenu()
 		end
-		WasDrag = false
+		_G.WasDrag = false
 	end
 
 	currencyData.Lbl.MouseDown = function(sender, args)

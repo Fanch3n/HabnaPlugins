@@ -338,3 +338,71 @@ function CreateAutoSizedCheckBox(parent, text, left, top, checked, widthMultipli
 	if checked ~= nil then cb:SetChecked(checked) end
 	return cb
 end
+
+-- Delegate all mouse events from sourceControl to targetControl
+-- Parameters:
+--  sourceControl: the control that will delegate its events
+--  targetControl: the control that will handle the events
+--  events: optional table of event names (default: all mouse events)
+-- Usage: DelegateMouseEvents(childControl, parentControl)
+function DelegateMouseEvents(sourceControl, targetControl, events)
+	local allEvents = events or {"MouseMove", "MouseLeave", "MouseClick", "MouseDown", "MouseUp"}
+	for _, eventName in ipairs(allEvents) do
+		sourceControl[eventName] = function(sender, args)
+			if targetControl[eventName] then
+				targetControl[eventName](sender, args)
+			end
+		end
+	end
+end
+
+-- Move a control with constrained boundaries during drag operation
+-- Parameters:
+--  control: the control to move
+--  args: the mouse event args containing X and Y
+--  maxWidth: maximum X boundary (default: screenWidth)
+--  maxHeight: maximum Y boundary (default: TB["win"]:GetHeight())
+-- Usage: MoveControlConstrained(myControl, args)
+function MoveControlConstrained(control, args, maxWidth, maxHeight)
+	local maxW = maxWidth or screenWidth
+	local maxH = maxHeight or TB["win"]:GetHeight()
+	
+	local CtrLocX = control:GetLeft()
+	local CtrWidth = control:GetWidth()
+	CtrLocX = CtrLocX + (args.X - _G.dragStartX)
+	if CtrLocX < 0 then CtrLocX = 0 elseif CtrLocX + CtrWidth > maxW then CtrLocX = maxW - CtrWidth end
+	
+	local CtrLocY = control:GetTop()
+	local CtrHeight = control:GetHeight()
+	CtrLocY = CtrLocY + (args.Y - _G.dragStartY)
+	if CtrLocY < 0 then CtrLocY = 0 elseif CtrLocY + CtrHeight > maxH then CtrLocY = maxH - CtrHeight end
+	
+	control:SetPosition(CtrLocX, CtrLocY)
+	_G.WasDrag = true
+end
+
+-- Create standard MouseDown and MouseUp handlers for draggable controls
+-- Parameters:
+--  control: the control to drag (e.g., WI["Ctr"])
+--  settingsTable: the settings table to save position to (e.g., settings.Wallet)
+--  xVarName: the X position variable name (e.g., "WILocX")
+--  yVarName: the Y position variable name (e.g., "WILocY")
+-- Returns: { MouseDown = function, MouseUp = function }
+-- Usage: 
+--   local handlers = CreateDragHandlers(WI["Ctr"], settings.Wallet, "WILocX", "WILocY")
+--   WI["Icon"].MouseDown = handlers.MouseDown
+--   WI["Icon"].MouseUp = handlers.MouseUp
+function CreateDragHandlers(control, settingsTable, xVarName, yVarName)
+	return {
+		MouseDown = function(sender, args)
+			if args.Button == Turbine.UI.MouseButton.Left then
+				StartDrag(control, args)
+			end
+		end,
+		MouseUp = function(sender, args)
+			control:SetZOrder(2)
+			_G.dragging = false
+			SaveControlPosition(control, settingsTable, xVarName, yVarName)
+		end
+	}
+end

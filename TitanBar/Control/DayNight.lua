@@ -27,22 +27,6 @@ DN["Icon"].MouseMove = function( sender, args )
 	if dragging then MoveDNCtr(sender, args); end
 end
 
-DN["Icon"].MouseLeave = function( sender, args )
-	DN["Lbl"].MouseLeave( sender, args );
-end
-
-DN["Icon"].MouseClick = function( sender, args )
-	DN["Lbl"].MouseClick( sender, args );
-end
-
-DN["Icon"].MouseDown = function( sender, args )
-	DN["Lbl"].MouseDown( sender, args );
-end
-
-DN["Icon"].MouseUp = function( sender, args )
-	DN["Lbl"].MouseUp( sender, args );
-end
-
 
 DN["Lbl"] = Turbine.UI.Label();
 DN["Lbl"]:SetParent( DN["Ctr"] );
@@ -70,7 +54,7 @@ end
 DN["Lbl"].MouseClick = function( sender, args )
 	TB["win"].MouseMove();
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		if not WasDrag then
+		if not _G.WasDrag then
 			if _G.frmDN then _G.frmDN = false; wDN:Close();
 			else
 				_G.frmDN = true;
@@ -82,37 +66,17 @@ DN["Lbl"].MouseClick = function( sender, args )
 		_G.sFromCtr = "DN";
 		ControlMenu:ShowMenu();
 	end
-	WasDrag = false;
+	_G.WasDrag = false;
 end
 
-DN["Lbl"].MouseDown = function( sender, args )
-	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		StartDrag(DN["Ctr"], args)
-	end
-end
+local dragHandlers = CreateDragHandlers(DN["Ctr"], settings.DayNight, "DNLocX", "DNLocY")
+DN["Lbl"].MouseDown = dragHandlers.MouseDown
+DN["Lbl"].MouseUp = dragHandlers.MouseUp
 
-DN["Lbl"].MouseUp = function( sender, args )
-	DN["Ctr"]:SetZOrder( 2 );
-	_G.dragging = false;
-	DN.SavePosition();
-end
-
-DN.SavePosition = function()
-	SaveControlPosition(DN["Ctr"], settings.DayNight, "DNLocX", "DNLocY")
-end
+-- Delegate Icon events to Lbl
+DelegateMouseEvents(DN["Icon"], DN["Lbl"])
 --**^
 
 function MoveDNCtr(sender, args)
-	local CtrLocX = DN["Ctr"]:GetLeft();
-	local CtrWidth = DN["Ctr"]:GetWidth();
-	CtrLocX = CtrLocX + ( args.X - dragStartX );
-	if CtrLocX < 0 then CtrLocX = 0; elseif CtrLocX + CtrWidth > screenWidth then CtrLocX = screenWidth - CtrWidth; end
-	
-	local CtrLocY = DN["Ctr"]:GetTop();
-	local CtrHeight = DN["Ctr"]:GetHeight();
-	CtrLocY = CtrLocY + ( args.Y - dragStartY );
-	if CtrLocY < 0 then CtrLocY = 0; elseif CtrLocY + CtrHeight > TB["win"]:GetHeight() then CtrLocY = TB["win"]:GetHeight() - CtrHeight; end
-
-	DN["Ctr"]:SetPosition( CtrLocX, CtrLocY );
-	WasDrag = true;
+	MoveControlConstrained(DN["Ctr"], args);
 end

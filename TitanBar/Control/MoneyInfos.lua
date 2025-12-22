@@ -30,26 +30,6 @@ MI["GLblT"]:SetFont( _G.TBFont );
 MI["GLblT"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
 MI["GLblT"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
 --MI["GLblT"]:SetBackColor( Color["white"] ); -- Debug purpose
-
-MI["GLblT"].MouseMove = function( sender, args )
-	MI["CLbl"].MouseMove( sender, args );
-end
-
-MI["GLblT"].MouseLeave = function( sender, args )
-	MI["CLbl"].MouseLeave( sender, args );
-end
-
-MI["GLblT"].MouseClick = function( sender, args )
-	MI["CLbl"].MouseClick( sender, args );
-end
-
-MI["GLblT"].MouseDown = function( sender, args )
-	MI["CLbl"].MouseDown( sender, args );
-end
-
-MI["GLblT"].MouseUp = function( sender, args )
-	MI["CLbl"].MouseUp( sender, args );
-end
 --**^
 --**v Gold amount & icon on TitanBar v**
 MI["GLbl"] = Turbine.UI.Label();
@@ -61,27 +41,6 @@ MI["GLbl"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
 MI["GLbl"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
 --MI["GLbl"]:SetBackColor( Color["white"] ); -- Debug purpose
 
-MI["GLbl"].MouseMove = function( sender, args )
-	MI["CLbl"].MouseMove( sender, args );
-end
-
-MI["GLbl"].MouseLeave = function( sender, args )
-	MI["CLbl"].MouseLeave( sender, args );
-end
-
-MI["GLbl"].MouseClick = function( sender, args )
-	MI["CLbl"].MouseClick( sender, args );
-end
-
-MI["GLbl"].MouseDown = function( sender, args )
-	MI["CLbl"].MouseDown( sender, args );
-end
-
-MI["GLbl"].MouseUp = function( sender, args )
-	MI["CLbl"].MouseUp( sender, args );
-end
-
-
 MI["GIcon"] = Turbine.UI.Control();
 MI["GIcon"]:SetParent( MI["GCtr"] );
 --MI["GIcon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
@@ -91,22 +50,6 @@ MI["GIcon"]:SetBackground( resources.MoneyIcon.Gold );-- in-game icon 27x21 (3 c
 
 MI["GIcon"].MouseMove = function( sender, args )
 	MI["CIcon"].MouseMove( sender, args );
-end
-
-MI["GIcon"].MouseLeave = function( sender, args )
-	MI["CLbl"].MouseLeave( sender, args );
-end
-
-MI["GIcon"].MouseClick = function( sender, args )
-	MI["CLbl"].MouseClick( sender, args );
-end
-
-MI["GIcon"].MouseDown = function( sender, args )
-	MI["CLbl"].MouseDown( sender, args );
-end
-
-MI["GIcon"].MouseUp = function( sender, args )
-	MI["CLbl"].MouseUp( sender, args );
 end
 --**^
 
@@ -127,26 +70,6 @@ MI["SLblT"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
 MI["SLblT"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
 --MI["SLblT"]:SetBackColor( Color["white"] ); -- Debug purpose
 
-MI["SLblT"].MouseMove = function( sender, args )
-	MI["CLbl"].MouseMove( sender, args );
-end
-
-MI["SLblT"].MouseLeave = function( sender, args )
-	MI["CLbl"].MouseLeave( sender, args );
-end
-
-MI["SLblT"].MouseClick = function( sender, args )
-	MI["CLbl"].MouseClick( sender, args );
-end
-
-MI["SLblT"].MouseDown = function( sender, args )
-	MI["CLbl"].MouseDown( sender, args );
-end
-
-MI["SLblT"].MouseUp = function( sender, args )
-	MI["CLbl"].MouseUp( sender, args );
-
-end
 --**^
 --**v Silver amount & icon on TitanBar v**
 MI["SLbl"] = Turbine.UI.Label();
@@ -159,28 +82,6 @@ MI["SLbl"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
 MI["SLbl"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
 --MI["SLbl"]:SetBackColor( Color["white"] ); -- Debug purpose
 
-MI["SLbl"].MouseMove = function( sender, args )
-	MI["CLbl"].MouseMove( sender, args );
-end
-
-MI["SLbl"].MouseLeave = function( sender, args )
-	MI["CLbl"].MouseLeave( sender, args );
-end
-
-MI["SLbl"].MouseClick = function( sender, args )
-	MI["CLbl"].MouseClick( sender, args );
-end
-
-MI["SLbl"].MouseDown = function( sender, args )
-	MI["CLbl"].MouseDown( sender, args );
-end
-
-MI["SLbl"].MouseUp = function( sender, args )
-	MI["CLbl"].MouseUp( sender, args );
-
-end
-
-
 MI["SIcon"] = Turbine.UI.Control();
 MI["SIcon"]:SetParent( MI["SCtr"] );
 --MI["SIcon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
@@ -190,22 +91,6 @@ MI["SIcon"]:SetBackground( resources.MoneyIcon.Silver );-- in-game icon 27x21 (3
 
 MI["SIcon"].MouseMove = function( sender, args )
 	MI["CIcon"].MouseMove( sender, args );
-end
-
-MI["SIcon"].MouseLeave = function( sender, args )
-	MI["CLbl"].MouseLeave( sender, args );
-end
-
-MI["SIcon"].MouseClick = function( sender, args )
-	MI["CLbl"].MouseClick( sender, args );
-end
-
-MI["SIcon"].MouseDown = function( sender, args )
-	MI["CLbl"].MouseDown( sender, args );
-end
-
-MI["SIcon"].MouseUp = function( sender, args )
-	MI["CLbl"].MouseUp( sender, args );
 end
 --**^
 
@@ -226,26 +111,6 @@ MI["CLblT"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
 MI["CLblT"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
 --MI["CLblT"]:SetBackColor( Color["white"] ); -- Debug purpose
 
-MI["CLblT"].MouseMove = function( sender, args )
-	MI["CLbl"].MouseMove( sender, args );
-end
-
-MI["CLblT"].MouseLeave = function( sender, args )
-	MI["CLbl"].MouseLeave( sender, args );
-end
-
-MI["CLblT"].MouseClick = function( sender, args )
-	MI["CLbl"].MouseClick( sender, args );
-end
-
-MI["CLblT"].MouseDown = function( sender, args )
-	MI["CLbl"].MouseDown( sender, args );
-end
-
-MI["CLblT"].MouseUp = function( sender, args )
-	MI["CLbl"].MouseUp( sender, args );
-
-end
 --**^
 --**v Copper amount & icon on TitanBar v**
 MI["CIcon"] = Turbine.UI.Control();
@@ -259,22 +124,6 @@ MI["CIcon"].MouseMove = function( sender, args )
 	MI["CLbl"].MouseLeave( sender, args );
 	TB["win"].MouseMove();
 	if dragging then MoveMICtr(sender, args); end
-end
-
-MI["CIcon"].MouseLeave = function( sender, args )
-	MI["CLbl"].MouseLeave( sender, args );
-end
-
-MI["CIcon"].MouseClick = function( sender, args )
-	MI["CLbl"].MouseClick( sender, args );
-end
-
-MI["CIcon"].MouseDown = function( sender, args )
-	MI["CLbl"].MouseDown( sender, args );
-end
-
-MI["CIcon"].MouseUp = function( sender, args )
-	MI["CLbl"].MouseUp( sender, args );
 end
 
 
@@ -311,7 +160,7 @@ end
 MI["CLbl"].MouseClick = function( sender, args )
 	TB["win"].MouseMove();
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		if not WasDrag then
+		if not _G.WasDrag then
 			if _G.frmMI then _G.frmMI = false; wMI:Close();
 			else
 				_G.frmMI = true;
@@ -323,34 +172,25 @@ MI["CLbl"].MouseClick = function( sender, args )
 		_G.sFromCtr = "Money";
 		ControlMenu:ShowMenu();
 	end
-	WasDrag = false;
+	_G.WasDrag = false;
 end
 
-MI["CLbl"].MouseDown = function( sender, args )
-	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		StartDrag(MI["Ctr"], args)
-	end
-end
-
-MI["CLbl"].MouseUp = function( sender, args )
-	MI["Ctr"]:SetZOrder( 2 );
-	_G.dragging = false;
-	SaveControlPosition(MI["Ctr"], settings.Money, "MILocX", "MILocY")
-end
+local dragHandlers = CreateDragHandlers(MI["Ctr"], settings.Money, "MILocX", "MILocY")
+MI["CLbl"].MouseDown = dragHandlers.MouseDown
+MI["CLbl"].MouseUp = dragHandlers.MouseUp
 --**^
+
+-- Delegate mouse events from child controls to CLbl
+DelegateMouseEvents(MI["GLblT"], MI["CLbl"]);
+DelegateMouseEvents(MI["GLbl"], MI["CLbl"]);
+DelegateMouseEvents(MI["GIcon"], MI["CLbl"], {"MouseLeave", "MouseClick", "MouseDown", "MouseUp"});
+DelegateMouseEvents(MI["SLblT"], MI["CLbl"]);
+DelegateMouseEvents(MI["SLbl"], MI["CLbl"]);
+DelegateMouseEvents(MI["SIcon"], MI["CLbl"], {"MouseLeave", "MouseClick", "MouseDown", "MouseUp"});
+DelegateMouseEvents(MI["CLblT"], MI["CLbl"]);
+DelegateMouseEvents(MI["CIcon"], MI["CLbl"], {"MouseLeave", "MouseClick", "MouseDown", "MouseUp"});
 
 function MoveMICtr(sender, args)
 	MI["CLbl"].MouseLeave( sender, args );
-	local CtrLocX = MI["Ctr"]:GetLeft();
-	local CtrWidth = MI["Ctr"]:GetWidth();
-	CtrLocX = CtrLocX + ( args.X - dragStartX );
-	if CtrLocX < 0 then CtrLocX = 0; elseif CtrLocX + CtrWidth > screenWidth then CtrLocX = screenWidth - CtrWidth; end
-	
-	local CtrLocY = MI["Ctr"]:GetTop();
-	local CtrHeight = MI["Ctr"]:GetHeight();
-	CtrLocY = CtrLocY + ( args.Y - dragStartY );
-	if CtrLocY < 0 then CtrLocY = 0; elseif CtrLocY + CtrHeight > TB["win"]:GetHeight() then CtrLocY = TB["win"]:GetHeight() - CtrHeight; end
-
-	MI["Ctr"]:SetPosition( CtrLocX, CtrLocY );
-	WasDrag = true;
+	MoveControlConstrained(MI["Ctr"], args);
 end

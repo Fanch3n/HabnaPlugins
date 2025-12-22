@@ -41,44 +41,21 @@ end
 PL["Lbl"].MouseClick = function( sender, args )
 	TB["win"].MouseMove();
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		if not WasDrag then
+		if not _G.WasDrag then
 			
 		end
 	elseif ( args.Button == Turbine.UI.MouseButton.Right ) then
 		_G.sFromCtr = "PL";
 		ControlMenu:ShowMenu();
 	end
-	WasDrag = false;
+	_G.WasDrag = false;
 end
 
-PL["Lbl"].MouseDown = function( sender, args )
-	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		StartDrag(PL["Ctr"], args)
-	end
-end
-
-PL["Lbl"].MouseUp = function( sender, args )
-	PL["Ctr"]:SetZOrder( 2 );
-	_G.dragging = false;
-	PL.SavePosition();
-end
-
-PL.SavePosition = function()
-	SaveControlPosition(PL["Ctr"], settings.PlayerLoc, "PLLocX", "PLLocY")
-end
+local dragHandlers = CreateDragHandlers(PL["Ctr"], settings.PlayerLoc, "PLLocX", "PLLocY")
+PL["Lbl"].MouseDown = dragHandlers.MouseDown
+PL["Lbl"].MouseUp = dragHandlers.MouseUp
 --**^
 
 function MovePLCtr(sender, args)
-	local CtrLocX = PL["Ctr"]:GetLeft();
-	local CtrWidth = PL["Ctr"]:GetWidth();
-	CtrLocX = CtrLocX + ( args.X - dragStartX );
-	if CtrLocX < 0 then CtrLocX = 0; elseif CtrLocX + CtrWidth > screenWidth then CtrLocX = screenWidth - CtrWidth; end
-	
-	local CtrLocY = PL["Ctr"]:GetTop();
-	local CtrHeight = PL["Ctr"]:GetHeight();
-	CtrLocY = CtrLocY + ( args.Y - dragStartY );
-	if CtrLocY < 0 then CtrLocY = 0; elseif CtrLocY + CtrHeight > TB["win"]:GetHeight() then CtrLocY = TB["win"]:GetHeight() - CtrHeight; end
-
-	PL["Ctr"]:SetPosition( CtrLocX, CtrLocY );
-	WasDrag = true;
+	MoveControlConstrained(PL["Ctr"], args);
 end

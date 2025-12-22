@@ -44,7 +44,7 @@ end
 IF["Icon"].MouseClick = function( sender, args )
 	TB["win"].MouseMove();
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		if not WasDrag then
+		if not _G.WasDrag then
 			if _G.frmIF then _G.frmIF = false; wIF:Close();
 			else
 				_G.frmIF = true;
@@ -56,38 +56,15 @@ IF["Icon"].MouseClick = function( sender, args )
 		_G.sFromCtr = "IF";
 		ControlMenu:ShowMenu();
 	end
-	WasDrag = false;
+	_G.WasDrag = false;
 end
 
-IF["Icon"].MouseDown = function( sender, args )
-	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		StartDrag(IF["Ctr"], args)
-	end
-end
-
-IF["Icon"].MouseUp = function( sender, args )
-	IF["Ctr"]:SetZOrder( 2 );
-	_G.dragging = false;
-	IF.SavePosition();
-end
-
-IF.SavePosition = function()
-	SaveControlPosition(IF["Ctr"], settings.Infamy, "IFLocX", "IFLocY")
-end
+local dragHandlers = CreateDragHandlers(IF["Ctr"], settings.Infamy, "IFLocX", "IFLocY")
+IF["Icon"].MouseDown = dragHandlers.MouseDown
+IF["Icon"].MouseUp = dragHandlers.MouseUp
 --**^
 
 function MoveIFCtr(sender, args)
 	IF["Icon"].MouseLeave( sender, args );
-	local CtrLocX = IF["Ctr"]:GetLeft();
-	local CtrWidth = IF["Ctr"]:GetWidth();
-	CtrLocX = CtrLocX + ( args.X - dragStartX );
-	if CtrLocX < 0 then CtrLocX = 0; elseif CtrLocX + CtrWidth > screenWidth then CtrLocX = screenWidth - CtrWidth; end
-
-	local CtrLocY = IF["Ctr"]:GetTop();
-	local CtrHeight = IF["Ctr"]:GetHeight();
-	CtrLocY = CtrLocY + ( args.Y - dragStartY );
-	if CtrLocY < 0 then CtrLocY = 0; elseif CtrLocY + CtrHeight > TB["win"]:GetHeight() then CtrLocY = TB["win"]:GetHeight() - CtrHeight; end
-
-	IF["Ctr"]:SetPosition( CtrLocX, CtrLocY );
-	WasDrag = true;
+	MoveControlConstrained(IF["Ctr"], args);
 end

@@ -41,7 +41,7 @@ end
 GT["Lbl"].MouseClick = function( sender, args )
 	TB["win"].MouseMove();
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		if not WasDrag then
+		if not _G.WasDrag then
 			if _G.frmGT then _G.frmGT = false; wGT:Close();
 			else
 				_G.frmGT = true;
@@ -53,37 +53,14 @@ GT["Lbl"].MouseClick = function( sender, args )
 		_G.sFromCtr = "GT";
 		ControlMenu:ShowMenu();
 	end
-	WasDrag = false;
+	_G.WasDrag = false;
 end
 
-GT["Lbl"].MouseDown = function( sender, args )
-	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		StartDrag(GT["Ctr"], args)
-	end
-end
-
-GT["Lbl"].MouseUp = function( sender, args )
-	GT["Ctr"]:SetZOrder( 2 );
-	_G.dragging = false;
-	GT.SavePosition();
-end
-
-GT.SavePosition = function()
-	SaveControlPosition(GT["Ctr"], settings.GameTime, "GTLocX", "GTLocY")
-end
+local dragHandlers = CreateDragHandlers(GT["Ctr"], settings.GameTime, "GTLocX", "GTLocY")
+GT["Lbl"].MouseDown = dragHandlers.MouseDown
+GT["Lbl"].MouseUp = dragHandlers.MouseUp
 --**^
 
 function MoveGTCtr(sender, args)
-	local CtrLocX = GT["Ctr"]:GetLeft();
-	local CtrWidth = GT["Ctr"]:GetWidth();
-	CtrLocX = CtrLocX + ( args.X - dragStartX );
-	if CtrLocX < 0 then CtrLocX = 0; elseif CtrLocX + CtrWidth > screenWidth then CtrLocX = screenWidth - CtrWidth; end
-	
-	local CtrLocY = GT["Ctr"]:GetTop();
-	local CtrHeight = GT["Ctr"]:GetHeight();
-	CtrLocY = CtrLocY + ( args.Y - dragStartY );
-	if CtrLocY < 0 then CtrLocY = 0; elseif CtrLocY + CtrHeight > TB["win"]:GetHeight() then CtrLocY = TB["win"]:GetHeight() - CtrHeight; end
-
-	GT["Ctr"]:SetPosition( CtrLocX, CtrLocY );
-	WasDrag = true;
+	MoveControlConstrained(GT["Ctr"], args);
 end

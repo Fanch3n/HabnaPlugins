@@ -35,22 +35,6 @@ LP["Icon"].MouseMove = function( sender, args )
     end
 end
 
-LP["Icon"].MouseLeave = function( sender, args )
-	LP["Lbl"].MouseLeave( sender, args );
-end
-
-LP["Icon"].MouseClick = function( sender, args )
-	LP["Lbl"].MouseClick( sender, args );
-end
-
-LP["Icon"].MouseDown = function( sender, args )
-	LP["Lbl"].MouseDown( sender, args );
-end
-
-LP["Icon"].MouseUp = function( sender, args )
-	LP["Lbl"].MouseUp( sender, args );
-end
-
 
 LP["Lbl"] = Turbine.UI.Label();
 LP["Lbl"]:SetParent( LP["Ctr"] );
@@ -78,7 +62,7 @@ end
 LP["Lbl"].MouseClick = function( sender, args )
 	TB["win"].MouseMove();
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		if not WasDrag then
+		if not _G.WasDrag then
 			if _G.frmLP then _G.frmLP = false; wLP:Close();
 			else
 				_G.frmLP = true;
@@ -90,33 +74,17 @@ LP["Lbl"].MouseClick = function( sender, args )
 		_G.sFromCtr = "LP";
 		ControlMenu:ShowMenu();
 	end
-	WasDrag = false;
+	_G.WasDrag = false;
 end
 
-LP["Lbl"].MouseDown = function( sender, args )
-	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		StartDrag(LP["Ctr"], args)
-	end
-end
+local dragHandlers = CreateDragHandlers(LP["Ctr"], settings.LOTROPoints, "LPLocX", "LPLocY")
+LP["Lbl"].MouseDown = dragHandlers.MouseDown
+LP["Lbl"].MouseUp = dragHandlers.MouseUp
 
-LP["Lbl"].MouseUp = function( sender, args )
-	LP["Ctr"]:SetZOrder( 2 );
-	_G.dragging = false;
-	SaveControlPosition(LP["Ctr"], settings.LOTROPoints, "LPLocX", "LPLocY")
-end
+-- Delegate Icon events to Lbl
+DelegateMouseEvents(LP["Icon"], LP["Lbl"])
 --**^
 
 function MoveLPCtr(sender, args)
-	local CtrLocX = LP["Ctr"]:GetLeft();
-	local CtrWidth = LP["Ctr"]:GetWidth();
-	CtrLocX = CtrLocX + ( args.X - dragStartX );
-	if CtrLocX < 0 then CtrLocX = 0; elseif CtrLocX + CtrWidth > screenWidth then CtrLocX = screenWidth - CtrWidth; end
-	
-	local CtrLocY = LP["Ctr"]:GetTop();
-	local CtrHeight = LP["Ctr"]:GetHeight();
-	CtrLocY = CtrLocY + ( args.Y - dragStartY );
-	if CtrLocY < 0 then CtrLocY = 0; elseif CtrLocY + CtrHeight > TB["win"]:GetHeight() then CtrLocY = TB["win"]:GetHeight() - CtrHeight; end
-
-	LP["Ctr"]:SetPosition( CtrLocX, CtrLocY );
-	WasDrag = true;
+	MoveControlConstrained(LP["Ctr"], args);
 end
