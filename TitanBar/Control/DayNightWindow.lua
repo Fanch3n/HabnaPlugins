@@ -85,7 +85,7 @@ function frmDayNightWindow()
 	Help:SetParent( _G.wDN );
 	Help:SetPosition( TAjustTB:GetLeft()+TAjustTB:GetWidth() + 10, TAjustTB:GetTop() );
 	Help:SetText( "?" );
-	Help:SetSize( 10, 20 );
+	Help:SetSize( Constants.HELP_BUTTON_WIDTH, Constants.HELP_BUTTON_HEIGHT );
 	Help:SetForeColor( Color["rustedgold"] );
 
 	Help.Click = function( sender, args )

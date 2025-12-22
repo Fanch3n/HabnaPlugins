@@ -104,14 +104,14 @@ function RefreshIFToolTip()
 	IFPBCTr:SetZOrder( 2 );
 	--IFPBCTr:SetBackColor( Color["red"] ); -- debug purpose
 		
-	local IFPBFill = CreateControl(Turbine.UI.Control, IFPBCTr, 9, 3, (183*percentage_done)/100, 9)--Filling
+	local IFPBFill = CreateControl(Turbine.UI.Control, IFPBCTr, 9, 3, (Constants.PROGRESS_BAR_WIDTH*percentage_done)/100, Constants.PROGRESS_BAR_HEIGHT)--Filling
 	IFPBFill:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 	IFPBFill:SetBackground( resources.InfamyBG );
 	--IFPBFill:SetBackColor( Color["red"] ); -- debug purpose
 		
 	local IFPB = CreateControl(Turbine.UI.Control, IFPBCTr, 0, 0, 0, 0) --Frame
 	IFPB:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-	IFPB:SetSize( 200, 15 );
+	IFPB:SetSize( Constants.LABEL_WIDTH_WIDE, Constants.LABEL_HEIGHT_STANDARD );
 	IFPB:SetBackground( 0x41007e94 );
 	-- pourcentage bar: 0x41007e94
 	--IFPB:SetBackColor( Color["red"] ); -- debug purpose
@@ -120,7 +120,7 @@ function RefreshIFToolTip()
 	labelPC:SetParent( IFPBCTr );
 	labelPC:SetText( percentage_done .. "%" );
 	labelPC:SetPosition( 0, 2 );
-	labelPC:SetSize( 200, 15 );
+	labelPC:SetSize( Constants.LABEL_WIDTH_WIDE, Constants.LABEL_HEIGHT_STANDARD );
 	labelPC:SetForeColor( Color["white"] );
 	labelPC:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 	--labelTN:SetBackColor( Color["red"] ); -- debug purpose

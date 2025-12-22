@@ -18,7 +18,7 @@ IF["Ctr"]:SetBackColor( Turbine.UI.Color( IFbcAlpha, IFbcRed, IFbcGreen, IFbcBlu
 IF["Icon"] = Turbine.UI.Control();
 IF["Icon"]:SetParent( IF["Ctr"] );
 IF["Icon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-IF["Icon"]:SetSize( 32, 32 );
+IF["Icon"]:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE );
 --IF["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 
 local MoveIFCtr = CreateMoveHandler(IF["Ctr"], IF["Icon"])

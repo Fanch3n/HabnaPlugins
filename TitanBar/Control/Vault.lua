@@ -18,7 +18,7 @@ VT["Ctr"]:SetBackColor( Turbine.UI.Color( VTbcAlpha, VTbcRed, VTbcGreen, VTbcBlu
 VT["Icon"] = Turbine.UI.Control();
 VT["Icon"]:SetParent( VT["Ctr"] );
 VT["Icon"]:SetBlendMode( 4 );--Turbine.UI.BlendMode.AlphaBlend
-VT["Icon"]:SetSize( 30, 30 );
+VT["Icon"]:SetSize( Constants.ICON_SIZE_MEDIUM_LARGE, Constants.ICON_SIZE_MEDIUM_LARGE );
 VT["Icon"]:SetBackground( resources.Storage.Vault );
 --VT["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 

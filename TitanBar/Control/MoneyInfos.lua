@@ -44,7 +44,7 @@ MI["GLbl"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
 MI["GIcon"] = Turbine.UI.Control();
 MI["GIcon"]:SetParent( MI["GCtr"] );
 --MI["GIcon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-MI["GIcon"]:SetSize( 27, 21 );
+MI["GIcon"]:SetSize( Constants.MONEY_ICON_WIDTH, Constants.MONEY_ICON_HEIGHT );
 MI["GIcon"]:SetBackground( resources.MoneyIcon.Gold );-- in-game icon 27x21 (3 coins: 0x41004641 / 1 coin: 0x41007e7b) ( all 3 coins 16x16 - 1 of each: 0x41005e9e)
 --MI["GIcon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 
@@ -85,7 +85,7 @@ MI["SLbl"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
 MI["SIcon"] = Turbine.UI.Control();
 MI["SIcon"]:SetParent( MI["SCtr"] );
 --MI["SIcon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-MI["SIcon"]:SetSize( 27, 21 );
+MI["SIcon"]:SetSize( Constants.MONEY_ICON_WIDTH, Constants.MONEY_ICON_HEIGHT );
 MI["SIcon"]:SetBackground( resources.MoneyIcon.Silver );-- in-game icon 27x21 (3 coins: 0x41007e7e / 1 coin: 0x41007e7c)
 --MI["SIcon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 
@@ -116,7 +116,7 @@ MI["CLblT"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
 MI["CIcon"] = Turbine.UI.Control();
 MI["CIcon"]:SetParent( MI["CCtr"] );
 --MI["CIcon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-MI["CIcon"]:SetSize( 27, 21 );
+MI["CIcon"]:SetSize( Constants.MONEY_ICON_WIDTH, Constants.MONEY_ICON_HEIGHT );
 MI["CIcon"]:SetBackground( resources.MoneyIcon.Copper );-- in-game icon 27x21 (3 coins: 0x41007e80 / 1 coin: 0x41007e7d)
 --MI["CIcon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 

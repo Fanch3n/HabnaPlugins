@@ -71,12 +71,12 @@ function DIRefreshListBox()
 			end
 		end
 		lblName:SetPosition( 0, 0 );
-		lblName:SetSize( 210, 35 );
+		lblName:SetSize( Constants.LABEL_WIDTH_EXTRA_WIDE, Constants.LABEL_HEIGHT_ITEM );
 		lblName:SetForeColor( Color["green"] );
 		lblName:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 		--lblName:SetBackColor( Color["red"] ); -- debug purpose
 
-		DIListBox:SetWidth( 250 );
+		DIListBox:SetWidth( Constants.LABEL_WIDTH_TOOLTIP );
 		DIListBox:AddItem( lblName );
 		
 		DITTPosY = DITTPosY + 36;
@@ -100,19 +100,19 @@ function DIRefreshListBox()
 
 				if DIIcon then
 					-- Item Background/Underlay/Shadow/Item
-				DIitemBG[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, 32, 32)
+				DIitemBG[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 				DIitemBG[i]:SetBackground(itemEquip[i].BImgID);
 				DIitemBG[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 	
-				DIitemU[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, 32, 32)
+				DIitemU[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 				DIitemU[i]:SetBackground(itemEquip[i].UImgID);
 				DIitemU[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
-				DIitemS[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, 32, 32)
+				DIitemS[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 				DIitemS[i]:SetBackground(itemEquip[i].SImgID);
 				DIitemS[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
-				DIitem[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, 32, 32)
+				DIitem[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 				DIitem[i]:SetBackground(itemEquip[i].IImgID);
 				DIitem[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 

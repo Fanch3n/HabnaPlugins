@@ -20,7 +20,7 @@ function CreateSearchControl(parent, left, top, width, height, font, resources)
     local del = Turbine.UI.Label()
     del:SetParent(container)
     del:SetPosition(width - 20, 0)
-    del:SetSize(16, 16)
+    del:SetSize(Constants.DELETE_ICON_SIZE, Constants.DELETE_ICON_SIZE)
     if resources and resources.DelIcon then
         del:SetBackground(resources.DelIcon)
     end
@@ -76,7 +76,7 @@ function CreateItemRow(parent, width, height, isPlayerItem, itemSpec)
         if itemSpec then
             local itemBG = Turbine.UI.Lotro.ItemControl(itemSpec)
             itemBG:SetParent(ctl)
-            itemBG:SetSize(34, 34)
+            itemBG:SetSize(Constants.ITEM_CONTROL_SIZE, Constants.ITEM_CONTROL_SIZE)
             itemBG:SetPosition(0, 0)
         end
     else
@@ -231,10 +231,10 @@ function PositionToolTipWindow()
 	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
 	local x, y;
 	
-	if _G.ToolTipWin:GetWidth() + mouseX + 5 > screenWidth then 
-		x = _G.ToolTipWin:GetWidth() - 10;
+	if _G.ToolTipWin:GetWidth() + mouseX + Constants.TOOLTIP_MARGIN > screenWidth then 
+		x = _G.ToolTipWin:GetWidth() - Constants.TOOLTIP_OFFSET_X;
 	else 
-		x = -5; 
+		x = -Constants.TOOLTIP_MARGIN; 
 	end
 	
 	if TBTop then 

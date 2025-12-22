@@ -11,14 +11,14 @@ EI[ "Ctr" ]:SetParent( TB["win"] );
 EI[ "Ctr" ]:SetMouseVisible( false );
 EI[ "Ctr" ]:SetZOrder( 2 );
 EI[ "Ctr" ]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-EI[ "Ctr" ]:SetSize( 32, 32 );
+EI[ "Ctr" ]:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE );
 EI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( EIbcAlpha, EIbcRed, EIbcGreen, EIbcBlue ) );
 
 -- Player icon & infos on TitanBar
 EI[ "Icon" ] = Turbine.UI.Control();
 EI[ "Icon" ]:SetParent( EI[ "Ctr" ] );
 EI[ "Icon" ]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-EI[ "Icon" ]:SetSize( 32, 32 );
+EI[ "Icon" ]:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE );
 --EI[ "Icon" ]:SetPosition( 0, 0 );
 EI[ "Icon" ]:SetBackground( 0x410f2ea5 );-- in-game icon 32x32
 

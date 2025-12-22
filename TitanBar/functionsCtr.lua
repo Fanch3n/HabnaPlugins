@@ -127,12 +127,8 @@ function ImportCtr( value )
         UpdateTrackItems();
         TI[ "Ctr" ]:SetPosition( _G.TILocX, _G.TILocY );
     elseif value == "IF" then --Infamy
-        _G.InfamyRanks = {
-            [0] = 0, [1] = 500, [2] = 1250, [3] = 2750, [4] = 5750,
-            [5] = 14750, [6] = 33500, [7] = 71000, [8] = 146000, [9] = 258500,
-            [10] = 408500, [11] = 633500, [12] = 1008500, [13] = 1608500,
-            [14] = 2508500, [15] = 3708500,
-            };
+        -- Use Infamy/Renown ranks from Constants
+        _G.InfamyRanks = Constants.INFAMY_RANKS;
 
         if PlayerAlign == 1 then
             --Free people rank icon 0 to 15
@@ -203,7 +199,7 @@ function ImportCtr( value )
             LP[ "Ctr" ]:SetPosition( _G.LPLocX, _G.LPLocY );
             UpdateLOTROPoints();
         end
-        if _G.LPWhere ~= Position.NONE then
+        if _G.LPWhere ~= Constants.Position.NONE then
             --PlayerLP = Player:GetLOTROPoints();
             --AddCallback(PlayerLP, "LOTROPointsChanged",
             --    function(sender, args) UpdateLOTROPoints(); end

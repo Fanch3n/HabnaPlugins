@@ -62,11 +62,7 @@ else GLocale = "en";
 end
 --**^
 
-Position = {
-	TITANBAR = 1,
-	TOOLTIP = 2,
-	NONE = 3
-}
+import (AppDirD.."Constants");
 
 import (AppDirD.."TBresources");
 import (AppDirD.."Currencies");
@@ -75,7 +71,15 @@ import (AppClassD.."Class");
 import (AppDir);
 import (AppDirD.."color");
 import (AppDirD.."settings");
+
+-- Initialize Turbine-dependent constants before using them
+Constants.InitializeAlignments();
+
+-- Assign durability slots now that Constants is initialized
+_G.DurabilitySlotsBG = Constants.DURABILITY_SLOTS_BG;
+
 LoadSettings();
+
 import (AppDirD.."functions");
 import (AppCtrD.."CurrencyLogic");
 import (AppDirD.."functionsCtr");

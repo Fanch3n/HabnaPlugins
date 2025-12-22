@@ -18,7 +18,7 @@ DN["Ctr"]:SetBackColor( Turbine.UI.Color( DNbcAlpha, DNbcRed, DNbcGreen, DNbcBlu
 DN["Icon"] = Turbine.UI.Control();
 DN["Icon"]:SetParent( DN["Ctr"] );
 --DN["Icon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-DN["Icon"]:SetSize( 16, 16 ); --need 32x32 icon
+DN["Icon"]:SetSize( Constants.ICON_SIZE_SMALL, Constants.ICON_SIZE_SMALL ); --need 32x32 icon
 --DN["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 
 DN["Icon"].MouseMove = function( sender, args )

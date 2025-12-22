@@ -115,7 +115,7 @@ function frmWalletWindow()
 	
 	-- **v Create drop down box v**
 	WIDD:SetParent( WIWCtr );
-	WIDD:SetSize( 170, 19 );
+	WIDD:SetSize( 170, Constants.DROPDOWN_HEIGHT );
 	WIDD:SetPosition( WIWCtr:GetWidth()/2 - WIDD:GetWidth()/2, WIlblFN:GetTop()+WIlblFN:GetHeight()+10 );
 
 	WIDD.dropDownWindow:SetParent( WIWCtr );
@@ -180,11 +180,11 @@ function frmWalletWindow()
 		--Where-> 1: On TitanBar / 2: In wallet control tooltip / 3: Don't show
 		if wcur == L["MGSC"] then
 			_G.MIWhere = SelIndex; settings.Money.W = string.format("%.0f", SelIndex);
-			if SelIndex == Position.TITANBAR then if not ShowMoney then ShowHideMoney(); end
+			if SelIndex == Constants.Position.TITANBAR then if not ShowMoney then ShowHideMoney(); end
 			else if ShowMoney then ShowHideMoney(); end end
 		elseif wcur == L["MLotroPoints"] then
 			_G.LPWhere = SelIndex; settings.LOTROPoints.W = string.format("%.0f", SelIndex);
-			if SelIndex == Position.TITANBAR then
+			if SelIndex == Constants.Position.TITANBAR then
 				if not ShowLOTROPoints then
 					ShowHideLOTROPoints()
 				end
@@ -211,7 +211,7 @@ function frmWalletWindow()
 			local cur = _G.CurrencyLangMap[wcur]
 			_G.CurrencyData[cur].Where = SelIndex
 			settings[cur].W = string.format("%.0f", SelIndex)
-			if SelIndex == Position.TITANBAR then
+			if SelIndex == Constants.Position.TITANBAR then
 				if not _G.CurrencyData[cur].IsVisible then
 					ShowHideCurrency(cur)
 				end

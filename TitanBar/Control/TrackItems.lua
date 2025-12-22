@@ -18,7 +18,7 @@ TI["Ctr"]:SetBackColor( Turbine.UI.Color( TIbcAlpha, TIbcRed, TIbcGreen, TIbcBlu
 TI["Icon"] = Turbine.UI.Control();
 TI["Icon"]:SetParent( TI["Ctr"] );
 TI["Icon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-TI["Icon"]:SetSize( 32, 32 );
+TI["Icon"]:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE );
 TI["Icon"]:SetBackground( resources.TrackItems );
 --TI["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 

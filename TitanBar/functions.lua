@@ -63,7 +63,7 @@ function createToolTipWin( xOffset, yOffset, xSize, ySize, side, header, text1,
 	_G.ToolTipWin = Turbine.UI.Window();
 	_G.ToolTipWin:SetSize( xSize, ySize );
 	--_G.ToolTipWin:SetMouseVisible( false );
-	_G.ToolTipWin:SetZOrder( 1 );
+	_G.ToolTipWin:SetZOrder( Constants.ZORDER_TOOLTIP );
 	_G.ToolTipWin.xOffset = xOffset;
 	_G.ToolTipWin.yOffset = yOffset;
 	--_G.ToolTipWin:SetBackColor( Color["black"] ); --Debug purpose
@@ -252,7 +252,7 @@ end
 --**^
 --**v Update LOTRO points on TitanBar v**
 function UpdateLOTROPoints()
-	if _G.LPWhere == Position.TITANBAR then
+	if _G.LPWhere == Constants.Position.TITANBAR then
 		LP["Lbl"]:SetText(_G.LOTROPTS)
 		LP["Lbl"]:SetSize(LP["Lbl"]:GetTextLength() * NM, CTRHeight)
 		AjustIcon("LP")
@@ -759,7 +759,7 @@ function GetInGameTime()
 	local nowtime = Turbine.Engine.GetLocalTime();
 	local gametime = Turbine.Engine.GetGameTime();
 	local InitDawn =  nowtime - gametime + _G.TS;
-	local adjust = (nowtime - (nowtime - gametime + _G.TS))% 11160;
+	local adjust = (nowtime - (nowtime - gametime + _G.TS)) % Constants.GAME_TIME_CYCLE;
   local darray = {572, 1722, 1067, 1678, 1101, 570, 1679, 539, 1141, 1091};
 	local dtarray = {
         L["Dawn"], L["Morning"], L["Noon"], L["Afternoon"], L["Dusk"], 

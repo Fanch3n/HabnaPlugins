@@ -71,7 +71,7 @@ function frmVault()
 	end
 
 	local lbTop = 85
-	local lb = CreateListBoxWithBorder(_G.wVT, 15, lbTop, _G.wVT:GetWidth() - 30, 365, Color["grey"])
+	local lb = CreateListBoxWithBorder(_G.wVT, 15, lbTop, _G.wVT:GetWidth() - 30, Constants.LISTBOX_HEIGHT_STANDARD, Color["grey"])
 	_G.wVT.ListBoxBorder = lb.Border
 	_G.wVT.ListBox = lb.ListBox
 	_G.wVT.ListBoxScrollBar = lb.ScrollBar
@@ -173,7 +173,7 @@ function AddVaultPack(n, addCharacterName, vaultpackCount)
 		end
 	
 	_G.wVT.ListBoxBorder:SetPosition( 15, _G.wVT.searchLabel:GetTop() + _G.wVT.searchLabel:GetHeight() + 5 );
-	_G.wVT.ListBoxBorder:SetHeight( 365 );
+	_G.wVT.ListBoxBorder:SetHeight( Constants.LISTBOX_HEIGHT_STANDARD );
 	_G.wVT.ListBox:SetPosition( _G.wVT.ListBoxBorder:GetLeft() + 2, _G.wVT.ListBoxBorder:GetTop() + 2 );
 	_G.wVT.ListBox:SetHeight( _G.wVT.ListBoxBorder:GetHeight() - 4 );
 	_G.wVT.ListBoxScrollBar:SetHeight( _G.wVT.ListBox:GetHeight() );

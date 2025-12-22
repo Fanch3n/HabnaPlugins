@@ -23,9 +23,9 @@ _G.createCurrencyTable = function(currencyName)
 	currencyData.Icon:SetBlendMode(Turbine.UI.BlendMode.AlphaBlend)
 
 	if currencyName == "DestinyPoints" then
-		currencyData.Icon:SetSize(21, 22)
+		currencyData.Icon:SetSize(Constants.DESTINY_POINTS_ICON_WIDTH, Constants.DESTINY_POINTS_ICON_HEIGHT)
 	else
-		currencyData.Icon:SetSize(32, 32)
+		currencyData.Icon:SetSize(Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 	end
 	currencyData.Icon:SetBackground(_G.currencies.byName[currencyName].icon)
 

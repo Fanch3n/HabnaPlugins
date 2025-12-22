@@ -24,7 +24,7 @@ function ShowTIWindow()
 	TITTListBox:SetParent( _G.ToolTipWin );
 	TITTListBox:SetZOrder( 1 );
 	TITTListBox:SetPosition( 15, 12 );
-	TITTListBox:SetWidth( 325 );
+	TITTListBox:SetWidth( Constants.TOOLTIP_WIDTH_MEDIUM );
 	ConfigureListBox(TITTListBox)
 	--TITTListBox:SetBackColor( Color["darkgrey"] ); --debug purpose
 
@@ -48,7 +48,7 @@ function TIRefreshListBox()
 		--lblName:SetFont ( 12 );
 		lblName:SetText( L["BINI"] );
 		lblName:SetPosition( 0, 0 );
-		lblName:SetSize( 275, 35 );
+		lblName:SetSize( Constants.LABEL_WIDTH_ITEM, Constants.LABEL_HEIGHT_ITEM );
 		lblName:SetForeColor( Color["green"] );
 		lblName:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 		--lblName:SetBackColor( Color["red"] ); -- debug purpose
@@ -80,19 +80,19 @@ function TIRefreshListBox()
 							--**^
 	
 							-- Item Background/Underlay/Shadow/Image
-							local BITTitemBG = CreateControl(Turbine.UI.Control, BITTCtr, 0, 2, 32, 32)
+							local BITTitemBG = CreateControl(Turbine.UI.Control, BITTCtr, 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 							BITTitemBG:SetBackground(tonumber(ITL[i][itemName].B));
 							BITTitemBG:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		
-							local BITTitemU = CreateControl(Turbine.UI.Control, BITTCtr, 0, 2, 32, 32)
+							local BITTitemU = CreateControl(Turbine.UI.Control, BITTCtr, 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 							if ITL[i][itemName].U ~= "0" then BITTitemU:SetBackground(tonumber(ITL[i][itemName].U)); end
 							BITTitemU:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
-							local BITTitemS = CreateControl(Turbine.UI.Control, BITTCtr, 0, 2, 32, 32)
+							local BITTitemS = CreateControl(Turbine.UI.Control, BITTCtr, 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 							if ITL[i][itemName].S ~= "0" then BITTitemS:SetBackground(tonumber(ITL[i][itemName].S)); end
 							BITTitemS:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
-							local BITTitem = CreateControl(Turbine.UI.Control, BITTCtr, 0, 2, 32, 32)
+							local BITTitem = CreateControl(Turbine.UI.Control, BITTCtr, 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 							BITTitem:SetBackground(tonumber(ITL[i][itemName].I));
 							BITTitem:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
@@ -142,7 +142,7 @@ function TIRefreshListBox()
 			--lblName:SetFont ( 12 );
 			lblName:SetText( L["BINI"] );
 			lblName:SetPosition( 0, 0 );
-			lblName:SetSize( 210, 35 );
+			lblName:SetSize( Constants.LABEL_WIDTH_EXTRA_WIDE, Constants.LABEL_HEIGHT_ITEM );
 			lblName:SetForeColor( Color["green"] );
 			lblName:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 			--lblName:SetBackColor( Color["red"] ); -- debug purpose

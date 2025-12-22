@@ -15,14 +15,14 @@ function ShowRPWindow()
     _G.ToolTipWin:SetZOrder( 1 );
     --_G.ToolTipWin.xOffset = x;
     --_G.ToolTipWin.yOffset = y;
-    _G.ToolTipWin:SetWidth( 380 );
+    _G.ToolTipWin:SetWidth( Constants.TOOLTIP_WIDTH_REPUTATION );
     _G.ToolTipWin:SetVisible( true );
 
     RPTTListBox = Turbine.UI.ListBox();
     RPTTListBox:SetParent( _G.ToolTipWin );
     RPTTListBox:SetZOrder( 1 );
     RPTTListBox:SetPosition( 15, 12 );
-    RPTTListBox:SetWidth( 345 );
+    RPTTListBox:SetWidth( Constants.TOOLTIP_WIDTH_REP_CONTENT );
     ConfigureListBox(RPTTListBox)
     --RPTTListBox:SetBackColor( Color["darkgrey"] ); --debug purpose
 
@@ -94,8 +94,8 @@ function RPRefreshListBox()
             end
 
             local RPPBFill = CreateControl(Turbine.UI.Control, RPTTCtr, 9, 17, 0, 9)--Filling
-            if percentage_done == "max" then RPPBFill:SetSize( 183, 9 );
-            else RPPBFill:SetSize( ( 183 * tonumber(percentage_done) ) / 100, 9 ); end
+            if percentage_done == "max" then RPPBFill:SetSize( Constants.PROGRESS_BAR_WIDTH, Constants.PROGRESS_BAR_HEIGHT );
+            else RPPBFill:SetSize( ( Constants.PROGRESS_BAR_WIDTH * tonumber(percentage_done) ) / 100, Constants.PROGRESS_BAR_HEIGHT ); end
             RPPBFill:SetBackground( resources.Reputation.BGGood );
             --RPPBFill:SetBackground( resources.Reputation.BGBad );
 
@@ -117,7 +117,7 @@ function RPRefreshListBox()
                 RPPC:SetPosition( 9, 17 );
                 RPPC:SetText( currentRankPoints.."/"..currentRankMax.."  "..percentage_done.."%" );
             end
-            RPPC:SetSize( 200, 9 );
+            RPPC:SetSize( Constants.LABEL_WIDTH_WIDE, Constants.PROGRESS_BAR_HEIGHT );
             RPPC:SetForeColor( Color["white"] );
             RPPC:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 

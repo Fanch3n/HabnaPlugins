@@ -64,7 +64,7 @@ function frmGameTimeWindow()
 	GMT:SetParent( ShowSTcb );
 	GMT:SetText( _G.UserGMT );
 	GMT:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
-	GMT:SetSize( 30, 20 );
+	GMT:SetSize( Constants.GMT_FIELD_WIDTH, Constants.GMT_FIELD_HEIGHT );
 	--GMT:SetVisible( true );
 	--GMT:SetEnabled( false );
 	GMT:SetForeColor( Color["white"] );

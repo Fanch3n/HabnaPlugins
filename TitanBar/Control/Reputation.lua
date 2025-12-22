@@ -19,7 +19,7 @@ RP["Ctr"]:SetBackColor( Turbine.UI.Color( RPbcAlpha, RPbcRed, RPbcGreen, RPbcBlu
 RP["Icon"] = Turbine.UI.Control();
 RP["Icon"]:SetParent( RP["Ctr"] );
 RP["Icon"]:SetBlendMode( 4 );
-RP["Icon"]:SetSize( 32, 32 );
+RP["Icon"]:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE );
 RP["Icon"]:SetBackground( resources.Reputation.Icon );-- in-game icon 32x32
 --RP["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 

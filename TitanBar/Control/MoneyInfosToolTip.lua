@@ -7,7 +7,7 @@ import(AppDirD .. "UIHelpers")
 function ShowMIWindow()
 	_G.ToolTipWin = Turbine.UI.Window();
 	_G.ToolTipWin:SetZOrder( 1 );
-	_G.ToolTipWin:SetWidth( 325 );
+	_G.ToolTipWin:SetWidth( Constants.TOOLTIP_WIDTH_MEDIUM );
 	_G.ToolTipWin:SetVisible( true );
 
 	MITTListBox = Turbine.UI.ListBox();
@@ -98,7 +98,7 @@ function MIRefreshMITTListBox()
 	
 	if _G.SSS then --Show session statistics if true
   	local space = Turbine.UI.Label();
-    space:SetSize( 140, 10 );
+    space:SetSize( Constants.LABEL_WIDTH_STANDARD, Constants.LABEL_HEIGHT_SMALL );
     MITTListBox:AddItem( space );
     MITTPosY = 	MITTPosY + 10;
     
@@ -106,7 +106,7 @@ function MIRefreshMITTListBox()
 		LblStat:SetParent( MITTListBox );
 		MITTListBox:AddItem( LblStat );
 		LblStat:SetForeColor( Color["rustedgold"] );
-		LblStat:SetSize( 140, 19 );
+		LblStat:SetSize( Constants.LABEL_WIDTH_STANDARD, Constants.LABEL_HEIGHT_LARGE );
 		LblStat:SetFont(Turbine.UI.Lotro.Font.TrajanPro14);
 		LblStat:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 		LblStat:SetText( L["MISession"] );
@@ -128,7 +128,7 @@ function MIRefreshMITTListBox()
 
 	if _G.STS then --Show today statistics if true
 		local space = Turbine.UI.Label();
-    space:SetSize( 140, 10 );
+    space:SetSize( Constants.LABEL_WIDTH_STANDARD, Constants.LABEL_HEIGHT_SMALL );
     MITTListBox:AddItem( space );
     MITTPosY = 	MITTPosY + 10;
     
@@ -136,7 +136,7 @@ function MIRefreshMITTListBox()
 		LblStat:SetParent( MITTListBox );
     MITTListBox:AddItem( LblStat );
 		LblStat:SetForeColor( Color["rustedgold"] );
-		LblStat:SetSize( 140, 19 );
+		LblStat:SetSize( Constants.LABEL_WIDTH_STANDARD, Constants.LABEL_HEIGHT_LARGE );
 		LblStat:SetFont(Turbine.UI.Lotro.Font.TrajanPro14);
 		LblStat:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 		LblStat:SetText( L["MIDaily"] );
@@ -183,7 +183,7 @@ function MITTShowData(parent,l,m,lc,mc,showDelIcon) -- l = label, m = money, lc 
   --**v Delete icon v**
 	if showDelIcon then
     lblName:SetPosition( 15, 0 );  
-    local DelIcon = CreateControl(Turbine.UI.Label, MoneyCtr, 0, 0, 16, 16);
+    local DelIcon = CreateControl(Turbine.UI.Label, MoneyCtr, 0, 0, Constants.DELETE_ICON_SIZE, Constants.DELETE_ICON_SIZE);
   	DelIcon:SetBackground( resources.DelIcon );
   	DelIcon:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
   	DelIcon:SetVisible( true );

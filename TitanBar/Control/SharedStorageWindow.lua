@@ -46,7 +46,7 @@ function frmSharedStorage()
 	end
 
 	local lbTop = 80
-	local lb = CreateListBoxWithBorder(_G.wSS, 15, lbTop, _G.wSS:GetWidth() - 30, 370, Color["grey"])
+	local lb = CreateListBoxWithBorder(_G.wSS, 15, lbTop, _G.wSS:GetWidth() - 30, Constants.LISTBOX_HEIGHT_MEDIUM, Color["grey"])
 	_G.wSS.ListBoxBorder = lb.Border
 	_G.wSS.ListBox = lb.ListBox
 	_G.wSS.ListBoxScrollBar = lb.ScrollBar

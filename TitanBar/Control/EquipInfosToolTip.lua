@@ -37,14 +37,14 @@ function ShowEIWindow()
 	lblBackPack:SetParent( AEICtr );
 	lblBackPack:SetText( L["EWLbl"] );
 	lblBackPack:SetPosition( 15, 15);
-	lblBackPack:SetSize( 350, 15 );
+	lblBackPack:SetSize( 350, Constants.LABEL_HEIGHT_STANDARD );
 	lblBackPack:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 	lblBackPack:SetForeColor( Color["green"] );
 
 	lblBackPackD = Turbine.UI.Label();
 	lblBackPackD:SetParent( AEICtr );
 	lblBackPackD:SetText( L["EWLblD"] );
-	lblBackPackD:SetSize( 80, 15 );
+	lblBackPackD:SetSize( Constants.LABEL_WIDTH_NARROW, Constants.LABEL_HEIGHT_STANDARD );
 	lblBackPackD:SetPosition( AEICtr:GetWidth() - lblBackPackD:GetWidth() - 20 , 15);
 	lblBackPackD:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
 	lblBackPackD:SetForeColor( Color["green"] );
@@ -71,19 +71,19 @@ function EIRefreshListBox()
 	for i = 1, 20 do
 		-- Item background
 		EIitemCtl[i] = Turbine.UI.Control();
-		EIitemCtl[i]:SetSize( 44, 44 );
+		EIitemCtl[i]:SetSize( Constants.ICON_SIZE_XXLARGE, Constants.ICON_SIZE_XXLARGE );
 		EIitemCtl[i]:SetBackground( DurabilitySlotsBG[i] );
 		EIitemCtl[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
 		-- Item Background/Underlay/Shadow/Item
 		if (itemEquip[i].BImgID and itemEquip[i].BImgID > 0) then
-			EIitemBG[i] = CreateControl(Turbine.UI.Control, EIitemCtl[i], 6, 6, 32, 32)
+			EIitemBG[i] = CreateControl(Turbine.UI.Control, EIitemCtl[i], 6, 6, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 			EIitemBG[i]:SetBackground(itemEquip[i].BImgID);
 			EIitemBG[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		end
 
 		if (itemEquip[i].UImgID and itemEquip[i].UImgID > 0) then
-			EIitemU[i] = CreateControl(Turbine.UI.Control, EIitemCtl[i], 6, 6, 32, 32)
+			EIitemU[i] = CreateControl(Turbine.UI.Control, EIitemCtl[i], 6, 6, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 			EIitemU[i]:SetBackground(itemEquip[i].UImgID);
 			EIitemU[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		end
@@ -92,12 +92,12 @@ function EIRefreshListBox()
 		-- (e.g. Mended Dwarf-make Leather Tunic, minstrel L.I. Book)
 		-- were getting 0 for their SImgID which messed up the final composite.
 		if (itemEquip[i].SImgID and itemEquip[i].SImgID > 0) then
-			EIitemS[i] = CreateControl(Turbine.UI.Control, EIitemCtl[i], 6, 6, 32, 32)
+			EIitemS[i] = CreateControl(Turbine.UI.Control, EIitemCtl[i], 6, 6, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 			EIitemS[i]:SetBackground(itemEquip[i].SImgID);
 			EIitemS[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		end
 
-		EIitem[i] = CreateControl(Turbine.UI.Control, EIitemCtl[i], 6, 6, 32, 32)
+		EIitem[i] = CreateControl(Turbine.UI.Control, EIitemCtl[i], 6, 6, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 		EIitem[i]:SetBackground(itemEquip[i].IImgID);
 		EIitem[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		

@@ -18,10 +18,10 @@ LP["Ctr"]:SetBackColor( Turbine.UI.Color( LPbcAlpha, LPbcRed, LPbcGreen, LPbcBlu
 LP["Icon"] = Turbine.UI.Control();
 LP["Icon"]:SetParent( LP["Ctr"] );
 LP["Icon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-LP["Icon"]:SetSize( 36, 43 );
+LP["Icon"]:SetSize( Constants.LOTRO_POINTS_ICON_WIDTH, Constants.LOTRO_POINTS_ICON_HEIGHT );
 LP["Icon"]:SetBackground( _G.resources.LOTROPoints );
 LP["Icon"]:SetStretchMode( 1 );
-LP["Icon"]:SetSize( 32, 32 );
+LP["Icon"]:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE );
 
 --LP["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 

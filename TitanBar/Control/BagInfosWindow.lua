@@ -33,7 +33,7 @@ function frmBagInfos()
 
 	-- Set up dropdown after window is created
 	bagInfosDropdown:SetParent(_G.wBI)
-	bagInfosDropdown:SetSize(159, 19)
+	bagInfosDropdown:SetSize(Constants.DROPDOWN_WIDTH, Constants.DROPDOWN_HEIGHT)
 	bagInfosDropdown:SetPosition(15, 35)
 	bagInfosDropdown.dropDownWindow:SetParent(_G.wBI)
 	bagInfosDropdown.dropDownWindow:SetPosition(bagInfosDropdown:GetLeft(), bagInfosDropdown:GetTop() + bagInfosDropdown:GetHeight() + 2)
@@ -83,7 +83,7 @@ function frmBagInfos()
 
 	-- Create list box area via helper
 	local lbTop = _G.wBI.searchLabel:GetTop() + _G.wBI.searchLabel:GetHeight() + 5
-	local lb = CreateListBoxWithBorder(_G.wBI, 15, lbTop, _G.wBI:GetWidth() - 30, 392, Color["grey"])
+	local lb = CreateListBoxWithBorder(_G.wBI, 15, lbTop, _G.wBI:GetWidth() - 30, Constants.LISTBOX_HEIGHT_LARGE, Color["grey"])
 	_G.wBI.ListBoxBorder = lb.Border
 	_G.wBI.ListBox = lb.ListBox
 	_G.wBI.ListBoxScrollBar = lb.ScrollBar

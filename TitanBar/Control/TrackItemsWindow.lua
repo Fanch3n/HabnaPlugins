@@ -59,7 +59,7 @@ function frmTrackItemsWindow()
 	end
 
 	local lbTop = 85
-	local lb = CreateListBoxWithBorder(_G.wTI, 15, lbTop, _G.wTI:GetWidth() - 30, 365, Color["grey"])
+	local lb = CreateListBoxWithBorder(_G.wTI, 15, lbTop, _G.wTI:GetWidth() - 30, Constants.LISTBOX_HEIGHT_STANDARD, Color["grey"])
 	_G.wTI.ListBoxBorder = lb.Border
 	_G.wTI.ListBox = lb.ListBox
 	_G.wTI.ListBoxScrollBar = lb.ScrollBar
@@ -223,7 +223,7 @@ function ShowStackableItems()
 	end
 
 	_G.wTI.ListBoxBorder:SetPosition( 15, _G.wTI.searchLabel:GetTop() + _G.wTI.searchLabel:GetHeight() + 5 );
-	_G.wTI.ListBoxBorder:SetHeight( 365 );
+	_G.wTI.ListBoxBorder:SetHeight( Constants.LISTBOX_HEIGHT_STANDARD );
 	_G.wTI.ListBox:SetPosition( _G.wTI.ListBoxBorder:GetLeft() + 2, _G.wTI.ListBoxBorder:GetTop() + 2 );
 	_G.wTI.ListBox:SetHeight( _G.wTI.ListBoxBorder:GetHeight() - 4 );
 	_G.wTI.ListBoxScrollBar:SetHeight( _G.wTI.ListBox:GetHeight() );

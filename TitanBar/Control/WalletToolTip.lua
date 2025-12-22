@@ -16,7 +16,7 @@ function ShowWIToolTip()
 	_G.ToolTipWin:SetZOrder( 1 );
 	--_G.ToolTipWin.xOffset = x;
 	--_G.ToolTipWin.yOffset = y;
-	_G.ToolTipWin:SetWidth( 100 );
+	_G.ToolTipWin:SetWidth( Constants.TOOLTIP_WIDTH_SMALL );
 	_G.ToolTipWin:SetVisible( true );
 
 	WITTListBox = Turbine.UI.ListBox();
@@ -59,7 +59,7 @@ function RefreshWITTListBox()
 			end
 		end
 		
-		if tonumber(ttw) == Position.TOOLTIP then
+		if tonumber(ttw) == Constants.Position.TOOLTIP then
 			WITTPosY = WITTPosY + 32;
 			bFound = true;
 		
@@ -131,16 +131,16 @@ function RefreshWITTListBox()
 				--**
 				--** Resize Destiny points & LOTRO points icon since it's not in 32x32 **--
 				if wttcur == L["MDestinyPoints"] then
-					ttIcon:SetSize( 21, 22 );
-					ttIcon:SetStretchMode( 1 );
-					ttIcon:SetSize( 32, 32 );
+				ttIcon:SetSize( Constants.DESTINY_POINTS_ICON_WIDTH, Constants.DESTINY_POINTS_ICON_HEIGHT );
+				ttIcon:SetStretchMode( 1 );
+				ttIcon:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE );
 					ttIcon:SetStretchMode( 3 );
 				elseif wttcur == L["MLotroPoints"] then
-					ttIcon:SetSize( 30, 32 )
-					ttIcon:SetStretchMode( 1 );
-					ttIcon:SetSize( 32, 32 );
+				ttIcon:SetSize( 30, Constants.ICON_SIZE_LARGE )
+				ttIcon:SetStretchMode( 1 );
+				ttIcon:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE );
 					ttIcon:SetStretchMode( 2 );
-				else ttIcon:SetSize( 32, 32 ); end
+				else ttIcon:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE ); end
 				--**
 			end
 			WITTListBox:AddItem( WITTCtr );
@@ -149,14 +149,14 @@ function RefreshWITTListBox()
 	if not bFound then --If not showing any control
 		WITTPosY = WITTPosY + 32;
 
-		_G.ToolTipWin:SetWidth( 300 );
+		_G.ToolTipWin:SetWidth( Constants.TOOLTIP_WIDTH_DEFAULT );
 		WITTListBox:SetWidth( _G.ToolTipWin:GetWidth()-40 );
 
 		local lblName = Turbine.UI.Label();
 		lblName:SetParent( _G.ToolTipWin );
 		lblName:SetText( L["WInc"] );
 		lblName:SetPosition( 0, 0 );
-		lblName:SetSize( WITTListBox:GetWidth(), 32 );
+		lblName:SetSize( WITTListBox:GetWidth(), Constants.ICON_SIZE_LARGE );
 		lblName:SetForeColor( Color["green"] );
 		lblName:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 		--lblName:SetBackColor( Color["red"] ); -- debug purpose

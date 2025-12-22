@@ -12,7 +12,7 @@ function ShowVaultToolTip()
 
 	_G.ToolTipWin.lblmgs = GetLabel(L["VTnd"]);
 	_G.ToolTipWin.lblmgs:SetParent( _G.ToolTipWin );
-	_G.ToolTipWin.lblmgs:SetSize( 350, 39 );
+	_G.ToolTipWin.lblmgs:SetSize( 350, Constants.LABEL_HEIGHT_MESSAGE );
 
 	RefreshVaultTTListBox();
 
@@ -35,7 +35,7 @@ function RefreshVaultTTListBox()
 	VaultTTListBox:SetVisible(not noItems);
 
 	if (noItems) then
-		_G.ToolTipWin:SetWidth(400);
+		_G.ToolTipWin:SetWidth(Constants.TOOLTIP_WIDTH_VAULT);
 		_G.ToolTipWin:SetHeight(115);
 		_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
 		_G.ToolTipWin:SetVisible( true );
@@ -49,30 +49,30 @@ function RefreshVaultTTListBox()
 		-- Item control
 		local itemCtl = Turbine.UI.Control();
 		itemCtl:SetParent( VaultTTListBox );
-		itemCtl:SetSize( 40, 40 );
+		itemCtl:SetSize( Constants.ICON_SIZE_XLARGE, Constants.ICON_SIZE_XLARGE );
 				
 		-- Item background
-		local itemBG = CreateControl(Turbine.UI.Control, itemCtl, 4, 4, 32, 32)
+		local itemBG = CreateControl(Turbine.UI.Control, itemCtl, 4, 4, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 		if PlayerVault[PN][tostring(i)].B ~= "0" then itemBG:SetBackground( tonumber(PlayerVault[PN][tostring(i)].B) ); end
 		itemBG:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		
 		-- Item Underlay
-		local itemU = CreateControl(Turbine.UI.Control, itemCtl, 4, 4, 32, 32)
+		local itemU = CreateControl(Turbine.UI.Control, itemCtl, 4, 4, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 		if PlayerVault[PN][tostring(i)].U ~= "0" then itemU:SetBackground( tonumber(PlayerVault[PN][tostring(i)].U) ); end
 		itemU:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
 		-- Item Shadow
-		local itemS = CreateControl(Turbine.UI.Control, itemCtl, 4, 4, 32, 32)
+		local itemS = CreateControl(Turbine.UI.Control, itemCtl, 4, 4, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 		if PlayerVault[PN][tostring(i)].S ~= "0" then itemS:SetBackground( tonumber(PlayerVault[PN][tostring(i)].S) ); end
 		itemS:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
 		-- Item
-		local item = CreateControl(Turbine.UI.Control, itemCtl, 4, 4, 32, 32)
+		local item = CreateControl(Turbine.UI.Control, itemCtl, 4, 4, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 		if PlayerVault[PN][tostring(i)].I ~= "0" then item:SetBackground( tonumber(PlayerVault[PN][tostring(i)].I) ); end
 		item:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
 		-- Item Quantity
-		local itemQTE = CreateControl(Turbine.UI.Label, itemCtl, 0, 20, 32, 15)
+		local itemQTE = CreateControl(Turbine.UI.Label, itemCtl, 0, 20, Constants.ICON_SIZE_LARGE, 15)
 		itemQTE:SetFont( Turbine.UI.Lotro.Font.Verdana12 );
 		itemQTE:SetFontStyle( Turbine.UI.FontStyle.Outline );
 		itemQTE:SetOutlineColor( Color["black"] );

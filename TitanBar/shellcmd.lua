@@ -39,8 +39,8 @@ function frmShellCmd()
 	end
 
 	wShellCmd.MouseUp = function( sender, args )
-		settings.Shell.L = string.format("%.0f", wShellCmd:GetLeft());
-		settings.Shell.T = string.format("%.0f", wShellCmd:GetTop());
+		settings.Shell.L = Constants.FormatInt(wShellCmd:GetLeft());
+		settings.Shell.T = Constants.FormatInt(wShellCmd:GetTop());
 		SCWLeft, SCWTop = wShellCmd:GetPosition();
 		SaveSettings( false );
 	end

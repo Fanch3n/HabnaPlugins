@@ -18,7 +18,7 @@ SS["Ctr"]:SetBackColor( Turbine.UI.Color( SSbcAlpha, SSbcRed, SSbcGreen, SSbcBlu
 SS["Icon"] = Turbine.UI.Control();
 SS["Icon"]:SetParent( SS["Ctr"] );
 SS["Icon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-SS["Icon"]:SetSize( 32, 32 );
+SS["Icon"]:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE );
 SS["Icon"]:SetBackground( resources.Storage.Shared );-- in-game icon 32x32
 --SS["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 

@@ -118,7 +118,7 @@ function frmOptions()
 	lblFont = CreateTitleLabel(wOptions, L["OPFText"], 25, wScrollBar:GetTop() + 20, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	
 	FontDD:SetParent( wOptions );
-	FontDD:SetSize( 159, 19 );
+	FontDD:SetSize( Constants.DROPDOWN_WIDTH, Constants.DROPDOWN_HEIGHT );
 	FontDD:SetPosition( 25, lblFont:GetTop() + 15 );
 	FontDD.label:SetText( TBFontT );
 
@@ -144,7 +144,7 @@ function frmOptions()
 	
 	AutoDD = HabnaPlugins.TitanBar.Class.ComboBox();
 	AutoDD:SetParent( wOptions );
-	AutoDD:SetSize( 159, 19 );
+	AutoDD:SetSize( Constants.DROPDOWN_WIDTH, Constants.DROPDOWN_HEIGHT );
 	AutoDD:SetPosition( 25, lblAuto:GetTop() + 15 );
 	AutoDD.label:SetText( TBFontT );
 
@@ -169,8 +169,8 @@ function frmOptions()
 	
 	wIconScrollBar = CreateControl(Turbine.UI.Lotro.ScrollBar, wOptions, lblIconSize:GetLeft(), lblIconSize:GetTop() + 15, wOptions:GetWidth() - 75, 10);
 	wIconScrollBar:SetOrientation( Turbine.UI.Orientation.Horizontal );
-	wIconScrollBar:SetMinimum( 16 );
-	wIconScrollBar:SetMaximum( 32 );
+	wIconScrollBar:SetMinimum( Constants.ICON_SIZE_SMALL );
+	wIconScrollBar:SetMaximum( Constants.ICON_SIZE_LARGE );
 	wIconScrollBar:SetValue( TBIconSize );
 
 	wIconScrollBar.ValueChanged = function( sender, args )

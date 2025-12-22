@@ -18,7 +18,7 @@ WI["Ctr"]:SetBackColor( Turbine.UI.Color( WIbcAlpha, WIbcRed, WIbcGreen, WIbcBlu
 WI["Icon"] = Turbine.UI.Control();
 WI["Icon"]:SetParent( WI["Ctr"] );
 WI["Icon"]:SetBlendMode( 4 );
-WI["Icon"]:SetSize( 32, 32 );
+WI["Icon"]:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE );
 WI["Icon"]:SetBackground( resources.Wallet ); 
 --WI["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 

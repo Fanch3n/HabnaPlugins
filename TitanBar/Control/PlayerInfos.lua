@@ -18,7 +18,7 @@ PI["Ctr"]:SetBackColor( Turbine.UI.Color( PIbcAlpha, PIbcRed, PIbcGreen, PIbcBlu
 PI["Icon"] = Turbine.UI.Control();
 PI["Icon"]:SetParent( PI["Ctr"] );
 PI["Icon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-PI["Icon"]:SetSize( 32, 32 );
+PI["Icon"]:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE );
 --PI["Icon"]:SetBackground(  );-- need in-game icon 32x32
 --PI["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
 

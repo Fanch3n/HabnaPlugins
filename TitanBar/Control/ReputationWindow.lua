@@ -139,7 +139,7 @@ function frmReputationWindow()
 
     -- **v Create drop down box v**
     RPDD:SetParent(RPWCtr);
-    RPDD:SetSize(159, 19);
+    RPDD:SetSize(Constants.DROPDOWN_WIDTH, Constants.DROPDOWN_HEIGHT);
     RPDD:SetPosition(
         RPlblRank:GetLeft() + RPlblRank:GetWidth() + 5, RPlblRank:GetTop());
     RPDD.dropDownWindow:SetParent(RPWCtr);
