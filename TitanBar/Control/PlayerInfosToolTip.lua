@@ -695,16 +695,14 @@ function ShowPIWindow()
 	end
 
 	-- offsetX, offsetY, width, height
-	local x, y, w, h = -5, -15, aLayoutDef.Width, aLayoutDef.Height
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition()
-	if w+mouseX > screenWidth then x = w+41 - 10 end
-	if not TBTop then y = h+38 end
-
-	_G.ToolTipWin = Turbine.UI.Window()
-	_G.ToolTipWin:SetZOrder(1)
-	_G.ToolTipWin:SetPosition(mouseX-x,mouseY-y)
-	_G.ToolTipWin:SetSize(w+41,h+38)
-	_G.ToolTipWin:SetVisible(true)
+	local w, h = aLayoutDef.Width, aLayoutDef.Height
+	
+	local tt = CreateTooltipWindow({
+		width = w + 41,
+		height = h + 38
+	})
+	
+	PositionAndShowTooltip(_G.ToolTipWin, -5, -15, false)
 
 	--**v Control of all player infos v**
 	local APICtr = CreateControl(Turbine.UI.Control, _G.ToolTipWin, 20, 19, w, h)

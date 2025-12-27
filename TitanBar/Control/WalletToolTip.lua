@@ -6,31 +6,19 @@ import(AppDirD .. "UIHelpers")
 
 
 function ShowWIToolTip()
-	-- ( offsetX, offsetY, width, height, bubble side )
-	--x, y, w, h = -5, -15, 100, 0;
-	--mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
+	local tt = CreateTooltipWindow({
+		width = Constants.TOOLTIP_WIDTH_SMALL,
+		hasListBox = true,
+		listBoxPosition = {x = 20, y = 17}
+	})
 	
-	--if w + mouseX > screenWidth then x = w - 10; end
-	
-	_G.ToolTipWin = Turbine.UI.Window();
-	_G.ToolTipWin:SetZOrder( 1 );
-	--_G.ToolTipWin.xOffset = x;
-	--_G.ToolTipWin.yOffset = y;
-	_G.ToolTipWin:SetWidth( Constants.TOOLTIP_WIDTH_SMALL );
-	_G.ToolTipWin:SetVisible( true );
+	WITTListBox = tt.listBox
+	WITTListBox:SetMaxItemsPerLine(1)
+	WITTListBox:SetOrientation(Turbine.UI.Orientation.Horizontal)
 
-	WITTListBox = Turbine.UI.ListBox();
-	WITTListBox:SetParent( _G.ToolTipWin );
-	WITTListBox:SetZOrder( 1 );
-	WITTListBox:SetPosition( 20, 17 );
-	--WITTListBox:SetWidth( _G.ToolTipWin:GetWidth()-30 );
-	WITTListBox:SetMaxItemsPerLine( 1 );
-	WITTListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
-	--WITTListBox:Se0tBackColor( Color["darkgrey"] ); --debug purpose
+	RefreshWITTListBox()
 
-	RefreshWITTListBox();
-
-	ApplySkin();
+	ApplySkin()
 end
 
 function RefreshWITTListBox()

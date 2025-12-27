@@ -2,24 +2,25 @@ import(AppDirD .. "UIHelpers")
 
 
 function ShowIFWindow()
-	-- ( offsetX, offsetY, width, height, bubble side )
-	x, y, w, h = -5, -15, 0, 100;
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
+	local tt = CreateTooltipWindow({})
+
+	RefreshIFToolTip()
+
+	ApplySkin()
 	
-	if w + mouseX > screenWidth then x = w - 10; end
+	-- Position with custom logic for infamy
+	local x, y = -5, -15
+	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition()
 	
-	if not TBTop then y = h; end
-
-	_G.ToolTipWin = Turbine.UI.Window();
-	_G.ToolTipWin:SetZOrder( 1 );
-	--_G.ToolTipWin.xOffset = x;
-	--_G.ToolTipWin.yOffset = y;
-	_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y );
-	_G.ToolTipWin:SetVisible( true );
-
-	RefreshIFToolTip();
-
-	ApplySkin();
+	if _G.ToolTipWin:GetWidth() + mouseX > screenWidth then 
+		x = _G.ToolTipWin:GetWidth() - 10
+	end
+	
+	if not TBTop then 
+		y = _G.ToolTipWin:GetHeight()
+	end
+	
+	_G.ToolTipWin:SetPosition(mouseX - x, mouseY - y)
 end
 
 function RefreshIFToolTip()

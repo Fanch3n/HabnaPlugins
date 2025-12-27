@@ -22,7 +22,7 @@ function frmLOTROPointsWindow()
 				-- nothing extra required
 			end,
 			onKeyDown = function(sender, args)
-				if args.Action == 162 then -- Enter
+				if args.Action == Constants.KEY_ENTER then -- Enter
 					if buttonSave then buttonSave.Click(sender, args) end
 					if _G.wLP then _G.wLP:Close() end
 					return

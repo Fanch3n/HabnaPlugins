@@ -32,7 +32,7 @@ function frmWalletWindow()
 				if WIDD and WIDD.dropDownWindow then WIDD.dropDownWindow:SetVisible(false) end
 			end
 			,onKeyDown = function(sender, args)
-				if args.Action == 162 then -- Enter
+				if args.Action == Constants.KEY_ENTER then -- Enter
 					if WIbutSave then WIbutSave.Click(sender, args) end
 					return
 				end

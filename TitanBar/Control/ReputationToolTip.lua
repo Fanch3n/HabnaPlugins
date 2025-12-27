@@ -5,30 +5,19 @@ import(AppDirD .. "UIHelpers")
 
 
 function ShowRPWindow()
-    -- ( offsetX, offsetY, width, height, bubble side )
-    --x, y, w, h, bblTo = -5, -15, 320, 0, "left";
-    --mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
+	local tt = CreateTooltipWindow({
+		width = Constants.TOOLTIP_WIDTH_REPUTATION,
+		hasListBox = true,
+		listBoxPosition = {x = 15, y = 12},
+		listBoxWidth = Constants.TOOLTIP_WIDTH_REP_CONTENT
+	})
+	
+	RPTTListBox = tt.listBox
+	ConfigureListBox(RPTTListBox)
 
-    --if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
+	RPRefreshListBox()
 
-    _G.ToolTipWin = Turbine.UI.Window();
-    _G.ToolTipWin:SetZOrder( 1 );
-    --_G.ToolTipWin.xOffset = x;
-    --_G.ToolTipWin.yOffset = y;
-    _G.ToolTipWin:SetWidth( Constants.TOOLTIP_WIDTH_REPUTATION );
-    _G.ToolTipWin:SetVisible( true );
-
-    RPTTListBox = Turbine.UI.ListBox();
-    RPTTListBox:SetParent( _G.ToolTipWin );
-    RPTTListBox:SetZOrder( 1 );
-    RPTTListBox:SetPosition( 15, 12 );
-    RPTTListBox:SetWidth( Constants.TOOLTIP_WIDTH_REP_CONTENT );
-    ConfigureListBox(RPTTListBox)
-    --RPTTListBox:SetBackColor( Color["darkgrey"] ); --debug purpose
-
-    RPRefreshListBox();
-
-    ApplySkin();
+	ApplySkin()
 end
 
 function RPRefreshListBox()

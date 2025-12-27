@@ -3,6 +3,107 @@
 
 import(AppDirD .. "TooltipManager")
 
+-- ============================================================================
+-- TOOLTIP CREATION
+-- ============================================================================
+
+-- Creates a tooltip window with standard setup and optional listbox
+-- Parameters:
+--   config: {
+--     width: Optional width (defaults based on hasListBox)
+--     height: Optional initial height
+--     hasListBox: Boolean, whether to create a listbox (default false)
+--     listBoxPosition: {x, y} position for listbox (default {15, 12} or {20, 20})
+--     listBoxWidth: Optional width for listbox
+--     emptyMessage: Optional message label for empty state
+--     emptyMessageSize: {width, height} for empty message (default {350, 39})
+--   }
+-- Returns: {
+--   window: The tooltip window
+--   listBox: The listbox (if hasListBox is true)
+--   emptyMessageLabel: The empty message label (if emptyMessage provided)
+-- }
+function CreateTooltipWindow(config)
+	config = config or {}
+	local hasListBox = config.hasListBox or false
+	local listBoxPos = config.listBoxPosition or (hasListBox and {x = 15, y = 12} or {x = 20, y = 20})
+	
+	-- Create the tooltip window
+	_G.ToolTipWin = Turbine.UI.Window()
+	_G.ToolTipWin:SetZOrder(1)
+	_G.ToolTipWin:SetVisible(true)
+	
+	if config.width then
+		_G.ToolTipWin:SetWidth(config.width)
+	end
+	
+	if config.height then
+		_G.ToolTipWin:SetHeight(config.height)
+	end
+	
+	local result = {
+		window = _G.ToolTipWin
+	}
+	
+	-- Create listbox if requested
+	if hasListBox then
+		local listBox = Turbine.UI.ListBox()
+		listBox:SetParent(_G.ToolTipWin)
+		listBox:SetZOrder(1)
+		listBox:SetPosition(listBoxPos.x, listBoxPos.y)
+		
+		if config.listBoxWidth then
+			listBox:SetWidth(config.listBoxWidth)
+		elseif config.width then
+			listBox:SetWidth(config.width - 30)
+		end
+		
+		result.listBox = listBox
+	end
+	
+	-- Create empty message label if requested
+	if config.emptyMessage then
+		local emptyLabel = GetLabel(config.emptyMessage)
+		emptyLabel:SetParent(_G.ToolTipWin)
+		
+		local msgSize = config.emptyMessageSize or {width = 350, height = Constants.LABEL_HEIGHT_MESSAGE or 39}
+		emptyLabel:SetSize(msgSize.width, msgSize.height)
+		
+		result.emptyMessageLabel = emptyLabel
+	end
+	
+	return result
+end
+
+-- Positions and shows a tooltip window based on mouse position and TitanBar location
+-- Parameters:
+--   window: The tooltip window to position
+--   xOffset: Optional x offset (default -5)
+--   yOffset: Optional y offset (default -15)
+--   useHeight: If true, uses window height for y positioning when TBTop is false
+function PositionAndShowTooltip(window, xOffset, yOffset, useHeight)
+	local x = xOffset or -5
+	local y = yOffset or -15
+	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition()
+	
+	-- Adjust x if tooltip would go off screen
+	if window:GetWidth() + mouseX + 5 > screenWidth then
+		x = window:GetWidth() - 10
+	end
+	
+	-- Adjust y based on TitanBar position
+	if not TBTop then
+		if useHeight then
+			y = window:GetHeight()
+		else
+			y = window:GetHeight()
+		end
+	end
+	
+	window:SetPosition(mouseX - x, mouseY - y)
+	window:SetVisible(true)
+end
+
 -- Create a search control: a TextBox with a delete icon to clear it.
 -- Returns { TextBox = tb, DelIcon = del, Container = container }
 function CreateSearchControl(parent, left, top, width, height, font, resources)
@@ -435,3 +536,5 @@ _G.CreateDragHandlers = CreateDragHandlers
 _G.CreateMoveHandler = CreateMoveHandler
 _G.DelegateMouseEvents = DelegateMouseEvents
 _G.PositionToolTipWindow = PositionToolTipWindow
+_G.CreateTooltipWindow = CreateTooltipWindow
+_G.PositionAndShowTooltip = PositionAndShowTooltip

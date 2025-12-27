@@ -1,31 +1,24 @@
 import(AppDirD .. "UIHelpers")
 
 function ShowVaultToolTip()
-	_G.ToolTipWin = Turbine.UI.Window();
-	_G.ToolTipWin:SetZOrder( 1 );
+	local tt = CreateTooltipWindow({
+		hasListBox = true,
+		listBoxPosition = {x = 20, y = 20},
+		emptyMessage = L["VTnd"]
+	})
 	
-	VaultTTListBox = Turbine.UI.ListBox();
-	VaultTTListBox:SetParent( _G.ToolTipWin );
-	VaultTTListBox:SetZOrder( 1 );
-	VaultTTListBox:SetPosition( 20, 20 );
-	VaultTTListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
+	VaultTTListBox = tt.listBox
+	VaultTTListBox:SetOrientation(Turbine.UI.Orientation.Horizontal)
+	_G.ToolTipWin.lblmgs = tt.emptyMessageLabel
 
-	_G.ToolTipWin.lblmgs = GetLabel(L["VTnd"]);
-	_G.ToolTipWin.lblmgs:SetParent( _G.ToolTipWin );
-	_G.ToolTipWin.lblmgs:SetSize( 350, Constants.LABEL_HEIGHT_MESSAGE );
+	RefreshVaultTTListBox()
 
-	RefreshVaultTTListBox();
-
-	ApplySkin();
+	ApplySkin()
 end
 
 function RefreshVaultTTListBox()
-	local x, y = -5, -15;
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-
 	VaultTTListBox:ClearItems();
 	local vaultpackCount=0;
-	--VaultItemHeight = 35;
 	
 	for k, v in pairs(PlayerVault[PN]) do vaultpackCount = vaultpackCount + 1; end
 
@@ -37,9 +30,7 @@ function RefreshVaultTTListBox()
 	if (noItems) then
 		_G.ToolTipWin:SetWidth(Constants.TOOLTIP_WIDTH_VAULT);
 		_G.ToolTipWin:SetHeight(115);
-		_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
-		_G.ToolTipWin:SetVisible( true );
-
+		PositionAndShowTooltip(_G.ToolTipWin)
 		return;
 	end
 
@@ -94,12 +85,9 @@ function RefreshVaultTTListBox()
 		
 	local w = 40 * MaxItemsPerLine + 40;
 	
-	if w + mouseX > screenWidth then x = w - 10; end
-	
 	_G.ToolTipWin:SetHeight( VaultTTHeight + 20);
 	_G.ToolTipWin:SetWidth( w );
-	_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
-	_G.ToolTipWin:SetVisible( true );
+	PositionAndShowTooltip(_G.ToolTipWin)
 
 	VaultTTListBox:SetWidth( _G.ToolTipWin:GetWidth() - 40 );
 end

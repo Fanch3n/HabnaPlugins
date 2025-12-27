@@ -37,20 +37,18 @@ function frmMain()
 	
 	--**v TitanBar event handlers v**
 	TB["win"].KeyDown = function( sender, args )
-		if ( args.Action == 268435635 ) then -- Hide if F12 key is pressed
+		if ( args.Action == Constants.KEY_TOGGLE_UI ) then -- Hide if F12 key is pressed
 			if not CSPress then
 				TB["win"]:SetVisible( not TB["win"]:IsVisible() );
 				if not windowOpen then MouseHoverCtr:SetVisible( not MouseHoverCtr:IsVisible() ); end
 			end
 			F12Press = not F12Press;
-		elseif ( args.Action == 268435579 ) then -- Hide if (Ctrl + \) is pressed
+		elseif ( args.Action == Constants.KEY_TOGGLE_LAYOUT_MODE ) then -- Hide if (Ctrl + \) is pressed
 			if not F12Press then
 				TB["win"]:SetVisible( not TB["win"]:IsVisible() );
 				if not windowOpen then MouseHoverCtr:SetVisible( not MouseHoverCtr:IsVisible() ); end
 			end
 			CSPress = not CSPress;
-		--elseif ( args.Action == 268435635 ) then -- toggle HUD
-			
 		end
 	end
 
@@ -144,9 +142,6 @@ function frmMain()
 	LoadPlayerVault();
 	LoadPlayerSharedStorage();
 	LoadPlayerBags();
-	--LoadPlayerBank();
-	--LoadPlayerMount();
-	--LoadPlayerPet();
 	LoadPlayerReputation();
 	LoadPlayerLOTROPoints();
 	LoadPlayerItemTrackingList();

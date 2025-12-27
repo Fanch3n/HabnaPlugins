@@ -1,8 +1,3 @@
--- Constants for key codes
-local KEY_ESCAPE = Turbine.UI.Lotro.Action.Escape
-local KEY_TOGGLE_UI = 268435635
-local KEY_TOGGLE_LAYOUT_MODE = 268435579
-
 -- Default window configuration
 local DEFAULT_WINDOW_CONFIG = {
     onMouseMove = nil,
@@ -42,9 +37,9 @@ function CreateWindow(windowSettings)
     local isDragging = false
 
     window.KeyDown = function(sender, args)
-        if args.Action == KEY_ESCAPE then
+        if args.Action == Constants.KEY_ESCAPE then
             window:Close()
-        elseif args.Action == KEY_TOGGLE_UI or args.Action == KEY_TOGGLE_LAYOUT_MODE then
+        elseif args.Action == Constants.KEY_TOGGLE_UI or args.Action == Constants.KEY_TOGGLE_LAYOUT_MODE then
             window:SetVisible(not window:IsVisible())
         end
 

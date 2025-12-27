@@ -24,7 +24,7 @@ function frmInfamyWindow()
 				-- No extra cleanup required; factory will nil globals
 			end,
 			onKeyDown = function(sender, args)
-				if args.Action == 162 then -- Enter
+				if args.Action == Constants.KEY_ENTER then -- Enter
 					if buttonSave then buttonSave.Click(sender, args) end
 					return
 				end

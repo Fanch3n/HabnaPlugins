@@ -9,20 +9,14 @@ SlotsText = {L["EWST1"], L["EWST2"], L["EWST3"], L["EWST4"], L["EWST5"], L["EWST
 import(AppDirD .. "UIHelpers")
 
 function ShowEIWindow()
-	-- ( offsetX, offsetY, width, height, bubble side )
-	local x, y, w, h, bblTo = -5, -15, 592, 495, "left";
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
+	local w, h = 592, 495
 	
-	if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-	if not TBTop then y = h; end
+	local tt = CreateTooltipWindow({
+		width = w,
+		height = h
+	})
 	
-	_G.ToolTipWin = Turbine.UI.Window();
-	_G.ToolTipWin:SetSize( w, h );
-	_G.ToolTipWin:SetZOrder( 1 );
-	--_G.ToolTipWin.xOffset = x;
-	--_G.ToolTipWin.yOffset = y;
-	_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
-	_G.ToolTipWin:SetVisible( true );
+	PositionAndShowTooltip(_G.ToolTipWin, -5, -15, true)
 
 	--**v Control of all equipment infos v**
 	local AEICtr = Turbine.UI.Control();

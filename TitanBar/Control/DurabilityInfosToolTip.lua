@@ -9,28 +9,17 @@ SlotsText = {L["EWST1"], L["EWST2"], L["EWST3"], L["EWST4"], L["EWST5"], L["EWST
 		L["EWST19"], L["EWST20"]};
 
 function ShowDIWindow()
-	-- ( offsetX, offsetY, width, height, bubble side )
-	--x, y, w, h = -5, -15, 0, 0;
-	--mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
+	local tt = CreateTooltipWindow({
+		hasListBox = true,
+		listBoxPosition = {x = 15, y = 12}
+	})
 	
-	--if w + mouseX > screenWidth then x = w - 10; end
-	
-	_G.ToolTipWin = Turbine.UI.Window();
-	_G.ToolTipWin:SetZOrder( 1 );
-	--_G.ToolTipWin.xOffset = x;
-	--_G.ToolTipWin.yOffset = y;
-	_G.ToolTipWin:SetVisible( true );
-	
-	DIListBox = Turbine.UI.ListBox();
-	DIListBox:SetParent( _G.ToolTipWin );
-	DIListBox:SetZOrder( 1 );
-	DIListBox:SetPosition( 15, 12 );
+	DIListBox = tt.listBox
 	ConfigureListBox(DIListBox)
-	--DIListBox:SetBackColor( Color["darkgrey"] ); --debug purpose
 
-	DIRefreshListBox();
+	DIRefreshListBox()
 
-	ApplySkin();
+	ApplySkin()
 end
 
 function DIRefreshListBox()

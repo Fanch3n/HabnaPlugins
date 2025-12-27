@@ -81,6 +81,16 @@ Constants.ZORDER_TOOLTIP = 1
 Constants.ZORDER_CONTROL = 2
 
 -- ============================================================================
+-- KEYBOARD ACTIONS
+-- ============================================================================
+
+-- Special key codes for window management
+Constants.KEY_ESCAPE = Turbine.UI.Lotro.Action.Escape
+Constants.KEY_ENTER = 162
+Constants.KEY_TOGGLE_UI = 268435635  -- F12 key
+Constants.KEY_TOGGLE_LAYOUT_MODE = 268435579  -- Ctrl + \ key
+
+-- ============================================================================
 -- POSITION DISPLAY MODES
 -- ============================================================================
 

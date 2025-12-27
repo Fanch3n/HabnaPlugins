@@ -5,23 +5,21 @@
 import(AppDirD .. "UIHelpers")
 
 function ShowMIWindow()
-	_G.ToolTipWin = Turbine.UI.Window();
-	_G.ToolTipWin:SetZOrder( 1 );
-	_G.ToolTipWin:SetWidth( Constants.TOOLTIP_WIDTH_MEDIUM );
-	_G.ToolTipWin:SetVisible( true );
+	local tt = CreateTooltipWindow({
+		width = Constants.TOOLTIP_WIDTH_MEDIUM,
+		hasListBox = true,
+		listBoxPosition = {x = 15, y = 20}
+	})
+	
+	MITTListBox = tt.listBox
+	MITTListBox:SetWidth(_G.ToolTipWin:GetWidth() - 30)
+	MITTListBox:SetMaxItemsPerLine(1)
+	MITTListBox:SetOrientation(Turbine.UI.Orientation.Horizontal)
 
-	MITTListBox = Turbine.UI.ListBox();
-	MITTListBox:SetParent( _G.ToolTipWin );
-	MITTListBox:SetZOrder( 1 );
-	MITTListBox:SetPosition( 15, 20 );
-	MITTListBox:SetWidth( _G.ToolTipWin:GetWidth() - 30 );
-	MITTListBox:SetMaxItemsPerLine( 1 );
-	MITTListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
-
-	MIRefreshMITTListBox();
-  MITTListBox:SetHeight( MITTPosY);
-  
-	ApplySkin();
+	MIRefreshMITTListBox()
+	MITTListBox:SetHeight(MITTPosY)
+	
+	ApplySkin()
 end
 
 function MoneyToCoins(m)

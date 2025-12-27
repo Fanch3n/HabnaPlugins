@@ -248,7 +248,7 @@ function frmBackground()
 	wBackground.KeyDown = function( sender, args )
 		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
 			wBackground:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
+		elseif ( args.Action == Constants.KEY_TOGGLE_UI ) or ( args.Action == Constants.KEY_TOGGLE_LAYOUT_MODE ) then -- Hide if F12 key is press or reposition UI
 			wBackground:SetVisible( not wBackground:IsVisible() );
 		end
 	end

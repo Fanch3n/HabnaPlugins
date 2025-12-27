@@ -8,29 +8,18 @@ local backpack = player:GetBackpack();
 local size = backpack:GetSize();
 
 function ShowTIWindow()
-	-- ( offsetX, offsetY, width, height, bubble side )
-	--x, y, w, h, bblTo = -5, -15, 0, 0, "left";
-	--mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
+	local tt = CreateTooltipWindow({
+		hasListBox = true,
+		listBoxPosition = {x = 15, y = 12},
+		listBoxWidth = Constants.TOOLTIP_WIDTH_MEDIUM
+	})
 	
-	--if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-	
-	_G.ToolTipWin = Turbine.UI.Window();
-	_G.ToolTipWin:SetZOrder( 1 );
-	--_G.ToolTipWin.xOffset = x;
-	--_G.ToolTipWin.yOffset = y;
-	_G.ToolTipWin:SetVisible( true );
-
-	TITTListBox = Turbine.UI.ListBox();
-	TITTListBox:SetParent( _G.ToolTipWin );
-	TITTListBox:SetZOrder( 1 );
-	TITTListBox:SetPosition( 15, 12 );
-	TITTListBox:SetWidth( Constants.TOOLTIP_WIDTH_MEDIUM );
+	TITTListBox = tt.listBox
 	ConfigureListBox(TITTListBox)
-	--TITTListBox:SetBackColor( Color["darkgrey"] ); --debug purpose
 
-	TIRefreshListBox();
+	TIRefreshListBox()
 
-	ApplySkin();
+	ApplySkin()
 end
 
 function TIRefreshListBox()
