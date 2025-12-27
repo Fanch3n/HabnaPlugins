@@ -1,6 +1,3 @@
--- InfamyToolTip.lua
--- written by Habna
-
 import(AppDirD .. "UIHelpers")
 
 

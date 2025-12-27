@@ -2,17 +2,12 @@
 -- Written by Habna
 
 import(AppDirD .. "UIHelpers")
+import(AppDirD .. "ControlFactory")
 
 _G.MI = {}; -- Money Infos table in _G
 
 --**v Control of Gold/Silver/Copper currencies v**
-MI["Ctr"] = Turbine.UI.Control();
-MI["Ctr"]:SetParent( TB["win"] );
-MI["Ctr"]:SetMouseVisible( false );
-MI["Ctr"]:SetZOrder( 2 );
-MI["Ctr"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-MI["Ctr"]:SetBackColor( Turbine.UI.Color( MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue ) );
---MI["Ctr"]:SetBackColor( Color["red"] ); -- Debug purpose
+MI["Ctr"] = CreateTitanBarControl(MI, MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue)
 --**^
 --**v Control of Gold currencies v**
 MI["GCtr"] = Turbine.UI.Control();
@@ -41,12 +36,7 @@ MI["GLbl"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
 MI["GLbl"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
 --MI["GLbl"]:SetBackColor( Color["white"] ); -- Debug purpose
 
-MI["GIcon"] = Turbine.UI.Control();
-MI["GIcon"]:SetParent( MI["GCtr"] );
---MI["GIcon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-MI["GIcon"]:SetSize( Constants.MONEY_ICON_WIDTH, Constants.MONEY_ICON_HEIGHT );
-MI["GIcon"]:SetBackground( resources.MoneyIcon.Gold );-- in-game icon 27x21 (3 coins: 0x41004641 / 1 coin: 0x41007e7b) ( all 3 coins 16x16 - 1 of each: 0x41005e9e)
---MI["GIcon"]:SetBackColor( Color["blue"] ); -- Debug purpose
+MI["GIcon"] = CreateControlIcon(MI["GCtr"], Constants.MONEY_ICON_WIDTH, Constants.MONEY_ICON_HEIGHT, resources.MoneyIcon.Gold)
 
 MI["GIcon"].MouseMove = function( sender, args )
 	MI["CIcon"].MouseMove( sender, args );
@@ -82,12 +72,7 @@ MI["SLbl"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
 MI["SLbl"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
 --MI["SLbl"]:SetBackColor( Color["white"] ); -- Debug purpose
 
-MI["SIcon"] = Turbine.UI.Control();
-MI["SIcon"]:SetParent( MI["SCtr"] );
---MI["SIcon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-MI["SIcon"]:SetSize( Constants.MONEY_ICON_WIDTH, Constants.MONEY_ICON_HEIGHT );
-MI["SIcon"]:SetBackground( resources.MoneyIcon.Silver );-- in-game icon 27x21 (3 coins: 0x41007e7e / 1 coin: 0x41007e7c)
---MI["SIcon"]:SetBackColor( Color["blue"] ); -- Debug purpose
+MI["SIcon"] = CreateControlIcon(MI["SCtr"], Constants.MONEY_ICON_WIDTH, Constants.MONEY_ICON_HEIGHT, resources.MoneyIcon.Silver)
 
 MI["SIcon"].MouseMove = function( sender, args )
 	MI["CIcon"].MouseMove( sender, args );
@@ -113,12 +98,7 @@ MI["CLblT"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
 
 --**^
 --**v Copper amount & icon on TitanBar v**
-MI["CIcon"] = Turbine.UI.Control();
-MI["CIcon"]:SetParent( MI["CCtr"] );
---MI["CIcon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-MI["CIcon"]:SetSize( Constants.MONEY_ICON_WIDTH, Constants.MONEY_ICON_HEIGHT );
-MI["CIcon"]:SetBackground( resources.MoneyIcon.Copper );-- in-game icon 27x21 (3 coins: 0x41007e80 / 1 coin: 0x41007e7d)
---MI["CIcon"]:SetBackColor( Color["blue"] ); -- Debug purpose
+MI["CIcon"] = CreateControlIcon(MI["CCtr"], Constants.MONEY_ICON_WIDTH, Constants.MONEY_ICON_HEIGHT, resources.MoneyIcon.Copper)
 
 local MoveMICtr = CreateMoveHandler(MI["Ctr"], MI["CLbl"])
 
@@ -180,7 +160,6 @@ end
 local dragHandlers = CreateDragHandlers(MI["Ctr"], settings.Money, "MILocX", "MILocY")
 MI["CLbl"].MouseDown = dragHandlers.MouseDown
 MI["CLbl"].MouseUp = dragHandlers.MouseUp
---**^
 
 -- Delegate mouse events from child controls to CLbl
 DelegateMouseEvents(MI["GLblT"], MI["CLbl"]);

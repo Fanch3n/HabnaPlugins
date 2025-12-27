@@ -11,16 +11,23 @@ function frmBackground()
 
 	import(AppDirD .. "WindowFactory")
 	
-	-- **v Set some window stuff v**
-	wBackground = Turbine.UI.Lotro.Window();
-	wBackground.Opacity = 1;
-	wBackground:SetText( L["BWTitle"] );
-	wBackground:SetSize( 400, 210 );
-	wBackground:SetPosition( BGWLeft, BGWTop );
-	wBackground:SetVisible( true );
-	wBackground:SetWantsKeyEvents( true );
-	--wBackground:SetZOrder( 2 );
-	--wBackground:Activate();
+	-- **v Create window via factory v**
+	wBackground = CreateWindow({
+		text = L["BWTitle"],
+		width = 400,
+		height = 210,
+		left = BGWLeft,
+		top = BGWTop,
+		config = {
+			settingsKey = "Background",
+			windowGlobalVar = "wBackground",
+			formGlobalVar = "frmBackground",
+			onPositionChanged = function(left, top)
+				BGWLeft, BGWTop = left, top
+			end
+		}
+	})
+	wBackground.Opacity = 1
 	-- **^
 	-- **v Check box - label v**
 	local SetToAllCtr = Turbine.UI.Lotro.CheckBox();

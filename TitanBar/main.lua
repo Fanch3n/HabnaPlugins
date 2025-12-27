@@ -14,6 +14,13 @@ AppClassD = AppDirD.."Class.";
 AppCtrD = AppDirD.."Control.";
 AppLocaleD = AppDirD.."Locale.";
 
+-- Ensure path globals are accessible to dynamically loaded modules
+_G.AppDir = AppDir;
+_G.AppDirD = AppDirD;
+_G.AppClassD = AppClassD;
+_G.AppCtrD = AppCtrD;
+_G.AppLocaleD = AppLocaleD;
+
 Version = Plugins["TitanBar"]:GetVersion();--> ** TitanBar current version **
 _G.TB = {};
 windowOpen = true;
@@ -79,6 +86,18 @@ Constants.InitializeAlignments();
 _G.DurabilitySlotsBG = Constants.DURABILITY_SLOTS_BG;
 
 LoadSettings();
+
+-- Ensure settings is globally accessible for dynamically loaded controls
+_G.settings = settings;
+
+import (AppDirD.."UIHelpers");
+import (AppDirD.."ControlFactory");
+
+-- Ensure ControlFactory functions are globally accessible for dynamically loaded controls
+_G.CreateTitanBarControl = CreateTitanBarControl;
+_G.CreateControlIcon = CreateControlIcon;
+_G.SetupControlInteraction = SetupControlInteraction;
+_G.CreateControlLabel = CreateControlLabel;
 
 import (AppDirD.."functions");
 import (AppCtrD.."CurrencyLogic");

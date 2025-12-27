@@ -1,6 +1,8 @@
 -- UIHelpers.lua
 -- Centralized small UI helper constructors
 
+import(AppDirD .. "TooltipManager")
+
 -- Create a search control: a TextBox with a delete icon to clear it.
 -- Returns { TextBox = tb, DelIcon = del, Container = container }
 function CreateSearchControl(parent, left, top, width, height, font, resources)
@@ -424,3 +426,12 @@ function CreateMoveHandler(control, leaveControl)
 		MoveControlConstrained(control, args)
 	end
 end
+
+-- Export helper functions to _G for dynamically loaded controls
+_G.SaveControlPosition = SaveControlPosition
+_G.StartDrag = StartDrag
+_G.MoveControlConstrained = MoveControlConstrained
+_G.CreateDragHandlers = CreateDragHandlers
+_G.CreateMoveHandler = CreateMoveHandler
+_G.DelegateMouseEvents = DelegateMouseEvents
+_G.PositionToolTipWindow = PositionToolTipWindow
