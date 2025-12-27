@@ -30,18 +30,40 @@ end
 -- Creates a standard icon control for TitanBar controls
 -- Parameters:
 --   parent: The parent control
---   width, height: Icon dimensions
+--   width, height: Icon dimensions (final desired size)
 --   background: Optional background resource
 --   blendMode: Optional blend mode (defaults to AlphaBlend)
+--   stretchMode: Optional stretch mode (0, 1, or nil)
+--   originalWidth, originalHeight: Required if stretchMode is 1 (original image size)
 -- Returns: The created icon control
-function CreateControlIcon(parent, width, height, background, blendMode)
+-- Note: For StretchMode 1, the control is first set to originalWidth/Height, then stretch mode
+--       is applied, then it's resized to width/height. This ensures proper scaling behavior.
+function CreateControlIcon(parent, width, height, background, blendMode, stretchMode, originalWidth, originalHeight)
 	local icon = Turbine.UI.Control()
 	icon:SetParent(parent)
 	icon:SetBlendMode(blendMode or Turbine.UI.BlendMode.AlphaBlend)
-	icon:SetSize(width, height)
-	if background then
-		icon:SetBackground(background)
+	
+	-- Handle StretchMode 1 correctly: set original size first, then stretch mode, then final size
+	if stretchMode == 1 then
+		if not originalWidth or not originalHeight then
+			error("CreateControlIcon: originalWidth and originalHeight are required when stretchMode is 1")
+		end
+		icon:SetSize(originalWidth, originalHeight)
+		if background then
+			icon:SetBackground(background)
+		end
+		icon:SetStretchMode(1)
+		icon:SetSize(width, height)
+	else
+		icon:SetSize(width, height)
+		if background then
+			icon:SetBackground(background)
+		end
+		if stretchMode then
+			icon:SetStretchMode(stretchMode)
+		end
 	end
+	
 	return icon
 end
 
