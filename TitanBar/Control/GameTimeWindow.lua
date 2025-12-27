@@ -3,49 +3,34 @@
 
 
 function frmGameTimeWindow()
-	-- **v Set some window stuff v**
-	_G.wGT = Turbine.UI.Lotro.Window()
-	_G.wGT:SetPosition( GTWLeft, GTWTop );
-	_G.wGT:SetHeight( 120 );
-	_G.wGT:SetText( L["GTWTitle"] );
-	_G.wGT:SetWantsKeyEvents( true );
-	_G.wGT:SetVisible( true );
-	--_G.wGT:SetZOrder( 2 );
-	_G.wGT:Activate();
+	import(AppDirD .. "WindowFactory")
+	import(AppDirD .. "UIHelpers")
 
-	_G.wGT.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wGT:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			_G.wGT:SetVisible( not _G.wGT:IsVisible() );
-		end
-	end
+	-- Create window via factory
+	_G.wGT = CreateWindow({
+		text = L["GTWTitle"],
+		width = 200,
+		height = 120,
+		left = GTWLeft,
+		top = GTWTop,
+		config = {
+			settingsKey = "GameTime",
+			windowGlobalVar = "wGT",
+			formGlobalVar = "frmGT",
+			onPositionChanged = function(left, top)
+				GTWLeft, GTWTop = left, top
+			end,
+			onClosing = function(sender, args)
+				-- nothing extra required
+			end,
+		}
+	})
 
-	_G.wGT.MouseUp = function( sender, args )
-		settings.GameTime.L = string.format("%.0f", _G.wGT:GetLeft());
-		settings.GameTime.T = string.format("%.0f", _G.wGT:GetTop());
-		GTWLeft, GTWTop = _G.wGT:GetPosition();
-		SaveSettings( false );
-	end
-
-	_G.wGT.Closing = function( sender, args ) -- Function for the Upper right X icon
-		_G.wGT:SetWantsKeyEvents( false );
-		_G.wGT = nil;
-		_G.frmGT = nil;
-	end
-	-- **^
 	-- **v 24h clock - Check box v**
 	local GMT = Turbine.UI.Lotro.TextBox();
 	local ShowSTcb = Turbine.UI.Lotro.CheckBox();
-	local Clock24Ctr = Turbine.UI.Lotro.CheckBox();
-	Clock24Ctr:SetParent( _G.wGT );
-	Clock24Ctr:SetPosition( 35, 40 );
-	Clock24Ctr:SetText( L["GTW24h"] );
-	Clock24Ctr:SetSize( Clock24Ctr:GetTextLength() * 8, 20 );
-	--Clock24Ctr:SetVisible( true );
-	--Clock24Ctr:SetEnabled( false );
-	Clock24Ctr:SetChecked( _G.Clock24h );
-	Clock24Ctr:SetForeColor( Color["rustedgold"] );
+	local ShowBTcb;  -- Forward declaration
+	local Clock24Ctr = CreateAutoSizedCheckBox(_G.wGT, L["GTW24h"], 35, 40, _G.Clock24h, 8);
 
 	Clock24Ctr.CheckedChanged = function( sender, args )
 		_G.Clock24h = Clock24Ctr:IsChecked();
@@ -79,7 +64,7 @@ function frmGameTimeWindow()
 	GMT:SetParent( ShowSTcb );
 	GMT:SetText( _G.UserGMT );
 	GMT:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
-	GMT:SetSize( 30, 20 );
+	GMT:SetSize( Constants.GMT_FIELD_WIDTH, Constants.GMT_FIELD_HEIGHT );
 	--GMT:SetVisible( true );
 	--GMT:SetEnabled( false );
 	GMT:SetForeColor( Color["white"] );
@@ -118,15 +103,7 @@ function frmGameTimeWindow()
 	end
 	-- **^
 	-- **v Show both time - Check box v**
-	ShowBTcb = Turbine.UI.Lotro.CheckBox();
-	ShowBTcb:SetParent( _G.wGT );
-	ShowBTcb:SetPosition( 35, ShowSTcb:GetTop() + 20 );
-	ShowBTcb:SetText( L["GTWSBT"] );
-	ShowBTcb:SetSize( ShowBTcb:GetTextLength() * 8.5, 20 );
-	--ShowBTcb:SetVisible( true );
-	--ShowBTcb:SetEnabled( false );
-	ShowBTcb:SetChecked( _G.ShowBT );
-	ShowBTcb:SetForeColor( Color["rustedgold"] );
+	ShowBTcb = CreateAutoSizedCheckBox(_G.wGT, L["GTWSBT"], 35, ShowSTcb:GetTop() + 20, _G.ShowBT);
 
 	ShowBTcb.CheckedChanged = function( sender, args )
 		_G.ShowBT = ShowBTcb:IsChecked();

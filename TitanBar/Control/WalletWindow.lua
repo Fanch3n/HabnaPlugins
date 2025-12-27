@@ -5,85 +5,60 @@
 function frmWalletWindow()
 	wcur = nil;
 	import (AppClassD.."ComboBox");
+	import(AppDirD .. "WindowFactory")
 	WIDD = HabnaPlugins.TitanBar.Class.ComboBox();
 
-	-- **v Set some window stuff v**
-	_G.wWI = Turbine.UI.Lotro.Window();
-    local w = 320;
+	-- **v Create window via factory v**
+	local w = 320;
 	if GLocale == "de" then w = 360;
-    elseif GLocale == "fr" then w = 360;
-    end
-	_G.wWI:SetSize( w, 640 ); --280x260
-    _G.wWI:SetPosition( WIWLeft, WIWTop );
-	_G.wWI:SetText( L["MBag"] );
-	_G.wWI:SetVisible( true );
-	_G.wWI:SetWantsKeyEvents( true );
-	--_G.wWI:SetZOrder( 2 );
-	_G.wWI:Activate();
-
-	_G.wWI.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wWI:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key or 'ctrl + \' is press
-			_G.wWI:SetVisible( not _G.wWI:IsVisible() );
-		elseif ( args.Action == 162 ) then --Enter key was pressed
-			WIbutSave.Click( sender, args );
-		end
+	elseif GLocale == "fr" then w = 360;
 	end
 
-	_G.wWI.MouseDown = function( sender, args )
-		if ( args.Button == Turbine.UI.MouseButton.Left ) then dragging = true; end
-	end
+	_G.wWI = CreateWindow({
+		text = L["MBag"],
+		width = w,
+		height = 640,
+		left = WIWLeft,
+		top = WIWTop,
+		config = {
+			dropdown = WIDD,
+			settingsKey = "Wallet",
+			windowGlobalVar = "wWI",
+			formGlobalVar = "frmWI",
+			onPositionChanged = function(left, top)
+				WIWLeft, WIWTop = left, top
+			end,
+			onClosing = function(sender, args)
+				if WIDD and WIDD.dropDownWindow then WIDD.dropDownWindow:SetVisible(false) end
+			end
+			,onKeyDown = function(sender, args)
+				if args.Action == 162 then -- Enter
+					if WIbutSave then WIbutSave.Click(sender, args) end
+					return
+				end
+			end
+		}
+	})
 
-	_G.wWI.MouseMove = function( sender, args )
-		if dragging then if WIDD.dropped then WIDD:CloseDropDown(); end end
-	end
-
-	_G.wWI.MouseUp = function( sender, args )
-		dragging = false;
-		settings.Wallet.L = string.format("%.0f", _G.wWI:GetLeft());
-		settings.Wallet.T = string.format("%.0f", _G.wWI:GetTop());
-		WIWLeft, WIWTop = _G.wWI:GetPosition();
-		SaveSettings( false );
-	end
-
-	_G.wWI.Closing = function( sender, args )
-		WIDD.dropDownWindow:SetVisible(false);
-		_G.wWI:SetWantsKeyEvents( false );
-		_G.wWI = nil;
-		_G.frmWI = nil;
-	end
-	-- **^
 	
 	local WIlbltextHeight = 35;
-	local WIlbltext = Turbine.UI.Label();
-	WIlbltext:SetParent( _G.wWI );
-	WIlbltext:SetText( L["WIt"] );
-	WIlbltext:SetPosition( 20, 35);
-	WIlbltext:SetSize( _G.wWI:GetWidth()-40 , WIlbltextHeight );
-	WIlbltext:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
-	WIlbltext:SetForeColor( Color["green"] );
+	-- Use CreateTitleLabel for the centered wallet title
+	local WIlbltext = CreateTitleLabel(_G.wWI, L["WIt"], 20, 35, nil, Color["green"], nil, _G.wWI:GetWidth()-40, WIlbltextHeight, Turbine.UI.ContentAlignment.MiddleCenter)
 
 	local WIFilterlblHeight = 20;
-    local WIFilterlbl = Turbine.UI.Label();
-    WIFilterlbl:SetParent(_G.wWI);
-    WIFilterlbl:SetSize(60,WIFilterlblHeight);
-    WIFilterlbl:SetPosition(20,75);
-    WIFilterlbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
-    WIFilterlbl:SetText("Search:");
-    local WIFiltertxt = Turbine.UI.Lotro.TextBox();
-    WIFiltertxt:SetParent(_G.wWI);
-    WIFiltertxt:SetFont(Turbine.UI.Lotro.Font.Verdana16);
-    WIFiltertxt:SetMultiline(false);
-    WIFiltertxt:SetPosition(80,75);
-    WIFiltertxt:SetSize(_G.wWI:GetWidth() - 120, 20);
-    WIFiltertxt.Text = "";
-    WIFiltertxt.TextChanged = function()
-        if WIFiltertxt.Text ~= WIFiltertxt:GetText() then
-            WIFiltertxt.Text = WIFiltertxt:GetText();
-            WIFilter(WIFiltertxt.Text);
-        end
-    end
+	local WIFilterlbl = CreateFieldLabel(_G.wWI, "Search:", 20, 75, 8, 60)
+
+	-- Use factory helper to create the search TextBox + delete icon
+	local wSearch = CreateSearchControl(_G.wWI, WIFilterlbl:GetLeft() + WIFilterlbl:GetWidth(), WIFilterlbl:GetTop(), _G.wWI:GetWidth() - 120, 20, Turbine.UI.Lotro.Font.Verdana16, resources)
+	local WIFiltertxt = wSearch.TextBox
+	_G.wWI.WIFilterDelIcon = wSearch.DelIcon
+	WIFiltertxt.Text = "";
+	WIFiltertxt.TextChanged = function()
+		if WIFiltertxt.Text ~= WIFiltertxt:GetText() then
+			WIFiltertxt.Text = WIFiltertxt:GetText();
+			WIFilter(WIFiltertxt.Text);
+		end
+	end
 
    function WIFilter()
         filterText = string.lower(WIFiltertxt.Text);
@@ -97,21 +72,17 @@ function frmWalletWindow()
         end
     end
 
-	-- **v Set the Wallet listbox v**
-	local WIListBoxHeight = 
-		_G.wWI:GetHeight()-95 - WIlbltextHeight - WIFilterlblHeight;
-	WIListBox = Turbine.UI.ListBox();
+	-- **v Set the Wallet listbox v (use helper for border/list/scroll)
+	local WIListBoxHeight = _G.wWI:GetHeight()-95 - WIlbltextHeight - WIFilterlblHeight;
+	local wileft, witop = 20, 115
+	local wilb = CreateListBoxWithBorder(_G.wWI, wileft, witop, _G.wWI:GetWidth()-40, WIListBoxHeight, nil)
+	WIListBox = wilb.ListBox
 	WIListBox:SetParent( _G.wWI );
 	WIListBox:SetZOrder( 1 );
 	WIListBox:SetPosition( 20, 115 );
-	--WIListBox:SetPosition( 20, WIlbltext:GetTop()+WIlbltext:GetHeight()+5 );
 	WIListBox:SetSize( _G.wWI:GetWidth()-40, WIListBoxHeight );
-	WIListBox:SetMaxItemsPerLine( 1 );
-	WIListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
-	--WIListBox:SetBackColor( Color["red"] ); --debug purpose
-	-- **^
-	-- **v Set the listbox scrollbar v**
-	WIListBoxScrollBar = Turbine.UI.Lotro.ScrollBar();
+	ConfigureListBox(WIListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
+	WIListBoxScrollBar = wilb.ScrollBar
 	WIListBoxScrollBar:SetParent( WIListBox );
 	WIListBoxScrollBar:SetZOrder( 1 );
 	WIListBoxScrollBar:SetOrientation( Turbine.UI.Orientation.Vertical );
@@ -120,10 +91,7 @@ function frmWalletWindow()
 	WIListBoxScrollBar:SetSize( 12, WIListBox:GetHeight() );
 	-- **^
 
-	WIWCtr = Turbine.UI.Control();
-	WIWCtr:SetParent( _G.wWI );
-	WIWCtr:SetPosition( WIListBox:GetLeft(), WIListBox:GetTop() );
-	WIWCtr:SetSize( WIListBox:GetWidth(), WIListBox:GetHeight() );
+	WIWCtr = CreateControl(Turbine.UI.Control, _G.wWI, WIListBox:GetLeft(), WIListBox:GetTop(), WIListBox:GetWidth(), WIListBox:GetHeight());
 	WIWCtr:SetZOrder( 0 );
 	WIWCtr:SetVisible( false );
 	WIWCtr:SetBlendMode( 5 );
@@ -137,10 +105,7 @@ function frmWalletWindow()
 		end
 	end
 	
-	WIlblFN = Turbine.UI.Label();
-	WIlblFN:SetParent( WIWCtr );
-	WIlblFN:SetPosition( 0 , WIWCtr:GetHeight()/2 - 40 );
-	WIlblFN:SetSize( WIWCtr:GetWidth() , 15 );
+	WIlblFN = CreateControl(Turbine.UI.Label, WIWCtr, 0, WIWCtr:GetHeight()/2 - 40, WIWCtr:GetWidth(), 15);
 	WIlblFN:SetFont( Turbine.UI.Lotro.Font.TrajanPro16 );
 	WIlblFN:SetFontStyle( Turbine.UI.FontStyle.Outline );
 	WIlblFN:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
@@ -150,14 +115,15 @@ function frmWalletWindow()
 	
 	-- **v Create drop down box v**
 	WIDD:SetParent( WIWCtr );
-	WIDD:SetSize( 170, 19 );
+	WIDD:SetSize( 170, Constants.DROPDOWN_HEIGHT );
 	WIDD:SetPosition( WIWCtr:GetWidth()/2 - WIDD:GetWidth()/2, WIlblFN:GetTop()+WIlblFN:GetHeight()+10 );
 
 	WIDD.dropDownWindow:SetParent( WIWCtr );
 	WIDD.dropDownWindow:SetPosition(WIDD:GetLeft(), WIDD:GetTop() + WIDD:GetHeight()+2);
 	-- **^
 	
-	for k,v in pairs(WICBO) do WIDD:AddItem(v, k); end
+	-- Populate the wallet combobox using the helper
+	PopulateDropDown(WIDD, WICBO, false, nil, nil)
 
 	--** LOTRO Point box
 	LPWCtr = Turbine.UI.Control();
@@ -176,14 +142,8 @@ function frmWalletWindow()
 	WIlblLOTROPTS:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 	--WIlblLOTROPTS:SetBackColor( Color["red"] ); -- debug purpose
 
-	WItxtLOTROPTS = Turbine.UI.Lotro.TextBox();
-	WItxtLOTROPTS:SetParent( LPWCtr );
-	WItxtLOTROPTS:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
+	WItxtLOTROPTS = CreateInputTextBox(LPWCtr, nil, WIlblLOTROPTS:GetLeft()+WIlblLOTROPTS:GetWidth()+5, WIlblLOTROPTS:GetTop()-2);
 	--WItxtLOTROPTS:SetText( _G.LOTROPTS );
-	WItxtLOTROPTS:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-	WItxtLOTROPTS:SetPosition( WIlblLOTROPTS:GetLeft()+WIlblLOTROPTS:GetWidth()+5, WIlblLOTROPTS:GetTop()-2 );
-	WItxtLOTROPTS:SetSize( 80, 20 );
-	WItxtLOTROPTS:SetMultiline( false );
 	if PlayerAlign == 2 then WItxtLOTROPTS:SetBackColor( Color["red"] ); end
 
 	WItxtLOTROPTS.FocusGained = function( sender, args )
@@ -210,11 +170,7 @@ function frmWalletWindow()
 	LPWCtr:SetSize( WIListBox:GetWidth(), 20 );
 	--**
 
-	WIbutSave = Turbine.UI.Lotro.Button();
-	WIbutSave:SetParent( WIWCtr );
-	WIbutSave:SetText( L["PWSave"] );
-	WIbutSave:SetSize( WIbutSave:GetTextLength() * 10, 15 ); --Auto size with text length
-	--WIbutSave:SetEnabled( true );
+	WIbutSave = CreateAutoSizedButton(WIWCtr, L["PWSave"])
 
 	WIbutSave.Click = function( sender, args )
 		WIWCtr:SetVisible( false );
@@ -224,11 +180,11 @@ function frmWalletWindow()
 		--Where-> 1: On TitanBar / 2: In wallet control tooltip / 3: Don't show
 		if wcur == L["MGSC"] then
 			_G.MIWhere = SelIndex; settings.Money.W = string.format("%.0f", SelIndex);
-			if SelIndex == Position.TITANBAR then if not ShowMoney then ShowHideMoney(); end
+			if SelIndex == Constants.Position.TITANBAR then if not ShowMoney then ShowHideMoney(); end
 			else if ShowMoney then ShowHideMoney(); end end
 		elseif wcur == L["MLotroPoints"] then
 			_G.LPWhere = SelIndex; settings.LOTROPoints.W = string.format("%.0f", SelIndex);
-			if SelIndex == Position.TITANBAR then
+			if SelIndex == Constants.Position.TITANBAR then
 				if not ShowLOTROPoints then
 					ShowHideLOTROPoints()
 				end
@@ -255,7 +211,7 @@ function frmWalletWindow()
 			local cur = _G.CurrencyLangMap[wcur]
 			_G.CurrencyData[cur].Where = SelIndex
 			settings[cur].W = string.format("%.0f", SelIndex)
-			if SelIndex == Position.TITANBAR then
+			if SelIndex == Constants.Position.TITANBAR then
 				if not _G.CurrencyData[cur].IsVisible then
 					ShowHideCurrency(cur)
 				end

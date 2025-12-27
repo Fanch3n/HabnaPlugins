@@ -2,6 +2,8 @@
 -- written by Habna
 -- rewritten by many
 
+import(AppDirD .. "UIHelpers")
+
 
 function ShowWIToolTip()
 	-- ( offsetX, offsetY, width, height, bubble side )
@@ -14,7 +16,7 @@ function ShowWIToolTip()
 	_G.ToolTipWin:SetZOrder( 1 );
 	--_G.ToolTipWin.xOffset = x;
 	--_G.ToolTipWin.yOffset = y;
-	_G.ToolTipWin:SetWidth( 100 );
+	_G.ToolTipWin:SetWidth( Constants.TOOLTIP_WIDTH_SMALL );
 	_G.ToolTipWin:SetVisible( true );
 
 	WITTListBox = Turbine.UI.ListBox();
@@ -57,7 +59,7 @@ function RefreshWITTListBox()
 			end
 		end
 		
-		if tonumber(ttw) == Position.TOOLTIP then
+		if tonumber(ttw) == Constants.Position.TOOLTIP then
 			WITTPosY = WITTPosY + 32;
 			bFound = true;
 		
@@ -86,10 +88,7 @@ function RefreshWITTListBox()
 					--lblQte:SetBackColor( Color["red"] ); -- debug purpose
 					--**^
 					--**v Icon v**
-					local ttIcon = Turbine.UI.Control();
-					ttIcon:SetParent( WITTCtr );
-					ttIcon:SetPosition( lblQte:GetLeft()+lblQte:GetWidth()-2, 5 );
-					ttIcon:SetSize( 27, 21 );
+					local ttIcon = CreateControl(Turbine.UI.Control, WITTCtr, lblQte:GetLeft()+lblQte:GetWidth()-2, 5, 27, 21)
 					ttIcon:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 					ttIcon:SetBackground( resources.MoneyIcon[w] ); --tonumber(twmoneyi[w]) );
 					tmWidth = tmWidth + ttIcon:GetWidth()-2;
@@ -106,9 +105,7 @@ function RefreshWITTListBox()
 				--**
 			else --All other control
 				--**v Icon v**
-				local ttIcon = Turbine.UI.Control();
-				ttIcon:SetParent( WITTCtr );
-				ttIcon:SetPosition( 0, 0 );
+				local ttIcon = CreateControl(Turbine.UI.Control, WITTCtr, 0, 0, 0, 0)
 				ttIcon:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 			
 				if wttcur == L["MSL"] or wttcur == L["MLotroPoints"] then ttIcon:SetBackground( CtrIconCodeIs );
@@ -134,16 +131,16 @@ function RefreshWITTListBox()
 				--**
 				--** Resize Destiny points & LOTRO points icon since it's not in 32x32 **--
 				if wttcur == L["MDestinyPoints"] then
-					ttIcon:SetSize( 21, 22 );
-					ttIcon:SetStretchMode( 1 );
-					ttIcon:SetSize( 32, 32 );
+				ttIcon:SetSize( Constants.DESTINY_POINTS_ICON_WIDTH, Constants.DESTINY_POINTS_ICON_HEIGHT );
+				ttIcon:SetStretchMode( 1 );
+				ttIcon:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE );
 					ttIcon:SetStretchMode( 3 );
 				elseif wttcur == L["MLotroPoints"] then
-					ttIcon:SetSize( 30, 32 )
-					ttIcon:SetStretchMode( 1 );
-					ttIcon:SetSize( 32, 32 );
+				ttIcon:SetSize( 30, Constants.ICON_SIZE_LARGE )
+				ttIcon:SetStretchMode( 1 );
+				ttIcon:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE );
 					ttIcon:SetStretchMode( 2 );
-				else ttIcon:SetSize( 32, 32 ); end
+				else ttIcon:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE ); end
 				--**
 			end
 			WITTListBox:AddItem( WITTCtr );
@@ -152,14 +149,14 @@ function RefreshWITTListBox()
 	if not bFound then --If not showing any control
 		WITTPosY = WITTPosY + 32;
 
-		_G.ToolTipWin:SetWidth( 300 );
+		_G.ToolTipWin:SetWidth( Constants.TOOLTIP_WIDTH_DEFAULT );
 		WITTListBox:SetWidth( _G.ToolTipWin:GetWidth()-40 );
 
 		local lblName = Turbine.UI.Label();
 		lblName:SetParent( _G.ToolTipWin );
 		lblName:SetText( L["WInc"] );
 		lblName:SetPosition( 0, 0 );
-		lblName:SetSize( WITTListBox:GetWidth(), 32 );
+		lblName:SetSize( WITTListBox:GetWidth(), Constants.ICON_SIZE_LARGE );
 		lblName:SetForeColor( Color["green"] );
 		lblName:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 		--lblName:SetBackColor( Color["red"] ); -- debug purpose
@@ -168,15 +165,7 @@ function RefreshWITTListBox()
 	end
 
 	WITTListBox:SetHeight( WITTPosY );
-	_G.ToolTipWin:SetHeight( WITTPosY + 37 );
+	_G.ToolTipWin:SetSize( _G.ToolTipWin:GetWidth(), WITTPosY + 37 );
 
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-			
-	if _G.ToolTipWin:GetWidth() + mouseX + 5 > screenWidth then x = _G.ToolTipWin:GetWidth() - 10;
-	else x = -5; end
-			
-	if TBTop then y = -15;
-	else y = _G.ToolTipWin:GetHeight() end
-
-	_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
+	PositionToolTipWindow();
 end

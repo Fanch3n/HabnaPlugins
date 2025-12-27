@@ -2,6 +2,8 @@
 -- Written By Habna
 -- rewritten by many
 
+import(AppDirD .. "UIHelpers")
+
 function AddCallback(object, event, callback)
 	if object[event] == nil then
 		object[event] = callback;
@@ -39,10 +41,7 @@ function ApplySkin() --Tooltip skin
 
 	-- Create and position tooltip corners and edges
 	local function createTooltipPart(name, x, y, width, height, background)
-		local part = Turbine.UI.Control()
-		part:SetParent(ToolTipWin)
-		part:SetPosition(x, y)
-		part:SetSize(width, height)
+		local part = CreateControl(Turbine.UI.Control, ToolTipWin, x, y, width, height)
 		part:SetBackground(background)
 	end
 
@@ -64,7 +63,7 @@ function createToolTipWin( xOffset, yOffset, xSize, ySize, side, header, text1,
 	_G.ToolTipWin = Turbine.UI.Window();
 	_G.ToolTipWin:SetSize( xSize, ySize );
 	--_G.ToolTipWin:SetMouseVisible( false );
-	_G.ToolTipWin:SetZOrder( 1 );
+	_G.ToolTipWin:SetZOrder( Constants.ZORDER_TOOLTIP );
 	_G.ToolTipWin.xOffset = xOffset;
 	_G.ToolTipWin.yOffset = yOffset;
 	--_G.ToolTipWin:SetBackColor( Color["black"] ); --Debug purpose
@@ -72,10 +71,7 @@ function createToolTipWin( xOffset, yOffset, xSize, ySize, side, header, text1,
 	ApplySkin();
 
 	--**v Text in Header v**
-	lblheader = Turbine.UI.Label();
-	lblheader:SetParent( _G.ToolTipWin );
-	lblheader:SetPosition( 40, 7 ); --10
-	lblheader:SetSize( xSize, ySize );
+	lblheader = CreateControl(Turbine.UI.Label, _G.ToolTipWin, 40, 7, xSize, ySize);
 	lblheader:SetForeColor( Color["green"] );
 	lblheader:SetFont(Turbine.UI.Lotro.Font.Verdana16);
 	lblheader:SetText( header );
@@ -85,10 +81,7 @@ function createToolTipWin( xOffset, yOffset, xSize, ySize, side, header, text1,
 	
 	--**v Text v**
 	for i = 1, #txt do
-		local lbltext = Turbine.UI.Label();
-		lbltext:SetParent( _G.ToolTipWin );
-		lbltext:SetPosition( 40, YPos ); --10
-		lbltext:SetSize( xSize, 15 );
+		local lbltext = CreateControl(Turbine.UI.Label, _G.ToolTipWin, 40, YPos, xSize, 15);
 		lbltext:SetForeColor( Color["white"] );
 		lbltext:SetFont(Turbine.UI.Lotro.Font.Verdana14);
 		lbltext:SetText( txt[i] );
@@ -259,7 +252,7 @@ end
 --**^
 --**v Update LOTRO points on TitanBar v**
 function UpdateLOTROPoints()
-	if _G.LPWhere == Position.TITANBAR then
+	if _G.LPWhere == Constants.Position.TITANBAR then
 		LP["Lbl"]:SetText(_G.LOTROPTS)
 		LP["Lbl"]:SetSize(LP["Lbl"]:GetTextLength() * NM, CTRHeight)
 		AjustIcon("LP")
@@ -766,7 +759,7 @@ function GetInGameTime()
 	local nowtime = Turbine.Engine.GetLocalTime();
 	local gametime = Turbine.Engine.GetGameTime();
 	local InitDawn =  nowtime - gametime + _G.TS;
-	local adjust = (nowtime - (nowtime - gametime + _G.TS))% 11160;
+	local adjust = (nowtime - (nowtime - gametime + _G.TS)) % Constants.GAME_TIME_CYCLE;
   local darray = {572, 1722, 1067, 1678, 1101, 570, 1679, 539, 1141, 1091};
 	local dtarray = {
         L["Dawn"], L["Morning"], L["Noon"], L["Afternoon"], L["Dusk"], 

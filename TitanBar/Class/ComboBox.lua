@@ -48,7 +48,7 @@ function ComboBox:Constructor()
     -- arrow
     self.arrow = Turbine.UI.Control();
     self.arrow:SetParent(self);
-    self.arrow:SetSize(16, 16);
+    self.arrow:SetSize(Constants.ARROW_SIZE, Constants.ARROW_SIZE);
     self.arrow:SetZOrder(20);
     self.arrow:SetBlendMode(4);
     self.arrow:SetBackground(0x41007e1a);

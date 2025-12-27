@@ -3,43 +3,33 @@
 -- refactored by 4andreas
 
 function frmMoneyInfosWindow()
-	-- **v Set some window stuff v**
-	_G.wMI = Turbine.UI.Lotro.Window()
-	_G.wMI:SetText( L["MIWTitle"] );
-	_G.wMI:SetWantsKeyEvents( true );
-	_G.wMI:SetVisible( true );
-	_G.wMI:SetWidth( 325 );
-	--_G.wMI:SetZOrder( 2 );
-	_G.wMI:Activate();
-
-	_G.wMI.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wMI:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			_G.wMI:SetVisible( not _G.wMI:IsVisible() );
-		end
-	end
-
-	_G.wMI.MouseUp = function( sender, args )
-		settings.Money.L = string.format("%.0f", _G.wMI:GetLeft());
-		settings.Money.T = string.format("%.0f", _G.wMI:GetTop());
-		MIWLeft, MIWTop = _G.wMI:GetPosition();
-		SaveSettings( false );
-	end
-
-	_G.wMI.Closing = function( sender, args ) -- Function for the Upper right X icon
-		_G.wMI:SetWantsKeyEvents( false );
-		_G.wMI = nil;
-		_G.frmMI = nil;
-	end
+	import(AppDirD .. "WindowFactory")
+	-- **v Create window via factory v**
+	_G.wMI = CreateWindow({
+		text = L["MIWTitle"],
+		width = 325,
+		height = 640,
+		left = MIWLeft,
+		top = MIWTop,
+		config = {
+			settingsKey = "Money",
+			windowGlobalVar = "wMI",
+			formGlobalVar = "frmMI",
+			onPositionChanged = function(left, top)
+				MIWLeft, MIWTop = left, top
+			end,
+			onClosing = function(sender, args)
+				-- nothing extra needed here
+			end
+		}
+	})
 	-- **^
 
 	MIListBox = Turbine.UI.ListBox();
 	MIListBox:SetParent( _G.wMI );
 	MIListBox:SetPosition( 20, 35 );
 	MIListBox:SetWidth( _G.wMI:GetWidth() - 40 );
-	MIListBox:SetMaxItemsPerLine( 1 );
-	MIListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
+	ConfigureListBox(MIListBox)
 	--MIListBox:SetBackColor( Color["darkgrey"] ); --debug purpose
 	
 	-- **v Display total money - check box v**
@@ -121,8 +111,8 @@ end
 
 function RefreshMIListBox()
 	MIListBox:ClearItems();
-	MIPosY = 0;
-	iFound = false;
+	local MIPosY = 0;
+	local iFound = false;
 	
 	--Create an array of character name, sort it, then use it as a reference.
 	local a = {};
@@ -154,17 +144,7 @@ function RefreshMIListBox()
 		--MsgCtr:SetBackColor( Color["red"] ); -- Debug purpose
 		--**^
 		--**v Message v**
-		local MsgLbl = Turbine.UI.Label();
-		MsgLbl:SetParent( MsgCtr );
-		--MsgLbl:SetForeColor( Color["white"] );
-		MsgLbl:SetPosition( 0, 0 );
-		MsgLbl:SetText( L["MIMsg"] );
-		MsgLbl:SetSize( MsgCtr:GetWidth(), MsgCtr:GetHeight() );
-		--MsgLbl:SetFontStyle( Turbine.UI.FontStyle.Outline );
-		MsgLbl:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
-		MsgLbl:SetForeColor( Color["red"] );
-		--MsgLbl:SetBackColor( Color["white"] ); -- Debug purpose
-		--**^
+		local MsgLbl = CreateTitleLabel(MsgCtr, L["MIMsg"], 0, 0, nil, Color["red"], nil, MsgCtr:GetWidth(), MsgCtr:GetHeight(), Turbine.UI.ContentAlignment.MiddleCenter)
 
 		MIListBox:AddItem( MsgCtr );
 		MIPosY = MIPosY + 19;

@@ -1,5 +1,7 @@
 -- Written By Giseldah (inspired by original work by Habna, 4andreas)
 
+import(AppDirD .. "UIHelpers")
+
 local mathmax = math.max
 local strfind = string.find
 local strformat = string.format
@@ -705,11 +707,8 @@ function ShowPIWindow()
 	_G.ToolTipWin:SetVisible(true)
 
 	--**v Control of all player infos v**
-	local APICtr = Turbine.UI.Control()
-	APICtr:SetParent(_G.ToolTipWin)
+	local APICtr = CreateControl(Turbine.UI.Control, _G.ToolTipWin, 20, 19, w, h)
 	APICtr:SetZOrder(1)
-	APICtr:SetPosition(20,19)
-	APICtr:SetSize(w,h)
 	APICtr:SetBlendMode(Turbine.UI.BlendMode.AlphaBlend)
 	--APICtr:SetBackColor(Color["trueblue"]) -- test size
 	--APICtr:SetBackground("HabnaPlugins/TitanBar/Resources/".."PIbk.tga")

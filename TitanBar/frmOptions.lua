@@ -2,6 +2,8 @@
 -- written by Habna
 -- rewritten by many
 
+import(AppDirD .. "UIHelpers")
+
 if _G.Debug then write("frmOptions.lua"); end
 
 function GetWalletControls()
@@ -56,65 +58,41 @@ function frmOptions()
 	FontDD = HabnaPlugins.TitanBar.Class.ComboBox();
 
 	-- **v Set some window stuff v**
-	wOptions = Turbine.UI.Lotro.Window()
-	wOptions:SetSize( 275, 275 );
-	wOptions:SetPosition( OPWLeft, OPWTop );
-	wOptions:SetText( L[ "OPWTitle" ] );
-	wOptions:SetWantsKeyEvents( true );
-	wOptions:SetVisible( true );
-	--wOptions:SetZOrder( 2 );
-	--wOptions:Activate();
+	import(AppDirD .. "WindowFactory")
 
-	wOptions.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			wOptions:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			wOptions:SetVisible( not wOptions:IsVisible() );
-		end
-	end
+	-- Create options window via factory
+	wOptions = CreateWindow({
+		text = L[ "OPWTitle" ],
+		width = 275,
+		height = 275,
+		left = OPWLeft,
+		top = OPWTop,
+		config = {
+			settingsKey = "Options",
+			windowGlobalVar = "wOptions",
+			onPositionChanged = function(left, top)
+				OPWLeft, OPWTop = left, top
+			end,
+			onMouseMove = function(sender, args)
+				-- Close dropdowns when window is being dragged
+				if FontDD and FontDD.dropped then FontDD:CloseDropDown(); end
+				if AutoDD and AutoDD.dropped then AutoDD:CloseDropDown(); end
+			end,
+			onClosing = function( sender, args )
+				if FontDD and FontDD.dropDownWindow then FontDD.dropDownWindow:SetVisible( false ); end
+				if AutoDD and AutoDD.dropDownWindow then AutoDD.dropDownWindow:SetVisible( false ); end
+				if TBAutoHide == L[ "OPAHE" ] then windowOpen = true; TB[ "win" ].MouseLeave(); end
+				opt_options:SetEnabled( true );
+			end,
+		}
+	})
 
-	wOptions.MouseDown = function( sender, args )
-		if ( args.Button == Turbine.UI.MouseButton.Left ) then dragging = true; end
-	end
-
-	wOptions.MouseMove = function( sender, args )
-		if dragging then
-			if FontDD.dropped then FontDD:CloseDropDown(); end
-			if AutoDD.dropped then AutoDD:CloseDropDown(); end
-		end
-	end
-
-	wOptions.MouseUp = function( sender, args )
-		dragging = false;
-		settings.Options.L = string.format( "%.0f", wOptions:GetLeft() );
-		settings.Options.T = string.format( "%.0f", wOptions:GetTop() );
-		OPWLeft, OPWTop = wOptions:GetPosition();
-		SaveSettings( false );
-	end
-
-	wOptions.Closing = function( sender, args ) -- Function for the Upper right X icon
-		FontDD.dropDownWindow:SetVisible( false );
-		AutoDD.dropDownWindow:SetVisible( false );
-		wOptions:SetWantsKeyEvents( false );
-		if TBAutoHide == L[ "OPAHE" ] then windowOpen = true; TB[ "win" ].MouseLeave(); end
-		wOptions = nil;
-		opt_options:SetEnabled( true );
-	end
-	-- **^
 	
 	-- **v TitanBar Height - label v**
-	local lblHeight = Turbine.UI.Label();
-	lblHeight:SetParent( wOptions );
-	lblHeight:SetPosition( 25, 40 );
-	lblHeight:SetText( L[ "OPHText" ] );
-	lblHeight:SetSize( wOptions:GetWidth() - 25, 15 );
-	lblHeight:SetForeColor( Color[ "rustedgold" ] );
+	local lblHeight = CreateTitleLabel(wOptions, L["OPHText"], 25, 40, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	-- **^
 	-- **v Set the scrollbar v**
-	wScrollBar = Turbine.UI.Lotro.ScrollBar();
-	wScrollBar:SetParent( wOptions );
-	wScrollBar:SetPosition( lblHeight:GetLeft(), lblHeight:GetTop() + 15 );
-	wScrollBar:SetSize( wOptions:GetWidth() - 75, 10 );
+	wScrollBar = CreateControl(Turbine.UI.Lotro.ScrollBar, wOptions, lblHeight:GetLeft(), lblHeight:GetTop() + 15, wOptions:GetWidth() - 75, 10);
 	wScrollBar:SetOrientation( Turbine.UI.Orientation.Horizontal );
 	wScrollBar:SetMinimum( 10 );
 	wScrollBar:SetMaximum( 100 );
@@ -133,24 +111,14 @@ function frmOptions()
 	end
 	-- **^
 	-- **v TitanBar Height Value - label v**
-	lblHeightV = Turbine.UI.Label();
-	lblHeightV:SetParent( wOptions );
-	lblHeightV:SetPosition( wScrollBar:GetLeft() + wScrollBar:GetWidth() + 5, wScrollBar:GetTop() );
-	lblHeightV:SetText( wScrollBar:GetValue() );
-	lblHeightV:SetSize( 20, 15 );
-	lblHeightV:SetForeColor( Color["rustedgold"] );
+	lblHeightV = CreateTitleLabel(wOptions, wScrollBar:GetValue(), wScrollBar:GetLeft() + wScrollBar:GetWidth() + 5, wScrollBar:GetTop(), nil, Color["rustedgold"], nil, 20, 15)
 	-- **^
 
 	-- **v TitanBar Font - label & DropDown box v**
-	lblFont = Turbine.UI.Label();
-	lblFont:SetParent( wOptions );
-	lblFont:SetPosition( 25, wScrollBar:GetTop() + 20 );
-	lblFont:SetText( L[ "OPFText" ] );
-	lblFont:SetSize( wOptions:GetWidth() - 25, 15 );
-	lblFont:SetForeColor( Color[ "rustedgold" ] );
+	lblFont = CreateTitleLabel(wOptions, L["OPFText"], 25, wScrollBar:GetTop() + 20, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	
 	FontDD:SetParent( wOptions );
-	FontDD:SetSize( 159, 19 );
+	FontDD:SetSize( Constants.DROPDOWN_WIDTH, Constants.DROPDOWN_HEIGHT );
 	FontDD:SetPosition( 25, lblFont:GetTop() + 15 );
 	FontDD.label:SetText( TBFontT );
 
@@ -172,16 +140,11 @@ function frmOptions()
 	-- **^
 
 	-- **v TitanBar Auto hide - label & DropDown box v**
-	lblAuto = Turbine.UI.Label();
-	lblAuto:SetParent( wOptions );
-	lblAuto:SetPosition( 25, FontDD:GetTop() + 30 );
-	lblAuto:SetText( L[ "OPAText" ] );
-	lblAuto:SetSize( wOptions:GetWidth() - 25, 15 );
-	lblAuto:SetForeColor( Color[ "rustedgold" ] );
+	lblAuto = CreateTitleLabel(wOptions, L["OPAText"], 25, FontDD:GetTop() + 30, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	
 	AutoDD = HabnaPlugins.TitanBar.Class.ComboBox();
 	AutoDD:SetParent( wOptions );
-	AutoDD:SetSize( 159, 19 );
+	AutoDD:SetSize( Constants.DROPDOWN_WIDTH, Constants.DROPDOWN_HEIGHT );
 	AutoDD:SetPosition( 25, lblAuto:GetTop() + 15 );
 	AutoDD.label:SetText( TBFontT );
 
@@ -202,20 +165,12 @@ function frmOptions()
 	end
 	-- **^
 	-- **v TitanBar Icon Size - label & DropDown box v**
-	lblIconSize = Turbine.UI.Label();
-	lblIconSize:SetParent( wOptions );
-	lblIconSize:SetPosition( 25, AutoDD:GetTop() + 30 );
-	lblIconSize:SetText( L[ "OPIText" ] );
-	lblIconSize:SetSize( wOptions:GetWidth() - 25, 15 );
-	lblIconSize:SetForeColor( Color[ "rustedgold" ] );
+	lblIconSize = CreateTitleLabel(wOptions, L["OPIText"], 25, AutoDD:GetTop() + 30, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	
-	wIconScrollBar = Turbine.UI.Lotro.ScrollBar();
-	wIconScrollBar:SetParent( wOptions );
-	wIconScrollBar:SetPosition( lblIconSize:GetLeft(), lblIconSize:GetTop() + 15 );
-	wIconScrollBar:SetSize( wOptions:GetWidth() - 75, 10 );
+	wIconScrollBar = CreateControl(Turbine.UI.Lotro.ScrollBar, wOptions, lblIconSize:GetLeft(), lblIconSize:GetTop() + 15, wOptions:GetWidth() - 75, 10);
 	wIconScrollBar:SetOrientation( Turbine.UI.Orientation.Horizontal );
-	wIconScrollBar:SetMinimum( 16 );
-	wIconScrollBar:SetMaximum( 32 );
+	wIconScrollBar:SetMinimum( Constants.ICON_SIZE_SMALL );
+	wIconScrollBar:SetMaximum( Constants.ICON_SIZE_LARGE );
 	wIconScrollBar:SetValue( TBIconSize );
 
 	wIconScrollBar.ValueChanged = function( sender, args )
@@ -228,23 +183,10 @@ function frmOptions()
 	end
 	-- **^
 	-- **v TitanBar Icon Size Value - label v**
-	lblIconSizeV = Turbine.UI.Label();
-	lblIconSizeV:SetParent( wOptions );
-	lblIconSizeV:SetPosition( wIconScrollBar:GetLeft() + wIconScrollBar:GetWidth() + 5, wIconScrollBar:GetTop() );
-	lblIconSizeV:SetText( wIconScrollBar:GetValue() );
-	lblIconSizeV:SetSize( 20, 15 );
-	lblIconSizeV:SetForeColor( Color[ "rustedgold" ] );
+	lblIconSizeV = CreateTitleLabel(wOptions, wIconScrollBar:GetValue(), wIconScrollBar:GetLeft() + wIconScrollBar:GetWidth() + 5, wIconScrollBar:GetTop(), nil, Color["rustedgold"], nil, 20, 15)
 	-- **^
 	-- **v Set TitanBar at Top of screen - Check box v**
-	local TBTopCB = Turbine.UI.Lotro.CheckBox();
-	TBTopCB:SetParent( wOptions );
-	TBTopCB:SetPosition( wIconScrollBar:GetLeft(), wIconScrollBar:GetTop() + 20 );
-	TBTopCB:SetText( L["OPTBTop"] );
-	TBTopCB:SetSize( TBTopCB:GetTextLength() * 8.5, 20 );
-	--TBTopCB:SetVisible( true );
-	--TBTopCB:SetEnabled( false );
-	TBTopCB:SetChecked( TBTop );
-	TBTopCB:SetForeColor( Color[ "rustedgold" ] );
+	local TBTopCB = CreateAutoSizedCheckBox(wOptions, L["OPTBTop"], wIconScrollBar:GetLeft(), wIconScrollBar:GetTop() + 20, TBTop);
 
 	TBTopCB.CheckedChanged = function( sender, args )
 		TBTop = TBTopCB:IsChecked();
@@ -257,13 +199,7 @@ function frmOptions()
 	end
 	-- **^
 	
-	local PILayoutCB = Turbine.UI.Lotro.CheckBox();
-	PILayoutCB:SetParent( wOptions );
-	PILayoutCB:SetText( L[ "Layout" ] );
-	PILayoutCB:SetPosition(TBTopCB:GetLeft(), TBTopCB:GetTop()+20);
-	PILayoutCB:SetSize( PILayoutCB:GetTextLength() * 8.5, 30 ); --Auto size with text length
-	PILayoutCB:SetChecked( PILayout );
-	PILayoutCB:SetForeColor( Color[ "rustedgold" ] );
+	local PILayoutCB = CreateAutoSizedCheckBox(wOptions, L["Layout"], TBTopCB:GetLeft(), TBTopCB:GetTop()+20, PILayout, 8.5, 30);
 	
 	PILayoutCB.CheckedChanged = function( sender, args )
 		PILayout = PILayoutCB:IsChecked();

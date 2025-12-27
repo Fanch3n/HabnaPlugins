@@ -1,3 +1,5 @@
+import(AppDirD .. "UIHelpers")
+
 function ShowSharedToolTip()
 	_G.ToolTipWin = Turbine.UI.Window();
 	_G.ToolTipWin:SetZOrder( 1 );
@@ -10,7 +12,7 @@ function ShowSharedToolTip()
 
 	_G.ToolTipWin.lblmgs = GetLabel(L["SSnd"]);
 	_G.ToolTipWin.lblmgs:SetParent( _G.ToolTipWin );
-	_G.ToolTipWin.lblmgs:SetSize( 350, 39 );
+	_G.ToolTipWin.lblmgs:SetSize( 350, Constants.LABEL_HEIGHT_MESSAGE );
 
 	RefreshSharedTTListBox();
 
@@ -33,7 +35,7 @@ function RefreshSharedTTListBox()
 	SharedTTListBox:SetVisible(not noItems);
 
 	if (noItems) then
-		_G.ToolTipWin:SetWidth(400);
+		_G.ToolTipWin:SetWidth(Constants.TOOLTIP_WIDTH_VAULT);
 		_G.ToolTipWin:SetHeight(115);
 		_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
 		_G.ToolTipWin:SetVisible( true );
@@ -47,45 +49,30 @@ function RefreshSharedTTListBox()
 		-- Item control
 		local itemCtl = Turbine.UI.Control();
 		itemCtl:SetParent( VaultTTListBox );
-		itemCtl:SetSize( 40, 40 );
+		itemCtl:SetSize( Constants.ICON_SIZE_XLARGE, Constants.ICON_SIZE_XLARGE );
 				
 		-- Item background
-		local itemBG = Turbine.UI.Control();
-		itemBG:SetParent( itemCtl );
-		itemBG:SetPosition( 4, 4 );
-		itemBG:SetSize( 32, 32 );
+		local itemBG = CreateControl(Turbine.UI.Control, itemCtl, 4, 4, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 		if PlayerSharedStorage[tostring(i)].B ~= "0" then itemBG:SetBackground( tonumber(PlayerSharedStorage[tostring(i)].B) ); end
 		itemBG:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		
 		-- Item Underlay
-		local itemU = Turbine.UI.Control();
-		itemU:SetParent( itemCtl );
-		itemU:SetSize( 32, 32 );
-		itemU:SetPosition( 4, 4 );
+		local itemU = CreateControl(Turbine.UI.Control, itemCtl, 4, 4, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 		if PlayerSharedStorage[tostring(i)].U ~= "0" then itemU:SetBackground( tonumber(PlayerSharedStorage[tostring(i)].U) ); end
 		itemU:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
 		-- Item Shadow
-		local itemS = Turbine.UI.Control();
-		itemS:SetParent( itemCtl );
-		itemS:SetSize( 32, 32 );
-		itemS:SetPosition( 4, 4 );
+		local itemS = CreateControl(Turbine.UI.Control, itemCtl, 4, 4, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 		if PlayerSharedStorage[tostring(i)].S ~= "0" then itemS:SetBackground( tonumber(PlayerSharedStorage[tostring(i)].S) ); end
 		itemS:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
 		-- Item
-		local item = Turbine.UI.Control();
-		item:SetParent( itemCtl );
-		item:SetSize( 32, 32 );
-		item:SetPosition( 4, 4 );
+		local item = CreateControl(Turbine.UI.Control, itemCtl, 4, 4, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 		if PlayerSharedStorage[tostring(i)].I ~= "0" then item:SetBackground( tonumber(PlayerSharedStorage[tostring(i)].I) ); end
 		item:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
 		-- Item Quantity
-		local itemQTE = Turbine.UI.Label();
-		itemQTE:SetParent( itemCtl );
-		itemQTE:SetSize( 32, 15 );
-		itemQTE:SetPosition( 0, 20 );
+		local itemQTE = CreateControl(Turbine.UI.Label, itemCtl, 0, 20, Constants.ICON_SIZE_LARGE, 15);
 		itemQTE:SetFont( Turbine.UI.Lotro.Font.Verdana12 );
 		itemQTE:SetFontStyle( Turbine.UI.FontStyle.Outline );
 		itemQTE:SetOutlineColor( Color["black"] );
