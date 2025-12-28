@@ -184,7 +184,6 @@ function frmMain()
 	if ShowInfamy then ImportCtr( "IF" ); end --Infamy/Renown
 	if ShowVault then ImportCtr( "VT" ); end --Vault
 	if ShowSharedStorage then ImportCtr( "SS" ); end --SharedStorage
-	--if ShowBank then ImportCtr( "BK" ); end --Bank
 	if ShowDayNight then ImportCtr( "DN" ); end --Day & Night time
 	if ShowReputation then ImportCtr( "RP" ); end --Reputation Points
 	if _G.LPWhere ~= 3 then ImportCtr( "LP" ); end --LOTRO Points
@@ -253,6 +252,7 @@ function frmMain()
 	end
 	if TBReloaded then
 		OneTimer:SetWantsUpdates( false )
+		AllTimer:SetWantsUpdates( true )
 		settings.TitanBar.Z = false
 		settings.TitanBar.ZT = "TB"
 		SaveSettings( false )
