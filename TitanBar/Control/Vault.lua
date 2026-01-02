@@ -18,10 +18,9 @@ VT["Icon"] = CreateControlIcon(VT["Ctr"], Constants.ICON_SIZE_MEDIUM_LARGE, Cons
 SetupControlInteraction({
 	icon = VT["Icon"],
 	controlName = "VT",
+	controlId = "VT",
 	controlTable = VT,
 	settingsSection = settings.Vault,
-	xVarName = "VTLocX",
-	yVarName = "VTLocY",
 	windowVar = "wVT",
 	windowImportPath = AppCtrD .. "VaultWindow",
 	windowFunction = "frmVault",

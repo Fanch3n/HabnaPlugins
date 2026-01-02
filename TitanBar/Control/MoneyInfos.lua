@@ -159,7 +159,7 @@ MI["CLbl"].MouseClick = function( sender, args )
 	_G.WasDrag = false;
 end
 
-local dragHandlers = CreateDragHandlers(MI["Ctr"], settings.Money, "MILocX", "MILocY")
+local dragHandlers = CreateDragHandlers(MI["Ctr"], settings.Money, "Money")
 MI["CLbl"].MouseDown = dragHandlers.MouseDown
 MI["CLbl"].MouseUp = dragHandlers.MouseUp
 

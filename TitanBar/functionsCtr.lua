@@ -8,12 +8,12 @@ function ImportCtr( value )
         import (AppCtrD.."Wallet");
         import (AppCtrD.."WalletToolTip");
         UpdateWallet();
-        WI[ "Ctr" ]:SetPosition( _G.WILocX, _G.WILocY );
+        WI[ "Ctr" ]:SetPosition( _G.ControlData.WI.location.x, _G.ControlData.WI.location.y );
     elseif value == "MI" then --Money Infos
         if _G.MIWhere == 1 then
             import (AppCtrD.."MoneyInfos");
             import (AppCtrD.."MoneyInfosToolTip");
-            MI[ "Ctr" ]:SetPosition( _G.MILocX, _G.MILocY );
+            MI[ "Ctr" ]:SetPosition( _G.ControlData.Money.location.x, _G.ControlData.Money.location.y );
         end
         if _G.MIWhere ~= 3 then
             AddCallback(GetPlayerAttributes(), "MoneyChanged",
@@ -42,7 +42,7 @@ function ImportCtr( value )
         --    function(sender, args) UpdateBackpackInfos(); end
         --    ); --Add when workaround is not needed anymore
         UpdateBackpackInfos();
-        BI[ "Ctr" ]:SetPosition( _G.BILocX, _G.BILocY );
+        BI[ "Ctr" ]:SetPosition( _G.ControlData.BI.location.x, _G.ControlData.BI.location.y );
     elseif value == "PI" then --Player Infos
         import (AppCtrD.."PlayerInfos");
         import (AppCtrD.."PlayerInfosToolTip");
@@ -81,17 +81,17 @@ function ImportCtr( value )
             end
             end);
         UpdatePlayersInfos();
-        PI[ "Ctr" ]:SetPosition( _G.PILocX, _G.PILocY );
+        PI[ "Ctr" ]:SetPosition( _G.ControlData.PI.location.x, _G.ControlData.PI.location.y );
     elseif value == "DI" then --Durability Infos
         import (AppCtrD.."DurabilityInfos");
         import (AppCtrD.."DurabilityInfosToolTip");
         UpdateDurabilityInfos();
-        DI[ "Ctr" ]:SetPosition( _G.DILocX, _G.DILocY );
+        DI[ "Ctr" ]:SetPosition( _G.ControlData.DI.location.x, _G.ControlData.DI.location.y );
     elseif value == "EI" then --Equipment Infos
         import (AppCtrD.."EquipInfos");
         import (AppCtrD.."EquipInfosToolTip");
         UpdateEquipsInfos();
-        EI[ "Ctr" ]:SetPosition( _G.EILocX, _G.EILocY );
+        EI[ "Ctr" ]:SetPosition( _G.ControlData.EI.location.x, _G.ControlData.EI.location.y );
     elseif value == "PL" then --Player Location
         import (AppCtrD.."PlayerLoc");
         --AddCallback(Player, "LocationChanged", UpdatePlayerLoc(); end);
@@ -120,12 +120,12 @@ function ImportCtr( value )
             end
         end);
         UpdatePlayerLoc( pLLoc );
-        PL[ "Ctr" ]:SetPosition( _G.PLLocX, _G.PLLocY );
+        PL[ "Ctr" ]:SetPosition( _G.ControlData.PL.location.x, _G.ControlData.PL.location.y );
     elseif value == "TI" then --Track Items
         import (AppCtrD.."TrackItems");
         import (AppCtrD.."TrackItemsToolTip");
         UpdateTrackItems();
-        TI[ "Ctr" ]:SetPosition( _G.TILocX, _G.TILocY );
+        TI[ "Ctr" ]:SetPosition( _G.ControlData.TI.location.x, _G.ControlData.TI.location.y );
     elseif value == "IF" then --Infamy
         -- Use Infamy/Renown ranks from Constants
         _G.InfamyRanks = Constants.INFAMY_RANKS;
@@ -188,15 +188,15 @@ function ImportCtr( value )
             end
             end);
         UpdateInfamy();
-        IF[ "Ctr" ]:SetPosition( _G.IFLocX, _G.IFLocY );
+        IF[ "Ctr" ]:SetPosition( _G.ControlData.IF.location.x, _G.ControlData.IF.location.y );
     elseif value == "DN" then --Day & Night Time
         import (AppCtrD.."DayNight");
         UpdateDayNight();
-        DN[ "Ctr" ]:SetPosition( _G.DNLocX, _G.DNLocY );
+        DN[ "Ctr" ]:SetPosition( _G.ControlData.DN.location.x, _G.ControlData.DN.location.y );
     elseif value == "LP" then --LOTRO points
         if _G.LPWhere == 1 then
             import (AppCtrD.."LOTROPoints");
-            LP[ "Ctr" ]:SetPosition( _G.LPLocX, _G.LPLocY );
+            LP[ "Ctr" ]:SetPosition( _G.ControlData.LP.location.x, _G.ControlData.LP.location.y );
             UpdateLOTROPoints();
         end
         if _G.LPWhere ~= Constants.Position.NONE then
@@ -239,10 +239,10 @@ function ImportCtr( value )
         if _G.ShowBT then UpdateGameTime("bt");
         elseif _G.ShowST then UpdateGameTime("st");
         else UpdateGameTime("gt") end
-        if _G.GTLocX + GT[ "Ctr" ]:GetWidth() > screenWidth then
-            _G.GTLocX = screenWidth - GT[ "Ctr" ]:GetWidth();
+        if _G.ControlData.GT.location.x + GT[ "Ctr" ]:GetWidth() > screenWidth then
+            _G.ControlData.GT.location.x = screenWidth - GT[ "Ctr" ]:GetWidth();
         end --Replace if out of screen
-        GT[ "Ctr" ]:SetPosition( _G.GTLocX, _G.GTLocY );
+        GT[ "Ctr" ]:SetPosition( _G.ControlData.GT.location.x, _G.ControlData.GT.location.y );
     elseif value == "VT" then --Vault
         import (AppCtrD.."Vault");
         import (AppCtrD.."VaultToolTip");
@@ -250,7 +250,7 @@ function ImportCtr( value )
             function(sender, args) SavePlayerVault(); end
             );
         UpdateVault();
-        VT[ "Ctr" ]:SetPosition( _G.VTLocX, _G.VTLocY );
+        VT[ "Ctr" ]:SetPosition( _G.ControlData.VT.location.x, _G.ControlData.VT.location.y );
     elseif value == "SS" then --Shared Storage
         import (AppCtrD.."SharedStorage");
         import (AppCtrD.."SharedStorageToolTip");
@@ -258,7 +258,7 @@ function ImportCtr( value )
             function(sender, args) SavePlayerSharedStorage(); end
             );
         UpdateSharedStorage();
-        SS[ "Ctr" ]:SetPosition( _G.SSLocX, _G.SSLocY );
+        SS[ "Ctr" ]:SetPosition( _G.ControlData.SS.location.x, _G.ControlData.SS.location.y );
 	elseif value == "RP" then --Reputation Points
         import (AppCtrD.."Reputation");
         import (AppCtrD.."ReputationToolTip");
@@ -336,7 +336,7 @@ function ImportCtr( value )
             end
         );
         UpdateReputation();
-        RP[ "Ctr" ]:SetPosition( _G.RPLocX, _G.RPLocY );
+        RP[ "Ctr" ]:SetPosition( _G.ControlData.RP.location.x, _G.ControlData.RP.location.y );
     else
         if _G.CurrencyData[value].Where == 1 then
             createCurrencyTable(value)

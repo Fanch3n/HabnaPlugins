@@ -17,10 +17,9 @@ EI["Lbl"] = CreateControlLabel(EI["Ctr"], _G.TBFont, Turbine.UI.ContentAlignment
 SetupControlInteraction({
 	icon = EI["Lbl"],
 	controlName = "EI",
+	controlId = "EI",
 	controlTable = EI,
 	settingsSection = settings.EquipInfos,
-	xVarName = "EILocX",
-	yVarName = "EILocY",
 	onLeftClick = function() end,
 	customTooltipHandler = ShowEIWindow
 })

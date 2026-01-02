@@ -355,11 +355,18 @@ end
 --  settingsTable: the settings table to update (e.g., settings.Wallet)
 --  globalXVar: the global variable name for X position (e.g., "_G.WILocX")
 --  globalYVar: the global variable name for Y position (e.g., "_G.WILocY")
-function SaveControlPosition(control, settingsTable, globalXVarName, globalYVarName)
+function SaveControlPosition(control, settingsTable, controlId)
 	local x = control:GetLeft()
 	local y = control:GetTop()
-	_G[globalXVarName] = x
-	_G[globalYVarName] = y
+	
+	-- Update ControlData structure
+	local data = _G.ControlData[controlId]
+	if data then
+		data.location.x = x
+		data.location.y = y
+	end
+	
+	-- Update settings file
 	settingsTable.X = string.format("%.0f", x)
 	settingsTable.Y = string.format("%.0f", y)
 	SaveSettings(false)
@@ -488,14 +495,13 @@ end
 -- Parameters:
 --  control: the control to drag (e.g., WI["Ctr"])
 --  settingsTable: the settings table to save position to (e.g., settings.Wallet)
---  xVarName: the X position variable name (e.g., "WILocX")
---  yVarName: the Y position variable name (e.g., "WILocY")
+--  controlId: the control ID from ControlRegistry (e.g., "WI")
 -- Returns: { MouseDown = function, MouseUp = function }
 -- Usage: 
---   local handlers = CreateDragHandlers(WI["Ctr"], settings.Wallet, "WILocX", "WILocY")
+--   local handlers = CreateDragHandlers(WI["Ctr"], settings.Wallet, "WI")
 --   WI["Icon"].MouseDown = handlers.MouseDown
 --   WI["Icon"].MouseUp = handlers.MouseUp
-function CreateDragHandlers(control, settingsTable, xVarName, yVarName)
+function CreateDragHandlers(control, settingsTable, controlId)
 	return {
 		MouseDown = function(sender, args)
 			if args.Button == Turbine.UI.MouseButton.Left then
@@ -505,7 +511,7 @@ function CreateDragHandlers(control, settingsTable, xVarName, yVarName)
 		MouseUp = function(sender, args)
 			control:SetZOrder(2)
 			_G.dragging = false
-			SaveControlPosition(control, settingsTable, xVarName, yVarName)
+			SaveControlPosition(control, settingsTable, controlId)
 		end
 	}
 end

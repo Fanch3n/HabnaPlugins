@@ -89,8 +89,7 @@ function SetupControlInteraction(config)
 	local controlName = config.controlName
 	local controlTable = config.controlTable
 	local settingsSection = config.settingsSection
-	local xVarName = config.xVarName
-	local yVarName = config.yVarName
+	local controlId = config.controlId or controlName  -- Control ID for ControlData lookup
 	local tooltipName = config.tooltipName or controlName
 	local windowFormVar = config.windowFormVar or ("frm" .. controlName)
 	local windowVar = config.windowVar or ("w" .. controlName)
@@ -227,17 +226,15 @@ function SetupControlInteraction(config)
 			end
 		elseif args.Button == Turbine.UI.MouseButton.Right then
 			handleRightClick()
-		end
-		_G.WasDrag = false
 	end
-	
-	-- Drag handlers
-	local dragHandlers = CreateDragHandlers(controlTable["Ctr"], settingsSection, xVarName, yVarName)
-	icon.MouseDown = dragHandlers.MouseDown
-	icon.MouseUp = dragHandlers.MouseUp
+	_G.WasDrag = false
 end
 
--- ============================================================================
+-- Drag handlers
+local dragHandlers = CreateDragHandlers(controlTable["Ctr"], settingsSection, controlId)
+icon.MouseDown = dragHandlers.MouseDown
+icon.MouseUp = dragHandlers.MouseUp
+end-- ============================================================================
 -- LABEL CREATION
 -- ============================================================================
 

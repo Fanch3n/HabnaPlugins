@@ -92,7 +92,7 @@ function BGColor( cmd, value )
 			data.colors.red = tR
 			data.colors.green = tG
 			data.colors.blue = tB
-			if data.show and data.ui.control then
+			if data.ui.control then
 				data.ui.control:SetBackColor(Turbine.UI.Color(tA, tR, tG, tB))
 			end
 		end)

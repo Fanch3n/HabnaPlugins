@@ -14,10 +14,9 @@ LP["Lbl"] = CreateControlLabel(LP["Ctr"], _G.TBFont, Turbine.UI.ContentAlignment
 SetupControlInteraction({
 	icon = LP["Lbl"],
 	controlName = "LP",
+	controlId = "LP",
 	controlTable = LP,
 	settingsSection = settings.LOTROPoints,
-	xVarName = "LPLocX",
-	yVarName = "LPLocY",
 	windowVar = "wLP",
 	windowImportPath = AppCtrD .. "LOTROPointsWindow",
 	windowFunction = "frmLOTROPointsWindow"

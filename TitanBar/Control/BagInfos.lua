@@ -19,14 +19,13 @@ BI["Lbl"] = CreateControlLabel(BI["Ctr"], _G.TBFont, Turbine.UI.ContentAlignment
 SetupControlInteraction({
 	icon = BI["Lbl"],
 	controlName = "BI",
+	controlId = "BI",
 	controlTable = BI,
 	settingsSection = settings.BagInfos,
-	xVarName = "BILocX",
-	yVarName = "BILocY",
 	windowVar = "wBI",
 	windowImportPath = AppCtrD .. "BagInfosWindow",
 	windowFunction = "frmBagInfos",
-	hasTooltip = true
+	leaveControl = BI["Lbl"]
 })
 
 -- Delegate icon events to the label so both regions behave the same

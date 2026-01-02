@@ -277,7 +277,6 @@ function LoadSettings()
 	LoadControlSettings("WI", wallet)
 	-- Create legacy global variables for backward compatibility
 	ShowWallet = _G.ControlData.WI.show
-	_G.WILocX, _G.WILocY = _G.ControlData.WI.location.x, _G.ControlData.WI.location.y
 	WIWLeft, WIWTop = _G.ControlData.WI.window.left, _G.ControlData.WI.window.top
 
 
@@ -291,7 +290,6 @@ function LoadSettings()
 	LoadControlSettings("Money", money)
 	-- Create legacy global variables for backward compatibility
 	ShowMoney = _G.ControlData.Money.show
-	_G.MILocX, _G.MILocY = _G.ControlData.Money.location.x, _G.ControlData.Money.location.y
 	MIWLeft, MIWTop = _G.ControlData.Money.window.left, _G.ControlData.Money.window.top
 	_G.MIWhere = _G.ControlData.Money.where
 	_G.STM = money.S
@@ -305,7 +303,6 @@ function LoadSettings()
 	LoadControlSettings("LP", lotroPoints)
 	-- Create legacy global variables for backward compatibility
 	ShowLOTROPoints = _G.ControlData.LP.show
-	_G.LPLocX, _G.LPLocY = _G.ControlData.LP.location.x, _G.ControlData.LP.location.y
 	LPWLeft, LPWTop = _G.ControlData.LP.window.left, _G.ControlData.LP.window.top
 	_G.LPWhere = _G.ControlData.LP.where
 
@@ -318,7 +315,6 @@ function LoadSettings()
 	LoadControlSettings("BI", bagInfos)
 	-- Create legacy global variables for backward compatibility
 	ShowBagInfos = _G.ControlData.BI.show
-	_G.BILocX, _G.BILocY = _G.ControlData.BI.location.x, _G.ControlData.BI.location.y
 	BIWLeft, BIWTop = _G.ControlData.BI.window.left, _G.ControlData.BI.window.top
 	_G.BIUsed = bagInfos.U
 	_G.BIMax = bagInfos.M
@@ -338,7 +334,6 @@ function LoadSettings()
 	LoadControlSettings("PI", playerInfos)
 	-- Create legacy global variables for backward compatibility
 	ShowPlayerInfos = _G.ControlData.PI.show
-	_G.PILocX, _G.PILocY = _G.ControlData.PI.location.x, _G.ControlData.PI.location.y
 	ExpPTS = playerInfos.XP
 	PILayout = playerInfos.Layout
 	if not PILayout then
@@ -361,7 +356,6 @@ function LoadSettings()
 	LoadControlSettings("EI", equipInfos)
 	-- Create legacy global variables for backward compatibility
 	ShowEquipInfos = _G.ControlData.EI.show
-	_G.EILocX, _G.EILocY = _G.ControlData.EI.location.x, _G.ControlData.EI.location.y
 
 
 	-- DurabilityInfos control
@@ -372,7 +366,6 @@ function LoadSettings()
 	LoadControlSettings("DI", durabilityInfos)
 	-- Create legacy global variables for backward compatibility
 	ShowDurabilityInfos = _G.ControlData.DI.show
-	_G.DILocX, _G.DILocY = _G.ControlData.DI.location.x, _G.ControlData.DI.location.y
 	DIWLeft, DIWTop = _G.ControlData.DI.window.left, _G.ControlData.DI.window.top
 	DIIcon = durabilityInfos.I
 	DIText = durabilityInfos.N
@@ -386,7 +379,6 @@ function LoadSettings()
 	-- Create legacy global variables for backward compatibility
 	ShowPlayerLoc = _G.ControlData.PL.show
 	pLLoc = playerLoc.L
-	_G.PLLocX, _G.PLLocY = _G.ControlData.PL.location.x, _G.ControlData.PL.location.y
 
 
 	-- TrackItems control
@@ -395,7 +387,6 @@ function LoadSettings()
 	LoadControlSettings("TI", trackItems)
 	-- Create legacy global variables for backward compatibility
 	ShowTrackItems = _G.ControlData.TI.show
-	_G.TILocX, _G.TILocY = _G.ControlData.TI.location.x, _G.ControlData.TI.location.y
 	TIWLeft, TIWTop = _G.ControlData.TI.window.left, _G.ControlData.TI.window.top
 
 
@@ -408,7 +399,6 @@ function LoadSettings()
 	LoadControlSettings("IF", infamy)
 	-- Create legacy global variables for backward compatibility
 	ShowInfamy = _G.ControlData.IF.show
-	_G.IFLocX, _G.IFLocY = _G.ControlData.IF.location.x, _G.ControlData.IF.location.y
 	IFWLeft, IFWTop = _G.ControlData.IF.window.left, _G.ControlData.IF.window.top
 	SetInfamy = infamy.F
 	InfamyPTS = infamy.P
@@ -421,7 +411,6 @@ function LoadSettings()
 	LoadControlSettings("VT", vault)
 	-- Create legacy global variables for backward compatibility
 	ShowVault = _G.ControlData.VT.show
-	_G.VTLocX, _G.VTLocY = _G.ControlData.VT.location.x, _G.ControlData.VT.location.y
 	VTWLeft, VTWTop = _G.ControlData.VT.window.left, _G.ControlData.VT.window.top
 
 
@@ -431,7 +420,6 @@ function LoadSettings()
 	LoadControlSettings("SS", sharedStorage)
 	-- Create legacy global variables for backward compatibility
 	ShowSharedStorage = _G.ControlData.SS.show
-	_G.SSLocX, _G.SSLocY = _G.ControlData.SS.location.x, _G.ControlData.SS.location.y
 	SSWLeft, SSWTop = _G.ControlData.SS.window.left, _G.ControlData.SS.window.top
 
 	-- DayNight control
@@ -442,7 +430,6 @@ function LoadSettings()
 	LoadControlSettings("DN", dayNight)
 	-- Create legacy global variables for backward compatibility
 	ShowDayNight = _G.ControlData.DN.show
-	_G.DNLocX, _G.DNLocY = _G.ControlData.DN.location.x, _G.ControlData.DN.location.y
 	DNWLeft, DNWTop = _G.ControlData.DN.window.left, _G.ControlData.DN.window.top
 	_G.DNNextT = dayNight.N
 	_G.TS = tonumber(dayNight.S)
@@ -456,7 +443,6 @@ function LoadSettings()
 	-- Create legacy global variables for backward compatibility
 	ShowReputation = _G.ControlData.RP.show
 	HideMaxReps = reputation.H
-	_G.RPLocX, _G.RPLocY = _G.ControlData.RP.location.x, _G.ControlData.RP.location.y
 	RPWLeft, RPWTop = _G.ControlData.RP.window.left, _G.ControlData.RP.window.top
 
 
@@ -470,7 +456,6 @@ function LoadSettings()
 	LoadControlSettings("GT", gameTime)
 	-- Create legacy global variables for backward compatibility
 	ShowGameTime = _G.ControlData.GT.show
-	_G.GTLocX, _G.GTLocY = _G.ControlData.GT.location.x, _G.ControlData.GT.location.y
 	GTWLeft, GTWTop = _G.ControlData.GT.window.left, _G.ControlData.GT.window.top
 	_G.Clock24h = gameTime.H
 	_G.ShowST = gameTime.S
@@ -731,95 +716,45 @@ function ReplaceCtr()
 	TBWidth = screenWidth;
 	settings.TitanBar.W = string.format("%.0f", screenWidth);
 	
-	local oldLocX = settings.Wallet.X / oldScreenWidth;
-	_G.WILocX = oldLocX * screenWidth;
-	settings.Wallet.X = string.format("%.0f", _G.WILocX);
-	if ShowWallet then WI[ "Ctr" ]:SetPosition( _G.WILocX, _G.WILocY ); end
-
-	oldLocX = settings.Money.X / oldScreenWidth;
-	_G.MILocX = oldLocX * screenWidth;
-	settings.Money.X = string.format("%.0f", _G.MILocX);
-	if ShowMoney and _G.MIWhere == 1 then MI[ "Ctr" ]:SetPosition( _G.MILocX, _G.MILocY ); end
-
-	oldLocX = settings.BagInfos.X / oldScreenWidth;
-	_G.BILocX = oldLocX * screenWidth;
-	settings.BagInfos.X = string.format("%.0f", _G.BILocX);
-	if ShowBagInfos then BI[ "Ctr" ]:SetPosition( _G.BILocX, _G.BILocY ); end
-
-	oldLocX = settings.PlayerInfos.X / oldScreenWidth;
-	_G.PILocX = oldLocX * screenWidth;
-	settings.PlayerInfos.X = string.format("%.0f", _G.PILocX);
-	if ShowPlayerInfos then PI[ "Ctr" ]:SetPosition( _G.PILocX, _G.PILocY ); end
-
-	oldLocX = settings.EquipInfos.X / oldScreenWidth;
-	_G.EILocX = oldLocX * screenWidth;
-	settings.EquipInfos.X = string.format("%.0f", _G.EILocX);
-	if ShowEquipInfos then EI[ "Ctr" ]:SetPosition( _G.EILocX, _G.EILocY ); end
-
-	oldLocX = settings.DurabilityInfos.X / oldScreenWidth;
-	_G.DILocX = oldLocX * screenWidth;
-	settings.DurabilityInfos.X = string.format("%.0f", _G.DILocX);
-	if ShowDurabilityInfos then DI[ "Ctr" ]:SetPosition( _G.DILocX, _G.DILocY ); end
-
-	oldLocX = settings.PlayerLoc.X / oldScreenWidth;
-	_G.PLLocX = oldLocX * screenWidth;
-	settings.PlayerLoc.X = string.format("%.0f", _G.PLLocX);
-	if ShowPlayerLoc then PL[ "Ctr" ]:SetPosition( _G.PLLocX, _G.PLLocY ); end
-
-	oldLocX = settings.TrackItems.X / oldScreenWidth;
-	_G.TILocX = oldLocX * screenWidth;
-	settings.TrackItems.X = string.format("%.0f", _G.TILocX);
-	if ShowTrackItems then TI[ "Ctr" ]:SetPosition( _G.TILocX, _G.TILocY ); end
-
-	oldLocX = settings.Infamy.X / oldScreenWidth;
-	_G.IFLocX = oldLocX * screenWidth;
-	settings.Infamy.X = string.format("%.0f", _G.IFLocX);
-	if ShowInfamy then IF[ "Ctr" ]:SetPosition( _G.IFLocX, _G.IFLocY ); end
-
-	oldLocX = settings.Vault.X / oldScreenWidth;
-	_G.VTLocX = oldLocX * screenWidth;
-	settings.Vault.X = string.format("%.0f", _G.VTLocX);
-	if ShowVault then VT[ "Ctr" ]:SetPosition( _G.VTLocX, _G.VTLocY ); end
-
-	oldLocX = settings.SharedStorage.X / oldScreenWidth;
-	_G.SSLocX = oldLocX * screenWidth;
-	settings.SharedStorage.X = string.format("%.0f", _G.SSLocX);
-	if ShowSharedStorage then SS[ "Ctr" ]:SetPosition( _G.SSLocX, _G.SSLocY ); end
-
-	--oldLocX = settings.Bank.X / oldScreenWidth;
-	--_G.BKLocX = oldLocX * screenWidth;
-	--settings.Bank.X = string.format("%.0f", _G.BKLocX);
-	--if ShowBank then BK[ "Ctr" ]:SetPosition( _G.BKLocX, _G.BKLocY ); end
-
-	oldLocX = settings.DayNight.X / oldScreenWidth;
-	_G.DNLocX = oldLocX * screenWidth;
-	settings.DayNight.X = string.format("%.0f", _G.DNLocX);
-	if ShowDayNight then DN[ "Ctr" ]:SetPosition( _G.DNLocX, _G.DNLocY ); end
-
-	oldLocX = settings.Reputation.X / oldScreenWidth;
-	_G.RPLocX = oldLocX * screenWidth;
-	settings.Reputation.X = string.format("%.0f", _G.RPLocX);
-	if ShowReputation then RP[ "Ctr" ]:SetPosition( _G.RPLocX, _G.RPLocY ); end
-
-	oldLocX = settings.LOTROPoints.X / oldScreenWidth;
-	_G.LPLocX = oldLocX * screenWidth;
-	settings.LOTROPoints.X = string.format("%.0f", _G.LPLocX);
-	if ShowLOTROPoints and _G.LPWhere == 1 then LP[ "Ctr" ]:SetPosition( _G.LPLocX, _G.LPLocY ); end
-
-	oldLocX = settings.GameTime.X / oldScreenWidth;
-	_G.GTLocX = oldLocX * screenWidth;
-	settings.GameTime.X = string.format("%.0f", _G.GTLocX);
-	if ShowGameTime then GT[ "Ctr" ]:SetPosition( _G.GTLocX, _G.GTLocY ); end
+	-- Update all standard controls
+	_G.ControlRegistry.ForEach(function(controlId, data)
+		local settingsKey = data.settingsKey
+		if settings[settingsKey] and settings[settingsKey].X then
+			local oldLocX = settings[settingsKey].X / oldScreenWidth
+			local newLocX = oldLocX * screenWidth
+			
+			-- Update ControlData
+			data.location.x = newLocX
+			
+			-- Update settings
+			settings[settingsKey].X = string.format("%.0f", newLocX)
+			
+			-- Reposition control if visible and on TitanBar
+			if data.show then
+				local shouldReposition = true
+				-- Special cases for controls with "where" option
+				if data.where ~= nil and data.where ~= Constants.Position.TITANBAR then
+					shouldReposition = false
+				end
+				
+				if shouldReposition and data.ui.control then
+					data.ui.control:SetPosition(data.location.x, data.location.y)
+				end
+			end
+		end
+	end)
 	
+	-- Update currency controls
 	for k,v in pairs(_G.currencies.list) do
-		oldLocX = settings[v.name].X / oldScreenWidth
-		_G.CurrencyData[v.name].LocX = oldLocX * screenWidth
-		settings[v.name].X = string.format("%.0f", _G.CurrencyData[v.name].LocX)
-		if _G.CurrencyData[v.name].IsVisible and _G.CurrencyData[v.name].Where == Constants.Position.TITANBAR then
-			_G.CurrencyData[v.name].Ctr:SetPosition(_G.CurrencyData[v.name].LocX, _G.CurrencyData[v.name].LocY)
+		if settings[v.name] and settings[v.name].X then
+			local oldLocX = settings[v.name].X / oldScreenWidth
+			_G.CurrencyData[v.name].LocX = oldLocX * screenWidth
+			settings[v.name].X = string.format("%.0f", _G.CurrencyData[v.name].LocX)
+			if _G.CurrencyData[v.name].IsVisible and _G.CurrencyData[v.name].Where == Constants.Position.TITANBAR then
+				_G.CurrencyData[v.name].Ctr:SetPosition(_G.CurrencyData[v.name].LocX, _G.CurrencyData[v.name].LocY)
+			end
 		end
 	end
-
 
 	SaveSettings( false );
 	write( L["TBSSCD"] );

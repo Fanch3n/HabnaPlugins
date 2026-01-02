@@ -19,10 +19,9 @@ RP["Icon"] = CreateControlIcon(RP["Ctr"], Constants.ICON_SIZE_LARGE, Constants.I
 SetupControlInteraction({
 	icon = RP["Icon"],
 	controlName = "RP",
+	controlId = "RP",
 	controlTable = RP,
 	settingsSection = settings.Reputation,
-	xVarName = "RPLocX",
-	yVarName = "RPLocY",
 	windowVar = "wRP",
 	windowImportPath = AppCtrD .. "ReputationWindow",
 	windowFunction = "frmReputationWindow",

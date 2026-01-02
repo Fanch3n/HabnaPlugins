@@ -19,10 +19,9 @@ DN["Lbl"] = CreateControlLabel(DN["Ctr"], _G.TBFont, Turbine.UI.ContentAlignment
 SetupControlInteraction({
 	icon = DN["Lbl"],
 	controlName = "DN",
+	controlId = "DN",
 	controlTable = DN,
 	settingsSection = settings.DayNight,
-	xVarName = "DNLocX",
-	yVarName = "DNLocY",
 	windowVar = "wDN",
 	windowImportPath = AppCtrD .. "DayNightWindow",
 	windowFunction = "frmDayNightWindow",

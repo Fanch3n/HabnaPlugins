@@ -18,10 +18,9 @@ WI["Icon"] = CreateControlIcon(WI["Ctr"], Constants.ICON_SIZE_LARGE, Constants.I
 SetupControlInteraction({
 	icon = WI["Icon"],
 	controlName = "WI",
+	controlId = "WI",
 	controlTable = WI,
 	settingsSection = settings.Wallet,
-	xVarName = "WILocX",
-	yVarName = "WILocY",
 	windowVar = "wWI",
 	windowImportPath = AppCtrD .. "WalletWindow",
 	windowFunction = "frmWalletWindow",

@@ -17,10 +17,9 @@ PI["Name"] = CreateControlLabel(PI["Ctr"], _G.TBFont, Turbine.UI.ContentAlignmen
 SetupControlInteraction({
 	icon = PI["Name"],
 	controlName = "PI",
+	controlId = "PI",
 	controlTable = PI,
 	settingsSection = settings.PlayerInfos,
-	xVarName = "PILocX",
-	yVarName = "PILocY",
 	onLeftClick = function() end,
 	customTooltipHandler = ShowPIWindow
 })
