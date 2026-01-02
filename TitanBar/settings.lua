@@ -277,7 +277,6 @@ function LoadSettings()
 	LoadControlSettings("WI", wallet)
 	-- Create legacy global variables for backward compatibility
 	ShowWallet = _G.ControlData.WI.show
-	WIbcAlpha, WIbcRed, WIbcGreen, WIbcBlue = _G.ControlData.WI.colors.alpha, _G.ControlData.WI.colors.red, _G.ControlData.WI.colors.green, _G.ControlData.WI.colors.blue
 	_G.WILocX, _G.WILocY = _G.ControlData.WI.location.x, _G.ControlData.WI.location.y
 	WIWLeft, WIWTop = _G.ControlData.WI.window.left, _G.ControlData.WI.window.top
 
@@ -292,7 +291,6 @@ function LoadSettings()
 	LoadControlSettings("Money", money)
 	-- Create legacy global variables for backward compatibility
 	ShowMoney = _G.ControlData.Money.show
-	MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue = _G.ControlData.Money.colors.alpha, _G.ControlData.Money.colors.red, _G.ControlData.Money.colors.green, _G.ControlData.Money.colors.blue
 	_G.MILocX, _G.MILocY = _G.ControlData.Money.location.x, _G.ControlData.Money.location.y
 	MIWLeft, MIWTop = _G.ControlData.Money.window.left, _G.ControlData.Money.window.top
 	_G.MIWhere = _G.ControlData.Money.where
@@ -307,7 +305,6 @@ function LoadSettings()
 	LoadControlSettings("LP", lotroPoints)
 	-- Create legacy global variables for backward compatibility
 	ShowLOTROPoints = _G.ControlData.LP.show
-	LPbcAlpha, LPbcRed, LPbcGreen, LPbcBlue = _G.ControlData.LP.colors.alpha, _G.ControlData.LP.colors.red, _G.ControlData.LP.colors.green, _G.ControlData.LP.colors.blue
 	_G.LPLocX, _G.LPLocY = _G.ControlData.LP.location.x, _G.ControlData.LP.location.y
 	LPWLeft, LPWTop = _G.ControlData.LP.window.left, _G.ControlData.LP.window.top
 	_G.LPWhere = _G.ControlData.LP.where
@@ -321,7 +318,6 @@ function LoadSettings()
 	LoadControlSettings("BI", bagInfos)
 	-- Create legacy global variables for backward compatibility
 	ShowBagInfos = _G.ControlData.BI.show
-	BIbcAlpha, BIbcRed, BIbcGreen, BIbcBlue = _G.ControlData.BI.colors.alpha, _G.ControlData.BI.colors.red, _G.ControlData.BI.colors.green, _G.ControlData.BI.colors.blue
 	_G.BILocX, _G.BILocY = _G.ControlData.BI.location.x, _G.ControlData.BI.location.y
 	BIWLeft, BIWTop = _G.ControlData.BI.window.left, _G.ControlData.BI.window.top
 	_G.BIUsed = bagInfos.U
@@ -342,7 +338,6 @@ function LoadSettings()
 	LoadControlSettings("PI", playerInfos)
 	-- Create legacy global variables for backward compatibility
 	ShowPlayerInfos = _G.ControlData.PI.show
-	PIbcAlpha, PIbcRed, PIbcGreen, PIbcBlue = _G.ControlData.PI.colors.alpha, _G.ControlData.PI.colors.red, _G.ControlData.PI.colors.green, _G.ControlData.PI.colors.blue
 	_G.PILocX, _G.PILocY = _G.ControlData.PI.location.x, _G.ControlData.PI.location.y
 	ExpPTS = playerInfos.XP
 	PILayout = playerInfos.Layout
@@ -366,7 +361,6 @@ function LoadSettings()
 	LoadControlSettings("EI", equipInfos)
 	-- Create legacy global variables for backward compatibility
 	ShowEquipInfos = _G.ControlData.EI.show
-	EIbcAlpha, EIbcRed, EIbcGreen, EIbcBlue = _G.ControlData.EI.colors.alpha, _G.ControlData.EI.colors.red, _G.ControlData.EI.colors.green, _G.ControlData.EI.colors.blue
 	_G.EILocX, _G.EILocY = _G.ControlData.EI.location.x, _G.ControlData.EI.location.y
 
 
@@ -378,7 +372,6 @@ function LoadSettings()
 	LoadControlSettings("DI", durabilityInfos)
 	-- Create legacy global variables for backward compatibility
 	ShowDurabilityInfos = _G.ControlData.DI.show
-	DIbcAlpha, DIbcRed, DIbcGreen, DIbcBlue = _G.ControlData.DI.colors.alpha, _G.ControlData.DI.colors.red, _G.ControlData.DI.colors.green, _G.ControlData.DI.colors.blue
 	_G.DILocX, _G.DILocY = _G.ControlData.DI.location.x, _G.ControlData.DI.location.y
 	DIWLeft, DIWTop = _G.ControlData.DI.window.left, _G.ControlData.DI.window.top
 	DIIcon = durabilityInfos.I
@@ -392,7 +385,6 @@ function LoadSettings()
 	LoadControlSettings("PL", playerLoc)
 	-- Create legacy global variables for backward compatibility
 	ShowPlayerLoc = _G.ControlData.PL.show
-	PLbcAlpha, PLbcRed, PLbcGreen, PLbcBlue = _G.ControlData.PL.colors.alpha, _G.ControlData.PL.colors.red, _G.ControlData.PL.colors.green, _G.ControlData.PL.colors.blue
 	pLLoc = playerLoc.L
 	_G.PLLocX, _G.PLLocY = _G.ControlData.PL.location.x, _G.ControlData.PL.location.y
 
@@ -403,7 +395,6 @@ function LoadSettings()
 	LoadControlSettings("TI", trackItems)
 	-- Create legacy global variables for backward compatibility
 	ShowTrackItems = _G.ControlData.TI.show
-	TIbcAlpha, TIbcRed, TIbcGreen, TIbcBlue = _G.ControlData.TI.colors.alpha, _G.ControlData.TI.colors.red, _G.ControlData.TI.colors.green, _G.ControlData.TI.colors.blue
 	_G.TILocX, _G.TILocY = _G.ControlData.TI.location.x, _G.ControlData.TI.location.y
 	TIWLeft, TIWTop = _G.ControlData.TI.window.left, _G.ControlData.TI.window.top
 
@@ -417,7 +408,6 @@ function LoadSettings()
 	LoadControlSettings("IF", infamy)
 	-- Create legacy global variables for backward compatibility
 	ShowInfamy = _G.ControlData.IF.show
-	IFbcAlpha, IFbcRed, IFbcGreen, IFbcBlue = _G.ControlData.IF.colors.alpha, _G.ControlData.IF.colors.red, _G.ControlData.IF.colors.green, _G.ControlData.IF.colors.blue
 	_G.IFLocX, _G.IFLocY = _G.ControlData.IF.location.x, _G.ControlData.IF.location.y
 	IFWLeft, IFWTop = _G.ControlData.IF.window.left, _G.ControlData.IF.window.top
 	SetInfamy = infamy.F
@@ -431,7 +421,6 @@ function LoadSettings()
 	LoadControlSettings("VT", vault)
 	-- Create legacy global variables for backward compatibility
 	ShowVault = _G.ControlData.VT.show
-	VTbcAlpha, VTbcRed, VTbcGreen, VTbcBlue = _G.ControlData.VT.colors.alpha, _G.ControlData.VT.colors.red, _G.ControlData.VT.colors.green, _G.ControlData.VT.colors.blue
 	_G.VTLocX, _G.VTLocY = _G.ControlData.VT.location.x, _G.ControlData.VT.location.y
 	VTWLeft, VTWTop = _G.ControlData.VT.window.left, _G.ControlData.VT.window.top
 
@@ -442,7 +431,6 @@ function LoadSettings()
 	LoadControlSettings("SS", sharedStorage)
 	-- Create legacy global variables for backward compatibility
 	ShowSharedStorage = _G.ControlData.SS.show
-	SSbcAlpha, SSbcRed, SSbcGreen, SSbcBlue = _G.ControlData.SS.colors.alpha, _G.ControlData.SS.colors.red, _G.ControlData.SS.colors.green, _G.ControlData.SS.colors.blue
 	_G.SSLocX, _G.SSLocY = _G.ControlData.SS.location.x, _G.ControlData.SS.location.y
 	SSWLeft, SSWTop = _G.ControlData.SS.window.left, _G.ControlData.SS.window.top
 
@@ -454,7 +442,6 @@ function LoadSettings()
 	LoadControlSettings("DN", dayNight)
 	-- Create legacy global variables for backward compatibility
 	ShowDayNight = _G.ControlData.DN.show
-	DNbcAlpha, DNbcRed, DNbcGreen, DNbcBlue = _G.ControlData.DN.colors.alpha, _G.ControlData.DN.colors.red, _G.ControlData.DN.colors.green, _G.ControlData.DN.colors.blue
 	_G.DNLocX, _G.DNLocY = _G.ControlData.DN.location.x, _G.ControlData.DN.location.y
 	DNWLeft, DNWTop = _G.ControlData.DN.window.left, _G.ControlData.DN.window.top
 	_G.DNNextT = dayNight.N
@@ -469,7 +456,6 @@ function LoadSettings()
 	-- Create legacy global variables for backward compatibility
 	ShowReputation = _G.ControlData.RP.show
 	HideMaxReps = reputation.H
-	RPbcAlpha, RPbcRed, RPbcGreen, RPbcBlue = _G.ControlData.RP.colors.alpha, _G.ControlData.RP.colors.red, _G.ControlData.RP.colors.green, _G.ControlData.RP.colors.blue
 	_G.RPLocX, _G.RPLocY = _G.ControlData.RP.location.x, _G.ControlData.RP.location.y
 	RPWLeft, RPWTop = _G.ControlData.RP.window.left, _G.ControlData.RP.window.top
 
@@ -484,7 +470,6 @@ function LoadSettings()
 	LoadControlSettings("GT", gameTime)
 	-- Create legacy global variables for backward compatibility
 	ShowGameTime = _G.ControlData.GT.show
-	GTbcAlpha, GTbcRed, GTbcGreen, GTbcBlue = _G.ControlData.GT.colors.alpha, _G.ControlData.GT.colors.red, _G.ControlData.GT.colors.green, _G.ControlData.GT.colors.blue
 	_G.GTLocX, _G.GTLocY = _G.ControlData.GT.location.x, _G.ControlData.GT.location.y
 	GTWLeft, GTWTop = _G.ControlData.GT.window.left, _G.ControlData.GT.window.top
 	_G.Clock24h = gameTime.H
