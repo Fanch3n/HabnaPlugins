@@ -12,8 +12,6 @@ TI["Icon"] = CreateControlIcon(TI["Ctr"], Constants.ICON_SIZE_LARGE, Constants.I
 
 SetupControlInteraction({
 	icon = TI["Icon"],
-	controlName = "TI",
-	controlId = "TI",
 	controlTable = TI,
 	settingsSection = settings.TrackItems,
 	windowVar = "wTI",

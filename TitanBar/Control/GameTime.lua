@@ -14,8 +14,6 @@ GT["Lbl"] = CreateControlLabel(GT["Ctr"], _G.TBFont, Turbine.UI.ContentAlignment
 
 SetupControlInteraction({
 	icon = GT["Lbl"],
-	controlName = "GT",
-	controlId = "GT",
 	controlTable = GT,
 	settingsSection = settings.GameTime,
 	windowVar = "wGT",

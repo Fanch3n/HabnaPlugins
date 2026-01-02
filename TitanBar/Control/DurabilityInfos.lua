@@ -17,8 +17,6 @@ DI["Lbl"] = CreateControlLabel(DI["Ctr"], _G.TBFont, Turbine.UI.ContentAlignment
 
 SetupControlInteraction({
 	icon = DI["Lbl"],
-	controlName = "DI",
-	controlId = "DI",
 	controlTable = DI,
 	settingsSection = settings.DurabilityInfos,
 	windowVar = "wDI",

@@ -15,8 +15,6 @@ SS["Icon"] = CreateControlIcon(SS["Ctr"], Constants.ICON_SIZE_LARGE, Constants.I
 
 SetupControlInteraction({
 	icon = SS["Icon"],
-	controlName = "SS",
-	controlId = "SS",
 	controlTable = SS,
 	settingsSection = settings.SharedStorage,
 	windowVar = "wSS",

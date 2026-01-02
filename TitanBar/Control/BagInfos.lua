@@ -18,8 +18,6 @@ BI["Lbl"] = CreateControlLabel(BI["Ctr"], _G.TBFont, Turbine.UI.ContentAlignment
 
 SetupControlInteraction({
 	icon = BI["Lbl"],
-	controlName = "BI",
-	controlId = "BI",
 	controlTable = BI,
 	settingsSection = settings.BagInfos,
 	windowVar = "wBI",

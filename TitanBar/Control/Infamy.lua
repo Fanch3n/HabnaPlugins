@@ -12,8 +12,6 @@ IF["Icon"] = CreateControlIcon(IF["Ctr"], Constants.ICON_SIZE_LARGE, Constants.I
 
 SetupControlInteraction({
 	icon = IF["Icon"],
-	controlName = "IF",
-	controlId = "IF",
 	controlTable = IF,
 	settingsSection = settings.Infamy,
 	windowVar = "wIF",

@@ -14,8 +14,6 @@ PL["Lbl"] = CreateControlLabel(PL["Ctr"], _G.TBFont, Turbine.UI.ContentAlignment
 
 SetupControlInteraction({
 	icon = PL["Lbl"],
-	controlName = "PL",
-	controlId = "PL",
 	controlTable = PL,
 	settingsSection = settings.PlayerLoc,
 	onLeftClick = function() end

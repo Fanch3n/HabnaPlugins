@@ -75,29 +75,42 @@ end
 -- Includes dragging, tooltip, window toggle, and right-click menu
 -- Parameters:
 --   icon: The icon control to attach handlers to
---   controlName: The control identifier (e.g., "WI", "BI", "MI")
---   controlTable: The control's global table
+--   controlTable: The control's global table (controlId will be derived from ControlData)
 --   settingsSection: The settings table section for this control
---   xVarName, yVarName: Global variable names for position
---   tooltipName: Optional tooltip identifier (defaults to controlName)
---   windowFormVar: Optional form global variable name (defaults to "frm" + controlName)
---   windowVar: Optional window global variable name (defaults to "w" + controlName)
---   windowImportPath: Optional import path (defaults to AppCtrD + controlName + "Window")
---   windowFunction: Optional window function name (defaults to "frm" + controlName + "Window")
+--   controlId: Optional control identifier (will be auto-derived from controlTable if not provided)
+--   tooltipName: Optional tooltip identifier (defaults to controlId)
+--   windowFormVar: Optional form global variable name (defaults to "frm" + controlId)
+--   windowVar: Optional window global variable name (defaults to "w" + controlId)
+--   windowImportPath: Optional import path (defaults to AppCtrD + controlId + "Window")
+--   windowFunction: Optional window function name (defaults to "frm" + controlId + "Window")
 function SetupControlInteraction(config)
 	local icon = config.icon
-	local controlName = config.controlName
 	local controlTable = config.controlTable
 	local settingsSection = config.settingsSection
-	local controlId = config.controlId or controlName  -- Control ID for ControlData lookup
-	local tooltipName = config.tooltipName or controlName
-	local windowFormVar = config.windowFormVar or ("frm" .. controlName)
-	local windowVar = config.windowVar or ("w" .. controlName)
-	local windowImportPath = config.windowImportPath or (AppCtrD .. controlName .. "Window")
-	local windowFunction = config.windowFunction or ("frm" .. controlName .. "Window")
+	
+	-- Derive controlId from controlTable by finding which ControlData entry references it
+	local controlId = config.controlId
+	if not controlId and controlTable then
+		write("~controlId")
+		for id, data in pairs(_G.ControlData) do
+			write(id)
+			if data.ui.control == controlTable["Ctr"] then
+				write("Found: "..id)
+				controlId = id
+				break
+			end
+		end
+	end
+	
+	-- Use controlId for all derived values
+	local tooltipName = config.tooltipName or controlId
+	local windowFormVar = config.windowFormVar or ("frm" .. controlId)
+	local windowVar = config.windowVar or ("w" .. controlId)
+	local windowImportPath = config.windowImportPath or (AppCtrD .. controlId .. "Window")
+	local windowFunction = config.windowFunction or ("frm" .. controlId .. "Window")
 	local hasTooltip = config.hasTooltip ~= false -- default true
 	local customTooltipHandler = config.customTooltipHandler -- optional custom tooltip show function
-	local tooltipKey = config.tooltipKey or controlName
+	local tooltipKey = config.tooltipKey or controlId
 	local tooltipReposition = config.tooltipReposition
 	local tooltipHide = config.tooltipHide
 	local tooltipGetWindow = config.tooltipGetWindow
@@ -183,7 +196,7 @@ function SetupControlInteraction(config)
 					_G[windowVar]:Close()
 				end)
 				if not ok then
-					logError("failed to close " .. controlName .. " window", err)
+					logError("failed to close " .. controlId .. " window", err)
 				end
 			end
 		else
@@ -199,7 +212,7 @@ function SetupControlInteraction(config)
 			end)
 			if not ok then
 				_G[windowFormVar] = false
-				logError("failed to open " .. controlName .. " window", err)
+				logError("failed to open " .. controlId .. " window", err)
 			end
 		end
 	end
@@ -208,7 +221,7 @@ function SetupControlInteraction(config)
 		if onRightClick then
 			onRightClick()
 		else
-			_G.sFromCtr = controlName
+			_G.sFromCtr = controlId
 			ControlMenu:ShowMenu()
 		end
 	end
