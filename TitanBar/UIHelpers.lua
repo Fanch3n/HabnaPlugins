@@ -228,24 +228,24 @@ function PopulateDropDown(dropdown, items, includeAll, allLabel, selectedValue)
         startIndex = 2
     end
 
-    local selIndex = nil
+    local foundValue = nil
     local idx = startIndex
     for _, entry in ipairs(items) do
         if type(entry) == "string" then
             dropdown:AddItem(entry, idx)
-            if selectedValue and entry == selectedValue then selIndex = idx end
+            if selectedValue and entry == selectedValue then foundValue = selectedValue end
         elseif type(entry) == "table" then
             -- support { label = "...", value = "..." } or { "label", "value" }
             local label = entry.label or entry[1]
             local value = entry.value or entry[2] or idx
             dropdown:AddItem(label, value)
-            if selectedValue and value == selectedValue then selIndex = idx end
+            if selectedValue and value == selectedValue then foundValue = value end
         end
         idx = idx + 1
     end
 
-    if selIndex then dropdown:SetSelection(selIndex) end
-    return selIndex
+    if foundValue then dropdown:SetSelection(foundValue) end
+    return foundValue
 end
 
 -- Create a standardized title/label used for headings and small descriptors.

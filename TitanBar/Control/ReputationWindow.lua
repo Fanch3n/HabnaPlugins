@@ -242,10 +242,10 @@ function RefreshRPListBox()
 
                 local currentRankPoints = "0"
                 local currentRank = ""
-                local totalReputation = PlayerReputation[PN][faction.name].Total
+                local totalReputation = tonumber(PlayerReputation[PN][faction.name].Total) or 0
 
                 for i = #faction.ranks, 1, -1 do
-                    if tonumber(faction.ranks[i].requiredReputation) <= tonumber(totalReputation) then
+                    if tonumber(faction.ranks[i].requiredReputation) <= totalReputation then
                         currentRankPoints = totalReputation - faction.ranks[i].requiredReputation
                         currentRank = faction.ranks[i].name
                         break
