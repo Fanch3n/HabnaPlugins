@@ -91,7 +91,6 @@ function RefreshIFToolTip()
 	--labelTN:SetBackColor( Color["red"] ); -- debug purpose
 
 	NextRankCtr:SetSize( lblNextRank:GetWidth()+labelTN:GetWidth()+10, 15 );
-	_G.ToolTipWin:SetSize( NextRankCtr:GetWidth()+40, h );
 
 	local percentage_done = string.format("%.1f", tonumber(settings.Infamy.P) / InfamyRanks[tonumber(settings.Infamy.K)+1]*100);
 	--percentage_done = string.format("%.1f", percentage_done);
@@ -123,4 +122,8 @@ function RefreshIFToolTip()
 	labelPC:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 	--labelTN:SetBackColor( Color["red"] ); -- debug purpose
 	--**^
+	
+	-- Calculate and set tooltip window size
+	local h = IFPBCTr:GetTop() + IFPBCTr:GetHeight() + 20
+	_G.ToolTipWin:SetSize( NextRankCtr:GetWidth()+40, h )
 end

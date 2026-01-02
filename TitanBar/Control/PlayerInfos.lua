@@ -4,7 +4,9 @@ import(AppDirD .. "ControlFactory")
 
 _G.PI = {}; -- Player Infos table in _G
 
-CreateTitanBarControl(PI, PIbcAlpha, PIbcRed, PIbcGreen, PIbcBlue)
+local colors = _G.ControlData.PI.colors
+CreateTitanBarControl(PI, colors.alpha, colors.red, colors.green, colors.blue)
+_G.ControlData.PI.ui.control = PI["Ctr"]
 
 PI["Icon"] = CreateControlIcon(PI["Ctr"], Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 

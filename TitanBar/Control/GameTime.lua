@@ -6,7 +6,9 @@ import(AppDirD .. "ControlFactory")
 
 _G.GT = {}; -- Game Time table in _G
 
-CreateTitanBarControl(GT, GTbcAlpha, GTbcRed, GTbcGreen, GTbcBlue)
+local colors = _G.ControlData.GT.colors
+CreateTitanBarControl(GT, colors.alpha, colors.red, colors.green, colors.blue)
+_G.ControlData.GT.ui.control = GT["Ctr"]
 
 GT["Lbl"] = CreateControlLabel(GT["Ctr"], _G.TBFont, Turbine.UI.ContentAlignment.MiddleRight)
 

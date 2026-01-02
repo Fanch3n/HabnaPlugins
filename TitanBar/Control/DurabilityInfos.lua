@@ -5,9 +5,11 @@ import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "DurabilityInfosToolTip")
 import(AppDirD .. "ControlFactory")
 
-_G.DI = {}; -- Items Durability Infos table in _G
+_G.DI = {}; -- Durability Infos table in _G
 
-CreateTitanBarControl(DI, DIbcAlpha, DIbcRed, DIbcGreen, DIbcBlue)
+local colors = _G.ControlData.DI.colors
+CreateTitanBarControl(DI, colors.alpha, colors.red, colors.green, colors.blue)
+_G.ControlData.DI.ui.control = DI["Ctr"]
 
 DI["Icon"] = CreateControlIcon(DI["Ctr"], Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 

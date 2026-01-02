@@ -8,7 +8,9 @@ import(AppDirD .. "ControlFactory")
 _G.VT = {}; -- Vault table in _G
 
 --**v Vault Control v**
-CreateTitanBarControl(VT, VTbcAlpha, VTbcRed, VTbcGreen, VTbcBlue)
+local colors = _G.ControlData.VT.colors
+CreateTitanBarControl(VT, colors.alpha, colors.red, colors.green, colors.blue)
+_G.ControlData.VT.ui.control = VT["Ctr"]
 --**^
 --**v Vault icon on TitanBar v**
 VT["Icon"] = CreateControlIcon(VT["Ctr"], Constants.ICON_SIZE_MEDIUM_LARGE, Constants.ICON_SIZE_MEDIUM_LARGE, resources.Storage.Vault, 4)

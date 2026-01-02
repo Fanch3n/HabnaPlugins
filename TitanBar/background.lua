@@ -63,16 +63,21 @@ function frmBackground()
 		curSelRed = bcRed
 		curSelGreen = bcGreen
 		curSelBlue = bcBlue
-	elseif sFrom == "Money" then
-		curSelAlpha = MIbcAlpha
-		curSelRed = MIbcRed
-		curSelGreen = MIbcGreen
-		curSelBlue = MIbcBlue
 	else
-		curSelAlpha = _G.CurrencyData[sFrom].bcAlpha
-		curSelRed = _G.CurrencyData[sFrom].bcRed
-		curSelGreen = _G.CurrencyData[sFrom].bcGreen
-		curSelBlue = _G.CurrencyData[sFrom].bcBlue
+		-- Try to get from ControlRegistry first
+		local data = _G.ControlRegistry.Get(sFrom)
+		if data then
+			curSelAlpha = data.colors.alpha
+			curSelRed = data.colors.red
+			curSelGreen = data.colors.green
+			curSelBlue = data.colors.blue
+		elseif _G.CurrencyData[sFrom] then
+			-- Fall back to currency data
+			curSelAlpha = _G.CurrencyData[sFrom].bcAlpha
+			curSelRed = _G.CurrencyData[sFrom].bcRed
+			curSelGreen = _G.CurrencyData[sFrom].bcGreen
+			curSelBlue = _G.CurrencyData[sFrom].bcBlue
+		end
 	end
 	
 	curAlpha, curColor.R, curColor.G, curColor.B = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
@@ -277,22 +282,16 @@ function UpdateBCvariable()
 	curSelAlpha = curAlpha;
 	if BGWToAll then
 		bcAlpha, bcRed, bcGreen, bcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		WIbcAlpha, WIbcRed, WIbcGreen, WIbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		BIbcAlpha, BIbcRed, BIbcGreen, BIbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		PIbcAlpha, PIbcRed, PIbcGreen, PIbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		EIbcAlpha, EIbcRed, EIbcGreen, EIbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		DIbcAlpha, DIbcRed, DIbcGreen, DIbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		TIbcAlpha, TIbcRed, TIbcGreen, TIbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		IFbcAlpha, IFbcRed, IFbcGreen, IFbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		VTbcAlpha, VTbcRed, VTbcGreen, VTbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		SSbcAlpha, SSbcRed, SSbcGreen, SSbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		BKbcAlpha, BKbcRed, BKbcGreen, BKbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		DNbcAlpha, DNbcRed, DNbcGreen, DNbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		RPbcAlpha, RPbcRed, RPbcGreen, RPbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		LPbcAlpha, LPbcRed, LPbcGreen, LPbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		PLbcAlpha, PLbcRed, PLbcGreen, PLbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		GTbcAlpha, GTbcRed, GTbcGreen, GTbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
+		
+		-- Update all standard controls via ControlRegistry
+		_G.ControlRegistry.ForEach(function(controlId, data)
+			data.colors.alpha = curSelAlpha
+			data.colors.red = curSelRed
+			data.colors.green = curSelGreen
+			data.colors.blue = curSelBlue
+		end)
+		
+		-- Update all currency controls
 		for k,v in pairs(_G.currencies.list) do
 			_G.CurrencyData[v.name].bcAlpha = curSelAlpha
 			_G.CurrencyData[v.name].bcRed = curSelRed
@@ -300,28 +299,26 @@ function UpdateBCvariable()
 			_G.CurrencyData[v.name].bcBlue = curSelBlue
 		end
 	else
-		if sFrom == "TitanBar" then bcAlpha = curSelAlpha; bcRed = curSelRed; bcGreen = curSelGreen; bcBlue = curSelBlue;
-		elseif sFrom == "WI" then WIbcAlpha = curSelAlpha; WIbcRed = curSelRed; WIbcGreen = curSelGreen; WIbcBlue = curSelBlue;
-		elseif sFrom == "Money" then MIbcAlpha = curSelAlpha; MIbcRed = curSelRed; MIbcGreen = curSelGreen; MIbcBlue = curSelBlue;
-		elseif sFrom == "BI" then BIbcAlpha = curSelAlpha; BIbcRed = curSelRed; BIbcGreen = curSelGreen; BIbcBlue = curSelBlue;
-		elseif sFrom == "PI" then PIbcAlpha = curSelAlpha; PIbcRed = curSelRed; PIbcGreen = curSelGreen; PIbcBlue = curSelBlue;
-		elseif sFrom == "EI" then EIbcAlpha = curSelAlpha; EIbcRed = curSelRed; EIbcGreen = curSelGreen; EIbcBlue = curSelBlue;
-		elseif sFrom == "DI" then DIbcAlpha = curSelAlpha; DIbcRed = curSelRed; DIbcGreen = curSelGreen; DIbcBlue = curSelBlue;
-		elseif sFrom == "TI" then TIbcAlpha = curSelAlpha; TIbcRed = curSelRed; TIbcGreen = curSelGreen; TIbcBlue = curSelBlue;
-		elseif sFrom == "IF" then IFbcAlpha = curSelAlpha; IFbcRed = curSelRed; IFbcGreen = curSelGreen; IFbcBlue = curSelBlue;
-		elseif sFrom == "VT" then VTbcAlpha = curSelAlpha; VTbcRed = curSelRed; VTbcGreen = curSelGreen; VTbcBlue = curSelBlue;
-		elseif sFrom == "SS" then SSbcAlpha = curSelAlpha; SSbcRed = curSelRed; SSbcGreen = curSelGreen; SSbcBlue = curSelBlue;
-		elseif sFrom == "BK" then BKbcAlpha = curSelAlpha; BKbcRed = curSelRed; BKbcGreen = curSelGreen; BKbcBlue = curSelBlue;
-		elseif sFrom == "DN" then DNbcAlpha = curSelAlpha; DNbcRed = curSelRed; DNbcGreen = curSelGreen; DNbcBlue = curSelBlue;
-		elseif sFrom == "RP" then RPbcAlpha = curSelAlpha; RPbcRed = curSelRed; RPbcGreen = curSelGreen; RPbcBlue = curSelBlue;
-		elseif sFrom == "LP" then LPbcAlpha = curSelAlpha; LPbcRed = curSelRed; LPbcGreen = curSelGreen; LPbcBlue = curSelBlue;
-		elseif sFrom == "PL" then PLbcAlpha = curSelAlpha; PLbcRed = curSelRed; PLbcGreen = curSelGreen; PLbcBlue = curSelBlue;
-		elseif sFrom == "GT" then GTbcAlpha = curSelAlpha; GTbcRed = curSelRed; GTbcGreen = curSelGreen; GTbcBlue = curSelBlue;
+		if sFrom == "TitanBar" then 
+			bcAlpha = curSelAlpha
+			bcRed = curSelRed
+			bcGreen = curSelGreen
+			bcBlue = curSelBlue
 		else
-			_G.CurrencyData[sFrom].bcAlpha = curSelAlpha
-			_G.CurrencyData[sFrom].bcRed = curSelRed
-			_G.CurrencyData[sFrom].bcGreen = curSelGreen
-			_G.CurrencyData[sFrom].bcBlue = curSelBlue
+			-- Try to get from ControlRegistry first
+			local data = _G.ControlRegistry.Get(sFrom)
+			if data then
+				data.colors.alpha = curSelAlpha
+				data.colors.red = curSelRed
+				data.colors.green = curSelGreen
+				data.colors.blue = curSelBlue
+			elseif _G.CurrencyData[sFrom] then
+				-- Fall back to currency data
+				_G.CurrencyData[sFrom].bcAlpha = curSelAlpha
+				_G.CurrencyData[sFrom].bcRed = curSelRed
+				_G.CurrencyData[sFrom].bcGreen = curSelGreen
+				_G.CurrencyData[sFrom].bcBlue = curSelBlue
+			end
 		end
 	end
 end

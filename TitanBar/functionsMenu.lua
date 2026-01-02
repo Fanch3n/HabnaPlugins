@@ -7,12 +7,14 @@
 -- **v Show/Hide Wallet v**
 function ShowHideWallet()
 	ShowWallet = not ShowWallet;
+	if not settings.Wallet then settings.Wallet = {} end
 	settings.Wallet.V = ShowWallet;
 	SaveSettings( false );
 	if ShowWallet then
 		--write( "TitanBar: Showing wallet control");
 		ImportCtr( "WI" );
-		WI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( WIbcAlpha, WIbcRed, WIbcGreen, WIbcBlue ) );
+		local colors = _G.ControlData.WI.colors
+		WI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		--write( "TitanBar: Hiding wallet control");
 		if _G.frmWI then wWI:Close(); end
@@ -24,6 +26,7 @@ end
 -- **v Show/Hide Money v**
 function ShowHideMoney()
 	ShowMoney = not ShowMoney;
+	if not settings.Money then settings.Money = {} end
 	settings.Money.V = ShowMoney;
 	settings.Money.W = string.format("%.0f", _G.MIWhere);
 	SaveSettings( false );
@@ -31,7 +34,8 @@ function ShowHideMoney()
 	if ShowMoney then
 		--write( "TitanBar: Showing money");
 		--ImportCtr( "MI" );
-		MI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue ) );
+		local colors = _G.ControlData.Money.colors
+		MI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		--write( "TitanBar: Hiding money");
 		if _G.frmMI then wMI:Close(); end
@@ -42,12 +46,14 @@ end
 -- **v Show/Hide LOTRO Points v**
 function ShowHideLOTROPoints()
 	ShowLOTROPoints = not ShowLOTROPoints;
+	if not settings.LOTROPoints then settings.LOTROPoints = {} end
 	settings.LOTROPoints.V = ShowLOTROPoints;
 	settings.LOTROPoints.W = string.format("%.0f", _G.LPWhere);
 	SaveSettings( false );
 	ImportCtr( "LP" );
 	if ShowLOTROPoints then
-		LP[ "Ctr" ]:SetBackColor( Turbine.UI.Color( LPbcAlpha, LPbcRed, LPbcGreen, LPbcBlue ) );
+		local colors = _G.ControlData.LP.colors
+		LP[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		if _G.frmLP then wLP:Close(); end
 	end
@@ -57,11 +63,13 @@ end
 -- **v Show/Hide backpack Infos v**
 function ShowHideBackpackInfos()
 	ShowBagInfos = not ShowBagInfos;
+	if not settings.BagInfos then settings.BagInfos = {} end
 	settings.BagInfos.V = ShowBagInfos;
 	SaveSettings( false );
 	if ShowBagInfos then
 		ImportCtr( "BI" );
-		BI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( BIbcAlpha, BIbcRed, BIbcGreen, BIbcBlue ) );
+		local colors = _G.ControlData.BI.colors
+		BI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(backpack, "ItemAdded");
 		RemoveCallback(backpack, "ItemRemoved");
@@ -74,11 +82,13 @@ end
 -- **v Show/Hide backpack Infos v**
 function ShowHidePlayerInfos()
 	ShowPlayerInfos = not ShowPlayerInfos;
+	if not settings.PlayerInfos then settings.PlayerInfos = {} end
 	settings.PlayerInfos.V = ShowPlayerInfos;
 	SaveSettings( false );
 	if ShowPlayerInfos then
 		ImportCtr( "PI" );
-		PI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( PIbcAlpha, PIbcRed, PIbcGreen, PIbcBlue ) );
+		local colors = _G.ControlData.PI.colors
+		PI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(Player, "LevelChanged");
 		RemoveCallback(Player, "NameChanged");
@@ -91,6 +101,7 @@ end
 -- **v Show/Hide equipment Infos v**
 function ShowHideEquipInfos()
 	ShowEquipInfos = not ShowEquipInfos;
+	if not settings.EquipInfos then settings.EquipInfos = {} end
 	settings.EquipInfos.V = ShowEquipInfos;
 	SaveSettings( false );
 	if ShowEquipInfos then
@@ -98,7 +109,8 @@ function ShowHideEquipInfos()
 		AddCallback(PlayerEquipment, "ItemEquipped", function(sender, args) if ShowEquipInfos then GetEquipmentInfos(); UpdateEquipsInfos(); end end);
 		AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) ItemUnEquippedTimer:SetWantsUpdates( true ); end); --Workaround
 		ImportCtr( "EI" );
-		EI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( EIbcAlpha, EIbcRed, EIbcGreen, EIbcBlue ) );
+		local colors = _G.ControlData.EI.colors
+		EI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(PlayerEquipment, "ItemEquipped");
 		RemoveCallback(PlayerEquipment, "ItemUnequipped");
@@ -111,6 +123,7 @@ end
 -- **v Show/Hide durability Infos v**
 function ShowHideDurabilityInfos()
 	ShowDurabilityInfos = not ShowDurabilityInfos;
+	if not settings.DurabilityInfos then settings.DurabilityInfos = {} end
 	settings.DurabilityInfos.V = ShowDurabilityInfos;
 	SaveSettings( false );
 	if ShowDurabilityInfos then
@@ -118,7 +131,8 @@ function ShowHideDurabilityInfos()
 		AddCallback(PlayerEquipment, "ItemEquipped", function(sender, args) if ShowEquipInfos then GetEquipmentInfos(); UpdateEquipsInfos(); end if ShowDurabilityInfos then GetEquipmentInfos(); UpdateDurabilityInfos(); end end);
 		AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) ItemUnEquippedTimer:SetWantsUpdates( true ); end); --Workaround
 		ImportCtr( "DI" );
-		DI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( DIbcAlpha, DIbcRed, DIbcGreen, DIbcBlue ) );
+		local colors = _G.ControlData.DI.colors
+		DI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(PlayerEquipment, "ItemEquipped");
 		RemoveCallback(PlayerEquipment, "ItemUnequipped");
@@ -131,11 +145,13 @@ end
 -- **v Show/Hide Tracked Items Infos v**
 function ShowHideTrackItems()
 	ShowTrackItems = not ShowTrackItems;
+	if not settings.TrackItems then settings.TrackItems = {} end
 	settings.TrackItems.V = ShowTrackItems;
 	SaveSettings( false );
 	if ShowTrackItems then
 		ImportCtr( "TI" );
-		TI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( TIbcAlpha, TIbcRed, TIbcGreen, TIbcBlue ) );
+		local colors = _G.ControlData.TI.colors
+		TI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		if _G.frmTI then wTI:Close(); end
 	end
@@ -146,11 +162,13 @@ end
 -- **v Show/Hide Infamy v**
 function ShowHideInfamy()
 	ShowInfamy = not ShowInfamy;
+	if not settings.Infamy then settings.Infamy = {} end
 	settings.Infamy.V = ShowInfamy;
 	SaveSettings( false );
 	if ShowInfamy then
 		ImportCtr( "IF" );
-		IF[ "Ctr" ]:SetBackColor( Turbine.UI.Color( IFbcAlpha, IFbcRed, IFbcGreen, IFbcBlue ) );
+		local colors = _G.ControlData.IF.colors
+		IF[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(Turbine.Chat, "Received", IFcb);
 		if _G.frmIF then wIF:Close(); end
@@ -162,11 +180,13 @@ end
 -- **v Show/Hide Vault v**
 function ShowHideVault()
 	ShowVault = not ShowVault;
+	if not settings.Vault then settings.Vault = {} end
 	settings.Vault.V = ShowVault;
 	SaveSettings( false );
 	if ShowVault then
 		ImportCtr( "VT" );
-		VT[ "Ctr" ]:SetBackColor( Turbine.UI.Color( VTbcAlpha, VTbcRed, VTbcGreen, VTbcBlue ) );
+		local colors = _G.ControlData.VT.colors
+		VT[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(vaultpack, "CountChanged");
 		if _G.frmVT then wVT:Close(); end
@@ -178,11 +198,13 @@ end
 -- **v Show/Hide SharedStorage v**
 function ShowHideSharedStorage()
 	ShowSharedStorage = not ShowSharedStorage;
+	if not settings.SharedStorage then settings.SharedStorage = {} end
 	settings.SharedStorage.V = ShowSharedStorage;
 	SaveSettings( false );
 	if ShowSharedStorage then
 		ImportCtr( "SS" );
-		SS[ "Ctr" ]:SetBackColor( Turbine.UI.Color( SSbcAlpha, SSbcRed, SSbcGreen, SSbcBlue ) );
+		local colors = _G.ControlData.SS.colors
+		SS[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(sspack, "CountChanged");
 		if _G.frmSS then wSS:Close(); end
@@ -194,6 +216,7 @@ end
 -- **v Show/Hide Bank v**
 function ShowHideBank()
 	ShowBank = not ShowBank;
+	if not settings.Bank then settings.Bank = {} end
 	settings.Bank.V = ShowBank;
 	SaveSettings( false );
 	if ShowBank then
@@ -208,11 +231,13 @@ end
 -- **v Show/Hide Day & Night time v**
 function ShowHideDayNight()
 	ShowDayNight = not ShowDayNight;
+	if not settings.DayNight then settings.DayNight = {} end
 	settings.DayNight.V = ShowDayNight;
 	SaveSettings( false );
 	if ShowDayNight then
 		ImportCtr( "DN" );
-		DN[ "Ctr" ]:SetBackColor( Turbine.UI.Color( DNbcAlpha, DNbcRed, DNbcGreen, DNbcBlue ) );
+		local colors = _G.ControlData.DN.colors
+		DN[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		if _G.frmDN then wDN:Close(); end
 	end
@@ -223,11 +248,13 @@ end
 -- **v Show/Hide Reputation v**
 function ShowHideReputation()
 	ShowReputation = not ShowReputation;
+	if not settings.Reputation then settings.Reputation = {} end
 	settings.Reputation.V = ShowReputation;
 	SaveSettings( false );
 	if ShowReputation then
 		ImportCtr( "RP" );
-		RP[ "Ctr" ]:SetBackColor( Turbine.UI.Color( RPbcAlpha, RPbcRed, RPbcGreen, RPbcBlue ) );
+		local colors = _G.ControlData.RP.colors
+		RP[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(Turbine.Chat, "Received", ReputationCallback);
 		if _G.frmRP then wRP:Close(); end
@@ -240,11 +267,13 @@ end
 -- **v Show/Hide Player Location v**
 function ShowHidePlayerLoc()
 	ShowPlayerLoc = not ShowPlayerLoc;
+	if not settings.PlayerLoc then settings.PlayerLoc = {} end
 	settings.PlayerLoc.V = ShowPlayerLoc;
 	SaveSettings( false );
 	if ShowPlayerLoc then
 		ImportCtr( "PL" );
-		PL[ "Ctr" ]:SetBackColor( Turbine.UI.Color( PLbcAlpha, PLbcRed, PLbcGreen, PLbcBlue ) );
+		local colors = _G.ControlData.PL.colors
+		PL[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(Turbine.Chat, "Received", PLcb);
 	end
@@ -255,11 +284,13 @@ end
 -- **v Show/Hide Time v**
 function ShowHideGameTime()
 	ShowGameTime = not ShowGameTime;
+	if not settings.GameTime then settings.GameTime = {} end
 	settings.GameTime.V = ShowGameTime;
 	SaveSettings( false );
 	if ShowGameTime then
 		ImportCtr( "GT" );
-		GT[ "Ctr" ]:SetBackColor( Turbine.UI.Color( GTbcAlpha, GTbcRed, GTbcGreen, GTbcBlue ) );
+		local colors = _G.ControlData.GT.colors
+		GT[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		if _G.frmGT then wGT:Close(); end
 	end

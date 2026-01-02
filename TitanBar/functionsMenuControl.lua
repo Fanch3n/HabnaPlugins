@@ -9,52 +9,52 @@ function UnloadControl( value )
 	if _G.Debug then write("UnloadControl "..value); end
     -- Remove all controls from TitanBar:
 	if value == "applyToAllControls" then
-		if ShowWallet then ShowHideWallet(); end
-		if ShowMoney then _G.MIWhere = 3; ShowHideMoney(); end
-		if ShowBagInfos then ShowHideBackpackInfos(); opt_BI:SetChecked( false ); end
-		if ShowPlayerInfos then ShowHidePlayerInfos(); opt_PI:SetChecked( false ); end
-		if ShowEquipInfos then ShowHideEquipInfos(); opt_EI:SetChecked( false ); end
-		if ShowDurabilityInfos then ShowHideDurabilityInfos(); opt_DI:SetChecked( false ); end
-		if ShowTrackItems then ShowHideTrackItems(); opt_TI:SetChecked( false ); end
-		if ShowInfamy then ShowHideInfamy(); opt_IF:SetChecked( false ); end
-		if ShowVault then ShowHideVault(); opt_VT:SetChecked( false ); end
-		if ShowSharedStorage then ShowHideSharedStorage(); opt_SS:SetChecked( false ); end
-		--if ShowBank then ShowHideBank(); opt_BK:SetChecked( false ); end
-		if ShowDayNight then ShowHideDayNight(); opt_DN:SetChecked( false ); end
-		if ShowReputation then ShowHideReputation(); opt_RP:SetChecked( false ); end
-		if ShowLOTROPoints then _G.LPWhere = 3; ShowHideLOTROPoints(); end
-		if ShowPlayerLoc then ShowHidePlayerLoc(); opt_PL:SetChecked( false ); end
-		if ShowGameTime then ShowHideGameTime(); opt_GT:SetChecked( false ); end
+		-- Unload all standard controls
+		_G.ControlRegistry.ForEach(function(controlId, data)
+			if data.show then
+				-- Set where to hidden if control has that property
+				if data.where ~= nil then
+					data.where = 3
+				end
+				-- Call toggle function to hide
+				if data.toggleFunc then
+					data.toggleFunc()
+				end
+				-- Uncheck option if available
+				if data.ui.optCheckbox then
+					data.ui.optCheckbox:SetChecked(false)
+				end
+			end
+		end)
+		
+		-- Unload all currency controls
 		for k,v in pairs(_G.currencies.list) do
 			if _G.CurrencyData[v.name].IsVisible then
 				_G.CurrencyData[v.name].Where = 3
 				ShowHideCurrency(v.name);
 			end
 		end
-        -- Remove just the selected control from TitanBar
-		elseif value == "applyToThis" then
-			if _G.sFromCtr == "WI" then ShowHideWallet();
-			elseif _G.sFromCtr == "Money" then _G.MIWhere = 3; ShowHideMoney();
-			elseif _G.sFromCtr == "BI" then ShowHideBackpackInfos(); opt_BI:SetChecked( false );
-			elseif _G.sFromCtr == "PI" then ShowHidePlayerInfos(); opt_PI:SetChecked( false );
-			elseif _G.sFromCtr == "EI" then ShowHideEquipInfos(); opt_EI:SetChecked( false );
-			elseif _G.sFromCtr == "DI" then ShowHideDurabilityInfos(); opt_DI:SetChecked( false );
-			elseif _G.sFromCtr == "TI" then ShowHideTrackItems(); opt_TI:SetChecked( false );
-			elseif _G.sFromCtr == "IF" then ShowHideInfamy(); opt_IF:SetChecked( false );
-			elseif _G.sFromCtr == "VT" then ShowHideVault(); opt_VT:SetChecked( false );
-			elseif _G.sFromCtr == "SS" then ShowHideSharedStorage(); opt_SS:SetChecked( false );
-			--elseif _G.sFromCtr == "BK" then ShowHideBank(); opt_BK:SetChecked( false );
-			elseif _G.sFromCtr == "DN" then ShowHideDayNight(); opt_DN:SetChecked( false );
-			elseif _G.sFromCtr == "RP" then ShowHideReputation(); opt_RP:SetChecked( false );
-			elseif _G.sFromCtr == "LP" then _G.LPWhere = 3; ShowHideLOTROPoints();
-			elseif _G.sFromCtr == "PL" then ShowHidePlayerLoc(); opt_PL:SetChecked( false );
-			elseif _G.sFromCtr == "GT" then ShowHideGameTime(); opt_GT:SetChecked( false );
+		
+    -- Remove just the selected control from TitanBar
+	elseif value == "applyToThis" then
+		local data = _G.ControlRegistry.Get(_G.sFromCtr)
+		if data then
+			-- Standard control
+			if data.where ~= nil then
+				data.where = 3
 			end
-			if _G.CurrencyData[_G.sFromCtr] then
-				_G.CurrencyData[_G.sFromCtr].Where = 3
-				ShowHideCurrency(_G.sFromCtr)
+			if data.toggleFunc then
+				data.toggleFunc()
 			end
+			if data.ui.optCheckbox then
+				data.ui.optCheckbox:SetChecked(false)
+			end
+		elseif _G.CurrencyData[_G.sFromCtr] then
+			-- Currency control
+			_G.CurrencyData[_G.sFromCtr].Where = 3
+			ShowHideCurrency(_G.sFromCtr)
 		end
+	end
 
 	TB["win"].MouseLeave();
 end
@@ -69,66 +69,35 @@ function BGColor( cmd, value )
 	elseif cmd == "match" then
 		tA, tR, tG, tB = bcAlpha, bcRed, bcGreen, bcBlue;
 	elseif cmd == "apply" then
-		if _G.sFromCtr == "WI" then tA, tR, tG, tB = WIbcAlpha, WIbcRed, WIbcGreen, WIbcBlue;
-		elseif _G.sFromCtr == "Money" then tA, tR, tG, tB = MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue;
-		elseif _G.sFromCtr == "BI" then tA, tR, tG, tB = BIbcAlpha, BIbcRed, BIbcGreen, BIbcBlue;
-		elseif _G.sFromCtr == "PI" then tA, tR, tG, tB = PIbcAlpha, PIbcRed, PIbcGreen, PIbcBlue;
-		elseif _G.sFromCtr == "EI" then tA, tR, tG, tB = EIbcAlpha, EIbcRed, EIbcGreen, EIbcBlue;
-		elseif _G.sFromCtr == "DI" then tA, tR, tG, tB = DIbcAlpha, DIbcRed, DIbcGreen, DIbcBlue;
-		elseif _G.sFromCtr == "TI" then tA, tR, tG, tB = TIbcAlpha, TIbcRed, TIbcGreen, TIbcBlue;
-		elseif _G.sFromCtr == "IF" then tA, tR, tG, tB = IFbcAlpha, IFbcRed, IFbcGreen, IFbcBlue;
-		elseif _G.sFromCtr == "VT" then tA, tR, tG, tB = VTbcAlpha, VTbcRed, VTbcGreen, VTbcBlue;
-		elseif _G.sFromCtr == "SS" then tA, tR, tG, tB = SSbcAlpha, SSbcRed, SSbcGreen, SSbcBlue;
---		elseif _G.sFromCtr == "BK" then tA, tR, tG, tB = BKbcAlpha, BKbcRed, BKbcGreen, BKbcBlue;
-		elseif _G.sFromCtr == "DN" then tA, tR, tG, tB = DNbcAlpha, DNbcRed, DNbcGreen, DNbcBlue;
-		elseif _G.sFromCtr == "RP" then tA, tR, tG, tB = RPbcAlpha, RPbcRed, RPbcGreen, RPbcBlue;
-		elseif _G.sFromCtr == "LP" then tA, tR, tG, tB = LPbcAlpha, LPbcRed, LPbcGreen, LPbcBlue;
-		elseif _G.sFromCtr == "PL" then tA, tR, tG, tB = PLbcAlpha, PLbcRed, PLbcGreen, PLbcBlue;
-		elseif _G.sFromCtr == "GT" then tA, tR, tG, tB = GTbcAlpha, GTbcRed, GTbcGreen, GTbcBlue;
-		else
-			if _G.currencies[_G.sFromCtr] then
-				tA = _G.CurrencyData[_G.sFromCtr].bcAlpha
-				tR = _G.CurrencyData[_G.sFromCtr].bcRed
-				tG = _G.CurrencyData[_G.sFromCtr].bcGreen
-				tB = _G.CurrencyData[_G.sFromCtr].bcBlue
-			end
+		local data = _G.ControlRegistry.Get(_G.sFromCtr)
+		if data then
+			-- Standard control
+			tA = data.colors.alpha
+			tR = data.colors.red
+			tG = data.colors.green
+			tB = data.colors.blue
+		elseif _G.CurrencyData[_G.sFromCtr] then
+			-- Currency control
+			tA = _G.CurrencyData[_G.sFromCtr].bcAlpha
+			tR = _G.CurrencyData[_G.sFromCtr].bcRed
+			tG = _G.CurrencyData[_G.sFromCtr].bcGreen
+			tB = _G.CurrencyData[_G.sFromCtr].bcBlue
 		end
 	end
 	
 	if value == "applyToAllControls" then
-		WIbcAlpha, WIbcRed, WIbcGreen, WIbcBlue = tA, tR, tG, tB;
-		if ShowWallet then WI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
-		MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue = tA, tR, tG, tB;
-		if ShowMoney then MI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
-		BIbcAlpha, BIbcRed, BIbcGreen, BIbcBlue = tA, tR, tG, tB;
-		if ShowBagInfos then BI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
-		PIbcAlpha, PIbcRed, PIbcGreen, PIbcBlue = tA, tR, tG, tB;
-		if ShowPlayerInfos then PI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
-		EIbcAlpha, EIbcRed, EIbcGreen, EIbcBlue = tA, tR, tG, tB;
-		if ShowEquipInfos then EI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
-		DIbcAlpha, DIbcRed, DIbcGreen, DIbcBlue = tA, tR, tG, tB;
-		if ShowDurabilityInfos then DI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
-		TIbcAlpha, TIbcRed, TIbcGreen, TIbcBlue = tA, tR, tG, tB;
-		if ShowTrackItems then TI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
-		IFbcAlpha, IFbcRed, IFbcGreen, IFbcBlue = tA, tR, tG, tB;
-		if ShowInfamy then IF[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
-		VTbcAlpha, VTbcRed, VTbcGreen, VTbcBlue = tA, tR, tG, tB;
-		if ShowVault then VT[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
-		SSbcAlpha, SSbcRed, SSbcGreen, SSbcBlue = tA, tR, tG, tB;
-		if ShowSharedStorage then SS[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
---		BKbcAlpha, BKbcRed, BKbcGreen, BKbcBlue = tA, tR, tG, tB;
---		if ShowBank then BK[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
-		DNbcAlpha, DNbcRed, DNbcGreen, DNbcBlue = tA, tR, tG, tB;
-		if ShowDayNight then DN[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
-		RPbcAlpha, RPbcRed, RPbcGreen, RPbcBlue = tA, tR, tG, tB;
-		if ShowReputation then RP[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
-		LPbcAlpha, LPbcRed, LPbcGreen, LPbcBlue = tA, tR, tG, tB;
-		if ShowLOTROPoints then LP[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
-		PLbcAlpha, PLbcRed, PLbcGreen, PLbcBlue = tA, tR, tG, tB;
-		if ShowPlayerLoc then PL[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) ); end
-		GTbcAlpha, GTbcRed, GTbcGreen, GTbcBlue = tA, tR, tG, tB;
-		if ShowGameTime then GT[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) );	end
+		-- Apply to all standard controls
+		_G.ControlRegistry.ForEach(function(controlId, data)
+			data.colors.alpha = tA
+			data.colors.red = tR
+			data.colors.green = tG
+			data.colors.blue = tB
+			if data.show and data.ui.control then
+				data.ui.control:SetBackColor(Turbine.UI.Color(tA, tR, tG, tB))
+			end
+		end)
 		
+		-- Apply to all currency controls
 		for k,v in pairs(_G.currencies.list) do
 			_G.CurrencyData[v.name].bcAlpha = tA
 			_G.CurrencyData[v.name].bcRed = tR
@@ -142,12 +111,18 @@ function BGColor( cmd, value )
 		BGColor( cmd, "applyToAllControls" );
 		BGColor( cmd, "TitanBar" );
 	elseif value == "applyToThis" then
-		if _G.sFromCtr == "WI" then
-			WI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) );
-		elseif _G.sFromCtr == "Money" then
-			MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue = tA, tR, tG, tB;
-			MI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) );
-		else
+		local data = _G.ControlRegistry.Get(_G.sFromCtr)
+		if data then
+			-- Standard control
+			data.colors.alpha = tA
+			data.colors.red = tR
+			data.colors.green = tG
+			data.colors.blue = tB
+			if data.ui.control then
+				data.ui.control:SetBackColor(Turbine.UI.Color(tA, tR, tG, tB))
+			end
+		elseif _G.CurrencyData[_G.sFromCtr] then
+			-- Currency control
 			_G.CurrencyData[_G.sFromCtr].bcAlpha = tA
 			_G.CurrencyData[_G.sFromCtr].bcRed = tR
 			_G.CurrencyData[_G.sFromCtr].bcGreen = tG

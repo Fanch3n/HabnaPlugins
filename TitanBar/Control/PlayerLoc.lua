@@ -6,7 +6,9 @@ import(AppDirD .. "ControlFactory")
 
 _G.PL = {}; -- Player Location table in _G
 
-CreateTitanBarControl(PL, PLbcAlpha, PLbcRed, PLbcGreen, PLbcBlue)
+local colors = _G.ControlData.PL.colors
+CreateTitanBarControl(PL, colors.alpha, colors.red, colors.green, colors.blue)
+_G.ControlData.PL.ui.control = PL["Ctr"]
 
 PL["Lbl"] = CreateControlLabel(PL["Ctr"], _G.TBFont, Turbine.UI.ContentAlignment.MiddleLeft)
 

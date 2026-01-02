@@ -6,6 +6,54 @@
 -- HELPER FUNCTIONS FOR LOADING SETTINGS
 -- ============================================================================
 
+-- Load settings from file into ControlData structure
+local function LoadControlSettings(controlId, settingsSection)
+	local data = _G.ControlData[controlId]
+	if not data then return end
+	
+	-- Load visibility
+	data.show = settingsSection.V or false
+	
+	-- Load colors
+	data.colors.alpha = tonumber(settingsSection.A) or Constants.DEFAULT_ALPHA
+	data.colors.red = tonumber(settingsSection.R) or Constants.DEFAULT_RED
+	data.colors.green = tonumber(settingsSection.G) or Constants.DEFAULT_GREEN
+	data.colors.blue = tonumber(settingsSection.B) or Constants.DEFAULT_BLUE
+	
+	-- Load location
+	data.location.x = tonumber(settingsSection.X) or Constants.DEFAULT_X
+	data.location.y = tonumber(settingsSection.Y) or Constants.DEFAULT_Y
+	
+	-- Load window position
+	data.window.left = tonumber(settingsSection.L) or Constants.DEFAULT_WINDOW_LEFT
+	data.window.top = tonumber(settingsSection.T) or Constants.DEFAULT_WINDOW_TOP
+	
+	-- Load where (if applicable)
+	if data.where ~= nil and settingsSection.W then
+		data.where = tonumber(settingsSection.W)
+	end
+end
+
+-- Save ControlData to settings structure  
+local function SaveControlSettings(controlId, settingsSection)
+	local data = _G.ControlData[controlId]
+	if not data then return end
+	
+	settingsSection.V = data.show
+	settingsSection.A = Constants.FormatFloat(data.colors.alpha)
+	settingsSection.R = Constants.FormatFloat(data.colors.red)
+	settingsSection.G = Constants.FormatFloat(data.colors.green)
+	settingsSection.B = Constants.FormatFloat(data.colors.blue)
+	settingsSection.X = Constants.FormatInt(data.location.x)
+	settingsSection.Y = Constants.FormatInt(data.location.y)
+	settingsSection.L = Constants.FormatInt(data.window.left)
+	settingsSection.T = Constants.FormatInt(data.window.top)
+	
+	if data.where ~= nil then
+		settingsSection.W = Constants.FormatInt(data.where)
+	end
+end
+
 -- Initialize a settings section if it doesn't exist
 local function EnsureSettingsSection(sectionName)
 	if settings[sectionName] == nil then 
@@ -106,8 +154,8 @@ local function SaveWindowPosition(section, left, top)
 	section.T = string.format("%.0f", top)
 end
 
--- Save standard control settings (visibility, colors, position, window position)
-local function SaveControlSettings(sectionName, visible, alpha, red, green, blue, x, y, left, top)
+-- Save standard control settings (visibility, colors, position, window position) - OLD VERSION
+local function SaveControlSettingsOld(sectionName, visible, alpha, red, green, blue, x, y, left, top)
 	settings[sectionName] = {}
 	settings[sectionName].V = visible
 	SaveColors(settings[sectionName], alpha, red, green, blue)
@@ -226,10 +274,12 @@ function LoadSettings()
 	-- Wallet control
 	local wallet = InitControlDefaults("Wallet", {}, {}, {})
 	wallet.V = wallet.V or false
-	ShowWallet = wallet.V
-	LoadColors(wallet, "WIbcAlpha", "WIbcRed", "WIbcGreen", "WIbcBlue")
-	LoadPosition(wallet, "WILocX", "WILocY")
-	LoadWindowPosition(wallet, "WIWLeft", "WIWTop")
+	LoadControlSettings("WI", wallet)
+	-- Create legacy global variables for backward compatibility
+	ShowWallet = _G.ControlData.WI.show
+	WIbcAlpha, WIbcRed, WIbcGreen, WIbcBlue = _G.ControlData.WI.colors.alpha, _G.ControlData.WI.colors.red, _G.ControlData.WI.colors.green, _G.ControlData.WI.colors.blue
+	_G.WILocX, _G.WILocY = _G.ControlData.WI.location.x, _G.ControlData.WI.location.y
+	WIWLeft, WIWTop = _G.ControlData.WI.window.left, _G.ControlData.WI.window.top
 
 
 	-- Money control
@@ -239,24 +289,28 @@ function LoadSettings()
 	money.SS = money.SS == nil and true or money.SS --Show stats for session
 	money.TS = money.TS == nil and true or money.TS --Show stats for today
 	money.W = money.W or Constants.FormatInt(Constants.Position.TITANBAR)
-	ShowMoney = money.V
-	LoadColors(money, "MIbcAlpha", "MIbcRed", "MIbcGreen", "MIbcBlue")
-	LoadPosition(money, "MILocX", "MILocY")
+	LoadControlSettings("Money", money)
+	-- Create legacy global variables for backward compatibility
+	ShowMoney = _G.ControlData.Money.show
+	MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue = _G.ControlData.Money.colors.alpha, _G.ControlData.Money.colors.red, _G.ControlData.Money.colors.green, _G.ControlData.Money.colors.blue
+	_G.MILocX, _G.MILocY = _G.ControlData.Money.location.x, _G.ControlData.Money.location.y
+	MIWLeft, MIWTop = _G.ControlData.Money.window.left, _G.ControlData.Money.window.top
+	_G.MIWhere = _G.ControlData.Money.where
 	_G.STM = money.S
 	_G.SSS = money.SS
 	_G.STS = money.TS
-	LoadWindowPosition(money, "MIWLeft", "MIWTop")
-	_G.MIWhere = tonumber(money.W)
 
 	-- LOTROPoints control
 	local lotroPoints = InitControlDefaults("LOTROPoints", {}, {}, {})
 	lotroPoints.V = lotroPoints.V or false
 	lotroPoints.W = lotroPoints.W or Constants.FormatInt(tW)
-	ShowLOTROPoints = lotroPoints.V
-	LoadColors(lotroPoints, "LPbcAlpha", "LPbcRed", "LPbcGreen", "LPbcBlue")
-	LoadPosition(lotroPoints, "LPLocX", "LPLocY")
-	LoadWindowPosition(lotroPoints, "LPWLeft", "LPWTop")
-	_G.LPWhere = tonumber(lotroPoints.W)
+	LoadControlSettings("LP", lotroPoints)
+	-- Create legacy global variables for backward compatibility
+	ShowLOTROPoints = _G.ControlData.LP.show
+	LPbcAlpha, LPbcRed, LPbcGreen, LPbcBlue = _G.ControlData.LP.colors.alpha, _G.ControlData.LP.colors.red, _G.ControlData.LP.colors.green, _G.ControlData.LP.colors.blue
+	_G.LPLocX, _G.LPLocY = _G.ControlData.LP.location.x, _G.ControlData.LP.location.y
+	LPWLeft, LPWTop = _G.ControlData.LP.window.left, _G.ControlData.LP.window.top
+	_G.LPWhere = _G.ControlData.LP.where
 
 
 	-- BagInfos control
@@ -264,10 +318,12 @@ function LoadSettings()
 	bagInfos.V = bagInfos.V == nil and true or bagInfos.V
 	bagInfos.U = bagInfos.U == nil and true or bagInfos.U
 	bagInfos.M = bagInfos.M == nil and true or bagInfos.M
-	ShowBagInfos = bagInfos.V
-	LoadColors(bagInfos, "BIbcAlpha", "BIbcRed", "BIbcGreen", "BIbcBlue")
-	LoadPosition(bagInfos, "BILocX", "BILocY")
-	LoadWindowPosition(bagInfos, "BIWLeft", "BIWTop")
+	LoadControlSettings("BI", bagInfos)
+	-- Create legacy global variables for backward compatibility
+	ShowBagInfos = _G.ControlData.BI.show
+	BIbcAlpha, BIbcRed, BIbcGreen, BIbcBlue = _G.ControlData.BI.colors.alpha, _G.ControlData.BI.colors.red, _G.ControlData.BI.colors.green, _G.ControlData.BI.colors.blue
+	_G.BILocX, _G.BILocY = _G.ControlData.BI.location.x, _G.ControlData.BI.location.y
+	BIWLeft, BIWTop = _G.ControlData.BI.window.left, _G.ControlData.BI.window.top
 	_G.BIUsed = bagInfos.U
 	_G.BIMax = bagInfos.M
 
@@ -283,9 +339,11 @@ function LoadSettings()
 	playerInfos.V = playerInfos.V or false
 	playerInfos.XP = playerInfos.XP or Constants.FormatInt(0)
 	playerInfos.Layout = playerInfos.Layout or false
-	ShowPlayerInfos = playerInfos.V
-	LoadColors(playerInfos, "PIbcAlpha", "PIbcRed", "PIbcGreen", "PIbcBlue")
-	LoadPosition(playerInfos, "PILocX", "PILocY")
+	LoadControlSettings("PI", playerInfos)
+	-- Create legacy global variables for backward compatibility
+	ShowPlayerInfos = _G.ControlData.PI.show
+	PIbcAlpha, PIbcRed, PIbcGreen, PIbcBlue = _G.ControlData.PI.colors.alpha, _G.ControlData.PI.colors.red, _G.ControlData.PI.colors.green, _G.ControlData.PI.colors.blue
+	_G.PILocX, _G.PILocY = _G.ControlData.PI.location.x, _G.ControlData.PI.location.y
 	ExpPTS = playerInfos.XP
 	PILayout = playerInfos.Layout
 	if not PILayout then
@@ -305,9 +363,11 @@ function LoadSettings()
 	-- EquipInfos control
 	local equipInfos = InitControlDefaults("EquipInfos", {}, {x=Constants.DEFAULT_EQUIP_INFO_X})
 	equipInfos.V = equipInfos.V == nil and true or equipInfos.V
-	ShowEquipInfos = equipInfos.V
-	LoadColors(equipInfos, "EIbcAlpha", "EIbcRed", "EIbcGreen", "EIbcBlue")
-	LoadPosition(equipInfos, "EILocX", "EILocY")
+	LoadControlSettings("EI", equipInfos)
+	-- Create legacy global variables for backward compatibility
+	ShowEquipInfos = _G.ControlData.EI.show
+	EIbcAlpha, EIbcRed, EIbcGreen, EIbcBlue = _G.ControlData.EI.colors.alpha, _G.ControlData.EI.colors.red, _G.ControlData.EI.colors.green, _G.ControlData.EI.colors.blue
+	_G.EILocX, _G.EILocY = _G.ControlData.EI.location.x, _G.ControlData.EI.location.y
 
 
 	-- DurabilityInfos control
@@ -315,10 +375,12 @@ function LoadSettings()
 	durabilityInfos.V = durabilityInfos.V == nil and true or durabilityInfos.V
 	durabilityInfos.I = durabilityInfos.I == nil and true or durabilityInfos.I
 	durabilityInfos.N = durabilityInfos.N == nil and true or durabilityInfos.N
-	ShowDurabilityInfos = durabilityInfos.V
-	LoadColors(durabilityInfos, "DIbcAlpha", "DIbcRed", "DIbcGreen", "DIbcBlue")
-	LoadPosition(durabilityInfos, "DILocX", "DILocY")
-	LoadWindowPosition(durabilityInfos, "DIWLeft", "DIWTop")
+	LoadControlSettings("DI", durabilityInfos)
+	-- Create legacy global variables for backward compatibility
+	ShowDurabilityInfos = _G.ControlData.DI.show
+	DIbcAlpha, DIbcRed, DIbcGreen, DIbcBlue = _G.ControlData.DI.colors.alpha, _G.ControlData.DI.colors.red, _G.ControlData.DI.colors.green, _G.ControlData.DI.colors.blue
+	_G.DILocX, _G.DILocY = _G.ControlData.DI.location.x, _G.ControlData.DI.location.y
+	DIWLeft, DIWTop = _G.ControlData.DI.window.left, _G.ControlData.DI.window.top
 	DIIcon = durabilityInfos.I
 	DIText = durabilityInfos.N
 
@@ -327,19 +389,23 @@ function LoadSettings()
 	local playerLoc = InitControlDefaults("PlayerLoc", {}, {x=screenWidth - Constants.DEFAULT_PLAYER_LOC_WIDTH})
 	playerLoc.V = playerLoc.V == nil and true or playerLoc.V
 	playerLoc.L = playerLoc.L or L["PLMsg"]
-	ShowPlayerLoc = playerLoc.V
-	LoadColors(playerLoc, "PLbcAlpha", "PLbcRed", "PLbcGreen", "PLbcBlue")
+	LoadControlSettings("PL", playerLoc)
+	-- Create legacy global variables for backward compatibility
+	ShowPlayerLoc = _G.ControlData.PL.show
+	PLbcAlpha, PLbcRed, PLbcGreen, PLbcBlue = _G.ControlData.PL.colors.alpha, _G.ControlData.PL.colors.red, _G.ControlData.PL.colors.green, _G.ControlData.PL.colors.blue
 	pLLoc = playerLoc.L
-	LoadPosition(playerLoc, "PLLocX", "PLLocY")
+	_G.PLLocX, _G.PLLocY = _G.ControlData.PL.location.x, _G.ControlData.PL.location.y
 
 
 	-- TrackItems control
 	local trackItems = InitControlDefaults("TrackItems", {}, {}, {})
 	trackItems.V = trackItems.V or false
-	ShowTrackItems = trackItems.V
-	LoadColors(trackItems, "TIbcAlpha", "TIbcRed", "TIbcGreen", "TIbcBlue")
-	LoadPosition(trackItems, "TILocX", "TILocY")
-	LoadWindowPosition(trackItems, "TIWLeft", "TIWTop")
+	LoadControlSettings("TI", trackItems)
+	-- Create legacy global variables for backward compatibility
+	ShowTrackItems = _G.ControlData.TI.show
+	TIbcAlpha, TIbcRed, TIbcGreen, TIbcBlue = _G.ControlData.TI.colors.alpha, _G.ControlData.TI.colors.red, _G.ControlData.TI.colors.green, _G.ControlData.TI.colors.blue
+	_G.TILocX, _G.TILocY = _G.ControlData.TI.location.x, _G.ControlData.TI.location.y
+	TIWLeft, TIWTop = _G.ControlData.TI.window.left, _G.ControlData.TI.window.top
 
 
 	-- Infamy control
@@ -348,10 +414,12 @@ function LoadSettings()
 	infamy.F = infamy.F == nil and true or infamy.F
 	infamy.P = infamy.P or Constants.FormatInt(0)
 	infamy.K = infamy.K or Constants.FormatInt(0)
-	ShowInfamy = infamy.V
-	LoadColors(infamy, "IFbcAlpha", "IFbcRed", "IFbcGreen", "IFbcBlue")
-	LoadPosition(infamy, "IFLocX", "IFLocY")
-	LoadWindowPosition(infamy, "IFWLeft", "IFWTop")
+	LoadControlSettings("IF", infamy)
+	-- Create legacy global variables for backward compatibility
+	ShowInfamy = _G.ControlData.IF.show
+	IFbcAlpha, IFbcRed, IFbcGreen, IFbcBlue = _G.ControlData.IF.colors.alpha, _G.ControlData.IF.colors.red, _G.ControlData.IF.colors.green, _G.ControlData.IF.colors.blue
+	_G.IFLocX, _G.IFLocY = _G.ControlData.IF.location.x, _G.ControlData.IF.location.y
+	IFWLeft, IFWTop = _G.ControlData.IF.window.left, _G.ControlData.IF.window.top
 	SetInfamy = infamy.F
 	InfamyPTS = infamy.P
 	InfamyRank = infamy.K
@@ -360,29 +428,35 @@ function LoadSettings()
 	-- Vault control
 	local vault = InitControlDefaults("Vault", {}, {}, {})
 	vault.V = vault.V or false
-	ShowVault = vault.V
-	LoadColors(vault, "VTbcAlpha", "VTbcRed", "VTbcGreen", "VTbcBlue")
-	LoadPosition(vault, "VTLocX", "VTLocY")
-	LoadWindowPosition(vault, "VTWLeft", "VTWTop")
+	LoadControlSettings("VT", vault)
+	-- Create legacy global variables for backward compatibility
+	ShowVault = _G.ControlData.VT.show
+	VTbcAlpha, VTbcRed, VTbcGreen, VTbcBlue = _G.ControlData.VT.colors.alpha, _G.ControlData.VT.colors.red, _G.ControlData.VT.colors.green, _G.ControlData.VT.colors.blue
+	_G.VTLocX, _G.VTLocY = _G.ControlData.VT.location.x, _G.ControlData.VT.location.y
+	VTWLeft, VTWTop = _G.ControlData.VT.window.left, _G.ControlData.VT.window.top
 
 
 	-- SharedStorage control
 	local sharedStorage = InitControlDefaults("SharedStorage", {}, {}, {})
 	sharedStorage.V = sharedStorage.V or false
-	ShowSharedStorage = sharedStorage.V
-	LoadColors(sharedStorage, "SSbcAlpha", "SSbcRed", "SSbcGreen", "SSbcBlue")
-	LoadPosition(sharedStorage, "SSLocX", "SSLocY")
-	LoadWindowPosition(sharedStorage, "SSWLeft", "SSWTop")
+	LoadControlSettings("SS", sharedStorage)
+	-- Create legacy global variables for backward compatibility
+	ShowSharedStorage = _G.ControlData.SS.show
+	SSbcAlpha, SSbcRed, SSbcGreen, SSbcBlue = _G.ControlData.SS.colors.alpha, _G.ControlData.SS.colors.red, _G.ControlData.SS.colors.green, _G.ControlData.SS.colors.blue
+	_G.SSLocX, _G.SSLocY = _G.ControlData.SS.location.x, _G.ControlData.SS.location.y
+	SSWLeft, SSWTop = _G.ControlData.SS.window.left, _G.ControlData.SS.window.top
 
 	-- DayNight control
 	local dayNight = InitControlDefaults("DayNight", {}, {}, {})
 	dayNight.V = dayNight.V or false
 	dayNight.N = dayNight.N == nil and true or dayNight.N
 	dayNight.S = dayNight.S or Constants.FormatInt(10350)
-	ShowDayNight = dayNight.V
-	LoadColors(dayNight, "DNbcAlpha", "DNbcRed", "DNbcGreen", "DNbcBlue")
-	LoadPosition(dayNight, "DNLocX", "DNLocY")
-	LoadWindowPosition(dayNight, "DNWLeft", "DNWTop")
+	LoadControlSettings("DN", dayNight)
+	-- Create legacy global variables for backward compatibility
+	ShowDayNight = _G.ControlData.DN.show
+	DNbcAlpha, DNbcRed, DNbcGreen, DNbcBlue = _G.ControlData.DN.colors.alpha, _G.ControlData.DN.colors.red, _G.ControlData.DN.colors.green, _G.ControlData.DN.colors.blue
+	_G.DNLocX, _G.DNLocY = _G.ControlData.DN.location.x, _G.ControlData.DN.location.y
+	DNWLeft, DNWTop = _G.ControlData.DN.window.left, _G.ControlData.DN.window.top
 	_G.DNNextT = dayNight.N
 	_G.TS = tonumber(dayNight.S)
 
@@ -391,11 +465,13 @@ function LoadSettings()
 	local reputation = InitControlDefaults("Reputation", {}, {}, {})
 	reputation.V = reputation.V or false
 	reputation.H = reputation.H or false
-	ShowReputation = reputation.V
+	LoadControlSettings("RP", reputation)
+	-- Create legacy global variables for backward compatibility
+	ShowReputation = _G.ControlData.RP.show
 	HideMaxReps = reputation.H
-	LoadColors(reputation, "RPbcAlpha", "RPbcRed", "RPbcGreen", "RPbcBlue")
-	LoadPosition(reputation, "RPLocX", "RPLocY")
-	LoadWindowPosition(reputation, "RPWLeft", "RPWTop")
+	RPbcAlpha, RPbcRed, RPbcGreen, RPbcBlue = _G.ControlData.RP.colors.alpha, _G.ControlData.RP.colors.red, _G.ControlData.RP.colors.green, _G.ControlData.RP.colors.blue
+	_G.RPLocX, _G.RPLocY = _G.ControlData.RP.location.x, _G.ControlData.RP.location.y
+	RPWLeft, RPWTop = _G.ControlData.RP.window.left, _G.ControlData.RP.window.top
 
 
 	-- GameTime control
@@ -405,10 +481,12 @@ function LoadSettings()
 	gameTime.S = gameTime.S or false -- True = Show server time
 	gameTime.O = gameTime.O or false -- True = Show both server and real time
 	gameTime.M = gameTime.M or Constants.FormatInt(0)
-	ShowGameTime = gameTime.V
-	LoadColors(gameTime, "GTbcAlpha", "GTbcRed", "GTbcGreen", "GTbcBlue")
-	LoadPosition(gameTime, "GTLocX", "GTLocY")
-	LoadWindowPosition(gameTime, "GTWLeft", "GTWTop")
+	LoadControlSettings("GT", gameTime)
+	-- Create legacy global variables for backward compatibility
+	ShowGameTime = _G.ControlData.GT.show
+	GTbcAlpha, GTbcRed, GTbcGreen, GTbcBlue = _G.ControlData.GT.colors.alpha, _G.ControlData.GT.colors.red, _G.ControlData.GT.colors.green, _G.ControlData.GT.colors.blue
+	_G.GTLocX, _G.GTLocY = _G.ControlData.GT.location.x, _G.ControlData.GT.location.y
+	GTWLeft, GTWTop = _G.ControlData.GT.window.left, _G.ControlData.GT.window.top
 	_G.Clock24h = gameTime.H
 	_G.ShowST = gameTime.S
 	_G.ShowBT = gameTime.O
@@ -493,109 +571,114 @@ function SaveSettings(str)
 		SaveWindowPosition(settings.Background, BGWLeft, BGWTop)
 		settings.Background.A = BGWToAll
 
-		SaveControlSettings("Wallet", ShowWallet, WIbcAlpha, WIbcRed, WIbcGreen, WIbcBlue, _G.WILocX, _G.WILocY, WIWLeft, WIWTop)
+		-- Wallet
+		_G.ControlData.WI.window.left = WIWLeft
+		_G.ControlData.WI.window.top = WIWTop
+		if not settings.Wallet then settings.Wallet = {} end
+		SaveControlSettings("WI", settings.Wallet)
 
 		-- Money
-		settings.Money = {}
-		settings.Money.V = ShowMoney
-		SaveColors(settings.Money, MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue)
-		SavePosition(settings.Money, _G.MILocX, _G.MILocY)
-		settings.Money.W = Constants.FormatInt(_G.MIWhere)
+		_G.ControlData.Money.where = _G.MIWhere  -- Sync back any changes
+		if not settings.Money then settings.Money = {} end
+		SaveControlSettings("Money", settings.Money)
 		settings.Money.S = _G.STM
 		settings.Money.SS = _G.SSS
 		settings.Money.TS = _G.STS
 		if PlayerAlign == 1 then SaveWindowPosition(settings.Money, MIWLeft, MIWTop) end
 
 		-- LOTROPoints
-		settings.LOTROPoints = {}
-		settings.LOTROPoints.V = ShowLOTROPoints
-		SaveColors(settings.LOTROPoints, LPbcAlpha, LPbcRed, LPbcGreen, LPbcBlue)
-		SavePosition(settings.LOTROPoints, _G.LPLocX, _G.LPLocY)
-		SaveWindowPosition(settings.LOTROPoints, LPWLeft, LPWTop)
-		settings.LOTROPoints.W = Constants.FormatInt(_G.LPWhere)
-
+		_G.ControlData.LP.window.left = LPWLeft
+		_G.ControlData.LP.window.top = LPWTop
+		if not settings.LOTROPoints then settings.LOTROPoints = {} end
+		SaveControlSettings("LP", settings.LOTROPoints)
+		
+		_G.ControlData.BI.window.left = BIWLeft
+		_G.ControlData.BI.window.top = BIWTop
+		
 		-- BagInfos
-		settings.BagInfos = {}
-		settings.BagInfos.V = ShowBagInfos
-		SaveColors(settings.BagInfos, BIbcAlpha, BIbcRed, BIbcGreen, BIbcBlue)
-		SavePosition(settings.BagInfos, _G.BILocX, _G.BILocY)
-		SaveWindowPosition(settings.BagInfos, BIWLeft, BIWTop)
+		if not settings.BagInfos then settings.BagInfos = {} end
+		SaveControlSettings("BI", settings.BagInfos)
 		settings.BagInfos.U = _G.BIUsed
 		settings.BagInfos.M = _G.BIMax
 
 		SaveSectionWithWindowPos("BagInfosList", BLWLeft, BLWTop)
 
 		-- PlayerInfos
-		settings.PlayerInfos = {}
-		settings.PlayerInfos.V = ShowPlayerInfos
-		SaveColors(settings.PlayerInfos, PIbcAlpha, PIbcRed, PIbcGreen, PIbcBlue)
-		SavePosition(settings.PlayerInfos, _G.PILocX, _G.PILocY)
+		if not settings.PlayerInfos then settings.PlayerInfos = {} end
+		SaveControlSettings("PI", settings.PlayerInfos)
 		settings.PlayerInfos.XP = ExpPTS
 		settings.PlayerInfos.Layout = PILayout
 
 		-- EquipInfos
-		settings.EquipInfos = {}
-		settings.EquipInfos.V = ShowEquipInfos
-		SaveColors(settings.EquipInfos, EIbcAlpha, EIbcRed, EIbcGreen, EIbcBlue)
-		SavePosition(settings.EquipInfos, _G.EILocX, _G.EILocY)
-	
+		if not settings.EquipInfos then settings.EquipInfos = {} end
+		SaveControlSettings("EI", settings.EquipInfos)
+		_G.ControlData.DI.window.left = DIWLeft
+		_G.ControlData.DI.window.top = DIWTop
+		
 		-- DurabilityInfos
-		settings.DurabilityInfos = {}
-		settings.DurabilityInfos.V = ShowDurabilityInfos
-		SaveColors(settings.DurabilityInfos, DIbcAlpha, DIbcRed, DIbcGreen, DIbcBlue)
-		SavePosition(settings.DurabilityInfos, _G.DILocX, _G.DILocY)
-		SaveWindowPosition(settings.DurabilityInfos, DIWLeft, DIWTop)
+		if not settings.DurabilityInfos then settings.DurabilityInfos = {} end
+		SaveControlSettings("DI", settings.DurabilityInfos)
 		settings.DurabilityInfos.I = DIIcon
 		settings.DurabilityInfos.N = DIText
 	
 		-- PlayerLoc
-		settings.PlayerLoc = {}
-		settings.PlayerLoc.V = ShowPlayerLoc
-		SaveColors(settings.PlayerLoc, PLbcAlpha, PLbcRed, PLbcGreen, PLbcBlue)
-		SavePosition(settings.PlayerLoc, _G.PLLocX, _G.PLLocY)
+		if not settings.PlayerLoc then settings.PlayerLoc = {} end
+		SaveControlSettings("PL", settings.PlayerLoc)
 		settings.PlayerLoc.L = string.format(pLLoc)
 
-		SaveControlSettings("TrackItems", ShowTrackItems, TIbcAlpha, TIbcRed, TIbcGreen, TIbcBlue, _G.TILocX, _G.TILocY, TIWLeft, TIWTop)
+		-- TrackItems
+		if not settings.TrackItems then settings.TrackItems = {} end
+		SaveControlSettings("TI", settings.TrackItems)
 
+		_G.ControlData.IF.window.left = IFWLeft
+		_G.ControlData.IF.window.top = IFWTop
+		
 		-- Infamy
-		settings.Infamy = {}
-		settings.Infamy.V = ShowInfamy
+		if not settings.Infamy then settings.Infamy = {} end
+		SaveControlSettings("IF", settings.Infamy)
 		settings.Infamy.P = Constants.FormatInt(InfamyPTS)
 		settings.Infamy.K = Constants.FormatInt(InfamyRank)
-		SaveColors(settings.Infamy, IFbcAlpha, IFbcRed, IFbcGreen, IFbcBlue)
-		SavePosition(settings.Infamy, _G.IFLocX, _G.IFLocY)
-		SaveWindowPosition(settings.Infamy, IFWLeft, IFWTop)
 
-		SaveControlSettings("Vault", ShowVault, VTbcAlpha, VTbcRed, VTbcGreen, VTbcBlue, _G.VTLocX, _G.VTLocY, VTWLeft, VTWTop)
-		SaveControlSettings("SharedStorage", ShowSharedStorage, SSbcAlpha, SSbcRed, SSbcGreen, SSbcBlue, _G.SSLocX, _G.SSLocY, SSWLeft, SSWTop)
-
+		-- Vault
+		_G.ControlData.VT.window.left = VTWLeft
+		_G.ControlData.VT.window.top = VTWTop
+		if not settings.Vault then settings.Vault = {} end
+		SaveControlSettings("VT", settings.Vault)
+		
+		-- SharedStorage
+		_G.ControlData.SS.window.left = SSWLeft
+		_G.ControlData.SS.window.top = SSWTop
+		if not settings.SharedStorage then settings.SharedStorage = {} end
+		SaveControlSettings("SS", settings.SharedStorage)
+		
+		_G.ControlData.DN.window.left = DNWLeft
+		_G.ControlData.DN.window.top = DNWTop
+		
 		-- DayNight
-		settings.DayNight = {}
-		settings.DayNight.V = ShowDayNight
-		SaveColors(settings.DayNight, DNbcAlpha, DNbcRed, DNbcGreen, DNbcBlue)
-		SavePosition(settings.DayNight, _G.DNLocX, _G.DNLocY)
-		SaveWindowPosition(settings.DayNight, DNWLeft, DNWTop)
+		if not settings.DayNight then settings.DayNight = {} end
+		SaveControlSettings("DN", settings.DayNight)
 		settings.DayNight.N = _G.DNNextT
 		settings.DayNight.S = Constants.FormatInt(_G.TS)
-
+		
+		_G.ControlData.RP.window.left = RPWLeft
+		_G.ControlData.RP.window.top = RPWTop
+		
 		-- Reputation
-		settings.Reputation = {}
-		settings.Reputation.V = ShowReputation
+		if not settings.Reputation then settings.Reputation = {} end
+		SaveControlSettings("RP", settings.Reputation)
 		settings.Reputation.H = HideMaxReps
-		SaveColors(settings.Reputation, RPbcAlpha, RPbcRed, RPbcGreen, RPbcBlue)
-		SavePosition(settings.Reputation, _G.RPLocX, _G.RPLocY)
-		SaveWindowPosition(settings.Reputation, RPWLeft, RPWTop)
 
 		-- GameTime
-		settings.GameTime = {}
-		settings.GameTime.V = ShowGameTime
-		SaveColors(settings.GameTime, GTbcAlpha, GTbcRed, GTbcGreen, GTbcBlue)
-		SavePosition(settings.GameTime, _G.GTLocX, _G.GTLocY)
+		if PlayerAlign == 1 then
+			_G.ControlData.GT.window.left = GTWLeft
+			_G.ControlData.GT.window.top = GTWTop
+		end
+		if not settings.GameTime then settings.GameTime = {} end
+		SaveControlSettings("GT", settings.GameTime)
 		settings.GameTime.H = _G.Clock24h
 		settings.GameTime.S = _G.ShowST
 		settings.GameTime.O = _G.ShowBT
 		settings.GameTime.M = Constants.FormatInt(_G.UserGMT)
-		if PlayerAlign == 1 then SaveWindowPosition(settings.GameTime, GTWLeft, GTWTop) end
 				
 		for k,v in pairs(_G.currencies.list) do
 			SetSettings(v.name)

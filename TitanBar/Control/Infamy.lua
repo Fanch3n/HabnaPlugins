@@ -4,7 +4,9 @@ import(AppDirD .. "ControlFactory")
 
 _G.IF = {}; -- Infamy table in _G
 
-CreateTitanBarControl(IF, IFbcAlpha, IFbcRed, IFbcGreen, IFbcBlue)
+local colors = _G.ControlData.IF.colors
+CreateTitanBarControl(IF, colors.alpha, colors.red, colors.green, colors.blue)
+_G.ControlData.IF.ui.control = IF["Ctr"]
 
 IF["Icon"] = CreateControlIcon(IF["Ctr"], Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 

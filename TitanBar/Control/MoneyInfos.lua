@@ -7,7 +7,9 @@ import(AppDirD .. "ControlFactory")
 _G.MI = {}; -- Money Infos table in _G
 
 --**v Control of Gold/Silver/Copper currencies v**
-MI["Ctr"] = CreateTitanBarControl(MI, MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue)
+local colors = _G.ControlData.Money.colors
+MI["Ctr"] = CreateTitanBarControl(MI, colors.alpha, colors.red, colors.green, colors.blue)
+_G.ControlData.Money.ui.control = MI["Ctr"]
 --**^
 --**v Control of Gold currencies v**
 MI["GCtr"] = Turbine.UI.Control();

@@ -532,32 +532,32 @@ end
 function ChangeColor(tColor)
 	if BGWToAll then
 		TB["win"]:SetBackColor( tColor );
-		if ShowWallet then WI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowMoney then MI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowBagInfos then BI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowPlayerInfos then PI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowEquipInfos then EI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowDurabilityInfos then DI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowTrackItems then TI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowInfamy then IF[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowVault then VT[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowSharedStorage then SS[ "Ctr" ]:SetBackColor( tColor ); end
-		--if ShowBank then BK[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowDayNight then DN[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowReputation then RP[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowLOTROPoints then LP[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowPlayerLoc then PL[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowGameTime then GT[ "Ctr" ]:SetBackColor( tColor ); end
+		
+		-- Apply to all standard controls via ControlRegistry
+		_G.ControlRegistry.ForEach(function(controlId, data)
+			if data.show and data.ui.control then
+				data.ui.control:SetBackColor(tColor)
+			end
+		end)
+		
+		-- Apply to all currency controls
 		for k,v in pairs(_G.currencies.list) do
 			if _G.CurrencyData[v.name].IsVisible then
 				_G.CurrencyData[v.name].Ctr:SetBackColor(tColor)
 			end
 		end
 	else
-		if sFrom == "TitanBar" then TB["win"]:SetBackColor( tColor )
-		elseif sFrom == "Money" then MI[ "Ctr" ]:SetBackColor( tColor )
+		if sFrom == "TitanBar" then 
+			TB["win"]:SetBackColor( tColor )
 		else
-			_G.CurrencyData[sFrom].Ctr:SetBackColor(tColor)
+			-- Try to get from ControlRegistry first
+			local data = _G.ControlRegistry.Get(sFrom)
+			if data and data.ui.control then
+				data.ui.control:SetBackColor(tColor)
+			elseif _G.CurrencyData[sFrom] then
+				-- Fall back to currency data
+				_G.CurrencyData[sFrom].Ctr:SetBackColor(tColor)
+			end
 		end
 	end
 end
