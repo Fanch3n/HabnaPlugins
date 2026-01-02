@@ -79,7 +79,6 @@ import (AppDirD.."TBresources");
 import (AppDirD.."Currencies");
 import (AppDirD.."Factions");
 import (AppClassD.."Class");
-import (AppDir);
 import (AppDirD.."color");
 import (AppDirD.."settings");
 
