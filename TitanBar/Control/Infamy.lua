@@ -14,7 +14,6 @@ SetupControlInteraction({
 	icon = IF["Icon"],
 	controlTable = IF,
 	settingsSection = settings.Infamy,
-	windowVar = "wIF",
 	windowImportPath = AppCtrD .. "InfamyWindow",
 	windowFunction = "frmInfamyWindow",
 	customTooltipHandler = ShowIFWindow

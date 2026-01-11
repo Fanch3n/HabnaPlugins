@@ -14,7 +14,6 @@ SetupControlInteraction({
 	icon = TI["Icon"],
 	controlTable = TI,
 	settingsSection = settings.TrackItems,
-	windowVar = "wTI",
 	windowImportPath = AppCtrD .. "TrackItemsWindow",
 	windowFunction = "frmTrackItemsWindow",
 	customTooltipHandler = ShowTIWindow

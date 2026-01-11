@@ -15,7 +15,6 @@ SetupControlInteraction({
 	icon = LP["Lbl"],
 	controlTable = LP,
 	settingsSection = settings.LOTROPoints,
-	windowVar = "wLP",
 	windowImportPath = AppCtrD .. "LOTROPointsWindow",
 	windowFunction = "frmLOTROPointsWindow"
 })

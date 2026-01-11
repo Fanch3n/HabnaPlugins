@@ -20,7 +20,6 @@ SetupControlInteraction({
 	icon = RP["Icon"],
 	controlTable = RP,
 	settingsSection = settings.Reputation,
-	windowVar = "wRP",
 	windowImportPath = AppCtrD .. "ReputationWindow",
 	windowFunction = "frmReputationWindow",
 	tooltipKey = "RP",

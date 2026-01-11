@@ -79,8 +79,6 @@ end
 --   settingsSection: The settings table section for this control
 --   controlId: Optional control identifier (will be auto-derived from controlTable if not provided)
 --   tooltipName: Optional tooltip identifier (defaults to controlId)
---   windowFormVar: Optional form global variable name (defaults to "frm" + controlId)
---   windowVar: Optional window global variable name (defaults to "w" + controlId)
 --   windowImportPath: Optional import path (defaults to AppCtrD + controlId + "Window")
 --   windowFunction: Optional window function name (defaults to "frm" + controlId + "Window")
 function SetupControlInteraction(config)
@@ -101,8 +99,6 @@ function SetupControlInteraction(config)
 	
 	-- Use controlId for all derived values
 	local tooltipName = config.tooltipName or controlId
-	local windowFormVar = config.windowFormVar or ("frm" .. controlId)
-	local windowVar = config.windowVar or ("w" .. controlId)
 	local windowImportPath = config.windowImportPath or (AppCtrD .. controlId .. "Window")
 	local windowFunction = config.windowFunction or ("frm" .. controlId .. "Window")
 	local hasTooltip = config.hasTooltip ~= false -- default true

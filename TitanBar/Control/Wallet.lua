@@ -19,7 +19,6 @@ SetupControlInteraction({
 	icon = WI["Icon"],
 	controlTable = WI,
 	settingsSection = settings.Wallet,
-	windowVar = "wWI",
 	windowImportPath = AppCtrD .. "WalletWindow",
 	windowFunction = "frmWalletWindow",
 	hasTooltip = true,

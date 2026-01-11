@@ -16,7 +16,6 @@ SetupControlInteraction({
 	icon = GT["Lbl"],
 	controlTable = GT,
 	settingsSection = settings.GameTime,
-	windowVar = "wGT",
 	windowImportPath = AppCtrD .. "GameTimeWindow",
 	windowFunction = "frmGameTimeWindow"
 })

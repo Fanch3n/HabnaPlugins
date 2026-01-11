@@ -20,7 +20,6 @@ SetupControlInteraction({
 	icon = DN["Lbl"],
 	controlTable = DN,
 	settingsSection = settings.DayNight,
-	windowVar = "wDN",
 	windowImportPath = AppCtrD .. "DayNightWindow",
 	windowFunction = "frmDayNightWindow",
 	tooltipKey = "DN",

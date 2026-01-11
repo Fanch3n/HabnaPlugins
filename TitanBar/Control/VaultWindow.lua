@@ -87,7 +87,7 @@ function frmVault()
 
 	AddCallback(tvaultpack, "CountChanged", 
 		function(sender, args)
-		if frmVT then
+		if _G.ControlData.VT.windowInstance then
 			if SelCN == PN or SelCN == L["VTAll"] then CountVIItems(); end
 		end
 	end);

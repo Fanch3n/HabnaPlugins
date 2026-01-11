@@ -20,7 +20,6 @@ SetupControlInteraction({
 	icon = BI["Lbl"],
 	controlTable = BI,
 	settingsSection = settings.BagInfos,
-	windowVar = "wBI",
 	windowImportPath = AppCtrD .. "BagInfosWindow",
 	windowFunction = "frmBagInfos",
 	leaveControl = BI["Lbl"]

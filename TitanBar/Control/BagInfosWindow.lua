@@ -118,7 +118,7 @@ function frmBagInfos()
 
 	AddCallback(tbackpack, "ItemAdded", 
 		function(sender, args)
-		if frmBI then
+		if _G.ControlData.BI.windowInstance then
 			if SelCN == PN then SavePlayerBags(); CountBIItems();
 			elseif SelCN == L["VTAll"] then CountBIItems(); end
 		end
@@ -128,7 +128,7 @@ function frmBagInfos()
 	BIItemRemovedTimer = Turbine.UI.Control();
 	BIItemRemovedTimer.Update = function( sender, args )
 		BIItemRemovedTimer:SetWantsUpdates( false );
-		if frmBI then
+		if _G.ControlData.BI.windowInstance then
 			if SelCN == PN then SavePlayerBags(); CountBIItems();
 			elseif SelCN == L["VTAll"] then CountBIItems(); end
 		end
