@@ -71,7 +71,7 @@ function createToolTipWin( xOffset, yOffset, xSize, ySize, side, header, text1,
 	ApplySkin();
 
 	--**v Text in Header v**
-	lblheader = CreateControl(Turbine.UI.Label, _G.ToolTipWin, 40, 7, xSize, ySize);
+	local lblheader = CreateControl(Turbine.UI.Label, _G.ToolTipWin, 40, 7, xSize, ySize);
 	lblheader:SetForeColor( Color["green"] );
 	lblheader:SetFont(Turbine.UI.Lotro.Font.Verdana16);
 	lblheader:SetText( header );
@@ -99,6 +99,16 @@ function ShowToolTipWin(ToShow)
 	local bblTo, x, y= "left", -5, -15
 	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
 	local h = 80
+	local TTW = nil
+
+	local headerKeys = {
+		BI = "MBI",
+		GT = "GTh",
+		VT = "MVault",
+		SS = "MStorage",
+		DN = "MDayNight",
+		LP = "LotroPointsh",
+	}
 
 	-- TODO if DI (DurIcon) is replaced this needs to change
 	if TBLocale == "fr" then w = 315;
@@ -116,28 +126,15 @@ function ShowToolTipWin(ToShow)
 		y = h
 	end
 
-	if ToShow == "BI" then -- Bag Infos
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MBI"], L["EIt1"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "GT" then -- Game Time
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["GTh"], L["EIt1"], 
-            L["EIt2"], L["EIt3"] );
-	elseif ToShow == "VT" then -- Vault
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MVault"], L["EIt1"], 
-            L["EIt2"], L["EIt3"] );
-	elseif ToShow == "SS" then -- Shared Storage
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MStorage"], L["EIt1"], 
-            L["EIt2"], L["EIt3"] );
-	elseif ToShow == "DN" then -- Day & Night
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MDayNight"], L["EIt1"], 
-            L["EIt2"], L["EIt3"] );
-	elseif ToShow == "LP" then -- LOTRO points
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["LotroPointsh"], L["EIt1"], 
-            L["EIt2"], L["EIt3"] );
+	local headerKey = headerKeys[ToShow]
+	if headerKey then
+		TTW = createToolTipWin(x, y, w, h, bblTo, L[headerKey], L["EIt1"], L["EIt2"], L["EIt3"])
 	elseif ToShow == "DP" or ToShow == "PL" or _G.currencies.byName[ToShow] then
 		h = 65;
-		TTW = createToolTipWin( x, y, w, h, bblTo, L[ToShow .. "h"], L["EIt2"], L["EIt3"] );
+		TTW = createToolTipWin(x, y, w, h, bblTo, L[ToShow .. "h"], L["EIt2"], L["EIt3"])
 	else
 		write(ToShow .. " not recognized for Tooltip creation, add in functions.lua")
+		return
 	end
 
 	_G.ToolTipWin:SetPosition(
@@ -691,12 +688,6 @@ function AjustIcon(str)
 		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
 		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
 		_G[str][ "Icon" ]:SetStretchMode( 3 );
---[[	elseif str == "BK" then
-		BK[ "Icon" ]:SetStretchMode( 1 );
-		BK[ "Icon" ]:SetPosition( 0, Y );
-		BK[ "Ctr" ]:SetSize( TBIconSize, CTRHeight );
-		BK[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		BK[ "Icon" ]:SetStretchMode( 3 ); --]]
 	elseif str == "DN" then
 		_G[str][ "Icon" ]:SetStretchMode( 1 );
 		_G[str][ "Icon" ]:SetPosition(_G[str][ "Lbl" ]:GetLeft() + _G[str][ "Lbl" ]:GetWidth(), Y+1);

@@ -140,7 +140,6 @@ TitanBarMenu.items:Add(opt_IF);
 TitanBarMenu.items:Add(opt_GT);
 if PlayerAlign == 1 then TitanBarMenu.items:Add(opt_VT); end -- only show if in Free People mode
 if PlayerAlign == 1 then TitanBarMenu.items:Add(opt_SS); end -- only show if in Free People mode
---if PlayerAlign == 1 then TitanBarMenu.items:Add(opt_BK); end -- only show if in Free People mode
 TitanBarMenu.items:Add(opt_DN);
 if PlayerAlign == 1 then TitanBarMenu.items:Add(opt_RP); end -- only show if in Free People mode
 TitanBarMenu.items:Add(opt_line);
