@@ -3,50 +3,25 @@
 -- refactored by 4andreas
 
 function frmMoneyInfosWindow()
-	-- **v Set some window stuff v**
-	_G.wMI = Turbine.UI.Lotro.Window()
-	_G.wMI:SetText( L["MIWTitle"] );
-	_G.wMI:SetWantsKeyEvents( true );
-	_G.wMI:SetVisible( true );
-	_G.wMI:SetWidth( 325 );
-	--_G.wMI:SetZOrder( 2 );
-	_G.wMI:Activate();
-
-	_G.wMI.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wMI:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			_G.wMI:SetVisible( not _G.wMI:IsVisible() );
-		end
-	end
-
-	_G.wMI.MouseUp = function( sender, args )
-		settings.Money.L = string.format("%.0f", _G.wMI:GetLeft());
-		settings.Money.T = string.format("%.0f", _G.wMI:GetTop());
-		MIWLeft, MIWTop = _G.wMI:GetPosition();
-		SaveSettings( false );
-	end
-
-	_G.wMI.Closing = function( sender, args ) -- Function for the Upper right X icon
-		_G.wMI:SetWantsKeyEvents( false );
-		_G.wMI = nil;
-		_G.frmMI = nil;
-	end
-	-- **^
+	import(AppDirD .. "WindowFactory")
+	-- Create window via helper
+	local wMI = CreateControlWindow(
+		"Money", "Money",
+		L["MIWTitle"], 325, 640
+	)
 
 	MIListBox = Turbine.UI.ListBox();
-	MIListBox:SetParent( _G.wMI );
+	MIListBox:SetParent( wMI );
 	MIListBox:SetPosition( 20, 35 );
-	MIListBox:SetWidth( _G.wMI:GetWidth() - 40 );
-	MIListBox:SetMaxItemsPerLine( 1 );
-	MIListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
+	MIListBox:SetWidth( wMI:GetWidth() - 40 );
+	ConfigureListBox(MIListBox)
 	--MIListBox:SetBackColor( Color["darkgrey"] ); --debug purpose
 	
 	-- **v Display total money - check box v**
 	AllCharCB = Turbine.UI.Lotro.CheckBox();
-	AllCharCB:SetParent( _G.wMI );
+	AllCharCB:SetParent( wMI );
 	AllCharCB:SetText( L["MIWAll"] );
-	AllCharCB:SetSize( _G.wMI:GetWidth(), 30 );
+	AllCharCB:SetSize( wMI:GetWidth(), 30 );
 	AllCharCB:SetChecked( _G.STM );
 	AllCharCB:SetForeColor( Color["rustedgold"] );
 
@@ -59,9 +34,9 @@ function frmMoneyInfosWindow()
 	-- **^
 	-- **v Display character money - check box v**
 	ThisCharCB = Turbine.UI.Lotro.CheckBox();
-	ThisCharCB:SetParent( _G.wMI );
+	ThisCharCB:SetParent( wMI );
 	ThisCharCB:SetText( L["MIWCM"] );
-	ThisCharCB:SetSize( _G.wMI:GetWidth(), 30 );
+	ThisCharCB:SetSize( wMI:GetWidth(), 30 );
 	ThisCharCB:SetChecked( _G.SCM );
 	ThisCharCB:SetForeColor( Color["rustedgold"] );
 
@@ -74,9 +49,9 @@ function frmMoneyInfosWindow()
 	-- **^
 	-- **v Display to all character - check box v**
 	ToAllCharCB = Turbine.UI.Lotro.CheckBox();
-	ToAllCharCB:SetParent( _G.wMI );
+	ToAllCharCB:SetParent( wMI );
 	ToAllCharCB:SetText( L["MIWCMAll"] );
-	ToAllCharCB:SetSize( _G.wMI:GetWidth(), 30 );
+	ToAllCharCB:SetSize( wMI:GetWidth(), 30 );
 	ToAllCharCB:SetChecked( _G.SCMA );
 	ToAllCharCB:SetForeColor( Color["rustedgold"] );
 
@@ -87,9 +62,9 @@ function frmMoneyInfosWindow()
 	-- **^
 	-- **v Display session statistics - check box v**
 	SSSCB = Turbine.UI.Lotro.CheckBox();
-	SSSCB:SetParent( _G.wMI );
+	SSSCB:SetParent( wMI );
 	SSSCB:SetText( L["MIWSSS"] );
-	SSSCB:SetSize( _G.wMI:GetWidth(), 30 );
+	SSSCB:SetSize( wMI:GetWidth(), 30 );
 	SSSCB:SetChecked( _G.SSS );
 	SSSCB:SetForeColor( Color["rustedgold"] );
 
@@ -101,9 +76,9 @@ function frmMoneyInfosWindow()
 	-- **^
 	-- **v Display session statistics - check box v**
 	STSCB = Turbine.UI.Lotro.CheckBox();
-	STSCB:SetParent( _G.wMI );
+	STSCB:SetParent( wMI );
 	STSCB:SetText( L["MIWSTS"] );
-	STSCB:SetSize( _G.wMI:GetWidth(), 30 );
+	STSCB:SetSize( wMI:GetWidth(), 30 );
 	STSCB:SetChecked( _G.STS );
 	STSCB:SetForeColor( Color["rustedgold"] );
 
@@ -116,13 +91,14 @@ function frmMoneyInfosWindow()
 
 	RefreshMIListBox();
 
-	_G.wMI:SetPosition( MIWLeft, MIWTop );
+	wMI:SetPosition( _G.ControlData.Money.window.left, _G.ControlData.Money.window.top );
 end
 
 function RefreshMIListBox()
+	local wMI = _G.ControlData.Money.windowInstance
 	MIListBox:ClearItems();
-	MIPosY = 0;
-	iFound = false;
+	local MIPosY = 0;
+	local iFound = false;
 	
 	--Create an array of character name, sort it, then use it as a reference.
 	local a = {};
@@ -154,17 +130,7 @@ function RefreshMIListBox()
 		--MsgCtr:SetBackColor( Color["red"] ); -- Debug purpose
 		--**^
 		--**v Message v**
-		local MsgLbl = Turbine.UI.Label();
-		MsgLbl:SetParent( MsgCtr );
-		--MsgLbl:SetForeColor( Color["white"] );
-		MsgLbl:SetPosition( 0, 0 );
-		MsgLbl:SetText( L["MIMsg"] );
-		MsgLbl:SetSize( MsgCtr:GetWidth(), MsgCtr:GetHeight() );
-		--MsgLbl:SetFontStyle( Turbine.UI.FontStyle.Outline );
-		MsgLbl:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
-		MsgLbl:SetForeColor( Color["red"] );
-		--MsgLbl:SetBackColor( Color["white"] ); -- Debug purpose
-		--**^
+		local MsgLbl = CreateTitleLabel(MsgCtr, L["MIMsg"], 0, 0, nil, Color["red"], nil, MsgCtr:GetWidth(), MsgCtr:GetHeight(), Turbine.UI.ContentAlignment.MiddleCenter)
 
 		MIListBox:AddItem( MsgCtr );
 		MIPosY = MIPosY + 19;
@@ -205,5 +171,5 @@ function RefreshMIListBox()
 	MIPosY = MIPosY + 20;
 	STSCB:SetPosition( MIListBox:GetLeft(), MIPosY );
 	
-	_G.wMI:SetHeight( MIPosY + 45 );
+	wMI:SetHeight( MIPosY + 45 );
 end

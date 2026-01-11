@@ -1,36 +1,25 @@
 -- TrackItemsToolTip.lua
 -- written by Habna
 
+import(AppDirD .. "UIHelpers")
 
 local player = Turbine.Gameplay.LocalPlayer.GetInstance();
 local backpack = player:GetBackpack();
 local size = backpack:GetSize();
 
 function ShowTIWindow()
-	-- ( offsetX, offsetY, width, height, bubble side )
-	--x, y, w, h, bblTo = -5, -15, 0, 0, "left";
-	--mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
+	local tt = CreateTooltipWindow({
+		hasListBox = true,
+		listBoxPosition = {x = 15, y = 12},
+		listBoxWidth = Constants.TOOLTIP_WIDTH_MEDIUM
+	})
 	
-	--if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-	
-	_G.ToolTipWin = Turbine.UI.Window();
-	_G.ToolTipWin:SetZOrder( 1 );
-	--_G.ToolTipWin.xOffset = x;
-	--_G.ToolTipWin.yOffset = y;
-	_G.ToolTipWin:SetVisible( true );
+	TITTListBox = tt.listBox
+	ConfigureListBox(TITTListBox)
 
-	TITTListBox = Turbine.UI.ListBox();
-	TITTListBox:SetParent( _G.ToolTipWin );
-	TITTListBox:SetZOrder( 1 );
-	TITTListBox:SetPosition( 15, 12 );
-	TITTListBox:SetWidth( 325 );
-	TITTListBox:SetMaxItemsPerLine( 1 );
-	TITTListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
-	--TITTListBox:SetBackColor( Color["darkgrey"] ); --debug purpose
+	TIRefreshListBox()
 
-	TIRefreshListBox();
-
-	ApplySkin();
+	ApplySkin()
 end
 
 function TIRefreshListBox()
@@ -48,7 +37,7 @@ function TIRefreshListBox()
 		--lblName:SetFont ( 12 );
 		lblName:SetText( L["BINI"] );
 		lblName:SetPosition( 0, 0 );
-		lblName:SetSize( 275, 35 );
+		lblName:SetSize( Constants.LABEL_WIDTH_ITEM, Constants.LABEL_HEIGHT_ITEM );
 		lblName:SetForeColor( Color["green"] );
 		lblName:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 		--lblName:SetBackColor( Color["red"] ); -- debug purpose
@@ -80,31 +69,19 @@ function TIRefreshListBox()
 							--**^
 	
 							-- Item Background/Underlay/Shadow/Image
-							local BITTitemBG = Turbine.UI.Control();
-							BITTitemBG:SetParent( BITTCtr );
-							BITTitemBG:SetSize( 32, 32 );
-							BITTitemBG:SetPosition( 0, 2 );
+							local BITTitemBG = CreateControl(Turbine.UI.Control, BITTCtr, 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 							BITTitemBG:SetBackground(tonumber(ITL[i][itemName].B));
 							BITTitemBG:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		
-							local BITTitemU = Turbine.UI.Control();
-							BITTitemU:SetParent( BITTCtr );
-							BITTitemU:SetSize( 32, 32 );
-							BITTitemU:SetPosition( 0, 2 );
+							local BITTitemU = CreateControl(Turbine.UI.Control, BITTCtr, 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 							if ITL[i][itemName].U ~= "0" then BITTitemU:SetBackground(tonumber(ITL[i][itemName].U)); end
 							BITTitemU:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
-							local BITTitemS = Turbine.UI.Control();
-							BITTitemS:SetParent( BITTCtr );
-							BITTitemS:SetSize( 32, 32 );
-							BITTitemS:SetPosition( 0, 2 );
+							local BITTitemS = CreateControl(Turbine.UI.Control, BITTCtr, 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 							if ITL[i][itemName].S ~= "0" then BITTitemS:SetBackground(tonumber(ITL[i][itemName].S)); end
 							BITTitemS:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
-							local BITTitem = Turbine.UI.Control();
-							BITTitem:SetParent( BITTCtr );
-							BITTitem:SetSize( 32, 32 );
-							BITTitem:SetPosition( 0, 2 );
+							local BITTitem = CreateControl(Turbine.UI.Control, BITTCtr, 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 							BITTitem:SetBackground(tonumber(ITL[i][itemName].I));
 							BITTitem:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
@@ -112,17 +89,8 @@ function TIRefreshListBox()
 							TITTListBox:SetHeight( TITTPosY );
 
 							-- Item Quantity
-							itemQTE = Turbine.UI.Label();
-							itemQTE:SetParent( BITTCtr );
-							itemQTE:SetSize( 32, 15 );
-							itemQTE:SetPosition( -4, 16 );
-							itemQTE:SetFont( Turbine.UI.Lotro.Font.Verdana12 );
-							itemQTE:SetFontStyle( Turbine.UI.FontStyle.Outline );
-							itemQTE:SetOutlineColor( Color["black"] );
-							itemQTE:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
-							itemQTE:SetBackColorBlendMode( Turbine.UI.BlendMode.Overlay );
-							itemQTE:SetForeColor( Color["nicegold"] );
 							BITTItemTot = item:GetQuantity();
+							itemQTE = CreateQuantityLabel(BITTCtr, BITTItemTot)
 
 							--Check the rest of bag for same item (in case user as multiple stack
 							for iii = ii+1, size do
@@ -137,10 +105,7 @@ function TIRefreshListBox()
 							--itemQTE:SetText( "9999" ); -- Debuf purpose
 
 							-- Item name
-							itemsLbl = Turbine.UI.Label();
-							itemsLbl:SetParent( BITTCtr );
-							itemsLbl:SetSize( TITTListBox:GetWidth() - 35, 35 );
-							itemsLbl:SetPosition( 37, 2 );
+							itemsLbl = CreateControl(Turbine.UI.Label, BITTCtr, 37, 2, TITTListBox:GetWidth() - 35, 35);
 							itemsLbl:SetFont( Turbine.UI.Lotro.Font.TrajanPro16 );
 							itemsLbl:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 							itemsLbl:SetBackColorBlendMode( Turbine.UI.BlendMode.Overlay );
@@ -166,7 +131,7 @@ function TIRefreshListBox()
 			--lblName:SetFont ( 12 );
 			lblName:SetText( L["BINI"] );
 			lblName:SetPosition( 0, 0 );
-			lblName:SetSize( 210, 35 );
+			lblName:SetSize( Constants.LABEL_WIDTH_EXTRA_WIDE, Constants.LABEL_HEIGHT_ITEM );
 			lblName:SetForeColor( Color["green"] );
 			lblName:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 			--lblName:SetBackColor( Color["red"] ); -- debug purpose
@@ -182,13 +147,5 @@ function TIRefreshListBox()
 	if #ITL == 0 or not bItemInListFoundInBag then _G.ToolTipWin:SetSize( 300, TITTPosY - 7 );
 	else _G.ToolTipWin:SetSize( 320, TITTPosY - 7 ); end
 
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-			
-	if _G.ToolTipWin:GetWidth() + mouseX + 5 > screenWidth then x = _G.ToolTipWin:GetWidth() - 10;
-	else x = -5; end
-			
-	if TBTop then y = -15;
-	else y = _G.ToolTipWin:GetHeight() end
-
-	_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
+	PositionToolTipWindow();
 end

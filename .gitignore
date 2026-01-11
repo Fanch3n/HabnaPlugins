@@ -46,3 +46,4 @@ Temporary Items
 
 # Notepad++ backup folder
 nppBackup
+*.log

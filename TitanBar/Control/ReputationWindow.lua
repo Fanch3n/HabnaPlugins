@@ -5,92 +5,56 @@
 function frmReputationWindow()
     _G.SelectedFaction = nil;
     import(AppClassD.."ComboBox");
+    import(AppDirD .. "WindowFactory")
+    import(AppDirD .. "UIHelpers")
     RPDD = HabnaPlugins.TitanBar.Class.ComboBox();
 
-    -- **v Set some window stuff v**
-    _G.wRP = Turbine.UI.Lotro.Window();
-    _G.wRP:SetSize(480, 640);
-    _G.wRP:SetPosition(RPWLeft, RPWTop);
-    _G.wRP:SetText(L["MReputation"]);
-    _G.wRP:SetVisible(true);
-    _G.wRP:SetWantsKeyEvents(true);
-    --_G.wRP:SetZOrder(2);
-    _G.wRP:Activate();
+	-- Create window via helper for consistent behavior
+	local wRP = CreateControlWindow(
+		"Reputation", "RP",
+		L["MReputation"], 480, 640,
+		{
+			dropdown = RPDD,
+			onClosing = function(sender, args)
+				-- ensure dropdown hidden and any extra cleanup
+				if RPDD and RPDD.dropDownWindow then
+					RPDD.dropDownWindow:SetVisible(false)
+				end
+			end
+		}
+	)
+    -- Use CreateTitleLabel for the reputation header
+    local RPlbltext = CreateTitleLabel(wRP, L["RPt"], 20, 35, nil, Color["green"], nil, wRP:GetWidth() - 40, 35, Turbine.UI.ContentAlignment.MiddleCenter)
 
-    _G.wRP.KeyDown = function(sender, args)
-        if (args.Action == Turbine.UI.Lotro.Action.Escape) then
-            _G.wRP:Close();
-        elseif (args.Action == 268435635) or (args.Action == 268435579) then
-        -- Hide if F12 key is press or reposition UI
-            _G.wRP:SetVisible(not _G.wRP:IsVisible());
-        elseif (args.Action == 162) then -- Enter key was pressed
-            RPbutSave.Click(sender, args);
-        end
+    local RPFilterlbl = CreateFieldLabel(wRP, "Search:", 20, 75, 8, 60)
+
+    -- Use factory helper to create a search TextBox + delete icon
+    local rpSearch = CreateSearchControl(wRP, RPFilterlbl:GetLeft() + RPFilterlbl:GetWidth(), RPFilterlbl:GetTop(), wRP:GetWidth() - 120, 20, Turbine.UI.Lotro.Font.Verdana16, resources)
+    local RPFiltertxt = rpSearch.TextBox
+    wRP.RPFilterDelIcon = rpSearch.DelIcon
+    RPFiltertxt.Text = ""
+    RPFiltertxt.TextChanged = function(sender, args)
+        local txt = RPFiltertxt:GetText() or ""
+        RPFilter(txt)
     end
 
-    _G.wRP.MouseDown = function(sender, args)
-        if (args.Button == Turbine.UI.MouseButton.Left) then 
-            dragging = true; 
-        end
-    end
+    -- RPFilter: hide/show list rows based on filter string.
+    -- Accepts an optional filter parameter; if nil, reads the current textbox value.
+    function RPFilter(filter)
+        local f = filter
+        if f == nil then f = RPFiltertxt:GetText() or "" end
+        f = string.lower(f)
 
-    _G.wRP.MouseMove = function(sender, args)
-        if dragging then if RPDD.dropped then RPDD:CloseDropDown(); end end
-    end
-
-    _G.wRP.MouseUp = function(sender, args)
-        dragging = false;
-        settings.Reputation.L = string.format("%.0f", _G.wRP:GetLeft());
-        settings.Reputation.T = string.format("%.0f", _G.wRP:GetTop());
-        RPWLeft, RPWTop = _G.wRP:GetPosition();
-        SaveSettings(false);
-    end
-
-    _G.wRP.Closing = function(sender, args)
-        RPDD.dropDownWindow:SetVisible(false);
-        _G.wRP:SetWantsKeyEvents(false);
-        _G.wRP = nil;
-        _G.frmRP = nil;
-    end
-    -- **^
-   
-
-    local RPlbltext = Turbine.UI.Label();
-    RPlbltext:SetParent(_G.wRP);
-    RPlbltext:SetText(L["RPt"]);
-    RPlbltext:SetPosition(20, 35);
-    RPlbltext:SetSize(_G.wRP:GetWidth() - 40 , 35);
-    RPlbltext:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleCenter);
-    RPlbltext:SetForeColor(Color["green"]);
-
-    local RPFilterlbl = Turbine.UI.Label();
-    RPFilterlbl:SetParent(_G.wRP);
-    RPFilterlbl:SetSize(60,20);
-    RPFilterlbl:SetPosition(20,75);
-    RPFilterlbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
-    RPFilterlbl:SetText("Search:");
-    local RPFiltertxt = Turbine.UI.Lotro.TextBox();
-    RPFiltertxt:SetParent(_G.wRP);
-    RPFiltertxt:SetFont(Turbine.UI.Lotro.Font.Verdana16);
-    RPFiltertxt:SetMultiline(false);
-    RPFiltertxt:SetPosition(80,75);
-    RPFiltertxt:SetSize(_G.wRP:GetWidth() - 120, 20);
-    RPFiltertxt.Text = "";
-    RPFiltertxt.TextChanged = function()
-        if RPFiltertxt.Text ~= RPFiltertxt:GetText() then
-            RPFiltertxt.Text = RPFiltertxt:GetText();
-            RPFilter(RPFiltertxt.Text);
-        end
-    end
-
-    function RPFilter()
-        filterText = string.lower(RPFiltertxt.Text);
-        for i=1,RPListBox:GetItemCount() do
-            local row = RPListBox:GetItem(i);
-            if string.find(string.lower(row.repLbl:GetText()),filterText) == nil then
-                row:SetHeight(0);
-            else
-                row:SetHeight(20);
+        local count = RPListBox:GetItemCount() or 0
+        for i = 1, count do
+            local row = RPListBox:GetItem(i)
+            if row and row.repLbl and row.repLbl:GetText() then
+                local name = string.lower(row.repLbl:GetText())
+                if string.find(name, f, 1, true) == nil then
+                    row:SetHeight(0)
+                else
+                    row:SetHeight(20)
+                end
             end
         end
     end
@@ -98,9 +62,9 @@ function frmReputationWindow()
 --[[-- Add a checkbox for people to be able to hide all factions that reach max 
     -- reputation (then reshow if they loose rep)
     RPPHMaxCtr = Turbine.UI.Lotro.CheckBox();
-    RPPHMaxCtr:SetParent(_G.wRP);
+    RPPHMaxCtr:SetParent(wRP);
     RPPHMaxCtr:SetText(L["RPPHMaxHide"]);
-    RPPHMaxCtr:SetSize(_G.wRP:GetWidth() - 10, 20);
+    RPPHMaxCtr:SetSize(wRP:GetWidth() - 10, 20);
     RPPHMaxCtr:SetPosition(45, 65);
     RPPHMaxCtr:SetFont(Turbine.UI.Lotro.Font.TrajanPro16);
     RPPHMaxCtr:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
@@ -114,30 +78,24 @@ function frmReputationWindow()
     end
 --]]
 
-    -- **v Set the reputation listbox v**
-    RPListBox = Turbine.UI.ListBox();
-    RPListBox:SetParent(_G.wRP);
-    RPListBox:SetZOrder(1);
-    RPListBox:SetPosition(20, 115);
-    RPListBox:SetSize(_G.wRP:GetWidth() - 40, _G.wRP:GetHeight() - 130);
-    RPListBox:SetMaxItemsPerLine(1);
-    RPListBox:SetOrientation(Turbine.UI.Orientation.Horizontal);
-    --RPListBox:SetBackColor(Color["red"]); --debug purpose
-    -- **^
-    -- **v Set the listbox scrollbar v**
-    RPListBoxScrollBar = Turbine.UI.Lotro.ScrollBar();
-    RPListBoxScrollBar:SetParent(RPListBox);
-    RPListBoxScrollBar:SetZOrder(1);
-    RPListBoxScrollBar:SetOrientation(Turbine.UI.Orientation.Vertical);
-    RPListBox:SetVerticalScrollBar(RPListBoxScrollBar);
-    RPListBoxScrollBar:SetPosition(RPListBox:GetWidth() - 10, 0);
-    RPListBoxScrollBar:SetSize(12, RPListBox:GetHeight());
+    -- **v Set the reputation listbox v (using WindowFactory helper) **
+    local rpLeft, rpTop = 20, 115
+    local rpWidth, rpHeight = wRP:GetWidth() - 40, wRP:GetHeight() - 130
+    local rplb = CreateListBoxWithBorder(wRP, rpLeft, rpTop, rpWidth, rpHeight, nil)
+    RPListBox = rplb.ListBox
+    RPListBox:SetParent(wRP)
+    RPListBox:SetZOrder(1)
+    ConfigureListBox(RPListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
+    RPListBoxScrollBar = rplb.ScrollBar
+    RPListBoxScrollBar:SetParent(RPListBox)
+    RPListBoxScrollBar:SetZOrder(1)
+    RPListBoxScrollBar:SetOrientation(Turbine.UI.Orientation.Vertical)
+    RPListBox:SetVerticalScrollBar(RPListBoxScrollBar)
+    RPListBoxScrollBar:SetPosition(RPListBox:GetWidth() - 10, 0)
+    RPListBoxScrollBar:SetSize(12, RPListBox:GetHeight())
     -- **^
 
-    RPWCtr = Turbine.UI.Control();
-    RPWCtr:SetParent(_G.wRP);
-    RPWCtr:SetPosition(RPListBox:GetLeft(), RPListBox:GetTop());
-    RPWCtr:SetSize(RPListBox:GetWidth(), RPListBox:GetHeight());
+    RPWCtr = CreateControl(Turbine.UI.Control, wRP, RPListBox:GetLeft(), RPListBox:GetTop(), RPListBox:GetWidth(), RPListBox:GetHeight());
     RPWCtr:SetZOrder(0);
     RPWCtr:SetVisible(false);
     RPWCtr:SetBlendMode(5);
@@ -152,10 +110,7 @@ function frmReputationWindow()
         end
     end
 
-    RPlblFN = Turbine.UI.Label(); -- Faction Name label
-    RPlblFN:SetParent(RPWCtr);
-    RPlblFN:SetPosition(0, 120);
-    RPlblFN:SetSize(RPWCtr:GetWidth(), 15);
+    RPlblFN = CreateControl(Turbine.UI.Label, RPWCtr, 0, 120, RPWCtr:GetWidth(), 15); -- Faction Name label
     RPlblFN:SetFont(Turbine.UI.Lotro.Font.TrajanPro16);
     RPlblFN:SetFontStyle(Turbine.UI.FontStyle.Outline);
     RPlblFN:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleCenter);
@@ -173,7 +128,7 @@ function frmReputationWindow()
 
     -- **v Create drop down box v**
     RPDD:SetParent(RPWCtr);
-    RPDD:SetSize(159, 19);
+    RPDD:SetSize(Constants.DROPDOWN_WIDTH, Constants.DROPDOWN_HEIGHT);
     RPDD:SetPosition(
         RPlblRank:GetLeft() + RPlblRank:GetWidth() + 5, RPlblRank:GetTop());
     RPDD.dropDownWindow:SetParent(RPWCtr);
@@ -192,15 +147,7 @@ function frmReputationWindow()
     RPlblTotal:SetForeColor(Color["rustedgold"]);
     RPlblTotal:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
 
-    RPtxtTotal = Turbine.UI.Lotro.TextBox();
-    RPtxtTotal:SetParent(RPWCtr);
-    RPtxtTotal:SetPosition( 
-        RPlblTotal:GetLeft() + RPlblTotal:GetWidth() + 5, 
-        RPlblTotal:GetTop() - 2);
-    RPtxtTotal:SetFont(Turbine.UI.Lotro.Font.TrajanPro14);
-    RPtxtTotal:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
-    RPtxtTotal:SetSize(90, 20);
-    RPtxtTotal:SetMultiline(false);
+    RPtxtTotal = CreateInputTextBox(RPWCtr, nil, RPlblTotal:GetLeft() + RPlblTotal:GetWidth() + 5, RPlblTotal:GetTop() - 2, 90);
     if PlayerAlign == 2 then RPtxtTotal:SetBackColor(Color["red"]); end
 
     RPtxtTotal.FocusGained = function(sender, args)
@@ -226,13 +173,7 @@ function frmReputationWindow()
         end
     end
 
-    RPbutSave = Turbine.UI.Lotro.Button();
-    RPbutSave:SetParent(RPWCtr);
-    RPbutSave:SetPosition(
-        RPtxtTotal:GetLeft() + RPtxtTotal:GetWidth() + 5, 
-        RPtxtTotal:GetTop());
-    RPbutSave:SetText(L["PWSave"]);
-    RPbutSave:SetSize(RPbutSave:GetTextLength() * 10, 15); 
+    RPbutSave = CreateAutoSizedButton(RPWCtr, L["PWSave"], RPtxtTotal:GetLeft() + RPtxtTotal:GetWidth() + 5, RPtxtTotal:GetTop())
     RPbutSave.Click = function(sender, args)
         if RPtxtTotal:GetText() == "" then
             RPtxtTotal:SetText("0");
@@ -290,10 +231,10 @@ function RefreshRPListBox()
 
                 local currentRankPoints = "0"
                 local currentRank = ""
-                local totalReputation = PlayerReputation[PN][faction.name].Total
+                local totalReputation = tonumber(PlayerReputation[PN][faction.name].Total) or 0
 
                 for i = #faction.ranks, 1, -1 do
-                    if tonumber(faction.ranks[i].requiredReputation) <= tonumber(totalReputation) then
+                    if tonumber(faction.ranks[i].requiredReputation) <= totalReputation then
                         currentRankPoints = totalReputation - faction.ranks[i].requiredReputation
                         currentRank = faction.ranks[i].name
                         break
@@ -302,12 +243,12 @@ function RefreshRPListBox()
 
                 RPtxtTotal:SetText(tostring(currentRankPoints));
                 RPDD:ClearItems();
-                
+                -- Build label/value entries for the dropdown and populate via helper
+                local rankEntries = {}
                 for _, rank in ipairs(faction.ranks) do
-                    RPDD:AddItem(L[rank.name], rank.name)
+                    table.insert(rankEntries, { label = L[rank.name], value = rank.name })
                 end
-
-                RPDD:SetSelection(currentRank)
+                PopulateDropDown(RPDD, rankEntries, false, nil, currentRank)
                 RPWCtr:SetVisible(true);
                 RPWCtr:SetZOrder(2);
                 RPtxtTotal:Focus();
@@ -324,3 +265,4 @@ function RefreshRPListBox()
 
     RPFilter();
 end
+

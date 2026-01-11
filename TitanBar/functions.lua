@@ -2,6 +2,8 @@
 -- Written By Habna
 -- rewritten by many
 
+import(AppDirD .. "UIHelpers")
+
 function AddCallback(object, event, callback)
 	if object[event] == nil then
 		object[event] = callback;
@@ -39,10 +41,7 @@ function ApplySkin() --Tooltip skin
 
 	-- Create and position tooltip corners and edges
 	local function createTooltipPart(name, x, y, width, height, background)
-		local part = Turbine.UI.Control()
-		part:SetParent(ToolTipWin)
-		part:SetPosition(x, y)
-		part:SetSize(width, height)
+		local part = CreateControl(Turbine.UI.Control, ToolTipWin, x, y, width, height)
 		part:SetBackground(background)
 	end
 
@@ -64,7 +63,7 @@ function createToolTipWin( xOffset, yOffset, xSize, ySize, side, header, text1,
 	_G.ToolTipWin = Turbine.UI.Window();
 	_G.ToolTipWin:SetSize( xSize, ySize );
 	--_G.ToolTipWin:SetMouseVisible( false );
-	_G.ToolTipWin:SetZOrder( 1 );
+	_G.ToolTipWin:SetZOrder( Constants.ZORDER_TOOLTIP );
 	_G.ToolTipWin.xOffset = xOffset;
 	_G.ToolTipWin.yOffset = yOffset;
 	--_G.ToolTipWin:SetBackColor( Color["black"] ); --Debug purpose
@@ -72,10 +71,7 @@ function createToolTipWin( xOffset, yOffset, xSize, ySize, side, header, text1,
 	ApplySkin();
 
 	--**v Text in Header v**
-	lblheader = Turbine.UI.Label();
-	lblheader:SetParent( _G.ToolTipWin );
-	lblheader:SetPosition( 40, 7 ); --10
-	lblheader:SetSize( xSize, ySize );
+	lblheader = CreateControl(Turbine.UI.Label, _G.ToolTipWin, 40, 7, xSize, ySize);
 	lblheader:SetForeColor( Color["green"] );
 	lblheader:SetFont(Turbine.UI.Lotro.Font.Verdana16);
 	lblheader:SetText( header );
@@ -85,10 +81,7 @@ function createToolTipWin( xOffset, yOffset, xSize, ySize, side, header, text1,
 	
 	--**v Text v**
 	for i = 1, #txt do
-		local lbltext = Turbine.UI.Label();
-		lbltext:SetParent( _G.ToolTipWin );
-		lbltext:SetPosition( 40, YPos ); --10
-		lbltext:SetSize( xSize, 15 );
+		local lbltext = CreateControl(Turbine.UI.Label, _G.ToolTipWin, 40, YPos, xSize, 15);
 		lbltext:SetForeColor( Color["white"] );
 		lbltext:SetFont(Turbine.UI.Lotro.Font.Verdana14);
 		lbltext:SetText( txt[i] );
@@ -134,9 +127,6 @@ function ShowToolTipWin(ToShow)
 	elseif ToShow == "SS" then -- Shared Storage
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["MStorage"], L["EIt1"], 
             L["EIt2"], L["EIt3"] );
---[[	elseif ToShow == "BK" then -- Bank
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MBank"], L["EIt1"], 
-            L["EIt2"], L["EIt3"] ); --]]
 	elseif ToShow == "DN" then -- Day & Night
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["MDayNight"], L["EIt1"], 
             L["EIt2"], L["EIt3"] );
@@ -259,7 +249,7 @@ end
 --**^
 --**v Update LOTRO points on TitanBar v**
 function UpdateLOTROPoints()
-	if _G.LPWhere == Position.TITANBAR then
+	if _G.LPWhere == Constants.Position.TITANBAR then
 		LP["Lbl"]:SetText(_G.LOTROPTS)
 		LP["Lbl"]:SetSize(LP["Lbl"]:GetTextLength() * NM, CTRHeight)
 		AjustIcon("LP")
@@ -417,11 +407,6 @@ function UpdateSharedStorage()
 	AjustIcon( "SS" );
 end
 --**^
---**v Update Bank on TitanBar v**
-function UpdateBank()
-	AjustIcon( "BK" );
-end
---**^
 --**v Update Day & Night time on TitanBar v**
 function UpdateDayNight()
 	local cdate = Turbine.Engine.GetDate();
@@ -539,32 +524,32 @@ end
 function ChangeColor(tColor)
 	if BGWToAll then
 		TB["win"]:SetBackColor( tColor );
-		if ShowWallet then WI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowMoney then MI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowBagInfos then BI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowPlayerInfos then PI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowEquipInfos then EI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowDurabilityInfos then DI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowTrackItems then TI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowInfamy then IF[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowVault then VT[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowSharedStorage then SS[ "Ctr" ]:SetBackColor( tColor ); end
-		--if ShowBank then BK[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowDayNight then DN[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowReputation then RP[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowLOTROPoints then LP[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowPlayerLoc then PL[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowGameTime then GT[ "Ctr" ]:SetBackColor( tColor ); end
+		
+		-- Apply to all standard controls via ControlRegistry
+		_G.ControlRegistry.ForEach(function(controlId, data)
+			if data.show and data.ui.control then
+				data.ui.control:SetBackColor(tColor)
+			end
+		end)
+		
+		-- Apply to all currency controls
 		for k,v in pairs(_G.currencies.list) do
 			if _G.CurrencyData[v.name].IsVisible then
 				_G.CurrencyData[v.name].Ctr:SetBackColor(tColor)
 			end
 		end
 	else
-		if sFrom == "TitanBar" then TB["win"]:SetBackColor( tColor )
-		elseif sFrom == "Money" then MI[ "Ctr" ]:SetBackColor( tColor )
+		if sFrom == "TitanBar" then 
+			TB["win"]:SetBackColor( tColor )
 		else
-			_G.CurrencyData[sFrom].Ctr:SetBackColor(tColor)
+			-- Try to get from ControlRegistry first
+			local data = _G.ControlRegistry.Get(sFrom)
+			if data and data.ui.control then
+				data.ui.control:SetBackColor(tColor)
+			elseif _G.CurrencyData[sFrom] then
+				-- Fall back to currency data
+				_G.CurrencyData[sFrom].Ctr:SetBackColor(tColor)
+			end
 		end
 	end
 end
@@ -766,7 +751,7 @@ function GetInGameTime()
 	local nowtime = Turbine.Engine.GetLocalTime();
 	local gametime = Turbine.Engine.GetGameTime();
 	local InitDawn =  nowtime - gametime + _G.TS;
-	local adjust = (nowtime - (nowtime - gametime + _G.TS))% 11160;
+	local adjust = (nowtime - (nowtime - gametime + _G.TS)) % Constants.GAME_TIME_CYCLE;
   local darray = {572, 1722, 1067, 1678, 1101, 570, 1679, 539, 1141, 1091};
 	local dtarray = {
         L["Dawn"], L["Morning"], L["Noon"], L["Afternoon"], L["Dusk"], 

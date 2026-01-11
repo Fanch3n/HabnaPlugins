@@ -1,26 +1,26 @@
--- InfamyToolTip.lua
--- written by Habna
+import(AppDirD .. "UIHelpers")
 
 
 function ShowIFWindow()
-	-- ( offsetX, offsetY, width, height, bubble side )
-	x, y, w, h = -5, -15, 0, 100;
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
+	local tt = CreateTooltipWindow({})
+
+	RefreshIFToolTip()
+
+	ApplySkin()
 	
-	if w + mouseX > screenWidth then x = w - 10; end
+	-- Position with custom logic for infamy
+	local x, y = -5, -15
+	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition()
 	
-	if not TBTop then y = h; end
-
-	_G.ToolTipWin = Turbine.UI.Window();
-	_G.ToolTipWin:SetZOrder( 1 );
-	--_G.ToolTipWin.xOffset = x;
-	--_G.ToolTipWin.yOffset = y;
-	_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y );
-	_G.ToolTipWin:SetVisible( true );
-
-	RefreshIFToolTip();
-
-	ApplySkin();
+	if _G.ToolTipWin:GetWidth() + mouseX > screenWidth then 
+		x = _G.ToolTipWin:GetWidth() - 10
+	end
+	
+	if not TBTop then 
+		y = _G.ToolTipWin:GetHeight()
+	end
+	
+	_G.ToolTipWin:SetPosition(mouseX - x, mouseY - y)
 end
 
 function RefreshIFToolTip()
@@ -68,9 +68,7 @@ function RefreshIFToolTip()
 	lblInfamy:SetZOrder( 2 );
 	--lblInfamy:SetBackColor( Color["red"] ); -- debug purpose
 
-	local NextRankCtr = Turbine.UI.Control();
-	NextRankCtr:SetParent( _G.ToolTipWin );
-	NextRankCtr:SetPosition( labelInfamy:GetLeft(), labelInfamy:GetTop()+labelInfamy:GetHeight()+5 )
+	local NextRankCtr = CreateControl(Turbine.UI.Control, _G.ToolTipWin, labelInfamy:GetLeft(), labelInfamy:GetTop()+labelInfamy:GetHeight()+5, 0, 0)
 	NextRankCtr:SetZOrder( 2 );
 	--NextRankCtr:SetBackColor( Color["red"] ); -- debug purpose
 	
@@ -93,32 +91,24 @@ function RefreshIFToolTip()
 	--labelTN:SetBackColor( Color["red"] ); -- debug purpose
 
 	NextRankCtr:SetSize( lblNextRank:GetWidth()+labelTN:GetWidth()+10, 15 );
-	_G.ToolTipWin:SetSize( NextRankCtr:GetWidth()+40, h );
 
 	local percentage_done = string.format("%.1f", tonumber(settings.Infamy.P) / InfamyRanks[tonumber(settings.Infamy.K)+1]*100);
 	--percentage_done = string.format("%.1f", percentage_done);
 	--percentage_done = 1; --debug purpose
 
 	--**v Infamy progress bar v**		
-	local IFPBCTr = Turbine.UI.Control();
-	IFPBCTr:SetParent( _G.ToolTipWin );
-	IFPBCTr:SetPosition( NextRankCtr:GetLeft(), NextRankCtr:GetTop()+NextRankCtr:GetHeight()+5 )
-	IFPBCTr:SetSize( 200, 15 );
+	local IFPBCTr = CreateControl(Turbine.UI.Control, _G.ToolTipWin, NextRankCtr:GetLeft(), NextRankCtr:GetTop()+NextRankCtr:GetHeight()+5, 200, 15)
 	IFPBCTr:SetZOrder( 2 );
 	--IFPBCTr:SetBackColor( Color["red"] ); -- debug purpose
 		
-	local IFPBFill = Turbine.UI.Control();--Filling
-	IFPBFill:SetParent( IFPBCTr );
-	IFPBFill:SetPosition( 9, 3 );
-	IFPBFill:SetSize( (183*percentage_done)/100, 9 );
+	local IFPBFill = CreateControl(Turbine.UI.Control, IFPBCTr, 9, 3, (Constants.PROGRESS_BAR_WIDTH*percentage_done)/100, Constants.PROGRESS_BAR_HEIGHT)--Filling
 	IFPBFill:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 	IFPBFill:SetBackground( resources.InfamyBG );
 	--IFPBFill:SetBackColor( Color["red"] ); -- debug purpose
 		
-	local IFPB = Turbine.UI.Control(); --Frame
-	IFPB:SetParent( IFPBCTr );
+	local IFPB = CreateControl(Turbine.UI.Control, IFPBCTr, 0, 0, 0, 0) --Frame
 	IFPB:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-	IFPB:SetSize( 200, 15 );
+	IFPB:SetSize( Constants.LABEL_WIDTH_WIDE, Constants.LABEL_HEIGHT_STANDARD );
 	IFPB:SetBackground( 0x41007e94 );
 	-- pourcentage bar: 0x41007e94
 	--IFPB:SetBackColor( Color["red"] ); -- debug purpose
@@ -127,9 +117,13 @@ function RefreshIFToolTip()
 	labelPC:SetParent( IFPBCTr );
 	labelPC:SetText( percentage_done .. "%" );
 	labelPC:SetPosition( 0, 2 );
-	labelPC:SetSize( 200, 15 );
+	labelPC:SetSize( Constants.LABEL_WIDTH_WIDE, Constants.LABEL_HEIGHT_STANDARD );
 	labelPC:SetForeColor( Color["white"] );
 	labelPC:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 	--labelTN:SetBackColor( Color["red"] ); -- debug purpose
 	--**^
+	
+	-- Calculate and set tooltip window size
+	local h = IFPBCTr:GetTop() + IFPBCTr:GetHeight() + 20
+	_G.ToolTipWin:SetSize( NextRankCtr:GetWidth()+40, h )
 end
