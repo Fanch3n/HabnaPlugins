@@ -4,6 +4,13 @@
 
 function frmMoneyInfosWindow()
 	import(AppDirD .. "WindowFactory")
+	_G.ControlData.Money = _G.ControlData.Money or {}
+	local moneyData = _G.ControlData.Money
+	if moneyData.stm == nil then moneyData.stm = false end
+	if moneyData.sss == nil then moneyData.sss = true end
+	if moneyData.sts == nil then moneyData.sts = true end
+	if moneyData.scm == nil then moneyData.scm = true end
+	if moneyData.scma == nil then moneyData.scma = true end
 	-- Create window via helper
 	local wMI = CreateControlWindow(
 		"Money", "Money",
@@ -22,12 +29,12 @@ function frmMoneyInfosWindow()
 	AllCharCB:SetParent( wMI );
 	AllCharCB:SetText( L["MIWAll"] );
 	AllCharCB:SetSize( wMI:GetWidth(), 30 );
-	AllCharCB:SetChecked( _G.STM );
+	AllCharCB:SetChecked( moneyData.stm );
 	AllCharCB:SetForeColor( Color["rustedgold"] );
 
 	AllCharCB.CheckedChanged = function( sender, args )
-		_G.STM = AllCharCB:IsChecked();
-		settings.Money.S = _G.STM;
+		moneyData.stm = AllCharCB:IsChecked();
+		settings.Money.S = moneyData.stm;
 		SaveSettings( false );
 		UpdateMoney();
 	end
@@ -37,12 +44,12 @@ function frmMoneyInfosWindow()
 	ThisCharCB:SetParent( wMI );
 	ThisCharCB:SetText( L["MIWCM"] );
 	ThisCharCB:SetSize( wMI:GetWidth(), 30 );
-	ThisCharCB:SetChecked( _G.SCM );
+	ThisCharCB:SetChecked( moneyData.scm );
 	ThisCharCB:SetForeColor( Color["rustedgold"] );
 
 	ThisCharCB.CheckedChanged = function( sender, args )
-		_G.SCM = ThisCharCB:IsChecked();
-		if _G.STM then AllCharCB:SetChecked( false ); SavePlayerMoney(true); AllCharCB:SetChecked( true );
+		moneyData.scm = ThisCharCB:IsChecked();
+		if moneyData.stm then AllCharCB:SetChecked( false ); SavePlayerMoney(true); AllCharCB:SetChecked( true );
 		else SavePlayerMoney(true); end
 		RefreshMIListBox();
 	end
@@ -52,11 +59,11 @@ function frmMoneyInfosWindow()
 	ToAllCharCB:SetParent( wMI );
 	ToAllCharCB:SetText( L["MIWCMAll"] );
 	ToAllCharCB:SetSize( wMI:GetWidth(), 30 );
-	ToAllCharCB:SetChecked( _G.SCMA );
+	ToAllCharCB:SetChecked( moneyData.scma );
 	ToAllCharCB:SetForeColor( Color["rustedgold"] );
 
 	ToAllCharCB.CheckedChanged = function( sender, args )
-		_G.SCMA = ToAllCharCB:IsChecked();
+		moneyData.scma = ToAllCharCB:IsChecked();
 		SavePlayerMoney( false );
 	end
 	-- **^
@@ -65,12 +72,12 @@ function frmMoneyInfosWindow()
 	SSSCB:SetParent( wMI );
 	SSSCB:SetText( L["MIWSSS"] );
 	SSSCB:SetSize( wMI:GetWidth(), 30 );
-	SSSCB:SetChecked( _G.SSS );
+	SSSCB:SetChecked( moneyData.sss );
 	SSSCB:SetForeColor( Color["rustedgold"] );
 
 	SSSCB.CheckedChanged = function( sender, args )
-		_G.SSS = SSSCB:IsChecked();
-		settings.Money.SS = _G.SSS;
+		moneyData.sss = SSSCB:IsChecked();
+		settings.Money.SS = moneyData.sss;
 		SaveSettings( false );
 	end
 	-- **^
@@ -79,12 +86,12 @@ function frmMoneyInfosWindow()
 	STSCB:SetParent( wMI );
 	STSCB:SetText( L["MIWSTS"] );
 	STSCB:SetSize( wMI:GetWidth(), 30 );
-	STSCB:SetChecked( _G.STS );
+	STSCB:SetChecked( moneyData.sts );
 	STSCB:SetForeColor( Color["rustedgold"] );
 
 	STSCB.CheckedChanged = function( sender, args )
-		_G.STS = STSCB:IsChecked();
-		settings.Money.TS = _G.STS;
+		moneyData.sts = STSCB:IsChecked();
+		settings.Money.TS = moneyData.sts;
 		SaveSettings( false );
 	end
 	-- **^

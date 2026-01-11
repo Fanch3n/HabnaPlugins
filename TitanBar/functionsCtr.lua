@@ -10,12 +10,13 @@ function ImportCtr( value )
         UpdateWallet();
         WI[ "Ctr" ]:SetPosition( _G.ControlData.WI.location.x, _G.ControlData.WI.location.y );
     elseif value == "MI" then --Money Infos
-        if _G.MIWhere == 1 then
+		local moneyWhere = (_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE
+		if moneyWhere == Constants.Position.TITANBAR then
             import (AppCtrD.."MoneyInfos");
             import (AppCtrD.."MoneyInfosToolTip");
             MI[ "Ctr" ]:SetPosition( _G.ControlData.Money.location.x, _G.ControlData.Money.location.y );
         end
-        if _G.MIWhere ~= 3 then
+		if moneyWhere ~= Constants.Position.NONE then
             AddCallback(GetPlayerAttributes(), "MoneyChanged",
                 function(sender, args) UpdateMoney(); end
                 );
@@ -194,12 +195,13 @@ function ImportCtr( value )
         UpdateDayNight();
         DN[ "Ctr" ]:SetPosition( _G.ControlData.DN.location.x, _G.ControlData.DN.location.y );
     elseif value == "LP" then --LOTRO points
-        if _G.LPWhere == 1 then
+		local lpWhere = (_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE
+		if lpWhere == Constants.Position.TITANBAR then
             import (AppCtrD.."LOTROPoints");
             LP[ "Ctr" ]:SetPosition( _G.ControlData.LP.location.x, _G.ControlData.LP.location.y );
             UpdateLOTROPoints();
         end
-        if _G.LPWhere ~= Constants.Position.NONE then
+		if lpWhere ~= Constants.Position.NONE then
             --PlayerLP = Player:GetLOTROPoints();
             --AddCallback(PlayerLP, "LOTROPointsChanged",
             --    function(sender, args) UpdateLOTROPoints(); end
@@ -471,8 +473,10 @@ function LoadPlayerMoney()
     if wallet[PN] == nil then wallet[PN] = {}; end
     if wallet[PN].Show == nil then wallet[PN].Show = true; end
     if wallet[PN].ShowToAll == nil then wallet[PN].ShowToAll = true; end
-    _G.SCM = wallet[PN].Show;
-    _G.SCMA = wallet[PN].ShowToAll;
+	_G.ControlData = _G.ControlData or {}
+	_G.ControlData.Money = _G.ControlData.Money or {}
+	_G.ControlData.Money.scm = wallet[PN].Show
+	_G.ControlData.Money.scma = wallet[PN].ShowToAll
 
 
     --Convert wallet
@@ -554,8 +558,11 @@ end
 function SavePlayerMoney(save)
     if string.sub( PN, 1, 1 ) == "~" then return end; --Ignore session play
 
-    wallet[PN].Show = _G.SCM;
-    wallet[PN].ShowToAll = _G.SCMA;
+    _G.ControlData.Money = _G.ControlData.Money or {}
+    if _G.ControlData.Money.scm == nil then _G.ControlData.Money.scm = true end
+    if _G.ControlData.Money.scma == nil then _G.ControlData.Money.scma = true end
+    wallet[PN].Show = _G.ControlData.Money.scm
+    wallet[PN].ShowToAll = _G.ControlData.Money.scma
     wallet[PN].Money = tostring(GetPlayerAttributes():GetMoney());
 
     -- Calculate Gold/Silver/Copper Total

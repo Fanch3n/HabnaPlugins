@@ -151,7 +151,10 @@ end
 --**^
 --**v Update money on TitanBar v**
 function UpdateMoney()
-	if _G.MIWhere == 1 then
+	local where = (_G.ControlData and _G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE
+	if where == Constants.Position.TITANBAR then
+		local moneyData = (_G.ControlData and _G.ControlData.Money) or {}
+		local showTotal = moneyData.stm == true
 		local money = GetPlayerAttributes():GetMoney();
 		local gold, silver, copper = DecryptMoney(money);
 	
@@ -166,16 +169,16 @@ function UpdateMoney()
 		MI[ "SLbl" ]:SetSize( 4 * NM, CTRHeight ); --Auto size with text length
 		MI[ "CLbl" ]:SetSize( 3 * NM, CTRHeight ); --Auto size with text length
 
-		MI[ "GLblT" ]:SetVisible( _G.STM );
-		MI[ "GLbl" ]:SetVisible( not _G.STM );
+		MI[ "GLblT" ]:SetVisible( showTotal );
+		MI[ "GLbl" ]:SetVisible( not showTotal );
 
-		MI[ "SLblT" ]:SetVisible( _G.STM );
-		MI[ "SLbl" ]:SetVisible( not _G.STM );
+		MI[ "SLblT" ]:SetVisible( showTotal );
+		MI[ "SLbl" ]:SetVisible( not showTotal );
 
-		MI[ "CLblT" ]:SetVisible( _G.STM );
-		MI[ "CLbl" ]:SetVisible( not _G.STM );
+		MI[ "CLblT" ]:SetVisible( showTotal );
+		MI[ "CLbl" ]:SetVisible( not showTotal );
 	
-		if _G.STM then --Add Total Money on TitanBar Money control.
+		if showTotal then --Add Total Money on TitanBar Money control.
 			local strData = L[ "MIWTotal" ] .. ": ";
 			local strData1 = string.format( "%.0f", GoldTot );
 			local strData2 = L[ "You" ] .. MI[ "GLbl" ]:GetText();
@@ -246,7 +249,8 @@ end
 --**^
 --**v Update LOTRO points on TitanBar v**
 function UpdateLOTROPoints()
-	if _G.LPWhere == Constants.Position.TITANBAR then
+	local where = (_G.ControlData and _G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE
+	if where == Constants.Position.TITANBAR then
 		LP["Lbl"]:SetText(_G.LOTROPTS)
 		LP["Lbl"]:SetSize(LP["Lbl"]:GetTextLength() * NM, CTRHeight)
 		AjustIcon("LP")
@@ -277,20 +281,24 @@ function UpdateBackpackInfos()
 		if ( backpack:GetItem( i ) == nil ) then freeslots = freeslots + 1; end
 	end
 
-	if _G.BIUsed and _G.BIMax then 
+	local biData = (_G.ControlData and _G.ControlData.BI) or {}
+	local showUsed = (biData.used ~= false) -- default true
+	local showMax = (biData.max ~= false) -- default true
+
+	if showUsed and showMax then 
         BI[ "Lbl" ]:SetText( max - freeslots .. "/" .. max );
-	elseif _G.BIUsed and not _G.BIMax then 
+	elseif showUsed and not showMax then 
         BI[ "Lbl" ]:SetText( max - freeslots );
-	elseif not _G.BIUsed and _G.BIMax then 
+	elseif (not showUsed) and showMax then 
         BI[ "Lbl" ]:SetText( freeslots .. "/" .. max );
-	elseif not _G.BIUsed and not _G.BIMax then 
+	elseif (not showUsed) and (not showMax) then 
         BI[ "Lbl" ]:SetText( freeslots ); 
     end
 	BI[ "Lbl" ]:SetSize( BI[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
 
 	--Change bag icon with capacity
 	local i = nil;
-	usedslots = max - freeslots;
+	local usedslots = max - freeslots;
 	local bi = round((( usedslots / max ) * 100));
 
 	if bi >= 0 and bi <= 15 then i = 1; end-- 0% to 15% Full bag
@@ -632,8 +640,9 @@ function AjustIcon(str)
 	end
 
 	if str == "MI" then
+		local moneyData = (_G.ControlData and _G.ControlData.Money) or {}
 		local t = "" 
-        if _G.STM then t = "T"; end 
+		if moneyData.stm == true then t = "T"; end 
         local p = { "G", "S", "C" }; --prefix for Gold, Silver, Copper controls
         local setleft = 0;
         for i = 1,3 do 

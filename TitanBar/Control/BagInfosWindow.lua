@@ -79,22 +79,26 @@ function frmBagInfos()
 	wBI.ListBox = lb.ListBox
 	wBI.ListBoxScrollBar = lb.ScrollBar
 	ConfigureListBox(wBI.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
+	_G.ControlData.BI = _G.ControlData.BI or {}
+	local biData = _G.ControlData.BI
+	if biData.used == nil then biData.used = true end
+	if biData.max == nil then biData.max = true end
 	-- **v Show used slot info in tooltip? v**
-	wBI.UsedSlots = CreateAutoSizedCheckBox(wBI, L["BIUsed"], 30, wBI.ListBox:GetTop() + wBI.ListBox:GetHeight() + 6, BIUsed);
+	wBI.UsedSlots = CreateAutoSizedCheckBox(wBI, L["BIUsed"], 30, wBI.ListBox:GetTop() + wBI.ListBox:GetHeight() + 6, biData.used);
 
 	wBI.UsedSlots.CheckedChanged = function( sender, args )
-		_G.BIUsed = wBI.UsedSlots:IsChecked();
-		settings.BagInfos.U = _G.BIUsed;
+		biData.used = wBI.UsedSlots:IsChecked();
+		settings.BagInfos.U = biData.used;
 		SaveSettings( false );
 		UpdateBackpackInfos();
 	end
 	-- **^
 	-- **v Show max slot in tooltip? v**
-	wBI.MaxSlots = CreateAutoSizedCheckBox(wBI, L["BIMax"], 30, wBI.UsedSlots:GetTop() + wBI.UsedSlots:GetHeight(), BIMax);
+	wBI.MaxSlots = CreateAutoSizedCheckBox(wBI, L["BIMax"], 30, wBI.UsedSlots:GetTop() + wBI.UsedSlots:GetHeight(), biData.max);
 
 	wBI.MaxSlots.CheckedChanged = function( sender, args )
-		_G.BIMax = wBI.MaxSlots:IsChecked();
-		settings.BagInfos.M = _G.BIMax;
+		biData.max = wBI.MaxSlots:IsChecked();
+		settings.BagInfos.M = biData.max;
 		SaveSettings( false );
 		UpdateBackpackInfos();
 	end

@@ -29,9 +29,9 @@ function RefreshWITTListBox()
 	for i = 1, #MenuItem do
 		wttcur = MenuItem[i];
 		if wttcur == L["MGSC"] then
-			ttw = _G.MIWhere;
+			ttw = (_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE
 		elseif wttcur == L["MLotroPoints"] then
-			ttw = _G.LPWhere;
+			ttw = (_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE
 			CtrIconCodeIs=_G.resources.LOTROPoints;
 			CtrQteIs=_G.LOTROPTS;
 		end

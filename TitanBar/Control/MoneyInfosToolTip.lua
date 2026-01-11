@@ -93,8 +93,9 @@ function MIRefreshMITTListBox()
 
 	--**v Statistics section v**
 	local PN = Player:GetName();
+	local moneyData = (_G.ControlData and _G.ControlData.Money) or {}
 	
-	if _G.SSS then --Show session statistics if true
+	if moneyData.sss == true then --Show session statistics if true
   	local space = Turbine.UI.Label();
     space:SetSize( Constants.LABEL_WIDTH_STANDARD, Constants.LABEL_HEIGHT_SMALL );
     MITTListBox:AddItem( space );
@@ -124,7 +125,7 @@ function MIRefreshMITTListBox()
   end
 	
 
-	if _G.STS then --Show today statistics if true
+	if moneyData.sts == true then --Show today statistics if true
 		local space = Turbine.UI.Label();
     space:SetSize( Constants.LABEL_WIDTH_STANDARD, Constants.LABEL_HEIGHT_SMALL );
     MITTListBox:AddItem( space );
@@ -185,13 +186,14 @@ function MITTShowData(parent,l,m,lc,mc,showDelIcon) -- l = label, m = money, lc 
   	DelIcon:SetBackground( resources.DelIcon );
   	DelIcon:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
   	DelIcon:SetVisible( true );
-  	if k == Player:GetName() then DelIcon:SetVisible( false ); end
+		if l == Player:GetName() then DelIcon:SetVisible( false ); end
   				
   	DelIcon.MouseClick = function( sender, args )
   		if ( args.Button == Turbine.UI.MouseButton.Left ) then
   			write(l .. L["MIWID"]);
   			wallet[l].ShowToAll = false;
-  			if _G.STM then AllCharCB:SetChecked( false ); SavePlayerMoney(true); AllCharCB:SetChecked( true ); else SavePlayerMoney(true); end
+				local showTotal = (_G.ControlData and _G.ControlData.Money and _G.ControlData.Money.stm) == true
+				if showTotal then AllCharCB:SetChecked( false ); SavePlayerMoney(true); AllCharCB:SetChecked( true ); else SavePlayerMoney(true); end
   			RefreshMIListBox();
   		end
   	end

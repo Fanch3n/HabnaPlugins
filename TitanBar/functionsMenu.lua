@@ -30,7 +30,7 @@ function ShowHideMoney()
 	controlData.show = not controlData.show
 	if not settings.Money then settings.Money = {} end
 	settings.Money.V = controlData.show
-	settings.Money.W = string.format("%.0f", _G.MIWhere);
+	settings.Money.W = string.format("%.0f", controlData.where or Constants.Position.NONE);
 	SaveSettings( false );
 	ImportCtr( "MI" );
 	if controlData.show then
@@ -51,7 +51,7 @@ function ShowHideLOTROPoints()
 	controlData.show = not controlData.show
 	if not settings.LOTROPoints then settings.LOTROPoints = {} end
 	settings.LOTROPoints.V = controlData.show
-	settings.LOTROPoints.W = string.format("%.0f", _G.LPWhere);
+	settings.LOTROPoints.W = string.format("%.0f", controlData.where or Constants.Position.NONE);
 	SaveSettings( false );
 	ImportCtr( "LP" );
 	if controlData.show then
@@ -112,7 +112,7 @@ function ShowHideEquipInfos()
 	SaveSettings( false );
 	if controlData.show then
 		GetEquipmentInfos();
-		AddCallback(PlayerEquipment, "ItemEquipped", function(sender, args) if _G.ControlData.EI.show then GetEquipmentInfos(); RunUpdate("EI", UpdateEquipsInfos); end end);
+		AddCallback(PlayerEquipment, "ItemEquipped", function(sender, args) if _G.ControlData.EI.show then GetEquipmentInfos(); UpdateEquipsInfos(); end end);
 		AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) ItemUnEquippedTimer:SetWantsUpdates( true ); end); --Workaround
 		ImportCtr( "EI" );
 		local colors = _G.ControlData.EI.colors
@@ -135,7 +135,7 @@ function ShowHideDurabilityInfos()
 	SaveSettings( false );
 	if controlData.show then
 		GetEquipmentInfos();
-		AddCallback(PlayerEquipment, "ItemEquipped", function(sender, args) if _G.ControlData.EI.show then GetEquipmentInfos(); RunUpdate("EI", UpdateEquipsInfos); end if _G.ControlData.DI.show then GetEquipmentInfos(); RunUpdate("DI", UpdateDurabilityInfos); end end);
+		AddCallback(PlayerEquipment, "ItemEquipped", function(sender, args) if _G.ControlData.EI.show then GetEquipmentInfos(); UpdateEquipsInfos(); end if _G.ControlData.DI.show then GetEquipmentInfos(); UpdateDurabilityInfos(); end end);
 		AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) ItemUnEquippedTimer:SetWantsUpdates( true ); end); --Workaround
 		ImportCtr( "DI" );
 		local colors = _G.ControlData.DI.colors

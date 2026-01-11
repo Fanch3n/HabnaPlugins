@@ -285,17 +285,17 @@ function LoadSettings()
 	money.TS = money.TS == nil and true or money.TS --Show stats for today
 	money.W = money.W or Constants.FormatInt(Constants.Position.TITANBAR)
 	LoadControlSettings("Money", money)
-	_G.MIWhere = _G.ControlData.Money.where
-	_G.STM = money.S
-	_G.SSS = money.SS
-	_G.STS = money.TS
+	_G.ControlData.Money = _G.ControlData.Money or {}
+	_G.ControlData.Money.stm = money.S
+	_G.ControlData.Money.sss = money.SS
+	_G.ControlData.Money.sts = money.TS
 
 	-- LOTROPoints control
 	local lotroPoints = InitControlDefaults("LOTROPoints", {}, {}, {})
 	lotroPoints.V = lotroPoints.V or false
 	lotroPoints.W = lotroPoints.W or Constants.FormatInt(tW)
 	LoadControlSettings("LP", lotroPoints)
-	_G.LPWhere = _G.ControlData.LP.where
+	_G.ControlData.LP = _G.ControlData.LP or {}
 
 
 	-- BagInfos control
@@ -304,8 +304,9 @@ function LoadSettings()
 	bagInfos.U = bagInfos.U == nil and true or bagInfos.U
 	bagInfos.M = bagInfos.M == nil and true or bagInfos.M
 	LoadControlSettings("BI", bagInfos)
-	_G.BIUsed = bagInfos.U
-	_G.BIMax = bagInfos.M
+	_G.ControlData.BI = _G.ControlData.BI or {}
+	_G.ControlData.BI.used = bagInfos.U
+	_G.ControlData.BI.max = bagInfos.M
 
 
 	local bagInfosList = EnsureSettingsSection("BagInfosList")
@@ -348,8 +349,9 @@ function LoadSettings()
 	durabilityInfos.I = durabilityInfos.I == nil and true or durabilityInfos.I
 	durabilityInfos.N = durabilityInfos.N == nil and true or durabilityInfos.N
 	LoadControlSettings("DI", durabilityInfos)
-	DIIcon = durabilityInfos.I
-	DIText = durabilityInfos.N
+	_G.ControlData.DI = _G.ControlData.DI or {}
+	_G.ControlData.DI.icon = durabilityInfos.I
+	_G.ControlData.DI.text = durabilityInfos.N
 
 
 	-- PlayerLoc control
@@ -504,12 +506,11 @@ function SaveSettings(str)
 		SaveControlSettings("WI", settings.Wallet)
 
 		-- Money
-		_G.ControlData.Money.where = _G.MIWhere  -- Sync back any changes
 		if not settings.Money then settings.Money = {} end
 		SaveControlSettings("Money", settings.Money)
-		settings.Money.S = _G.STM
-		settings.Money.SS = _G.SSS
-		settings.Money.TS = _G.STS
+		settings.Money.S = _G.ControlData.Money.stm
+		settings.Money.SS = _G.ControlData.Money.sss
+		settings.Money.TS = _G.ControlData.Money.sts
 
 		-- LOTROPoints
 		if not settings.LOTROPoints then settings.LOTROPoints = {} end
@@ -518,8 +519,8 @@ function SaveSettings(str)
 		-- BagInfos
 		if not settings.BagInfos then settings.BagInfos = {} end
 		SaveControlSettings("BI", settings.BagInfos)
-		settings.BagInfos.U = _G.BIUsed
-		settings.BagInfos.M = _G.BIMax
+		settings.BagInfos.U = _G.ControlData.BI.used
+		settings.BagInfos.M = _G.ControlData.BI.max
 
 		SaveSectionWithWindowPos("BagInfosList", BLWLeft, BLWTop)
 
@@ -536,8 +537,8 @@ function SaveSettings(str)
 		-- DurabilityInfos
 		if not settings.DurabilityInfos then settings.DurabilityInfos = {} end
 		SaveControlSettings("DI", settings.DurabilityInfos)
-		settings.DurabilityInfos.I = DIIcon
-		settings.DurabilityInfos.N = DIText
+		settings.DurabilityInfos.I = _G.ControlData.DI.icon
+		settings.DurabilityInfos.N = _G.ControlData.DI.text
 	
 		-- PlayerLoc
 		if not settings.PlayerLoc then settings.PlayerLoc = {} end
@@ -617,9 +618,9 @@ function ResetSettings()
 	_G.ControlRegistry.ResetToDefaults()
 	
 	-- Reset control-specific settings that aren't in ControlData structure
-	_G.STM, _G.SSS, _G.STS = false, true, true
-	_G.BIUsed, _G.BIMax = true, true
-	DIIcon, DIText = true, true
+	_G.ControlData.Money.stm, _G.ControlData.Money.sss, _G.ControlData.Money.sts = false, true, true
+	_G.ControlData.BI.used, _G.ControlData.BI.max = true, true
+	_G.ControlData.DI.icon, _G.ControlData.DI.text = true, true
 	_G.DNNextT = true
 	
 	-- Reset currency controls

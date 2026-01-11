@@ -32,8 +32,11 @@ function DIRefreshListBox()
 	DITTPosY = 36;
 
 	mis, mts, nint = 0, 0, false;
+	local diData = (_G.ControlData and _G.ControlData.DI) or {}
+	local showIcon = (diData.icon ~= false) -- default true
+	local showText = (diData.text ~= false) -- default true
 
-	if not DIIcon and not DIText then nint=true; end
+	if (not showIcon) and (not showText) then nint=true; end
 
 	iFound = 0;
 
@@ -87,7 +90,7 @@ function DIRefreshListBox()
 				--DIitemCtl[i]:SetBackColor( Color["red"] ); -- debug purpose
 
 
-				if DIIcon then
+				if showIcon then
 					-- Item Background/Underlay/Shadow/Item
 				DIitemBG[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 				DIitemBG[i]:SetBackground(itemEquip[i].BImgID);
@@ -118,7 +121,7 @@ function DIRefreshListBox()
 					mis=37;
 				end
 
-				if DIText then
+				if showText then
 					cw=cw+208;
 					-- Item name
 					DIitemLbl[i] = CreateControl(Turbine.UI.Label, DIitemCtl[i], 37-mis, 2, 208, DIitemCtl[i]:GetHeight());
@@ -135,7 +138,7 @@ function DIRefreshListBox()
 					end
 					DIitemLbl[i]:SetForeColor( TheColor );
 
-					if not DIIcon then
+					if not showIcon then
 						-- Item Durability
 						DIitemLblScore[i] = Turbine.UI.Label();
 						DIitemLblScore[i]:SetParent( DIitemCtl[i] );

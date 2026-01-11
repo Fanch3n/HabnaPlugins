@@ -169,13 +169,15 @@ function frmWalletWindow()
 		SelIndex = WIDD:GetSelection();
 		--Where-> 1: On TitanBar / 2: In wallet control tooltip / 3: Don't show
 		if wcur == L["MGSC"] then
-			_G.MIWhere = SelIndex; settings.Money.W = string.format("%.0f", SelIndex);
+			_G.ControlData.Money = _G.ControlData.Money or {}
 			_G.ControlData.Money.where = SelIndex
+			settings.Money.W = string.format("%.0f", SelIndex);
 			if SelIndex == Constants.Position.TITANBAR then if not _G.ControlData.Money.show then ShowHideMoney(); end
 			else if _G.ControlData.Money.show then ShowHideMoney(); end end
 		elseif wcur == L["MLotroPoints"] then
-			_G.LPWhere = SelIndex; settings.LOTROPoints.W = string.format("%.0f", SelIndex);
+			_G.ControlData.LP = _G.ControlData.LP or {}
 			_G.ControlData.LP.where = SelIndex
+			settings.LOTROPoints.W = string.format("%.0f", SelIndex);
 			if SelIndex == Constants.Position.TITANBAR then
 				if not _G.ControlData.LP.show then
 					ShowHideLOTROPoints()
@@ -251,9 +253,9 @@ function RefreshWIListBox()
 				WIbutSave:SetPosition( WIWCtr:GetWidth()/2 - WIbutSave:GetWidth()/2, WIDD:GetTop()+WIDD:GetHeight()+10 );
 
 				if wcur == L["MGSC"] then
-					tw = _G.MIWhere; -- Money
+					tw = (_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE -- Money
 				elseif wcur == L["MLotroPoints"] then
-					tw = _G.LPWhere; -- LOTRO Points
+					tw = (_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE -- LOTRO Points
 					LPWCtr:SetVisible( true ); -- LOTRO Points
 					WItxtLOTROPTS:SetText( _G.LOTROPTS ); -- LOTRO Points
 					WItxtLOTROPTS:Focus(); -- LOTRO Points

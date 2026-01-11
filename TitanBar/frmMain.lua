@@ -174,19 +174,19 @@ function frmMain()
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
 			if _G.ControlData.WI.show then ImportCtr( "WI" ); end
 			if _G.CurrencyData["Commendation"].Where ~= 3 then ImportCtr("Commendation"); end
-			if _G.LPWhere ~= 3 then ImportCtr( "LP" ); end
+			if ((_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "LP" ); end
 		end
 	end
 
 	if _G.ControlData.WI.show then ImportCtr( "WI" ); end
-	if _G.MIWhere ~= 3 then ImportCtr( "MI" ); end
+	if ((_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "MI" ); end
 	if _G.ControlData.TI.show then ImportCtr( "TI" ); end --Track Items
 	if _G.ControlData.IF.show then ImportCtr( "IF" ); end --Infamy/Renown
 	if _G.ControlData.VT.show then ImportCtr( "VT" ); end --Vault
 	if _G.ControlData.SS.show then ImportCtr( "SS" ); end --SharedStorage
 	if _G.ControlData.DN.show then ImportCtr( "DN" ); end --Day & Night time
 	if _G.ControlData.RP.show then ImportCtr( "RP" ); end --Reputation Points
-	if _G.LPWhere ~= 3 then ImportCtr( "LP" ); end --LOTRO Points
+	if ((_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "LP" ); end --LOTRO Points
 
 	--**v Workaround for the ItemRemoved that fires before the backpack was updated (Turbine API issue) v**
 	ItemRemovedTimer = Turbine.UI.Control();
