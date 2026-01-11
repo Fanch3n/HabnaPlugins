@@ -124,7 +124,7 @@ function frmBagInfos()
 		end
 	end);
 
-	--**v Workaround for the ItemRemoved that fire before the backpack was updated (Turnine API issue) v**
+	--**v Workaround for the ItemRemoved that fire before the backpack was updated (Turbine API issue) v**
 	BIItemRemovedTimer = Turbine.UI.Control();
 	BIItemRemovedTimer.Update = function( sender, args )
 		BIItemRemovedTimer:SetWantsUpdates( false );

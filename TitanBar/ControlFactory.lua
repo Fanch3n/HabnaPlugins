@@ -186,18 +186,18 @@ function SetupControlInteraction(config)
 	end
 
 	local function toggleWindowDefault()
-		if _G[windowFormVar] then
-			_G[windowFormVar] = false
-			if _G[windowVar] then
-				local ok, err = pcall(function()
-					_G[windowVar]:Close()
-				end)
-				if not ok then
-					logError("failed to close " .. controlId .. " window", err)
-				end
+		-- Check if window exists in ControlData
+		local window = _G.ControlData[controlId].windowInstance
+		if window then
+			-- Window is open, close it
+			local ok, err = pcall(function()
+				window:Close()
+			end)
+			if not ok then
+				logError("failed to close " .. controlId .. " window", err)
 			end
 		else
-			_G[windowFormVar] = true
+			-- Window is closed, open it
 			local ok, err = pcall(function()
 				import(windowImportPath)
 				local windowFn = findWindowFunction()
@@ -208,7 +208,6 @@ function SetupControlInteraction(config)
 				end
 			end)
 			if not ok then
-				_G[windowFormVar] = false
 				logError("failed to open " .. controlId .. " window", err)
 			end
 		end
