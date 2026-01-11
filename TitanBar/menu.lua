@@ -61,14 +61,10 @@ opt_PI.Click = function( sender, args ) ToggleMenuVisibility(ShowHidePlayerInfos
 
 opt_EI = Turbine.UI.MenuItem(L["MEI"]);
 opt_EI:SetChecked( _G.ControlData.EI.show );
---_G.ControlData.EI.show = false;  -- Remove when GetEquipment() in API work properly
---opt_EI:SetEnabled( _G.ControlData.EI.show ); -- Remove when GetEquipment() in API work properly
 opt_EI.Click = function( sender, args )	ToggleMenuVisibility(ShowHideEquipInfos) end
 
 opt_DI = Turbine.UI.MenuItem(L["MDI"]);
 opt_DI:SetChecked( _G.ControlData.DI.show );
---_G.ControlData.DI.show = false;  -- Remove when GetEquipment() in API work properly
---opt_DI:SetEnabled( _G.ControlData.DI.show ); -- Remove when GetEquipment() in API work properly
 opt_DI.Click = function( sender, args )	ToggleMenuVisibility(ShowHideDurabilityInfos) end
 
 opt_PL = Turbine.UI.MenuItem(L["MPL"]);

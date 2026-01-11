@@ -379,6 +379,7 @@ end
 function UpdateEquipsInfos()
     TotalItemsScore = 0;
     for i = 1,20 do TotalItemsScore = TotalItemsScore + itemEquip[i].Score; end
+		AjustIcon("EI")
 end
 --**^
 --**v Update Track Items on TitanBar v**
@@ -464,7 +465,16 @@ function UpdateGameTime(str)
 	TheTime = nil;
 	TextLen = nil;
 
-	if cminute < 10 then cminute = "0" .. cminute; end
+	local function formatTime(hour, minute)
+		local suffix = "";
+		if not _G.Clock24h then
+			if hour == 12 then suffix = "pm";
+			elseif hour >= 13 then hour = hour - 12; suffix = "pm";
+			else if hour == 0 then hour = 12; end suffix = "am"; end
+		end
+
+		return hour .. ":" .. string.format("%02d", minute) .. suffix;
+	end
 
 	if str == "st" then
 		if _G.ShowST then
@@ -476,28 +486,13 @@ function UpdateGameTime(str)
 				chour = 24 - chour;
 			end
 		end
-		--
-	
-		-- Convert 24h to 12h format
-		if not _G.Clock24h then
-			if chour == 12 then ampm = "pm";
-			elseif chour >= 13 then chour = chour - 12; ampm = "pm";
-			else if chour == 0 then chour = 12; end ampm = "am"; end
-		end
 
-		_G.STime = chour .. ":" .. cminute .. ampm;
+		_G.STime = formatTime(chour, cminute);
 		TheTime = _G.STime;
 		TextLen = string.len(TheTime) * NM;
 	elseif str == "gt" then
 		--write("Game Time");
-		-- Convert 24h to 12h format
-		if not _G.Clock24h then
-			if chour == 12 then ampm = "pm";
-			elseif chour >= 13 then chour = chour - 12; ampm = "pm";
-			else if chour == 0 then chour = 12; end ampm = "am"; end
-		end
-
-		_G.GTime = chour .. ":" .. cminute .. ampm;
+		_G.GTime = formatTime(chour, cminute);
 		TheTime = _G.GTime;
 		TextLen = string.len(TheTime) * TM;
 	elseif str == "bt" then
@@ -628,13 +623,15 @@ function AjustIcon(str)
 	--CTRHeight=TBHeight;
 	local Y = -1 - ((TBIconSize - CTRHeight) / 2);
 
-	if str == "WI" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition( 0, Y );
-		_G[str][ "Ctr" ]:SetSize( TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "MI" then
+	local function layoutIcon(icon, ctr, iconLeft, iconTop, ctrWidth)
+		icon:SetStretchMode( 1 );
+		icon:SetPosition( iconLeft, iconTop );
+		ctr:SetSize( ctrWidth, CTRHeight );
+		icon:SetSize( TBIconSize, TBIconSize );
+		icon:SetStretchMode( 3 );
+	end
+
+	if str == "MI" then
 		local t = "" 
         if _G.STM then t = "T"; end 
         local p = { "G", "S", "C" }; --prefix for Gold, Silver, Copper controls
@@ -652,74 +649,62 @@ function AjustIcon(str)
         end
 		MI[ "Ctr" ]:SetSize( MI["GCtr"]:GetWidth() + MI["SCtr"]:GetWidth() + 
             MI["CCtr"]:GetWidth(), CTRHeight );
-	elseif str == "DI" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition( _G[str][ "Lbl" ]:GetLeft() + _G[str][ "Lbl" ]:GetWidth(), Y );
-		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "SP" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition( _G[str][ "Lbl" ]:GetLeft() + _G[str][ "Lbl" ]:GetWidth()-2, Y );
-		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "BI" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition( _G[str][ "Lbl" ]:GetLeft() + _G[str][ "Lbl" ]:GetWidth()+3, Y+1 );
-		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "PI" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition( _G[str][ "Name" ]:GetLeft() + _G[str][ "Name" ]:GetWidth()+3, Y );
-		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "TI" or str == "VT" or str == "SS" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition( 0, Y );
-		_G[str][ "Ctr" ]:SetSize( TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "IF" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition( 0, Y );
-		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "DN" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition(_G[str][ "Lbl" ]:GetLeft() + _G[str][ "Lbl" ]:GetWidth(), Y+1);
-		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "RP" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition( 0, Y + 2 );
-		_G[str][ "Ctr" ]:SetSize( TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "LP" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition(_G[str][ "Lbl" ]:GetLeft()+_G[str][ "Lbl" ]:GetWidth()+2, Y+1);
-		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
 	elseif (_G.CurrencyData[str] and _G.CurrencyData[str].Icon) then
-		_G.CurrencyData[str].Icon:SetStretchMode(1);
-		if str == "DestinyPoints" then
-			_G.CurrencyData[str].Icon:SetPosition(
-				_G.CurrencyData[str].Lbl:GetLeft() + _G.CurrencyData[str].Lbl:GetWidth(), Y
-			)
-		else
-			_G.CurrencyData[str].Icon:SetPosition(
-				_G.CurrencyData[str].Lbl:GetLeft() + _G.CurrencyData[str].Lbl:GetWidth() + 3, Y
-			)
+		local iconLeft = _G.CurrencyData[str].Lbl:GetLeft() + _G.CurrencyData[str].Lbl:GetWidth();
+		if str ~= "DestinyPoints" then
+			iconLeft = iconLeft + 3;
 		end
-		_G.CurrencyData[str].Ctr:SetSize( _G.CurrencyData[str].Icon:GetLeft() + TBIconSize, CTRHeight );
-		_G.CurrencyData[str].Icon:SetSize( TBIconSize, TBIconSize );
-		_G.CurrencyData[str].Icon:SetStretchMode(3);
+		layoutIcon( _G.CurrencyData[str].Icon, _G.CurrencyData[str].Ctr, iconLeft, Y, iconLeft + TBIconSize );
+	else
+		-- Generic standard control layout.
+		-- Any control with a global table containing ["Ctr"] and ["Icon"] will be handled here.
+		-- This makes it much harder to forget adding a new control (e.g., EI).
+		local container = _G[str];
+		if container and container["Ctr"] and container["Icon"] then
+			local label = container["Lbl"] or container["Name"];
+
+			-- Icon-only controls keep the icon at x=0.
+			local iconOnly = (label == nil)
+				or (str == "WI")
+				or (str == "TI")
+				or (str == "VT")
+				or (str == "SS")
+				or (str == "IF")
+				or (str == "RP");
+
+			local dx = 0;
+			local dy = 0;
+			if str == "SP" then
+				dx = -2;
+			elseif str == "BI" then
+				dx = 3;
+				dy = 1;
+			elseif str == "PI" then
+				dx = 3;
+			elseif str == "DN" then
+				dy = 1;
+			elseif str == "LP" then
+				dx = 2;
+				dy = 1;
+			elseif str == "RP" then
+				dy = 2;
+			end
+
+			local iconLeft = 0;
+			if (not iconOnly) and label then
+				iconLeft = label:GetLeft() + label:GetWidth();
+			end
+			iconLeft = iconLeft + dx;
+
+			local ctrWidth = TBIconSize;
+			if (not iconOnly) and label then
+				ctrWidth = iconLeft + TBIconSize;
+			end
+
+			layoutIcon( container["Icon"], container["Ctr"], iconLeft, Y + dy, ctrWidth );
+		elseif _G.ControlData and _G.ControlData[str] then
+			write("AjustIcon: no layout handler for " .. tostring(str));
+		end
 	end
 
 	KeepIconControlInBar(str);
