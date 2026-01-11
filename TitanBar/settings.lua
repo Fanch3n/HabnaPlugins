@@ -275,8 +275,6 @@ function LoadSettings()
 	local wallet = InitControlDefaults("Wallet", {}, {}, {})
 	wallet.V = wallet.V or false
 	LoadControlSettings("WI", wallet)
-	-- Create legacy global variables for backward compatibility
-	ShowWallet = _G.ControlData.WI.show
 
 
 	-- Money control
@@ -287,8 +285,6 @@ function LoadSettings()
 	money.TS = money.TS == nil and true or money.TS --Show stats for today
 	money.W = money.W or Constants.FormatInt(Constants.Position.TITANBAR)
 	LoadControlSettings("Money", money)
-	-- Create legacy global variables for backward compatibility
-	ShowMoney = _G.ControlData.Money.show
 	_G.MIWhere = _G.ControlData.Money.where
 	_G.STM = money.S
 	_G.SSS = money.SS
@@ -299,8 +295,6 @@ function LoadSettings()
 	lotroPoints.V = lotroPoints.V or false
 	lotroPoints.W = lotroPoints.W or Constants.FormatInt(tW)
 	LoadControlSettings("LP", lotroPoints)
-	-- Create legacy global variables for backward compatibility
-	ShowLOTROPoints = _G.ControlData.LP.show
 	_G.LPWhere = _G.ControlData.LP.where
 
 
@@ -310,8 +304,6 @@ function LoadSettings()
 	bagInfos.U = bagInfos.U == nil and true or bagInfos.U
 	bagInfos.M = bagInfos.M == nil and true or bagInfos.M
 	LoadControlSettings("BI", bagInfos)
-	-- Create legacy global variables for backward compatibility
-	ShowBagInfos = _G.ControlData.BI.show
 	_G.BIUsed = bagInfos.U
 	_G.BIMax = bagInfos.M
 
@@ -328,8 +320,6 @@ function LoadSettings()
 	playerInfos.XP = playerInfos.XP or Constants.FormatInt(0)
 	playerInfos.Layout = playerInfos.Layout or false
 	LoadControlSettings("PI", playerInfos)
-	-- Create legacy global variables for backward compatibility
-	ShowPlayerInfos = _G.ControlData.PI.show
 	ExpPTS = playerInfos.XP
 	PILayout = playerInfos.Layout
 	if not PILayout then
@@ -350,8 +340,6 @@ function LoadSettings()
 	local equipInfos = InitControlDefaults("EquipInfos", {}, {x=Constants.DEFAULT_EQUIP_INFO_X})
 	equipInfos.V = equipInfos.V == nil and true or equipInfos.V
 	LoadControlSettings("EI", equipInfos)
-	-- Create legacy global variables for backward compatibility
-	ShowEquipInfos = _G.ControlData.EI.show
 
 
 	-- DurabilityInfos control
@@ -360,8 +348,6 @@ function LoadSettings()
 	durabilityInfos.I = durabilityInfos.I == nil and true or durabilityInfos.I
 	durabilityInfos.N = durabilityInfos.N == nil and true or durabilityInfos.N
 	LoadControlSettings("DI", durabilityInfos)
-	-- Create legacy global variables for backward compatibility
-	ShowDurabilityInfos = _G.ControlData.DI.show
 	DIIcon = durabilityInfos.I
 	DIText = durabilityInfos.N
 
@@ -371,8 +357,6 @@ function LoadSettings()
 	playerLoc.V = playerLoc.V == nil and true or playerLoc.V
 	playerLoc.L = playerLoc.L or L["PLMsg"]
 	LoadControlSettings("PL", playerLoc)
-	-- Create legacy global variables for backward compatibility
-	ShowPlayerLoc = _G.ControlData.PL.show
 	pLLoc = playerLoc.L
 
 
@@ -380,8 +364,6 @@ function LoadSettings()
 	local trackItems = InitControlDefaults("TrackItems", {}, {}, {})
 	trackItems.V = trackItems.V or false
 	LoadControlSettings("TI", trackItems)
-	-- Create legacy global variables for backward compatibility
-	ShowTrackItems = _G.ControlData.TI.show
 
 
 	-- Infamy control
@@ -391,8 +373,6 @@ function LoadSettings()
 	infamy.P = infamy.P or Constants.FormatInt(0)
 	infamy.K = infamy.K or Constants.FormatInt(0)
 	LoadControlSettings("IF", infamy)
-	-- Create legacy global variables for backward compatibility
-	ShowInfamy = _G.ControlData.IF.show
 	SetInfamy = infamy.F
 	InfamyPTS = infamy.P
 	InfamyRank = infamy.K
@@ -402,16 +382,12 @@ function LoadSettings()
 	local vault = InitControlDefaults("Vault", {}, {}, {})
 	vault.V = vault.V or false
 	LoadControlSettings("VT", vault)
-	-- Create legacy global variables for backward compatibility
-	ShowVault = _G.ControlData.VT.show
 
 
 	-- SharedStorage control
 	local sharedStorage = InitControlDefaults("SharedStorage", {}, {}, {})
 	sharedStorage.V = sharedStorage.V or false
 	LoadControlSettings("SS", sharedStorage)
-	-- Create legacy global variables for backward compatibility
-	ShowSharedStorage = _G.ControlData.SS.show
 
 	-- DayNight control
 	local dayNight = InitControlDefaults("DayNight", {}, {}, {})
@@ -419,8 +395,6 @@ function LoadSettings()
 	dayNight.N = dayNight.N == nil and true or dayNight.N
 	dayNight.S = dayNight.S or Constants.FormatInt(10350)
 	LoadControlSettings("DN", dayNight)
-	-- Create legacy global variables for backward compatibility
-	ShowDayNight = _G.ControlData.DN.show
 	_G.DNNextT = dayNight.N
 	_G.TS = tonumber(dayNight.S)
 
@@ -430,8 +404,6 @@ function LoadSettings()
 	reputation.V = reputation.V or false
 	reputation.H = reputation.H or false
 	LoadControlSettings("RP", reputation)
-	-- Create legacy global variables for backward compatibility
-	ShowReputation = _G.ControlData.RP.show
 	HideMaxReps = reputation.H
 
 
@@ -443,8 +415,6 @@ function LoadSettings()
 	gameTime.O = gameTime.O or false -- True = Show both server and real time
 	gameTime.M = gameTime.M or Constants.FormatInt(0)
 	LoadControlSettings("GT", gameTime)
-	-- Create legacy global variables for backward compatibility
-	ShowGameTime = _G.ControlData.GT.show
 	_G.Clock24h = gameTime.H
 	_G.ShowST = gameTime.S
 	_G.ShowBT = gameTime.O

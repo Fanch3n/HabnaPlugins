@@ -162,9 +162,9 @@ function frmMain()
 		end
 	else
 		-- Disable infos not useful in Monster Play
-		ShowDurabilityInfos, ShowEquipInfos = false, false
-		ShowVault, ShowSharedStorage = false, false
-		ShowReputation = false
+		_G.ControlData.DI.show, _G.ControlData.EI.show = false, false
+		_G.ControlData.VT.show, _G.ControlData.SS.show = false, false
+		_G.ControlData.RP.show = false
 		for _,cur in pairs(_G.currencies.list) do
 			if not cur.visibleInMonsterPlay then
 				_G.CurrencyData[cur.name].IsVisible = false
@@ -172,20 +172,20 @@ function frmMain()
 		end
 
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
-			if ShowWallet then ImportCtr( "WI" ); end
+			if _G.ControlData.WI.show then ImportCtr( "WI" ); end
 			if _G.CurrencyData["Commendation"].Where ~= 3 then ImportCtr("Commendation"); end
 			if _G.LPWhere ~= 3 then ImportCtr( "LP" ); end
 		end
 	end
 
-	if ShowWallet then ImportCtr( "WI" ); end
+	if _G.ControlData.WI.show then ImportCtr( "WI" ); end
 	if _G.MIWhere ~= 3 then ImportCtr( "MI" ); end
-	if ShowTrackItems then ImportCtr( "TI" ); end --Track Items
-	if ShowInfamy then ImportCtr( "IF" ); end --Infamy/Renown
-	if ShowVault then ImportCtr( "VT" ); end --Vault
-	if ShowSharedStorage then ImportCtr( "SS" ); end --SharedStorage
-	if ShowDayNight then ImportCtr( "DN" ); end --Day & Night time
-	if ShowReputation then ImportCtr( "RP" ); end --Reputation Points
+	if _G.ControlData.TI.show then ImportCtr( "TI" ); end --Track Items
+	if _G.ControlData.IF.show then ImportCtr( "IF" ); end --Infamy/Renown
+	if _G.ControlData.VT.show then ImportCtr( "VT" ); end --Vault
+	if _G.ControlData.SS.show then ImportCtr( "SS" ); end --SharedStorage
+	if _G.ControlData.DN.show then ImportCtr( "DN" ); end --Day & Night time
+	if _G.ControlData.RP.show then ImportCtr( "RP" ); end --Reputation Points
 	if _G.LPWhere ~= 3 then ImportCtr( "LP" ); end --LOTRO Points
 
 	--**v Workaround for the ItemRemoved that fires before the backpack was updated (Turbine API issue) v**
@@ -197,16 +197,16 @@ function frmMain()
 	end
 	--**
 	
-	if ShowBagInfos then ImportCtr( "BI" );	end
-	if ShowPlayerInfos then ImportCtr( "PI" ); end
-	if ShowPlayerLoc then ImportCtr( "PL" ); end
-	if ShowGameTime then ImportCtr( "GT" ); end
+	if _G.ControlData.BI.show then ImportCtr( "BI" );	end
+	if _G.ControlData.PI.show then ImportCtr( "PI" ); end
+	if _G.ControlData.PL.show then ImportCtr( "PL" ); end
+	if _G.ControlData.GT.show then ImportCtr( "GT" ); end
 
-	if ShowDurabilityInfos or ShowEquipInfos then
+	if _G.ControlData.DI.show or _G.ControlData.EI.show then
 		GetEquipmentInfos();
-		AddCallback(PlayerEquipment, "ItemEquipped", function(sender, args) if ShowEquipInfos then GetEquipmentInfos(); UpdateEquipsInfos(); end if ShowDurabilityInfos then GetEquipmentInfos(); UpdateDurabilityInfos(); end end);
+		AddCallback(PlayerEquipment, "ItemEquipped", function(sender, args) if _G.ControlData.EI.show then GetEquipmentInfos(); UpdateEquipsInfos(); end if _G.ControlData.DI.show then GetEquipmentInfos(); UpdateDurabilityInfos(); end end);
 		AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) ItemUnEquippedTimer:SetWantsUpdates( true ); end); --Workaround
-		--AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) if ShowEquipInfos then GetEquipmentInfos(); UpdateEquipsInfos(); end if ShowDurabilityInfos then GetEquipmentInfos(); UpdateDurabilityInfos(); end end);
+		--AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) if _G.ControlData.EI.show then GetEquipmentInfos(); UpdateEquipsInfos(); end if _G.ControlData.DI.show then GetEquipmentInfos(); UpdateDurabilityInfos(); end end);
 	end
 
 	AddCallback(
@@ -230,21 +230,21 @@ function frmMain()
 	ItemUnEquippedTimer = Turbine.UI.Control();
 
 	ItemUnEquippedTimer.Update = function( sender, args )
-		if ShowEquipInfos then GetEquipmentInfos(); UpdateEquipsInfos(); end
-		if ShowDurabilityInfos then GetEquipmentInfos(); UpdateDurabilityInfos(); end
+		if _G.ControlData.EI.show then GetEquipmentInfos(); UpdateEquipsInfos(); end
+		if _G.ControlData.DI.show then GetEquipmentInfos(); UpdateDurabilityInfos(); end
 		ItemUnEquippedTimer:SetWantsUpdates( false );
 	end
 	--**
 	
-	if ShowEquipInfos then ImportCtr( "EI" ); end
-	if ShowDurabilityInfos then ImportCtr( "DI" ); end
+	if _G.ControlData.EI.show then ImportCtr( "EI" ); end
+	if _G.ControlData.DI.show then ImportCtr( "DI" ); end
 	
 	--**v Run these functions at-startup only once because if TitanBar is loaded with in-game plugin manager some controls do not update properly v**
 	OneTimer = Turbine.UI.Control();
 	AllTimer = Turbine.UI.Control();
 	AllTimer:SetWantsUpdates( true );
 	
-	if ShowEquipInfos or ShowDurabilityInfos then
+	if _G.ControlData.EI.show or _G.ControlData.DI.show then
 		OneTimer:SetWantsUpdates( true )
 		AllTimer:SetWantsUpdates( false )
 		NumSec = 0
@@ -266,10 +266,10 @@ function frmMain()
 		if NumSec < max then -- Run for 24 secs. -- TODO why?
 			if (oldsecond ~= currentsecond) then
 				if Interval == 0 then
-					if ShowEquipInfos or ShowDurabilityInfos then GetEquipmentInfos();
+					if _G.ControlData.EI.show or _G.ControlData.DI.show then GetEquipmentInfos();
 						if PlayerEquipment ~= nil then
-							if ShowEquipInfos then ImportCtr( "EI" ); end
-							if ShowDurabilityInfos then ImportCtr( "DI" ); end
+							if _G.ControlData.EI.show then ImportCtr( "EI" ); end
+							if _G.ControlData.DI.show then ImportCtr( "DI" ); end
 						end
 					end
 
@@ -302,7 +302,7 @@ function frmMain()
 		local currentsecond = currentdate.Second;
 		
 		if (oldminute ~= currentminute) then
-			if ShowGameTime then-- Until I find the minute changed event or something similar
+			if _G.ControlData.GT.show then-- Until I find the minute changed event or something similar
 				if _G.ShowBT then UpdateGameTime("bt");
 				elseif _G.ShowST then UpdateGameTime("st");
 				else UpdateGameTime("gt") end
@@ -313,7 +313,7 @@ function frmMain()
 			screenWidth, screenHeight = Turbine.UI.Display.GetSize();
 			if TBWidth ~= screenWidth then ReplaceCtr(); end --Replace control if screen width has changed
 
-			if ShowDayNight then UpdateDayNight(); end
+			if _G.ControlData.DN.show then UpdateDayNight(); end
 		end
 
 		oldminute = currentminute;
@@ -321,7 +321,7 @@ function frmMain()
 
 		--When player log out & log in with same character, the durability control show -1%
 		--Because equipment info are not avail when re-login, weird!
-		--if PlayerAlign == 1 and ShowDurabilityInfos then if DI[ "Lbl" ]:GetText() == "-1%" then GetEquipmentInfos(); UpdateDurabilityInfos(); end end
+		--if PlayerAlign == 1 and _G.ControlData.DI.show then if DI[ "Lbl" ]:GetText() == "-1%" then GetEquipmentInfos(); UpdateDurabilityInfos(); end end
 	end
 	--**
 end

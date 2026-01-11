@@ -170,16 +170,18 @@ function frmWalletWindow()
 		--Where-> 1: On TitanBar / 2: In wallet control tooltip / 3: Don't show
 		if wcur == L["MGSC"] then
 			_G.MIWhere = SelIndex; settings.Money.W = string.format("%.0f", SelIndex);
-			if SelIndex == Constants.Position.TITANBAR then if not ShowMoney then ShowHideMoney(); end
-			else if ShowMoney then ShowHideMoney(); end end
+			_G.ControlData.Money.where = SelIndex
+			if SelIndex == Constants.Position.TITANBAR then if not _G.ControlData.Money.show then ShowHideMoney(); end
+			else if _G.ControlData.Money.show then ShowHideMoney(); end end
 		elseif wcur == L["MLotroPoints"] then
 			_G.LPWhere = SelIndex; settings.LOTROPoints.W = string.format("%.0f", SelIndex);
+			_G.ControlData.LP.where = SelIndex
 			if SelIndex == Constants.Position.TITANBAR then
-				if not ShowLOTROPoints then
+				if not _G.ControlData.LP.show then
 					ShowHideLOTROPoints()
 				end
 			else
-				if ShowLOTROPoints then
+				if _G.ControlData.LP.show then
 					ShowHideLOTROPoints()
 				end
 			end

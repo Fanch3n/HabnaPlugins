@@ -1,13 +1,13 @@
 -- ControlRegistry.lua
 -- Centralized control data management for TitanBar
 -- Instead of scattered global variables, each control has a structured data object in _G.ControlData
--- This eliminates dozens of global variables like ShowWallet, WIbcAlpha, WILocX, etc.
+-- This eliminates dozens of scattered globals (visibility flags, colors, locations, etc.)
 
 _G.ControlRegistry = {}
 _G.ControlData = {}
 
 -- Initialize control data structure
--- This replaces scattered globals like ShowWallet, WIbcAlpha, WILocX, etc.
+-- This replaces scattered globals (visibility flags, colors, locations, etc.)
 local function InitControlData(controlId, settingsKey, toggleFunc, hasWhere, defaults)
 	defaults = defaults or {}
 	_G.ControlData[controlId] = {

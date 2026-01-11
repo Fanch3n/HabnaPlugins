@@ -8,27 +8,27 @@ if _G.Debug then write("frmOptions.lua"); end
 
 function GetWalletControls()
 	local walletControls = { };
-	if WI ~= nil then walletControls[ "WI" ] = { ShowHide = ShowWallet, Control = WI[ "Ctr" ] }; end
-	if MI ~= nil then walletControls[ "MI" ] = { ShowHide = ShowMoney, Control = MI[ "Ctr" ] }; end
-	if BI ~= nil then walletControls[ "BI" ] = { ShowHide = ShowBagInfos, Control = BI[ "Ctr" ] }; end
-	if PI ~= nil then walletControls[ "PI" ] = { ShowHide = ShowPlayerInfos, Control = PI[ "Ctr" ] }; end
-	if EI ~= nil then walletControls[ "EI" ] = { ShowHide = ShowEquipInfos, Control = EI[ "Ctr" ] }; end
-	if DI ~= nil then walletControls[ "DI" ] = { ShowHide = ShowDurabilityInfos, Control = DI[ "Ctr" ] };end
-	if TI ~= nil then walletControls[ "TI" ] = { ShowHide = ShowTrackItems, Control = TI[ "Ctr" ] }; end
-	if IF ~= nil then walletControls[ "IF" ] = { ShowHide = ShowInfamy, Control = IF[ "Ctr" ] }; end
-	if VT ~= nil then walletControls[ "VT" ] = { ShowHide = ShowVault, Control = VT[ "Ctr" ] }; end
-	if SS ~= nil then walletControls[ "SS" ] = { ShowHide = ShowSharedStorage, Control = SS[ "Ctr" ] }; end
+	if WI ~= nil then walletControls[ "WI" ] = { IsVisible = _G.ControlData.WI.show, Control = WI[ "Ctr" ] }; end
+	if MI ~= nil then walletControls[ "MI" ] = { IsVisible = _G.ControlData.Money.show, Control = MI[ "Ctr" ] }; end
+	if BI ~= nil then walletControls[ "BI" ] = { IsVisible = _G.ControlData.BI.show, Control = BI[ "Ctr" ] }; end
+	if PI ~= nil then walletControls[ "PI" ] = { IsVisible = _G.ControlData.PI.show, Control = PI[ "Ctr" ] }; end
+	if EI ~= nil then walletControls[ "EI" ] = { IsVisible = _G.ControlData.EI.show, Control = EI[ "Ctr" ] }; end
+	if DI ~= nil then walletControls[ "DI" ] = { IsVisible = _G.ControlData.DI.show, Control = DI[ "Ctr" ] };end
+	if TI ~= nil then walletControls[ "TI" ] = { IsVisible = _G.ControlData.TI.show, Control = TI[ "Ctr" ] }; end
+	if IF ~= nil then walletControls[ "IF" ] = { IsVisible = _G.ControlData.IF.show, Control = IF[ "Ctr" ] }; end
+	if VT ~= nil then walletControls[ "VT" ] = { IsVisible = _G.ControlData.VT.show, Control = VT[ "Ctr" ] }; end
+	if SS ~= nil then walletControls[ "SS" ] = { IsVisible = _G.ControlData.SS.show, Control = SS[ "Ctr" ] }; end
 	--if BK ~= nil then walletControls[ "BK" ] = { ShowHide = ShowBank, Control = BK[ "Ctr" ] }; end
-	if DN ~= nil then walletControls[ "DN" ] = { ShowHide = ShowDayNight, Control = DN[ "Ctr" ] }; end
-	if RP ~= nil then walletControls[ "RP" ] = { ShowHide = ShowReputation, Control = RP[ "Ctr" ] }; end
-	if LP ~= nil then walletControls[ "LP" ] = { ShowHide = ShowLOTROPoints, Control = LP[ "Ctr" ] }; end
-	if PL ~= nil then walletControls[ "PL" ] = { ShowHide = ShowPlayerLoc, Control = PL[ "Ctr" ] }; end
-	if GT ~= nil then walletControls[ "GT" ] = { ShowHide = ShowGameTime, Control = GT[ "Ctr" ] }; end
+	if DN ~= nil then walletControls[ "DN" ] = { IsVisible = _G.ControlData.DN.show, Control = DN[ "Ctr" ] }; end
+	if RP ~= nil then walletControls[ "RP" ] = { IsVisible = _G.ControlData.RP.show, Control = RP[ "Ctr" ] }; end
+	if LP ~= nil then walletControls[ "LP" ] = { IsVisible = _G.ControlData.LP.show, Control = LP[ "Ctr" ] }; end
+	if PL ~= nil then walletControls[ "PL" ] = { IsVisible = _G.ControlData.PL.show, Control = PL[ "Ctr" ] }; end
+	if GT ~= nil then walletControls[ "GT" ] = { IsVisible = _G.ControlData.GT.show, Control = GT[ "Ctr" ] }; end
 
 	for _, currency in pairs(_G.currencies.list) do
 		if _G.CurrencyData[currency.name] ~= nil then
 			walletControls[currency.name] = {
-				ShowHide = _G.CurrencyData[currency.name].IsVisible,
+				IsVisible = _G.CurrencyData[currency.name].IsVisible,
 				Control = _G.CurrencyData[currency.name].Ctr
 			}
 		end
@@ -216,17 +216,17 @@ function ResizeControls()
 	if TBHeight > 30 then CTRHeight = 30; end--Set control maximum height
 	
 	for ItemID, ShowItem in pairs( GetWalletControls() ) do
-		if ShowItem.ShowHide then ShowItem.Control:SetHeight( CTRHeight ); end
+		if ShowItem.IsVisible then ShowItem.Control:SetHeight( CTRHeight ); end
 		AjustIcon( ItemID );
 	end 
 
-	if ShowPlayerLoc then PL[ "Ctr" ]:SetHeight( CTRHeight ); PL[ "Lbl" ]:SetHeight( CTRHeight ); end
-	if ShowGameTime  then GT[ "Ctr" ]:SetHeight( CTRHeight );	GT[ "Lbl" ]:SetHeight( CTRHeight ); end
+	if _G.ControlData.PL.show then PL[ "Ctr" ]:SetHeight( CTRHeight ); PL[ "Lbl" ]:SetHeight( CTRHeight ); end
+	if _G.ControlData.GT.show  then GT[ "Ctr" ]:SetHeight( CTRHeight );	GT[ "Lbl" ]:SetHeight( CTRHeight ); end
 end
 
 function ResizeIcon()
 	for ItemID, ShowItem in pairs( GetWalletControls() ) do
-		if ShowItem.ShowHide then
+		if ShowItem.IsVisible then
 			AjustIcon(ItemID)
 		end
 	end

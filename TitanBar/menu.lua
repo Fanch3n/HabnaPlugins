@@ -48,51 +48,51 @@ local opt_line = Turbine.UI.MenuItem("------------------------------------------
 local opt_empty = Turbine.UI.MenuItem("", false);
 
 opt_WI = Turbine.UI.MenuItem(L["MBag"]);
-opt_WI:SetChecked( ShowWallet );
+opt_WI:SetChecked( _G.ControlData.WI.show );
 opt_WI.Click = function( sender, args ) ToggleMenuVisibility(ShowHideWallet) end
 
 opt_BI = Turbine.UI.MenuItem(L["MBI"]);
-opt_BI:SetChecked( ShowBagInfos );
+opt_BI:SetChecked( _G.ControlData.BI.show );
 opt_BI.Click = function( sender, args ) ToggleMenuVisibility(ShowHideBackpackInfos) end
 
 opt_PI = Turbine.UI.MenuItem(L["MPI"]);
-opt_PI:SetChecked( ShowPlayerInfos );
+opt_PI:SetChecked( _G.ControlData.PI.show );
 opt_PI.Click = function( sender, args ) ToggleMenuVisibility(ShowHidePlayerInfos) end
 
 opt_EI = Turbine.UI.MenuItem(L["MEI"]);
-opt_EI:SetChecked( ShowEquipInfos );
---ShowEquipInfos = false;  -- Remove when GetEquipment() in API work properly
---opt_EI:SetEnabled( ShowEquipInfos ); -- Remove when GetEquipment() in API work properly
+opt_EI:SetChecked( _G.ControlData.EI.show );
+--_G.ControlData.EI.show = false;  -- Remove when GetEquipment() in API work properly
+--opt_EI:SetEnabled( _G.ControlData.EI.show ); -- Remove when GetEquipment() in API work properly
 opt_EI.Click = function( sender, args )	ToggleMenuVisibility(ShowHideEquipInfos) end
 
 opt_DI = Turbine.UI.MenuItem(L["MDI"]);
-opt_DI:SetChecked( ShowDurabilityInfos );
---ShowDurabilityInfos = false;  -- Remove when GetEquipment() in API work properly
---opt_DI:SetEnabled( ShowDurabilityInfos ); -- Remove when GetEquipment() in API work properly
+opt_DI:SetChecked( _G.ControlData.DI.show );
+--_G.ControlData.DI.show = false;  -- Remove when GetEquipment() in API work properly
+--opt_DI:SetEnabled( _G.ControlData.DI.show ); -- Remove when GetEquipment() in API work properly
 opt_DI.Click = function( sender, args )	ToggleMenuVisibility(ShowHideDurabilityInfos) end
 
 opt_PL = Turbine.UI.MenuItem(L["MPL"]);
-opt_PL:SetChecked( ShowPlayerLoc );
+opt_PL:SetChecked( _G.ControlData.PL.show );
 opt_PL.Click = function( sender, args ) ToggleMenuVisibility(ShowHidePlayerLoc) end
 
 opt_TI = Turbine.UI.MenuItem(L["MTI"]);
-opt_TI:SetChecked( ShowTrackItems );
+opt_TI:SetChecked( _G.ControlData.TI.show );
 opt_TI.Click = function( sender, args ) ToggleMenuVisibility(ShowHideTrackItems) end
 
 opt_IF = Turbine.UI.MenuItem(L["IFWTitle"]);
-opt_IF:SetChecked( ShowInfamy );
+opt_IF:SetChecked( _G.ControlData.IF.show );
 opt_IF.Click = function( sender, args ) ToggleMenuVisibility(ShowHideInfamy) end
 
 opt_GT = Turbine.UI.MenuItem(L["MGT"]);
-opt_GT:SetChecked( ShowGameTime );
+opt_GT:SetChecked( _G.ControlData.GT.show );
 opt_GT.Click = function( sender, args ) ToggleMenuVisibility(ShowHideGameTime) end
 
 opt_VT = Turbine.UI.MenuItem( L["MVault"] );
-opt_VT:SetChecked( ShowVault );
+opt_VT:SetChecked( _G.ControlData.VT.show );
 opt_VT.Click = function( sender, args ) ToggleMenuVisibility(ShowHideVault) end
 
 opt_SS = Turbine.UI.MenuItem( L["MStorage"] );
-opt_SS:SetChecked( ShowSharedStorage );
+opt_SS:SetChecked( _G.ControlData.SS.show );
 opt_SS.Click = function( sender, args ) ToggleMenuVisibility(ShowHideSharedStorage) end
 
 --opt_BK = Turbine.UI.MenuItem( L["MBank"] );
@@ -100,11 +100,11 @@ opt_SS.Click = function( sender, args ) ToggleMenuVisibility(ShowHideSharedStora
 --opt_BK.Click = function( sender, args ) ShowHideBank(); TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos); end
 
 opt_DN = Turbine.UI.MenuItem( L["MDayNight"] );
-opt_DN:SetChecked( ShowDayNight );
+opt_DN:SetChecked( _G.ControlData.DN.show );
 opt_DN.Click = function( sender, args ) ToggleMenuVisibility(ShowHideDayNight) end
 
 opt_RP = Turbine.UI.MenuItem( L["MReputation"] );
-opt_RP:SetChecked( ShowReputation );
+opt_RP:SetChecked( _G.ControlData.RP.show );
 opt_RP.Click = function( sender, args ) ToggleMenuVisibility(ShowHideReputation) end
 
 opt_options = Turbine.UI.MenuItem(L["MOP"]);
