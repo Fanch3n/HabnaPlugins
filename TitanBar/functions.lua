@@ -127,9 +127,6 @@ function ShowToolTipWin(ToShow)
 	elseif ToShow == "SS" then -- Shared Storage
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["MStorage"], L["EIt1"], 
             L["EIt2"], L["EIt3"] );
---[[	elseif ToShow == "BK" then -- Bank
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MBank"], L["EIt1"], 
-            L["EIt2"], L["EIt3"] ); --]]
 	elseif ToShow == "DN" then -- Day & Night
 		TTW = createToolTipWin( x, y, w, h, bblTo, L["MDayNight"], L["EIt1"], 
             L["EIt2"], L["EIt3"] );
@@ -408,11 +405,6 @@ end
 --**v Update Shared Storage on TitanBar v**
 function UpdateSharedStorage()
 	AjustIcon( "SS" );
-end
---**^
---**v Update Bank on TitanBar v**
-function UpdateBank()
-	AjustIcon( "BK" );
 end
 --**^
 --**v Update Day & Night time on TitanBar v**

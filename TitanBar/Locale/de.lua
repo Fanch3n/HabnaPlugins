@@ -41,7 +41,6 @@ L[ "MTI" ] = "Artikel verfolgen";
 --L[ "MView" ] = "Anzeigen ";
 L[ "MVault" ] = "Bankfach";
 L[ "MStorage" ] = "gemeinsamer Lagerraum";
---L[ "MBank" ] = "Bank";
 L[ "MDayNight" ] = "Tages- & Nacht-Zeit";
 L[ "MReputation" ] = "Ruf";
 
@@ -326,9 +325,6 @@ L[ "SSnd" ] = "Ihr m\195\188sst Euren Lagerraum mindestens einmal \195\182ffnen"
 -- Backpack window
 L[ "BIh" ] = "Rucksack";
 L[ "BID" ] = " Rucksackinfo gel\195\182scht!"; 
-
--- Bank window
-L[ "BKh" ] = "Bank";
 
 -- Day & Night window
 L[ "Dawn" ] = "Morgend\195\164mmerung";

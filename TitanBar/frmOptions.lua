@@ -18,7 +18,6 @@ function GetWalletControls()
 	if IF ~= nil then walletControls[ "IF" ] = { IsVisible = _G.ControlData.IF.show, Control = IF[ "Ctr" ] }; end
 	if VT ~= nil then walletControls[ "VT" ] = { IsVisible = _G.ControlData.VT.show, Control = VT[ "Ctr" ] }; end
 	if SS ~= nil then walletControls[ "SS" ] = { IsVisible = _G.ControlData.SS.show, Control = SS[ "Ctr" ] }; end
-	--if BK ~= nil then walletControls[ "BK" ] = { ShowHide = ShowBank, Control = BK[ "Ctr" ] }; end
 	if DN ~= nil then walletControls[ "DN" ] = { IsVisible = _G.ControlData.DN.show, Control = DN[ "Ctr" ] }; end
 	if RP ~= nil then walletControls[ "RP" ] = { IsVisible = _G.ControlData.RP.show, Control = RP[ "Ctr" ] }; end
 	if LP ~= nil then walletControls[ "LP" ] = { IsVisible = _G.ControlData.LP.show, Control = LP[ "Ctr" ] }; end

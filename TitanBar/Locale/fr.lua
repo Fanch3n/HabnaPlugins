@@ -41,7 +41,6 @@ L[ "MTI" ] = "Suivre des articles";
 --L[ "MView" ] = "Voir votre ";
 L[ "MVault" ] = "Coffre";
 L[ "MStorage" ] = "Stockage Partag\195\169";
---L[ "MBank" ] = "Banque";
 L[ "MDayNight" ] = "Jour & Nuit";
 L[ "MReputation" ] = "R\195\169putation";
 
@@ -326,9 +325,6 @@ L[ "SSnd" ] = "Besoin d'ouvrir votre stockage partag\195\169 au moins une fois";
 -- Backpack window
 L[ "BIh" ] = "Sac \195\160 dos";
 L[ "BID" ] = " infos sacs supprim\195\169!"
-
--- Bank window
-L[ "BKh" ] = "banque";
 
 -- Day & Night window
 L[ "Dawn" ] = "Aube";

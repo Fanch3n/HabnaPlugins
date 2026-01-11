@@ -41,7 +41,6 @@ L[ "MTI" ] = "Track Items";
 --L[ "MView" ] = "View your ";
 L[ "MVault" ] = "Vault";
 L[ "MStorage" ] = "Shared Storage";
---L[ "MBank" ] = "Bank";
 L[ "MDayNight" ] = "Day & Night Time";
 L[ "MReputation" ] = "Reputation";
 
@@ -326,9 +325,6 @@ L[ "SSnd" ] = "Need to open your shared storage at least once";
 -- Backpack window
 L[ "BIh" ] = "backpack";
 L[ "BID" ] = " bags info deleted!"
-
--- Bank window
-L[ "BKh" ] = "bank";
 
 -- Day & Night window
 L[ "Dawn" ] = "Dawn";

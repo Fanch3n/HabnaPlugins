@@ -95,10 +95,6 @@ opt_SS = Turbine.UI.MenuItem( L["MStorage"] );
 opt_SS:SetChecked( _G.ControlData.SS.show );
 opt_SS.Click = function( sender, args ) ToggleMenuVisibility(ShowHideSharedStorage) end
 
---opt_BK = Turbine.UI.MenuItem( L["MBank"] );
---opt_BK:SetChecked( ShowBank );
---opt_BK.Click = function( sender, args ) ShowHideBank(); TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos); end
-
 opt_DN = Turbine.UI.MenuItem( L["MDayNight"] );
 opt_DN:SetChecked( _G.ControlData.DN.show );
 opt_DN.Click = function( sender, args ) ToggleMenuVisibility(ShowHideDayNight) end

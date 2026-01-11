@@ -224,11 +224,6 @@ function ShowHideSharedStorage()
 	opt_SS:SetChecked( controlData.show );
 end
 -- **^
--- **v Show/Hide Bank v**
-function ShowHideBank()
-	-- Bank control is currently not implemented/disabled.
-end
--- **^
 -- **v Show/Hide Day & Night time v**
 function ShowHideDayNight()
 	local controlData = _G.ControlData.DN
