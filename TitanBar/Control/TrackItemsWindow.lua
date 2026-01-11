@@ -9,71 +9,58 @@ local size = backpack:GetSize();
 function frmTrackItemsWindow()
 	import(AppDirD .. "WindowFactory")
 
-	-- Create window via factory
-	_G.wTI = CreateWindow({
-		text = L["BIIL"],
-		width = 390,
-		height = 498,
-		left = BIWLeft,
-		top = BIWTop,
-		config = {
-			settingsKey = "BagInfos",
-			windowGlobalVar = "wTI",
-			formGlobalVar = "frmTI",
-			onPositionChanged = function(left, top)
-				BIWLeft, BIWTop = left, top
-			end,
-			onClosing = function(sender, args)
-				-- Nothing extra required
-			end,
-		}
-	})
+	-- Create window via helper
+	local wTI = CreateControlWindow(
+		"BagInfos", "TI",
+		L["BIIL"], 390, 498
+	)
 
-	_G.wTI.lblBackPack = Turbine.UI.Label();
-	_G.wTI.lblBackPack:SetParent( _G.wTI );
-	_G.wTI.lblBackPack:SetText( L["BIT"] );
-	_G.wTI.lblBackPack:SetPosition( 0, 35);
-	_G.wTI.lblBackPack:SetSize( _G.wTI:GetWidth() , 15 );
-	_G.wTI.lblBackPack:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
-	_G.wTI.lblBackPack:SetForeColor( Color["green"] );
+	wTI.lblBackPack = Turbine.UI.Label();
+	wTI.lblBackPack:SetParent( wTI );
+	wTI.lblBackPack:SetText( L["BIT"] );
+	wTI.lblBackPack:SetPosition( 0, 35);
+	wTI.lblBackPack:SetSize( wTI:GetWidth() , 15 );
+	wTI.lblBackPack:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
+	wTI.lblBackPack:SetForeColor( Color["green"] );
 
 	-- **v search label & text box v**
 	-- **v search label & text box v**
-	_G.wTI.searchLabel = CreateTitleLabel(_G.wTI, L["VTSe"], 15, 60, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
+	wTI.searchLabel = CreateTitleLabel(wTI, L["VTSe"], 15, 60, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
 
-	local searchLeft = _G.wTI.searchLabel:GetLeft() + _G.wTI.searchLabel:GetWidth()
-	local searchWidth = _G.wTI:GetWidth() - 150
-	local search = CreateSearchControl(_G.wTI, searchLeft, _G.wTI.searchLabel:GetTop(), searchWidth + 24, 18, Turbine.UI.Lotro.Font.Verdana14, resources)
-	_G.wTI.SearchTextBox = search.TextBox
-	_G.wTI.DelIcon = search.DelIcon
+	local searchLeft = wTI.searchLabel:GetLeft() + wTI.searchLabel:GetWidth()
+	local searchWidth = wTI:GetWidth() - 150
+	local search = CreateSearchControl(wTI, searchLeft, wTI.searchLabel:GetTop(), searchWidth + 24, 18, Turbine.UI.Lotro.Font.Verdana14, resources)
+	wTI.SearchTextBox = search.TextBox
+	wTI.DelIcon = search.DelIcon
 
-	_G.wTI.SearchTextBox.TextChanged = function( sender, args )
+	wTI.SearchTextBox.TextChanged = function( sender, args )
 		ApplySearch();
 	end
 	-- Needed to handle deleting text with the delete key:
-	_G.wTI.SearchTextBox.KeyUp = function(sender, args)
+	wTI.SearchTextBox.KeyUp = function(sender, args)
 		ApplySearch();
 	end
 
-	_G.wTI.SearchTextBox.FocusLost = function( sender, args )
+	wTI.SearchTextBox.FocusLost = function( sender, args )
 	end
 
 	local lbTop = 85
-	local lb = CreateListBoxWithBorder(_G.wTI, 15, lbTop, _G.wTI:GetWidth() - 30, Constants.LISTBOX_HEIGHT_STANDARD, Color["grey"])
-	_G.wTI.ListBoxBorder = lb.Border
-	_G.wTI.ListBox = lb.ListBox
-	_G.wTI.ListBoxScrollBar = lb.ScrollBar
-	_G.wTI.ListBox:SetMaxItemsPerLine( 1 );
-	ConfigureListBox(_G.wTI.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
+	local lb = CreateListBoxWithBorder(wTI, 15, lbTop, wTI:GetWidth() - 30, Constants.LISTBOX_HEIGHT_STANDARD, Color["grey"])
+	wTI.ListBoxBorder = lb.Border
+	wTI.ListBox = lb.ListBox
+	wTI.ListBoxScrollBar = lb.ScrollBar
+	wTI.ListBox:SetMaxItemsPerLine( 1 );
+	ConfigureListBox(wTI.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
 
 	CheckForStackableItems();
 end
 
 function ApplySearch()
-    local searchTerm = string.lower(_G.wTI.SearchTextBox:GetText());
+    local wTI = _G.ControlData.TI.windowInstance
+    local searchTerm = string.lower(wTI.SearchTextBox:GetText());
 
-    if (_G.wTI.searchText ~= searchTerm) then
-        _G.wTI.searchText = searchTerm;
+    if (wTI.searchText ~= searchTerm) then
+        wTI.searchText = searchTerm;
         ShowStackableItems();
     end
 end
@@ -105,32 +92,34 @@ function CheckForStackableItems()
 end
 
 function SetEmptyTrackList()
+	local wTI = _G.ControlData.TI.windowInstance
 	local itemCtl = Turbine.UI.Control();
-	itemCtl:SetSize( _G.wTI.ListBox:GetWidth(), 35 );
+	itemCtl:SetSize( wTI.ListBox:GetWidth(), 35 );
 
 	local lblmgs = CreateTitleLabel(itemCtl, L["BIMsg"], 0, 0, nil, Color["red"], nil, itemCtl:GetWidth(), itemCtl:GetHeight(), Turbine.UI.ContentAlignment.MiddleCenter)
 
-	_G.wTI.ListBoxBorder:SetPosition( 15, 85 );
-	_G.wTI.ListBoxBorder:SetHeight( lblmgs:GetHeight() + 4 );
-	_G.wTI.ListBox:SetPosition( _G.wTI.ListBoxBorder:GetLeft() + 2, _G.wTI.ListBoxBorder:GetTop() + 2 );
-	_G.wTI.ListBox:SetHeight( lblmgs:GetHeight() );
-	_G.wTI.ListBoxScrollBar:SetVisible( false );
+	wTI.ListBoxBorder:SetPosition( 15, 85 );
+	wTI.ListBoxBorder:SetHeight( lblmgs:GetHeight() + 4 );
+	wTI.ListBox:SetPosition( wTI.ListBoxBorder:GetLeft() + 2, wTI.ListBoxBorder:GetTop() + 2 );
+	wTI.ListBox:SetHeight( lblmgs:GetHeight() );
+	wTI.ListBoxScrollBar:SetVisible( false );
 
-	_G.wTI.ListBox:AddItem( itemCtl );
-	_G.wTI:SetHeight( itemCtl:GetHeight() + 85 );
+	wTI.ListBox:AddItem( itemCtl );
+	wTI:SetHeight( itemCtl:GetHeight() + 85 );
 end
 
 function ShowStackableItems()
-	_G.wTI.ListBox:ClearItems();
+	local wTI = _G.ControlData.TI.windowInstance
+	wTI.ListBox:ClearItems();
 
 	for i = 1, size do
 		if item[i] ~= "zEmpty" and item[i].Stackable then -- Only show stackable item
-			if not _G.wTI.searchText or string.find(string.lower( item[i].Name ), _G.wTI.searchText, 1, true) then
+			if not wTI.searchText or string.find(string.lower( item[i].Name ), wTI.searchText, 1, true) then
 				-- Use CreateItemRow for player item
-				local row = CreateItemRow(_G.wTI.ListBox, _G.wTI.ListBox:GetWidth(), 35, true, item[i])
+				local row = CreateItemRow(wTI.ListBox, wTI.ListBox:GetWidth(), 35, true, item[i])
 				itemCtl[i] = row.Container
 				itemLbl[i] = row.ItemLabel
-				itemLbl[i]:SetSize( _G.wTI.ListBox:GetWidth() - 48, 33 )
+				itemLbl[i]:SetSize( wTI.ListBox:GetWidth() - 48, 33 )
 				itemLbl[i]:SetPosition( 36, 3 )
 				itemLbl[i]:SetText( item[i].Name )
 				itemLbl[i].Sel = false
@@ -203,7 +192,7 @@ function ShowStackableItems()
 					if itemLbl[i].Sel then itemLbl[i]:SetBackColor( Color["darkgrey"] ); else itemLbl[i]:SetBackColor( Color["black"] ); end
 				end
 
-				_G.wTI.ListBox:AddItem( itemCtl[i] );
+				wTI.ListBox:AddItem( itemCtl[i] );
 			end
 		end
 	end
@@ -222,10 +211,10 @@ function ShowStackableItems()
 		end
 	end
 
-	_G.wTI.ListBoxBorder:SetPosition( 15, _G.wTI.searchLabel:GetTop() + _G.wTI.searchLabel:GetHeight() + 5 );
-	_G.wTI.ListBoxBorder:SetHeight( Constants.LISTBOX_HEIGHT_STANDARD );
-	_G.wTI.ListBox:SetPosition( _G.wTI.ListBoxBorder:GetLeft() + 2, _G.wTI.ListBoxBorder:GetTop() + 2 );
-	_G.wTI.ListBox:SetHeight( _G.wTI.ListBoxBorder:GetHeight() - 4 );
-	_G.wTI.ListBoxScrollBar:SetHeight( _G.wTI.ListBox:GetHeight() );
-	_G.wTI:SetHeight( 498 );
+	wTI.ListBoxBorder:SetPosition( 15, wTI.searchLabel:GetTop() + wTI.searchLabel:GetHeight() + 5 );
+	wTI.ListBoxBorder:SetHeight( Constants.LISTBOX_HEIGHT_STANDARD );
+	wTI.ListBox:SetPosition( wTI.ListBoxBorder:GetLeft() + 2, wTI.ListBoxBorder:GetTop() + 2 );
+	wTI.ListBox:SetHeight( wTI.ListBoxBorder:GetHeight() - 4 );
+	wTI.ListBoxScrollBar:SetHeight( wTI.ListBox:GetHeight() );
+	wTI:SetHeight( 498 );
 end

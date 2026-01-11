@@ -91,11 +91,8 @@ function SetupControlInteraction(config)
 	-- Derive controlId from controlTable by finding which ControlData entry references it
 	local controlId = config.controlId
 	if not controlId and controlTable then
-		write("~controlId")
 		for id, data in pairs(_G.ControlData) do
-			write(id)
 			if data.ui.control == controlTable["Ctr"] then
-				write("Found: "..id)
 				controlId = id
 				break
 			end

@@ -6,31 +6,17 @@ function frmGameTimeWindow()
 	import(AppDirD .. "WindowFactory")
 	import(AppDirD .. "UIHelpers")
 
-	-- Create window via factory
-	_G.wGT = CreateWindow({
-		text = L["GTWTitle"],
-		width = 200,
-		height = 120,
-		left = GTWLeft,
-		top = GTWTop,
-		config = {
-			settingsKey = "GameTime",
-			windowGlobalVar = "wGT",
-			formGlobalVar = "frmGT",
-			onPositionChanged = function(left, top)
-				GTWLeft, GTWTop = left, top
-			end,
-			onClosing = function(sender, args)
-				-- nothing extra required
-			end,
-		}
-	})
+	-- Create window via helper
+	local wGT = CreateControlWindow(
+		"GameTime", "GT",
+		L["GTWTitle"], 200, 120
+	)
 
 	-- **v 24h clock - Check box v**
 	local GMT = Turbine.UI.Lotro.TextBox();
 	local ShowSTcb = Turbine.UI.Lotro.CheckBox();
 	local ShowBTcb;  -- Forward declaration
-	local Clock24Ctr = CreateAutoSizedCheckBox(_G.wGT, L["GTW24h"], 35, 40, _G.Clock24h, 8);
+	local Clock24Ctr = CreateAutoSizedCheckBox(wGT, L["GTW24h"], 35, 40, _G.Clock24h, 8);
 
 	Clock24Ctr.CheckedChanged = function( sender, args )
 		_G.Clock24h = Clock24Ctr:IsChecked();
@@ -42,7 +28,7 @@ function frmGameTimeWindow()
 	end
 	-- **^
 	-- **v Show server time - Check box v**
-	ShowSTcb:SetParent( _G.wGT );
+	ShowSTcb:SetParent( wGT );
 	ShowSTcb:SetPosition( 35, Clock24Ctr:GetTop() + 20 );
 	ShowSTcb:SetText( L["GTWSST"] );
 	ShowSTcb:SetSize( ShowSTcb:GetTextLength() * 8, 20 );
@@ -103,7 +89,7 @@ function frmGameTimeWindow()
 	end
 	-- **^
 	-- **v Show both time - Check box v**
-	ShowBTcb = CreateAutoSizedCheckBox(_G.wGT, L["GTWSBT"], 35, ShowSTcb:GetTop() + 20, _G.ShowBT);
+	ShowBTcb = CreateAutoSizedCheckBox(wGT, L["GTWSBT"], 35, ShowSTcb:GetTop() + 20, _G.ShowBT);
 
 	ShowBTcb.CheckedChanged = function( sender, args )
 		_G.ShowBT = ShowBTcb:IsChecked();
@@ -118,9 +104,9 @@ function frmGameTimeWindow()
 	-- **^
 
 	GMT:SetPosition( ShowSTcb:GetWidth() - 65, 0 );
-	_G.wGT:SetWidth( Clock24Ctr:GetWidth() + 60 );
+	wGT:SetWidth( Clock24Ctr:GetWidth() + 60 );
 	if TBLocale == "fr" then
 		GMT:SetPosition( ShowSTcb:GetWidth() - 70, 0 );
-		_G.wGT:SetWidth( ShowSTcb:GetWidth() + 85 );
+		wGT:SetWidth( ShowSTcb:GetWidth() + 85 );
 	end
 end

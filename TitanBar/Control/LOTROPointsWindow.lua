@@ -5,35 +5,23 @@
 function frmLOTROPointsWindow()
 	import(AppDirD .. "WindowFactory")
 	import(AppDirD .. "UIHelpers")
-	_G.wLP = CreateWindow({
-		text = L["MLotroPoints"],
-		width = 300,
-		height = 80,
-		left = LPWLeft,
-		top = LPWTop,
-		config = {
-			settingsKey = "LOTROPoints",
-			windowGlobalVar = "wLP",
-			formGlobalVar = "frmLP",
-			onPositionChanged = function(left, top)
-				LPWLeft, LPWTop = left, top
-			end,
-			onClosing = function(sender, args)
-				-- nothing extra required
-			end,
+	local wLP = CreateControlWindow(
+		"LOTROPoints", "LP",
+		L["MLotroPoints"], 300, 80,
+		{
 			onKeyDown = function(sender, args)
-				if args.Action == Constants.KEY_ENTER then -- Enter
+				if args.Action == Constants.KEY_ENTER then
 					if buttonSave then buttonSave.Click(sender, args) end
-					if _G.wLP then _G.wLP:Close() end
-					return
+					local window = _G.ControlData.LP.windowInstance
+					if window then window:Close() end
 				end
 			end
 		}
-	})
+	)
 
 
 	local LPWCtr = Turbine.UI.Control();
-	LPWCtr:SetParent( _G.wLP );
+	LPWCtr:SetParent( wLP );
 	LPWCtr:SetPosition( 15, 50 );
 	LPWCtr:SetZOrder( 2 );
 	--LPWCtr:SetBackColor( Color["red"] ); -- debug purpose
@@ -84,7 +72,7 @@ function frmLOTROPointsWindow()
 	end
 
 	LPWCtr:SetSize( lblLOTROPTS:GetWidth()+txtLOTROPTS:GetWidth()+buttonSave:GetWidth()+10, 20 );
-	_G.wLP:SetSize( LPWCtr:GetWidth()+30, 80 );
+	wLP:SetSize( LPWCtr:GetWidth()+30, 80 );
 
 	txtLOTROPTS:Focus();
 end

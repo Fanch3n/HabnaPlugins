@@ -145,9 +145,10 @@ MI["CLbl"].MouseClick = function( sender, args )
 	TB["win"].MouseMove();
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
 		if not _G.WasDrag then
-			if _G.frmMI then _G.frmMI = false; wMI:Close();
+			local window = _G.ControlData.Money.windowInstance
+			if window then
+				window:Close();
 			else
-				_G.frmMI = true;
 				import (AppCtrD.."MoneyInfosWindow");
 				frmMoneyInfosWindow();
 			end

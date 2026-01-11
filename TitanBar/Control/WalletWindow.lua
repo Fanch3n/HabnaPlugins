@@ -8,50 +8,40 @@ function frmWalletWindow()
 	import(AppDirD .. "WindowFactory")
 	WIDD = HabnaPlugins.TitanBar.Class.ComboBox();
 
-	-- **v Create window via factory v**
+	-- **v Create window via helper v**
 	local w = 320;
 	if GLocale == "de" then w = 360;
 	elseif GLocale == "fr" then w = 360;
 	end
 
-	_G.wWI = CreateWindow({
-		text = L["MBag"],
-		width = w,
-		height = 640,
-		left = WIWLeft,
-		top = WIWTop,
-		config = {
+	local wWI = CreateControlWindow(
+		"Wallet", "WI",
+		L["MBag"], w, 640,
+		{
 			dropdown = WIDD,
-			settingsKey = "Wallet",
-			windowGlobalVar = "wWI",
-			formGlobalVar = "frmWI",
-			onPositionChanged = function(left, top)
-				WIWLeft, WIWTop = left, top
-			end,
 			onClosing = function(sender, args)
 				if WIDD and WIDD.dropDownWindow then WIDD.dropDownWindow:SetVisible(false) end
-			end
-			,onKeyDown = function(sender, args)
-				if args.Action == Constants.KEY_ENTER then -- Enter
+			end,
+			onKeyDown = function(sender, args)
+				if args.Action == Constants.KEY_ENTER then
 					if WIbutSave then WIbutSave.Click(sender, args) end
-					return
 				end
 			end
 		}
-	})
+	)
 
 	
 	local WIlbltextHeight = 35;
 	-- Use CreateTitleLabel for the centered wallet title
-	local WIlbltext = CreateTitleLabel(_G.wWI, L["WIt"], 20, 35, nil, Color["green"], nil, _G.wWI:GetWidth()-40, WIlbltextHeight, Turbine.UI.ContentAlignment.MiddleCenter)
+	local WIlbltext = CreateTitleLabel(wWI, L["WIt"], 20, 35, nil, Color["green"], nil, wWI:GetWidth()-40, WIlbltextHeight, Turbine.UI.ContentAlignment.MiddleCenter)
 
 	local WIFilterlblHeight = 20;
-	local WIFilterlbl = CreateFieldLabel(_G.wWI, "Search:", 20, 75, 8, 60)
+	local WIFilterlbl = CreateFieldLabel(wWI, "Search:", 20, 75, 8, 60)
 
 	-- Use factory helper to create the search TextBox + delete icon
-	local wSearch = CreateSearchControl(_G.wWI, WIFilterlbl:GetLeft() + WIFilterlbl:GetWidth(), WIFilterlbl:GetTop(), _G.wWI:GetWidth() - 120, 20, Turbine.UI.Lotro.Font.Verdana16, resources)
+	local wSearch = CreateSearchControl(wWI, WIFilterlbl:GetLeft() + WIFilterlbl:GetWidth(), WIFilterlbl:GetTop(), wWI:GetWidth() - 120, 20, Turbine.UI.Lotro.Font.Verdana16, resources)
 	local WIFiltertxt = wSearch.TextBox
-	_G.wWI.WIFilterDelIcon = wSearch.DelIcon
+	wWI.WIFilterDelIcon = wSearch.DelIcon
 	WIFiltertxt.Text = "";
 	WIFiltertxt.TextChanged = function()
 		if WIFiltertxt.Text ~= WIFiltertxt:GetText() then
@@ -73,14 +63,14 @@ function frmWalletWindow()
     end
 
 	-- **v Set the Wallet listbox v (use helper for border/list/scroll)
-	local WIListBoxHeight = _G.wWI:GetHeight()-95 - WIlbltextHeight - WIFilterlblHeight;
+	local WIListBoxHeight = wWI:GetHeight()-95 - WIlbltextHeight - WIFilterlblHeight;
 	local wileft, witop = 20, 115
-	local wilb = CreateListBoxWithBorder(_G.wWI, wileft, witop, _G.wWI:GetWidth()-40, WIListBoxHeight, nil)
+	local wilb = CreateListBoxWithBorder(wWI, wileft, witop, wWI:GetWidth()-40, WIListBoxHeight, nil)
 	WIListBox = wilb.ListBox
-	WIListBox:SetParent( _G.wWI );
+	WIListBox:SetParent( wWI );
 	WIListBox:SetZOrder( 1 );
 	WIListBox:SetPosition( 20, 115 );
-	WIListBox:SetSize( _G.wWI:GetWidth()-40, WIListBoxHeight );
+	WIListBox:SetSize( wWI:GetWidth()-40, WIListBoxHeight );
 	ConfigureListBox(WIListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
 	WIListBoxScrollBar = wilb.ScrollBar
 	WIListBoxScrollBar:SetParent( WIListBox );
@@ -91,7 +81,7 @@ function frmWalletWindow()
 	WIListBoxScrollBar:SetSize( 12, WIListBox:GetHeight() );
 	-- **^
 
-	WIWCtr = CreateControl(Turbine.UI.Control, _G.wWI, WIListBox:GetLeft(), WIListBox:GetTop(), WIListBox:GetWidth(), WIListBox:GetHeight());
+	WIWCtr = CreateControl(Turbine.UI.Control, wWI, WIListBox:GetLeft(), WIListBox:GetTop(), WIListBox:GetWidth(), WIListBox:GetHeight());
 	WIWCtr:SetZOrder( 0 );
 	WIWCtr:SetVisible( false );
 	WIWCtr:SetBlendMode( 5 );

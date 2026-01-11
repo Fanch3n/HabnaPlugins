@@ -9,40 +9,29 @@ function frmReputationWindow()
     import(AppDirD .. "UIHelpers")
     RPDD = HabnaPlugins.TitanBar.Class.ComboBox();
 
-    -- Create window via WindowFactory for consistent behavior
-    _G.wRP = CreateWindow({
-        text = L["MReputation"],
-        width = 480,
-        height = 640,
-        left = RPWLeft,
-        top = RPWTop,
-        config = {
-            dropdown = RPDD,
-            settingsKey = "Reputation",
-            windowGlobalVar = "wRP",
-            formGlobalVar = "frmRP",
-            onPositionChanged = function(left, top)
-                RPWLeft, RPWTop = left, top
-            end,
-            onClosing = function(sender, args)
-                -- ensure dropdown hidden and any extra cleanup
-                if RPDD and RPDD.dropDownWindow then
-                    RPDD.dropDownWindow:SetVisible(false)
-                end
-            end
-        }
-    })
-   
-
+	-- Create window via helper for consistent behavior
+	local wRP = CreateControlWindow(
+		"Reputation", "RP",
+		L["MReputation"], 480, 640,
+		{
+			dropdown = RPDD,
+			onClosing = function(sender, args)
+				-- ensure dropdown hidden and any extra cleanup
+				if RPDD and RPDD.dropDownWindow then
+					RPDD.dropDownWindow:SetVisible(false)
+				end
+			end
+		}
+	)
     -- Use CreateTitleLabel for the reputation header
-    local RPlbltext = CreateTitleLabel(_G.wRP, L["RPt"], 20, 35, nil, Color["green"], nil, _G.wRP:GetWidth() - 40, 35, Turbine.UI.ContentAlignment.MiddleCenter)
+    local RPlbltext = CreateTitleLabel(wRP, L["RPt"], 20, 35, nil, Color["green"], nil, wRP:GetWidth() - 40, 35, Turbine.UI.ContentAlignment.MiddleCenter)
 
-    local RPFilterlbl = CreateFieldLabel(_G.wRP, "Search:", 20, 75, 8, 60)
+    local RPFilterlbl = CreateFieldLabel(wRP, "Search:", 20, 75, 8, 60)
 
     -- Use factory helper to create a search TextBox + delete icon
-    local rpSearch = CreateSearchControl(_G.wRP, RPFilterlbl:GetLeft() + RPFilterlbl:GetWidth(), RPFilterlbl:GetTop(), _G.wRP:GetWidth() - 120, 20, Turbine.UI.Lotro.Font.Verdana16, resources)
+    local rpSearch = CreateSearchControl(wRP, RPFilterlbl:GetLeft() + RPFilterlbl:GetWidth(), RPFilterlbl:GetTop(), wRP:GetWidth() - 120, 20, Turbine.UI.Lotro.Font.Verdana16, resources)
     local RPFiltertxt = rpSearch.TextBox
-    _G.wRP.RPFilterDelIcon = rpSearch.DelIcon
+    wRP.RPFilterDelIcon = rpSearch.DelIcon
     RPFiltertxt.Text = ""
     RPFiltertxt.TextChanged = function(sender, args)
         local txt = RPFiltertxt:GetText() or ""
@@ -73,9 +62,9 @@ function frmReputationWindow()
 --[[-- Add a checkbox for people to be able to hide all factions that reach max 
     -- reputation (then reshow if they loose rep)
     RPPHMaxCtr = Turbine.UI.Lotro.CheckBox();
-    RPPHMaxCtr:SetParent(_G.wRP);
+    RPPHMaxCtr:SetParent(wRP);
     RPPHMaxCtr:SetText(L["RPPHMaxHide"]);
-    RPPHMaxCtr:SetSize(_G.wRP:GetWidth() - 10, 20);
+    RPPHMaxCtr:SetSize(wRP:GetWidth() - 10, 20);
     RPPHMaxCtr:SetPosition(45, 65);
     RPPHMaxCtr:SetFont(Turbine.UI.Lotro.Font.TrajanPro16);
     RPPHMaxCtr:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
@@ -91,10 +80,10 @@ function frmReputationWindow()
 
     -- **v Set the reputation listbox v (using WindowFactory helper) **
     local rpLeft, rpTop = 20, 115
-    local rpWidth, rpHeight = _G.wRP:GetWidth() - 40, _G.wRP:GetHeight() - 130
-    local rplb = CreateListBoxWithBorder(_G.wRP, rpLeft, rpTop, rpWidth, rpHeight, nil)
+    local rpWidth, rpHeight = wRP:GetWidth() - 40, wRP:GetHeight() - 130
+    local rplb = CreateListBoxWithBorder(wRP, rpLeft, rpTop, rpWidth, rpHeight, nil)
     RPListBox = rplb.ListBox
-    RPListBox:SetParent(_G.wRP)
+    RPListBox:SetParent(wRP)
     RPListBox:SetZOrder(1)
     ConfigureListBox(RPListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
     RPListBoxScrollBar = rplb.ScrollBar
@@ -106,7 +95,7 @@ function frmReputationWindow()
     RPListBoxScrollBar:SetSize(12, RPListBox:GetHeight())
     -- **^
 
-    RPWCtr = CreateControl(Turbine.UI.Control, _G.wRP, RPListBox:GetLeft(), RPListBox:GetTop(), RPListBox:GetWidth(), RPListBox:GetHeight());
+    RPWCtr = CreateControl(Turbine.UI.Control, wRP, RPListBox:GetLeft(), RPListBox:GetTop(), RPListBox:GetWidth(), RPListBox:GetHeight());
     RPWCtr:SetZOrder(0);
     RPWCtr:SetVisible(false);
     RPWCtr:SetBlendMode(5);
@@ -276,3 +265,4 @@ function RefreshRPListBox()
 
     RPFilter();
 end
+

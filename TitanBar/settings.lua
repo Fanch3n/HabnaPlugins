@@ -277,7 +277,6 @@ function LoadSettings()
 	LoadControlSettings("WI", wallet)
 	-- Create legacy global variables for backward compatibility
 	ShowWallet = _G.ControlData.WI.show
-	WIWLeft, WIWTop = _G.ControlData.WI.window.left, _G.ControlData.WI.window.top
 
 
 	-- Money control
@@ -290,7 +289,6 @@ function LoadSettings()
 	LoadControlSettings("Money", money)
 	-- Create legacy global variables for backward compatibility
 	ShowMoney = _G.ControlData.Money.show
-	MIWLeft, MIWTop = _G.ControlData.Money.window.left, _G.ControlData.Money.window.top
 	_G.MIWhere = _G.ControlData.Money.where
 	_G.STM = money.S
 	_G.SSS = money.SS
@@ -303,7 +301,6 @@ function LoadSettings()
 	LoadControlSettings("LP", lotroPoints)
 	-- Create legacy global variables for backward compatibility
 	ShowLOTROPoints = _G.ControlData.LP.show
-	LPWLeft, LPWTop = _G.ControlData.LP.window.left, _G.ControlData.LP.window.top
 	_G.LPWhere = _G.ControlData.LP.where
 
 
@@ -315,7 +312,6 @@ function LoadSettings()
 	LoadControlSettings("BI", bagInfos)
 	-- Create legacy global variables for backward compatibility
 	ShowBagInfos = _G.ControlData.BI.show
-	BIWLeft, BIWTop = _G.ControlData.BI.window.left, _G.ControlData.BI.window.top
 	_G.BIUsed = bagInfos.U
 	_G.BIMax = bagInfos.M
 
@@ -366,7 +362,6 @@ function LoadSettings()
 	LoadControlSettings("DI", durabilityInfos)
 	-- Create legacy global variables for backward compatibility
 	ShowDurabilityInfos = _G.ControlData.DI.show
-	DIWLeft, DIWTop = _G.ControlData.DI.window.left, _G.ControlData.DI.window.top
 	DIIcon = durabilityInfos.I
 	DIText = durabilityInfos.N
 
@@ -387,7 +382,6 @@ function LoadSettings()
 	LoadControlSettings("TI", trackItems)
 	-- Create legacy global variables for backward compatibility
 	ShowTrackItems = _G.ControlData.TI.show
-	TIWLeft, TIWTop = _G.ControlData.TI.window.left, _G.ControlData.TI.window.top
 
 
 	-- Infamy control
@@ -399,7 +393,6 @@ function LoadSettings()
 	LoadControlSettings("IF", infamy)
 	-- Create legacy global variables for backward compatibility
 	ShowInfamy = _G.ControlData.IF.show
-	IFWLeft, IFWTop = _G.ControlData.IF.window.left, _G.ControlData.IF.window.top
 	SetInfamy = infamy.F
 	InfamyPTS = infamy.P
 	InfamyRank = infamy.K
@@ -411,7 +404,6 @@ function LoadSettings()
 	LoadControlSettings("VT", vault)
 	-- Create legacy global variables for backward compatibility
 	ShowVault = _G.ControlData.VT.show
-	VTWLeft, VTWTop = _G.ControlData.VT.window.left, _G.ControlData.VT.window.top
 
 
 	-- SharedStorage control
@@ -420,7 +412,6 @@ function LoadSettings()
 	LoadControlSettings("SS", sharedStorage)
 	-- Create legacy global variables for backward compatibility
 	ShowSharedStorage = _G.ControlData.SS.show
-	SSWLeft, SSWTop = _G.ControlData.SS.window.left, _G.ControlData.SS.window.top
 
 	-- DayNight control
 	local dayNight = InitControlDefaults("DayNight", {}, {}, {})
@@ -430,7 +421,6 @@ function LoadSettings()
 	LoadControlSettings("DN", dayNight)
 	-- Create legacy global variables for backward compatibility
 	ShowDayNight = _G.ControlData.DN.show
-	DNWLeft, DNWTop = _G.ControlData.DN.window.left, _G.ControlData.DN.window.top
 	_G.DNNextT = dayNight.N
 	_G.TS = tonumber(dayNight.S)
 
@@ -443,7 +433,6 @@ function LoadSettings()
 	-- Create legacy global variables for backward compatibility
 	ShowReputation = _G.ControlData.RP.show
 	HideMaxReps = reputation.H
-	RPWLeft, RPWTop = _G.ControlData.RP.window.left, _G.ControlData.RP.window.top
 
 
 	-- GameTime control
@@ -456,7 +445,6 @@ function LoadSettings()
 	LoadControlSettings("GT", gameTime)
 	-- Create legacy global variables for backward compatibility
 	ShowGameTime = _G.ControlData.GT.show
-	GTWLeft, GTWTop = _G.ControlData.GT.window.left, _G.ControlData.GT.window.top
 	_G.Clock24h = gameTime.H
 	_G.ShowST = gameTime.S
 	_G.ShowBT = gameTime.O
@@ -542,8 +530,6 @@ function SaveSettings(str)
 		settings.Background.A = BGWToAll
 
 		-- Wallet
-		_G.ControlData.WI.window.left = WIWLeft
-		_G.ControlData.WI.window.top = WIWTop
 		if not settings.Wallet then settings.Wallet = {} end
 		SaveControlSettings("WI", settings.Wallet)
 
@@ -554,16 +540,10 @@ function SaveSettings(str)
 		settings.Money.S = _G.STM
 		settings.Money.SS = _G.SSS
 		settings.Money.TS = _G.STS
-		if PlayerAlign == 1 then SaveWindowPosition(settings.Money, MIWLeft, MIWTop) end
 
 		-- LOTROPoints
-		_G.ControlData.LP.window.left = LPWLeft
-		_G.ControlData.LP.window.top = LPWTop
 		if not settings.LOTROPoints then settings.LOTROPoints = {} end
 		SaveControlSettings("LP", settings.LOTROPoints)
-		
-		_G.ControlData.BI.window.left = BIWLeft
-		_G.ControlData.BI.window.top = BIWTop
 		
 		-- BagInfos
 		if not settings.BagInfos then settings.BagInfos = {} end
@@ -582,8 +562,6 @@ function SaveSettings(str)
 		-- EquipInfos
 		if not settings.EquipInfos then settings.EquipInfos = {} end
 		SaveControlSettings("EI", settings.EquipInfos)
-		_G.ControlData.DI.window.left = DIWLeft
-		_G.ControlData.DI.window.top = DIWTop
 		
 		-- DurabilityInfos
 		if not settings.DurabilityInfos then settings.DurabilityInfos = {} end
@@ -600,9 +578,6 @@ function SaveSettings(str)
 		if not settings.TrackItems then settings.TrackItems = {} end
 		SaveControlSettings("TI", settings.TrackItems)
 
-		_G.ControlData.IF.window.left = IFWLeft
-		_G.ControlData.IF.window.top = IFWTop
-		
 		-- Infamy
 		if not settings.Infamy then settings.Infamy = {} end
 		SaveControlSettings("IF", settings.Infamy)
@@ -610,19 +585,12 @@ function SaveSettings(str)
 		settings.Infamy.K = Constants.FormatInt(InfamyRank)
 
 		-- Vault
-		_G.ControlData.VT.window.left = VTWLeft
-		_G.ControlData.VT.window.top = VTWTop
 		if not settings.Vault then settings.Vault = {} end
 		SaveControlSettings("VT", settings.Vault)
 		
 		-- SharedStorage
-		_G.ControlData.SS.window.left = SSWLeft
-		_G.ControlData.SS.window.top = SSWTop
 		if not settings.SharedStorage then settings.SharedStorage = {} end
 		SaveControlSettings("SS", settings.SharedStorage)
-		
-		_G.ControlData.DN.window.left = DNWLeft
-		_G.ControlData.DN.window.top = DNWTop
 		
 		-- DayNight
 		if not settings.DayNight then settings.DayNight = {} end
@@ -630,19 +598,12 @@ function SaveSettings(str)
 		settings.DayNight.N = _G.DNNextT
 		settings.DayNight.S = Constants.FormatInt(_G.TS)
 		
-		_G.ControlData.RP.window.left = RPWLeft
-		_G.ControlData.RP.window.top = RPWTop
-		
 		-- Reputation
 		if not settings.Reputation then settings.Reputation = {} end
 		SaveControlSettings("RP", settings.Reputation)
 		settings.Reputation.H = HideMaxReps
 
 		-- GameTime
-		if PlayerAlign == 1 then
-			_G.ControlData.GT.window.left = GTWLeft
-			_G.ControlData.GT.window.top = GTWTop
-		end
 		if not settings.GameTime then settings.GameTime = {} end
 		SaveControlSettings("GT", settings.GameTime)
 		settings.GameTime.H = _G.Clock24h

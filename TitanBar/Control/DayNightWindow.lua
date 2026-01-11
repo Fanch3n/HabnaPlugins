@@ -9,20 +9,11 @@ function frmDayNightWindow()
 	
 	local windowWidth = (TBLocale == "fr") and 335 or 290
 	
-	-- Create window using factory
-	_G.wDN = CreateWindow({
-		text = L["MDayNight"],
-		width = windowWidth,
-		height = 105,
-		left = DNWLeft,
-		top = DNWTop,
-		config = {
-			settingsKey = "DayNight",
-			windowGlobalVar = "wDN",
-			formGlobalVar = "frmDN",
-			onPositionChanged = function(left, top)
-				DNWLeft, DNWTop = left, top
-			end,
+	-- Create window using helper
+	local wDN = CreateControlWindow(
+		"DayNight", "DN",
+		L["MDayNight"], windowWidth, 105,
+		{
 			onClosing = function(sender, args)
 				if tonumber(_G.TS) == 0 then _G.TS = tonumber(prevTS) end
 				settings.DayNight.S = string.format("%.0f", _G.TS)
@@ -30,11 +21,11 @@ function frmDayNightWindow()
 				UpdateDayNight()
 			end
 		}
-	})
+	)
 	
 	-- **v Show/Hide Next time - Check box v**
 	local NextTimeCB = Turbine.UI.Lotro.CheckBox();
-	NextTimeCB:SetParent( _G.wDN );
+	NextTimeCB:SetParent( wDN );
 	NextTimeCB:SetPosition( 35, 40 );
 	NextTimeCB:SetText( L["NextT"] );
 	NextTimeCB:SetSize( NextTimeCB:GetTextLength() * 8.5, 20 );
@@ -49,10 +40,10 @@ function frmDayNightWindow()
 	end
 	-- **^
 	-- **v Timer seed - Label v**
-	local TAjustlbl = CreateTitleLabel(_G.wDN, L["TAjustL"], NextTimeCB:GetLeft(), NextTimeCB:GetTop() + 30, nil, Color["rustedgold"], 8.5, nil, 20)
+	local TAjustlbl = CreateTitleLabel(wDN, L["TAjustL"], NextTimeCB:GetLeft(), NextTimeCB:GetTop() + 30, nil, Color["rustedgold"], 8.5, nil, 20)
 	-- **^
 	-- **v Timer seed - Text box v**
-	local TAjustTB = CreateInputTextBox(_G.wDN, _G.TS, TAjustlbl:GetLeft() + TAjustlbl:GetWidth(), TAjustlbl:GetTop() - 5, 75);
+	local TAjustTB = CreateInputTextBox(wDN, _G.TS, TAjustlbl:GetLeft() + TAjustlbl:GetWidth(), TAjustlbl:GetTop() - 5, 75);
 	TAjustTB:SetForeColor( Color["white"] );
 
 	TAjustTB.FocusGained = function( sender, args )
@@ -82,7 +73,7 @@ function frmDayNightWindow()
 	-- **^
 	-- **v ? - Button v**
 	local Help = Turbine.UI.Lotro.Button();
-	Help:SetParent( _G.wDN );
+	Help:SetParent( wDN );
 	Help:SetPosition( TAjustTB:GetLeft()+TAjustTB:GetWidth() + 10, TAjustTB:GetTop() );
 	Help:SetText( "?" );
 	Help:SetSize( Constants.HELP_BUTTON_WIDTH, Constants.HELP_BUTTON_HEIGHT );
@@ -95,12 +86,12 @@ function frmDayNightWindow()
 	-- **^
 	-- **v ? - TextBox v**
 	HelpTB = Turbine.UI.Label();
-	HelpTB:SetParent( _G.wDN );
+	HelpTB:SetParent( wDN );
 	
 	HelpTB:SetPosition( TAjustlbl:GetLeft(), TAjustlbl:GetTop()+TAjustlbl:GetHeight()+10 );
 	HelpTB:SetForeColor( Color["rustedgold"] );
 	HelpTB:SetVisible( bHelp );
-	HelpTB:SetSize( _G.wDN:GetWidth()-60, 250 );
+	HelpTB:SetSize( wDN:GetWidth()-60, 250 );
 	HelpTB:SetText( "Try using does value if time is not sync:\n\n* Arkenstone: ... 1295018461\n* Brandywine: ... 1295011363\n* Crickhollow: .. 1295013525\n* Gladden: ...... 1295020785\n* Landroval: .... 1295028066" );
 	-- **^
 	
@@ -108,10 +99,12 @@ function frmDayNightWindow()
 end
 
 function ShowHelpSection(bHelp)
+	local wDN = _G.ControlData.DN.windowInstance
 	if bHelp then
-		_G.wDN:SetHeight( _G.wDN:GetHeight() + 125 );
+			wDN:SetHeight( wDN:GetHeight() + 125 );
 	else
-		_G.wDN:SetHeight( 105 );
+		wDN:SetHeight( 105 );
 	end
 	HelpTB:SetVisible( bHelp );
 end
+

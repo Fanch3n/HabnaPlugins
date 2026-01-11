@@ -6,91 +6,83 @@ function frmSharedStorage()
 	tsspack = sspack;
 	import(AppDirD .. "WindowFactory")
 
-	-- Create window via factory
-	_G.wSS = CreateWindow({
-		text = L["MStorage"],
-		width = 390,
-		height = 475,
-		left = SSWLeft,
-		top = SSWTop,
-		config = {
-			settingsKey = "SharedStorage",
-			windowGlobalVar = "wSS",
-			formGlobalVar = "frmSS",
-			onPositionChanged = function(left, top)
-				SSWLeft, SSWTop = left, top
-			end,
+	-- Create window via helper
+	local wSS = CreateControlWindow(
+		"SharedStorage", "SS",
+		L["MStorage"], 390, 475,
+		{
 			onClosing = function(sender, args)
 				RemoveCallback( tsspack, "CountChanged" );
-			end,
+			end
 		}
-	})
+	)
 
 
 	-- **v search label & text box v**
-	_G.wSS.searchLabel = CreateTitleLabel(_G.wSS, L["VTSe"], 15, 40, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
+	wSS.searchLabel = CreateTitleLabel(wSS, L["VTSe"], 15, 40, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
 
-	local searchLeft = _G.wSS.searchLabel:GetLeft() + _G.wSS.searchLabel:GetWidth()
-	local searchWidth = _G.wSS:GetWidth() - 150
-	local search = CreateSearchControl(_G.wSS, searchLeft, _G.wSS.searchLabel:GetTop(), searchWidth + 24, 18, Turbine.UI.Lotro.Font.Verdana14, resources)
-	_G.wSS.SearchTextBox = search.TextBox
-	_G.wSS.DelIcon = search.DelIcon
+	local searchLeft = wSS.searchLabel:GetLeft() + wSS.searchLabel:GetWidth()
+	local searchWidth = wSS:GetWidth() - 150
+	local search = CreateSearchControl(wSS, searchLeft, wSS.searchLabel:GetTop(), searchWidth + 24, 18, Turbine.UI.Lotro.Font.Verdana14, resources)
+	wSS.SearchTextBox = search.TextBox
+	wSS.DelIcon = search.DelIcon
 
-	_G.wSS.SearchTextBox.TextChanged = function( sender, args )
-		_G.wSS.searchText = string.lower( _G.wSS.SearchTextBox:GetText() );
-		if _G.wSS.searchText == "" then _G.wSS.searchText = nil; end
+	wSS.SearchTextBox.TextChanged = function( sender, args )
+		wSS.searchText = string.lower( wSS.SearchTextBox:GetText() );
+		if wSS.searchText == "" then wSS.searchText = nil; end
 		SetSharedStoragePack();
 	end
 
-	_G.wSS.SearchTextBox.FocusLost = function( sender, args )
+	wSS.SearchTextBox.FocusLost = function( sender, args )
 	end
 
 	local lbTop = 80
-	local lb = CreateListBoxWithBorder(_G.wSS, 15, lbTop, _G.wSS:GetWidth() - 30, Constants.LISTBOX_HEIGHT_MEDIUM, Color["grey"])
-	_G.wSS.ListBoxBorder = lb.Border
-	_G.wSS.ListBox = lb.ListBox
-	_G.wSS.ListBoxScrollBar = lb.ScrollBar
-	_G.wSS.ListBox:SetMaxItemsPerLine( 1 );
-	ConfigureListBox(_G.wSS.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
+	local lb = CreateListBoxWithBorder(wSS, 15, lbTop, wSS:GetWidth() - 30, Constants.LISTBOX_HEIGHT_MEDIUM, Color["grey"])
+	wSS.ListBoxBorder = lb.Border
+	wSS.ListBox = lb.ListBox
+	wSS.ListBoxScrollBar = lb.ScrollBar
+	wSS.ListBox:SetMaxItemsPerLine( 1 );
+	ConfigureListBox(wSS.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
 	
 	sspackCount = 0;
 	if PlayerSharedStorage ~= nil then for k, v in pairs(PlayerSharedStorage) do sspackCount = sspackCount + 1; end end
 
 	if sspackCount == 0 then --Shared storage is empty
-		_G.wSS.ListBoxBorder:SetVisible( false );
-		_G.wSS.ListBox:SetVisible( false );
-		_G.wSS.searchLabel:SetVisible( false );
-		_G.wSS.SearchTextBox:SetVisible( false );
-		_G.wSS.DelIcon:SetVisible( false );
+		wSS.ListBoxBorder:SetVisible( false );
+		wSS.ListBox:SetVisible( false );
+		wSS.searchLabel:SetVisible( false );
+		wSS.SearchTextBox:SetVisible( false );
+		wSS.DelIcon:SetVisible( false );
 		
 		local lblmgs = GetLabel(L["SSnd"]);
-		lblmgs:SetParent( _G.wSS );
-		lblmgs:SetSize( _G.wSS:GetWidth()-32, 39 );
+		lblmgs:SetParent( wSS );
+		lblmgs:SetSize( wSS:GetWidth()-32, 39 );
 		
-		_G.wSS:SetHeight( lblmgs:GetHeight() + 65 );
-		_G.wSS.ListBoxScrollBar:SetVisible( false );
+		wSS:SetHeight( lblmgs:GetHeight() + 65 );
+		wSS.ListBoxScrollBar:SetVisible( false );
 	else
-		_G.wSS:SetHeight( 475 );
+		wSS:SetHeight( 475 );
 		SetSharedStoragePack();
 	end
 
-	AddCallback(tsspack, "CountChanged", function(sender, args) if frmSS then sspackCount = tsspack:GetCount(); SetSharedStoragePack(); end end);
+	AddCallback(tsspack, "CountChanged", function(sender, args) local window = _G.ControlData.SS.windowInstance; if window then sspackCount = tsspack:GetCount(); SetSharedStoragePack(); end end);
 end
 
 function SetSharedStoragePack()
-	_G.wSS.ListBox:ClearItems();
+	local wSS = _G.ControlData.SS.windowInstance
+	wSS.ListBox:ClearItems();
 	itemCtl = {};
 
 	for i = 1, sspackCount do
 		local itemName = PlayerSharedStorage[tostring(i)].T;
-		if not _G.wSS.searchText or string.find(string.lower( itemName ), _G.wSS.searchText, 1, true) then
+		if not wSS.searchText or string.find(string.lower( itemName ), wSS.searchText, 1, true) then
 				-- Use CreateItemRow helper for shared storage item
 				local data = PlayerSharedStorage[tostring(i)]
-				local row = CreateItemRow(_G.wSS.ListBox, _G.wSS.ListBox:GetWidth(), 35, false, data)
+				local row = CreateItemRow(wSS.ListBox, wSS.ListBox:GetWidth(), 35, false, data)
 				itemCtl[i] = row.Container
 				if row.ItemQuantity and data and data.N then row.ItemQuantity:SetText( tonumber(data.N) ) end
 				row.ItemLabel:SetText( data.T )
-				_G.wSS.ListBox:AddItem( itemCtl[i] )
+				wSS.ListBox:AddItem( itemCtl[i] )
 		end
 	end
 end

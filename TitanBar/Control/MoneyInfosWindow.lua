@@ -4,39 +4,24 @@
 
 function frmMoneyInfosWindow()
 	import(AppDirD .. "WindowFactory")
-	-- **v Create window via factory v**
-	_G.wMI = CreateWindow({
-		text = L["MIWTitle"],
-		width = 325,
-		height = 640,
-		left = MIWLeft,
-		top = MIWTop,
-		config = {
-			settingsKey = "Money",
-			windowGlobalVar = "wMI",
-			formGlobalVar = "frmMI",
-			onPositionChanged = function(left, top)
-				MIWLeft, MIWTop = left, top
-			end,
-			onClosing = function(sender, args)
-				-- nothing extra needed here
-			end
-		}
-	})
-	-- **^
+	-- Create window via helper
+	local wMI = CreateControlWindow(
+		"Money", "Money",
+		L["MIWTitle"], 325, 640
+	)
 
 	MIListBox = Turbine.UI.ListBox();
-	MIListBox:SetParent( _G.wMI );
+	MIListBox:SetParent( wMI );
 	MIListBox:SetPosition( 20, 35 );
-	MIListBox:SetWidth( _G.wMI:GetWidth() - 40 );
+	MIListBox:SetWidth( wMI:GetWidth() - 40 );
 	ConfigureListBox(MIListBox)
 	--MIListBox:SetBackColor( Color["darkgrey"] ); --debug purpose
 	
 	-- **v Display total money - check box v**
 	AllCharCB = Turbine.UI.Lotro.CheckBox();
-	AllCharCB:SetParent( _G.wMI );
+	AllCharCB:SetParent( wMI );
 	AllCharCB:SetText( L["MIWAll"] );
-	AllCharCB:SetSize( _G.wMI:GetWidth(), 30 );
+	AllCharCB:SetSize( wMI:GetWidth(), 30 );
 	AllCharCB:SetChecked( _G.STM );
 	AllCharCB:SetForeColor( Color["rustedgold"] );
 
@@ -49,9 +34,9 @@ function frmMoneyInfosWindow()
 	-- **^
 	-- **v Display character money - check box v**
 	ThisCharCB = Turbine.UI.Lotro.CheckBox();
-	ThisCharCB:SetParent( _G.wMI );
+	ThisCharCB:SetParent( wMI );
 	ThisCharCB:SetText( L["MIWCM"] );
-	ThisCharCB:SetSize( _G.wMI:GetWidth(), 30 );
+	ThisCharCB:SetSize( wMI:GetWidth(), 30 );
 	ThisCharCB:SetChecked( _G.SCM );
 	ThisCharCB:SetForeColor( Color["rustedgold"] );
 
@@ -64,9 +49,9 @@ function frmMoneyInfosWindow()
 	-- **^
 	-- **v Display to all character - check box v**
 	ToAllCharCB = Turbine.UI.Lotro.CheckBox();
-	ToAllCharCB:SetParent( _G.wMI );
+	ToAllCharCB:SetParent( wMI );
 	ToAllCharCB:SetText( L["MIWCMAll"] );
-	ToAllCharCB:SetSize( _G.wMI:GetWidth(), 30 );
+	ToAllCharCB:SetSize( wMI:GetWidth(), 30 );
 	ToAllCharCB:SetChecked( _G.SCMA );
 	ToAllCharCB:SetForeColor( Color["rustedgold"] );
 
@@ -77,9 +62,9 @@ function frmMoneyInfosWindow()
 	-- **^
 	-- **v Display session statistics - check box v**
 	SSSCB = Turbine.UI.Lotro.CheckBox();
-	SSSCB:SetParent( _G.wMI );
+	SSSCB:SetParent( wMI );
 	SSSCB:SetText( L["MIWSSS"] );
-	SSSCB:SetSize( _G.wMI:GetWidth(), 30 );
+	SSSCB:SetSize( wMI:GetWidth(), 30 );
 	SSSCB:SetChecked( _G.SSS );
 	SSSCB:SetForeColor( Color["rustedgold"] );
 
@@ -91,9 +76,9 @@ function frmMoneyInfosWindow()
 	-- **^
 	-- **v Display session statistics - check box v**
 	STSCB = Turbine.UI.Lotro.CheckBox();
-	STSCB:SetParent( _G.wMI );
+	STSCB:SetParent( wMI );
 	STSCB:SetText( L["MIWSTS"] );
-	STSCB:SetSize( _G.wMI:GetWidth(), 30 );
+	STSCB:SetSize( wMI:GetWidth(), 30 );
 	STSCB:SetChecked( _G.STS );
 	STSCB:SetForeColor( Color["rustedgold"] );
 
@@ -106,10 +91,11 @@ function frmMoneyInfosWindow()
 
 	RefreshMIListBox();
 
-	_G.wMI:SetPosition( MIWLeft, MIWTop );
+	wMI:SetPosition( _G.ControlData.Money.window.left, _G.ControlData.Money.window.top );
 end
 
 function RefreshMIListBox()
+	local wMI = _G.ControlData.Money.windowInstance
 	MIListBox:ClearItems();
 	local MIPosY = 0;
 	local iFound = false;
@@ -185,5 +171,5 @@ function RefreshMIListBox()
 	MIPosY = MIPosY + 20;
 	STSCB:SetPosition( MIListBox:GetLeft(), MIPosY );
 	
-	_G.wMI:SetHeight( MIPosY + 45 );
+	wMI:SetHeight( MIPosY + 45 );
 end

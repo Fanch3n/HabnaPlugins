@@ -9,38 +9,29 @@ function frmBagInfos()
 	import(AppClassD .. "ComboBox")
 	local bagInfosDropdown = HabnaPlugins.TitanBar.Class.ComboBox()
 
-	-- Create window using factory with custom configuration
-	_G.wBI = CreateWindow({
-		text = L["BIh"],
-		width = 390,
-		height = 560,
-		left = BIWLeft,
-		top = BIWTop,
-		config = {
+	-- Create window using helper with custom configuration
+	local wBI = CreateControlWindow(
+		"BagInfos", "BI",
+		L["BIh"], 390, 560,
+		{
 			dropdown = bagInfosDropdown,
-			settingsKey = "BagInfos",
-			windowGlobalVar = "wBI",
-			formGlobalVar = "frmBI",
-			onPositionChanged = function(left, top)
-				BIWLeft, BIWTop = left, top
-			end,
 			onClosing = function(sender, args)
 				RemoveCallback(tbackpack, "ItemAdded")
 				RemoveCallback(tbackpack, "ItemRemoved")
 			end
 		}
-	})
+	)
 
 	-- Set up dropdown after window is created
-	bagInfosDropdown:SetParent(_G.wBI)
+	bagInfosDropdown:SetParent(wBI)
 	bagInfosDropdown:SetSize(Constants.DROPDOWN_WIDTH, Constants.DROPDOWN_HEIGHT)
 	bagInfosDropdown:SetPosition(15, 35)
-	bagInfosDropdown.dropDownWindow:SetParent(_G.wBI)
+	bagInfosDropdown.dropDownWindow:SetParent(wBI)
 	bagInfosDropdown.dropDownWindow:SetPosition(bagInfosDropdown:GetLeft(), bagInfosDropdown:GetTop() + bagInfosDropdown:GetHeight() + 2)
 
 	bagInfosDropdown.ItemChanged = function () -- The event that's executed when a menu item is clicked.
-		_G.wBI.SearchTextBox:SetText( "" );
-		_G.wBI.SearchTextBox.TextChanged( sender, args );
+		wBI.SearchTextBox:SetText( "" );
+		wBI.SearchTextBox.TextChanged( sender, args );
 		SelCN = bagInfosDropdown.label:GetText();
 		CountBIItems();
 	end
@@ -63,58 +54,58 @@ function frmBagInfos()
 	CreateBIComboBox()
 	-- **^
 	-- **v search label & text box v**
-	_G.wBI.searchLabel = CreateTitleLabel(_G.wBI, L["VTSe"], 15, 60, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
+	wBI.searchLabel = CreateTitleLabel(wBI, L["VTSe"], 15, 60, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
 
 	-- Use the factory helper to create a search TextBox + DelIcon
-	local searchLeft = _G.wBI.searchLabel:GetLeft() + _G.wBI.searchLabel:GetWidth()
-	local searchWidth = _G.wBI:GetWidth() - 150
-	local search = CreateSearchControl(_G.wBI, searchLeft, _G.wBI.searchLabel:GetTop(), searchWidth + 24, 18, Turbine.UI.Lotro.Font.Verdana14, resources)
-	_G.wBI.SearchTextBox = search.TextBox
-	_G.wBI.DelIcon = search.DelIcon
+	local searchLeft = wBI.searchLabel:GetLeft() + wBI.searchLabel:GetWidth()
+	local searchWidth = wBI:GetWidth() - 150
+	local search = CreateSearchControl(wBI, searchLeft, wBI.searchLabel:GetTop(), searchWidth + 24, 18, Turbine.UI.Lotro.Font.Verdana14, resources)
+	wBI.SearchTextBox = search.TextBox
+	wBI.DelIcon = search.DelIcon
 
-	_G.wBI.SearchTextBox.TextChanged = function( sender, args )
-		_G.wBI.searchText = string.lower( _G.wBI.SearchTextBox:GetText() );
-		if _G.wBI.searchText == "" then _G.wBI.searchText = nil; end
+	wBI.SearchTextBox.TextChanged = function( sender, args )
+		wBI.searchText = string.lower( wBI.SearchTextBox:GetText() );
+		if wBI.searchText == "" then wBI.searchText = nil; end
 		CountBIItems();
 	end
 
-	_G.wBI.SearchTextBox.FocusLost = function( sender, args )
+	wBI.SearchTextBox.FocusLost = function( sender, args )
 	end
 
 	-- Create list box area via helper
-	local lbTop = _G.wBI.searchLabel:GetTop() + _G.wBI.searchLabel:GetHeight() + 5
-	local lb = CreateListBoxWithBorder(_G.wBI, 15, lbTop, _G.wBI:GetWidth() - 30, Constants.LISTBOX_HEIGHT_LARGE, Color["grey"])
-	_G.wBI.ListBoxBorder = lb.Border
-	_G.wBI.ListBox = lb.ListBox
-	_G.wBI.ListBoxScrollBar = lb.ScrollBar
-	ConfigureListBox(_G.wBI.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
+	local lbTop = wBI.searchLabel:GetTop() + wBI.searchLabel:GetHeight() + 5
+	local lb = CreateListBoxWithBorder(wBI, 15, lbTop, wBI:GetWidth() - 30, Constants.LISTBOX_HEIGHT_LARGE, Color["grey"])
+	wBI.ListBoxBorder = lb.Border
+	wBI.ListBox = lb.ListBox
+	wBI.ListBoxScrollBar = lb.ScrollBar
+	ConfigureListBox(wBI.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
 	-- **v Show used slot info in tooltip? v**
-	_G.wBI.UsedSlots = CreateAutoSizedCheckBox(_G.wBI, L["BIUsed"], 30, _G.wBI.ListBox:GetTop() + _G.wBI.ListBox:GetHeight() + 6, BIUsed);
+	wBI.UsedSlots = CreateAutoSizedCheckBox(wBI, L["BIUsed"], 30, wBI.ListBox:GetTop() + wBI.ListBox:GetHeight() + 6, BIUsed);
 
-	_G.wBI.UsedSlots.CheckedChanged = function( sender, args )
-		_G.BIUsed = _G.wBI.UsedSlots:IsChecked();
+	wBI.UsedSlots.CheckedChanged = function( sender, args )
+		_G.BIUsed = wBI.UsedSlots:IsChecked();
 		settings.BagInfos.U = _G.BIUsed;
 		SaveSettings( false );
 		UpdateBackpackInfos();
 	end
 	-- **^
 	-- **v Show max slot in tooltip? v**
-	_G.wBI.MaxSlots = CreateAutoSizedCheckBox(_G.wBI, L["BIMax"], 30, _G.wBI.UsedSlots:GetTop() + _G.wBI.UsedSlots:GetHeight(), BIMax);
+	wBI.MaxSlots = CreateAutoSizedCheckBox(wBI, L["BIMax"], 30, wBI.UsedSlots:GetTop() + wBI.UsedSlots:GetHeight(), BIMax);
 
-	_G.wBI.MaxSlots.CheckedChanged = function( sender, args )
-		_G.BIMax = _G.wBI.MaxSlots:IsChecked();
+	wBI.MaxSlots.CheckedChanged = function( sender, args )
+		_G.BIMax = wBI.MaxSlots:IsChecked();
 		settings.BagInfos.M = _G.BIMax;
 		SaveSettings( false );
 		UpdateBackpackInfos();
 	end
 	-- **^
 	-- **v Delete character infos button v**
-	_G.wBI.ButtonDelete = Turbine.UI.Lotro.Button();
-	_G.wBI.ButtonDelete:SetParent( _G.wBI );
-	_G.wBI.ButtonDelete:SetText( L["ButDel"] );
-	_G.wBI.ButtonDelete:SetSize( _G.wBI.ButtonDelete:GetTextLength() * 11, 15 ); --Auto size with text lenght
+	wBI.ButtonDelete = Turbine.UI.Lotro.Button();
+	wBI.ButtonDelete:SetParent( wBI );
+	wBI.ButtonDelete:SetText( L["ButDel"] );
+	wBI.ButtonDelete:SetSize( wBI.ButtonDelete:GetTextLength() * 11, 15 ); --Auto size with text lenght
 
-	_G.wBI.ButtonDelete.Click = function( sender, args )
+	wBI.ButtonDelete.Click = function( sender, args )
 		PlayerBags[SelCN] = nil;
 		SavePlayerBags();
 		write(SelCN .. L["BID"]);
@@ -150,13 +141,14 @@ function frmBagInfos()
 end
 
 function CountBIItems()
+	local wBI = _G.ControlData.BI.windowInstance
 	backpackCount = 0;
-	_G.wBI.ListBox:ClearItems();
+	wBI.ListBox:ClearItems();
 	itemCtl = {};
 	titem = nil;
 
 	if SelCN == L["VTAll"] then
-		_G.wBI.ButtonDelete:SetEnabled( false );
+		wBI.ButtonDelete:SetEnabled( false );
         for i in pairs(PlayerBags) do
 			if i == PN then backpackCount = tbackpack:GetSize();
 			else for k, v in pairs(PlayerBags[i]) do backpackCount = backpackCount + 1; end end
@@ -164,22 +156,23 @@ function CountBIItems()
 			backpackCount = 0;
         end
     else
-		if SelCN == PN then _G.wBI.ButtonDelete:SetEnabled( false ); backpackCount = tbackpack:GetSize();
-		else _G.wBI.ButtonDelete:SetEnabled( true ); for k, v in pairs(PlayerBags[SelCN]) do backpackCount = backpackCount + 1; end end
+		if SelCN == PN then wBI.ButtonDelete:SetEnabled( false ); backpackCount = tbackpack:GetSize();
+		else wBI.ButtonDelete:SetEnabled( true ); for k, v in pairs(PlayerBags[SelCN]) do backpackCount = backpackCount + 1; end end
 		AddBagsPack(SelCN, false);
     end
  
-    _G.wBI.ButtonDelete:SetPosition( _G.wBI:GetWidth()/2 - _G.wBI.ButtonDelete:GetWidth()/2, _G.wBI.MaxSlots:GetTop()+ _G.wBI.MaxSlots:GetHeight()+5 );
+    wBI.ButtonDelete:SetPosition( wBI:GetWidth()/2 - wBI.ButtonDelete:GetWidth()/2, wBI.MaxSlots:GetTop()+ wBI.MaxSlots:GetHeight()+5 );
 end
 
 function AddBagsPack(n, addCharacterName)
+	local wBI = _G.ControlData.BI.windowInstance
 	for i = 1, backpackCount do
 		if n == PN then	titem = tbackpack:GetItem(i); if titem ~= nil then itemName = titem:GetName(); else itemName = ""; end
 		else titem = PlayerBags[n][tostring(i)]; itemName = PlayerBags[n][tostring(i)].T; end
 
-		if not _G.wBI.searchText or string.find(string.lower( itemName ), _G.wBI.searchText, 1, true) then
+		if not wBI.searchText or string.find(string.lower( itemName ), wBI.searchText, 1, true) then
 			-- Use CreateItemRow helper to build the item row
-			local row = CreateItemRow(_G.wBI.ListBox, _G.wBI.ListBox:GetWidth(), 35, (n == PN), (n == PN) and titem or PlayerBags[n][tostring(i)])
+			local row = CreateItemRow(wBI.ListBox, wBI.ListBox:GetWidth(), 35, (n == PN), (n == PN) and titem or PlayerBags[n][tostring(i)])
 			itemCtl[i] = row.Container
 			local itemLbl = row.ItemLabel
 			if row.ItemQuantity and not (n == PN) then
@@ -190,7 +183,7 @@ function AddBagsPack(n, addCharacterName)
 
 			if (n == PN and titem ~= nil) or (n ~= PN and PlayerBags[n] and PlayerBags[n][tostring(i)]) then
 				itemLbl:SetText( itemName )
-				_G.wBI.ListBox:AddItem( itemCtl[i] )
+				wBI.ListBox:AddItem( itemCtl[i] )
 			end
 
 			if addCharacterName then itemLbl:AppendText( " (" .. n .. ")" ) end

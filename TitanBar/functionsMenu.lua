@@ -17,7 +17,7 @@ function ShowHideWallet()
 		WI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		--write( "TitanBar: Hiding wallet control");
-		if _G.frmWI then wWI:Close(); end
+		local window = _G.ControlData.WI.windowInstance; if window then window:Close(); end
 	end
 	WI[ "Ctr" ]:SetVisible( ShowWallet );
 	opt_WI:SetChecked( ShowWallet );
@@ -38,7 +38,7 @@ function ShowHideMoney()
 		MI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		--write( "TitanBar: Hiding money");
-		if _G.frmMI then wMI:Close(); end
+		local window = _G.ControlData.Money.windowInstance; if window then window:Close(); end
 	end
 	MI[ "Ctr" ]:SetVisible( ShowMoney );
 end
@@ -55,7 +55,7 @@ function ShowHideLOTROPoints()
 		local colors = _G.ControlData.LP.colors
 		LP[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
-		if _G.frmLP then wLP:Close(); end
+		local window = _G.ControlData.LP.windowInstance; if window then window:Close(); end
 	end
 	LP[ "Ctr" ]:SetVisible( ShowLOTROPoints );
 end
@@ -73,7 +73,7 @@ function ShowHideBackpackInfos()
 	else
 		RemoveCallback(backpack, "ItemAdded");
 		RemoveCallback(backpack, "ItemRemoved");
-		if _G.frmBI then wBI:Close(); end
+		local window = _G.ControlData.BI.windowInstance; if window then window:Close(); end
 	end
 	BI[ "Ctr" ]:SetVisible( ShowBagInfos );
 	opt_BI:SetChecked( ShowBagInfos );
@@ -114,7 +114,7 @@ function ShowHideEquipInfos()
 	else
 		RemoveCallback(PlayerEquipment, "ItemEquipped");
 		RemoveCallback(PlayerEquipment, "ItemUnequipped");
-		if _G.frmEI then wEI:Close(); end
+		local window = _G.ControlData.EI.windowInstance; if window then window:Close(); end
 	end
 	EI[ "Ctr" ]:SetVisible( ShowEquipInfos );
 	opt_EI:SetChecked( ShowEquipInfos );
@@ -136,7 +136,7 @@ function ShowHideDurabilityInfos()
 	else
 		RemoveCallback(PlayerEquipment, "ItemEquipped");
 		RemoveCallback(PlayerEquipment, "ItemUnequipped");
-		if _G.frmDI then wDI:Close(); end
+		local window = _G.ControlData.DI.windowInstance; if window then window:Close(); end
 	end
 	DI[ "Ctr" ]:SetVisible( ShowDurabilityInfos );
 	opt_DI:SetChecked( ShowDurabilityInfos );
@@ -153,7 +153,7 @@ function ShowHideTrackItems()
 		local colors = _G.ControlData.TI.colors
 		TI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
-		if _G.frmTI then wTI:Close(); end
+		local window = _G.ControlData.TI.windowInstance; if window then window:Close(); end
 	end
 	TI[ "Ctr" ]:SetVisible( ShowTrackItems );
 	opt_TI:SetChecked( ShowTrackItems );
@@ -171,7 +171,7 @@ function ShowHideInfamy()
 		IF[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(Turbine.Chat, "Received", IFcb);
-		if _G.frmIF then wIF:Close(); end
+		local window = _G.ControlData.IF.windowInstance; if window then window:Close(); end
 	end
 	IF[ "Ctr" ]:SetVisible( ShowInfamy );
 	opt_IF:SetChecked( ShowInfamy );
@@ -189,7 +189,7 @@ function ShowHideVault()
 		VT[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(vaultpack, "CountChanged");
-		if _G.frmVT then wVT:Close(); end
+		local window = _G.ControlData.VT.windowInstance; if window then window:Close(); end
 	end
 	VT[ "Ctr" ]:SetVisible( ShowVault );
 	opt_VT:SetChecked( ShowVault );
@@ -207,7 +207,7 @@ function ShowHideSharedStorage()
 		SS[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(sspack, "CountChanged");
-		if _G.frmSS then wSS:Close(); end
+		local window = _G.ControlData.SS.windowInstance; if window then window:Close(); end
 	end
 	SS[ "Ctr" ]:SetVisible( ShowSharedStorage );
 	opt_SS:SetChecked( ShowSharedStorage );
@@ -239,7 +239,7 @@ function ShowHideDayNight()
 		local colors = _G.ControlData.DN.colors
 		DN[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
-		if _G.frmDN then wDN:Close(); end
+		local window = _G.ControlData.DN.windowInstance; if window then window:Close(); end
 	end
 	DN[ "Ctr" ]:SetVisible( ShowDayNight );
 	opt_DN:SetChecked( ShowDayNight );
@@ -257,7 +257,7 @@ function ShowHideReputation()
 		RP[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(Turbine.Chat, "Received", ReputationCallback);
-		if _G.frmRP then wRP:Close(); end
+		local window = _G.ControlData.RP.windowInstance; if window then window:Close(); end
 	end
 	RP[ "Ctr" ]:SetVisible( ShowReputation );
 	opt_RP:SetChecked( ShowReputation );
@@ -292,7 +292,7 @@ function ShowHideGameTime()
 		local colors = _G.ControlData.GT.colors
 		GT[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
-		if _G.frmGT then wGT:Close(); end
+		local window = _G.ControlData.GT.windowInstance; if window then window:Close(); end
 	end
 	GT[ "Ctr" ]:SetVisible( ShowGameTime );
 	opt_GT:SetChecked( ShowGameTime );

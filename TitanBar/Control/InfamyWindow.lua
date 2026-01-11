@@ -6,34 +6,21 @@ function frmInfamyWindow()
 	import(AppDirD .. "WindowFactory")
 	import(AppDirD .. "UIHelpers")
 
-	-- Create window via factory
-	_G.wIF = CreateWindow({
-		text = L["IFWTitle"],
-		width = 300,
-		height = 80,
-		left = IFWLeft,
-		top = IFWTop,
-		config = {
-			settingsKey = "Infamy",
-			windowGlobalVar = "wIF",
-			formGlobalVar = "frmIF",
-			onPositionChanged = function(left, top)
-				IFWLeft, IFWTop = left, top
-			end,
-			onClosing = function(sender, args)
-				-- No extra cleanup required; factory will nil globals
-			end,
+	-- Create window via helper
+	local wIF = CreateControlWindow(
+		"Infamy", "IF",
+		L["IFWTitle"], 300, 80,
+		{
 			onKeyDown = function(sender, args)
-				if args.Action == Constants.KEY_ENTER then -- Enter
+				if args.Action == Constants.KEY_ENTER then
 					if buttonSave then buttonSave.Click(sender, args) end
-					return
 				end
-			end,
+			end
 		}
-	})
+	)
 
 	local IFWCtr = Turbine.UI.Control();
-	IFWCtr:SetParent( _G.wIF );
+	IFWCtr:SetParent( wIF );
 	IFWCtr:SetPosition( 15, 50 )
 	IFWCtr:SetZOrder( 2 );
 	--IFWCtr:SetBackColor( Color["red"] ); -- debug purpose
@@ -95,7 +82,7 @@ function frmInfamyWindow()
 	end
 
 	IFWCtr:SetSize( lblName:GetWidth()+txtInfamy:GetWidth()+buttonSave:GetWidth()+10, 20 );
-	_G.wIF:SetSize( IFWCtr:GetWidth()+30, 80 );
+	wIF:SetSize( IFWCtr:GetWidth()+30, 80 );
 
 	txtInfamy:Focus();
 end

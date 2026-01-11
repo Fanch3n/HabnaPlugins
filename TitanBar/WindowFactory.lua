@@ -6,8 +6,6 @@ local DEFAULT_WINDOW_CONFIG = {
     onClosing = nil,
     dropdown = nil,
     settingsKey = nil,
-    windowGlobalVar = nil,
-    formGlobalVar = nil,
     onPositionChanged = nil,
     onKeyDown = nil,
 }
@@ -89,14 +87,64 @@ function CreateWindow(windowSettings)
         end
         
         if config.onClosing then config.onClosing(sender, args) end
-        
-        if config.windowGlobalVar then
-            _G[config.windowGlobalVar] = nil
-        end
-        if config.formGlobalVar then
-            _G[config.formGlobalVar] = nil
-        end
     end
 
+    return window
+end
+
+-- CreateControlWindow: Simplified helper for creating TitanBar control windows
+-- Automatically handles position saving to ControlData and settings persistence
+-- Stores window instance in ControlData.windowInstance
+-- 
+-- Parameters:
+--   settingsKey: Key in settings table (e.g., "Money", "Wallet", "Reputation")
+--   controlDataKey: Key in _G.ControlData (e.g., "Money", "WI", "RP")
+--   text: Window title text
+--   width: Window width
+--   height: Window height
+--   additionalConfig: Optional table with additional config options:
+--     - dropdown: ComboBox instance
+--     - onClosing: Additional cleanup function
+--     - onKeyDown: Additional key handling function
+--
+-- Returns: Created window instance
+function CreateControlWindow(settingsKey, controlDataKey, text, width, height, additionalConfig)
+    additionalConfig = additionalConfig or {}
+    
+    -- Get position from ControlData
+    local controlData = _G.ControlData[controlDataKey]
+    local windowData = controlData.window
+    
+    local config = {
+        settingsKey = settingsKey,
+        onPositionChanged = function(left, top)
+            -- Update ControlData
+            windowData.left = left
+            windowData.top = top
+        end,
+        onClosing = function(sender, args)
+            -- Call user's onClosing first
+            if additionalConfig.onClosing then 
+                additionalConfig.onClosing(sender, args)
+            end
+            -- Clear window instance from ControlData
+            controlData.windowInstance = nil
+        end,
+        onKeyDown = additionalConfig.onKeyDown,
+        dropdown = additionalConfig.dropdown
+    }
+    
+    local window = CreateWindow({
+        text = text,
+        width = width,
+        height = height,
+        left = windowData.left,
+        top = windowData.top,
+        config = config
+    })
+    
+    -- Store window instance in ControlData only
+    controlData.windowInstance = window
+    
     return window
 end
