@@ -321,15 +321,17 @@ function LoadSettings()
 	playerInfos.XP = playerInfos.XP or Constants.FormatInt(0)
 	playerInfos.Layout = playerInfos.Layout or false
 	LoadControlSettings("PI", playerInfos)
-	ExpPTS = playerInfos.XP
-	PILayout = playerInfos.Layout
-	if not PILayout then
+	_G.ControlData.PI = _G.ControlData.PI or {}
+	_G.ControlData.PI.xp = playerInfos.XP
+	_G.ControlData.PI.layout = playerInfos.Layout
+	local piLayout = _G.ControlData.PI.layout
+	if not piLayout then
 		_G.AlignLbl = Turbine.UI.ContentAlignment.MiddleLeft;
 		_G.AlignVal = Turbine.UI.ContentAlignment.MiddleRight;
 		_G.AlignOff = 0;
 		_G.AlignOffP = 5;
 	--  _G.AlignHead = Turbine.UI.ContentAlignment.MiddleLeft;
-	elseif PILayout then
+	elseif piLayout then
 		_G.AlignLbl = Turbine.UI.ContentAlignment.MiddleRight;
 		_G.AlignVal = Turbine.UI.ContentAlignment.MiddleLeft;
 		_G.AlignOff = 5;
@@ -359,7 +361,8 @@ function LoadSettings()
 	playerLoc.V = playerLoc.V == nil and true or playerLoc.V
 	playerLoc.L = playerLoc.L or L["PLMsg"]
 	LoadControlSettings("PL", playerLoc)
-	pLLoc = playerLoc.L
+	_G.ControlData.PL = _G.ControlData.PL or {}
+	_G.ControlData.PL.text = playerLoc.L
 
 
 	-- TrackItems control
@@ -375,9 +378,10 @@ function LoadSettings()
 	infamy.P = infamy.P or Constants.FormatInt(0)
 	infamy.K = infamy.K or Constants.FormatInt(0)
 	LoadControlSettings("IF", infamy)
-	SetInfamy = infamy.F
-	InfamyPTS = infamy.P
-	InfamyRank = infamy.K
+	_G.ControlData.IF = _G.ControlData.IF or {}
+	_G.ControlData.IF.set = infamy.F
+	_G.ControlData.IF.points = tonumber(infamy.P) or 0
+	_G.ControlData.IF.rank = tonumber(infamy.K) or 0
 
 
 	-- Vault control
@@ -397,16 +401,19 @@ function LoadSettings()
 	dayNight.N = dayNight.N == nil and true or dayNight.N
 	dayNight.S = dayNight.S or Constants.FormatInt(10350)
 	LoadControlSettings("DN", dayNight)
-	_G.DNNextT = dayNight.N
-	_G.TS = tonumber(dayNight.S)
+	_G.ControlData.DN = _G.ControlData.DN or {}
+	_G.ControlData.DN.next = dayNight.N
+	_G.ControlData.DN.ts = tonumber(dayNight.S) or 0
 
 
 	-- Reputation control
 	local reputation = InitControlDefaults("Reputation", {}, {}, {})
 	reputation.V = reputation.V or false
-	reputation.H = reputation.H or false
+	reputation.H = reputation.H == nil and true or reputation.H
 	LoadControlSettings("RP", reputation)
-	HideMaxReps = reputation.H
+	_G.ControlData.RP = _G.ControlData.RP or {}
+	-- Legacy setting key: settings.Reputation.H stored "hide max". Runtime flag is now showMax.
+	_G.ControlData.RP.showMax = (reputation.H ~= true)
 
 
 	-- GameTime control
@@ -527,8 +534,8 @@ function SaveSettings(str)
 		-- PlayerInfos
 		if not settings.PlayerInfos then settings.PlayerInfos = {} end
 		SaveControlSettings("PI", settings.PlayerInfos)
-		settings.PlayerInfos.XP = ExpPTS
-		settings.PlayerInfos.Layout = PILayout
+		settings.PlayerInfos.XP = (_G.ControlData.PI and _G.ControlData.PI.xp) or Constants.FormatInt(0)
+		settings.PlayerInfos.Layout = (_G.ControlData.PI and _G.ControlData.PI.layout) or false
 
 		-- EquipInfos
 		if not settings.EquipInfos then settings.EquipInfos = {} end
@@ -543,7 +550,7 @@ function SaveSettings(str)
 		-- PlayerLoc
 		if not settings.PlayerLoc then settings.PlayerLoc = {} end
 		SaveControlSettings("PL", settings.PlayerLoc)
-		settings.PlayerLoc.L = string.format(pLLoc)
+		settings.PlayerLoc.L = string.format(((_G.ControlData.PL and _G.ControlData.PL.text) or L["PLMsg"]))
 
 		-- TrackItems
 		if not settings.TrackItems then settings.TrackItems = {} end
@@ -552,8 +559,9 @@ function SaveSettings(str)
 		-- Infamy
 		if not settings.Infamy then settings.Infamy = {} end
 		SaveControlSettings("IF", settings.Infamy)
-		settings.Infamy.P = Constants.FormatInt(InfamyPTS)
-		settings.Infamy.K = Constants.FormatInt(InfamyRank)
+		settings.Infamy.F = (_G.ControlData.IF and _G.ControlData.IF.set) ~= false
+		settings.Infamy.P = Constants.FormatInt((_G.ControlData.IF and _G.ControlData.IF.points) or 0)
+		settings.Infamy.K = Constants.FormatInt((_G.ControlData.IF and _G.ControlData.IF.rank) or 0)
 
 		-- Vault
 		if not settings.Vault then settings.Vault = {} end
@@ -566,13 +574,14 @@ function SaveSettings(str)
 		-- DayNight
 		if not settings.DayNight then settings.DayNight = {} end
 		SaveControlSettings("DN", settings.DayNight)
-		settings.DayNight.N = _G.DNNextT
-		settings.DayNight.S = Constants.FormatInt(_G.TS)
+		settings.DayNight.N = ((_G.ControlData.DN and _G.ControlData.DN.next) ~= false)
+		settings.DayNight.S = Constants.FormatInt(((_G.ControlData.DN and _G.ControlData.DN.ts) or 0))
 		
 		-- Reputation
 		if not settings.Reputation then settings.Reputation = {} end
 		SaveControlSettings("RP", settings.Reputation)
-		settings.Reputation.H = HideMaxReps
+		-- Persist legacy key as hideMax for backward compatibility.
+		settings.Reputation.H = ((_G.ControlData.RP and _G.ControlData.RP.showMax) ~= true)
 
 		-- GameTime
 		if not settings.GameTime then settings.GameTime = {} end
@@ -621,7 +630,10 @@ function ResetSettings()
 	_G.ControlData.Money.stm, _G.ControlData.Money.sss, _G.ControlData.Money.sts = false, true, true
 	_G.ControlData.BI.used, _G.ControlData.BI.max = true, true
 	_G.ControlData.DI.icon, _G.ControlData.DI.text = true, true
-	_G.DNNextT = true
+	_G.ControlData.RP = _G.ControlData.RP or {}
+	_G.ControlData.RP.showMax = false
+	_G.ControlData.DN = _G.ControlData.DN or {}
+	_G.ControlData.DN.next = true
 	
 	-- Reset currency controls
 	for k,v in pairs(_G.currencies.list) do

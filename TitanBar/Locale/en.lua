@@ -343,7 +343,7 @@ L[ "TAjustL" ] = "Timer seed";
 -- Reputation window
 L[ "RPt" ] = "select / unselect a faction\nright click to get its settings";
 L[ "RPnf" ] = "You track no faction!\nLeft click to see the faction list.";
-L[ "RPPHMaxHide" ] = "Hide factions at maximum reputation";
+L[ "RPPHMaxShow" ] = "Show factions at maximum reputation";
 
 -- All reputation names
 L[ "MenOfBree" ]    = "Men of Bree";

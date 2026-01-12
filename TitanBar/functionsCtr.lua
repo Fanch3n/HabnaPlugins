@@ -49,7 +49,7 @@ function ImportCtr( value )
         import (AppCtrD.."PlayerInfosToolTip");
         AddCallback(Player, "LevelChanged",
             function(sender, args)
-                PI["Lvl"]:SetText( Player:GetLevel() );
+                PI["Lvl"]:SetText( tostring(Player:GetLevel()) );
                 PI["Lvl"]:SetSize( PI["Lvl"]:GetTextLength() * NM+1, CTRHeight );
                 PI["Name"]:SetPosition( PI["Lvl"]:GetLeft() + PI["Lvl"]:GetWidth() + 5, 0 );
             end);
@@ -57,7 +57,7 @@ function ImportCtr( value )
             function(sender, args)
                 PI["Name"]:SetText( Player:GetName() );
                 PI["Name"]:SetSize( PI["Name"]:GetTextLength() * TM, CTRHeight );
-                AjustIcon(" PI ");
+                AjustIcon("PI");
             end);
         XPcb = AddCallback(Turbine.Chat, "Received",
             function(sender, args)
@@ -74,8 +74,9 @@ function ImportCtr( value )
                     end
                     local tmpXP = string.match(xpMess,xpPattern);
                     if tmpXP ~= nil then
-                        ExpPTS = tmpXP;
-                        settings.PlayerInfos.XP = ExpPTS;
+                        _G.ControlData.PI = _G.ControlData.PI or {}
+                        _G.ControlData.PI.xp = tmpXP;
+                        settings.PlayerInfos.XP = tmpXP;
                         SaveSettings( false );
                     end
                 end
@@ -112,15 +113,17 @@ function ImportCtr( value )
                     local tmpPL = string.match( plMess, plPattern );
                     if tmpPL ~= nil then
                         --write("'".. tmpPL .. "'"); -- debug purpose
-                        pLLoc = tmpPL;
-                        UpdatePlayerLoc( pLLoc );
-                        settings.PlayerLoc.L = string.format( pLLoc );
+                        _G.ControlData.PL = _G.ControlData.PL or {}
+                        _G.ControlData.PL.text = tmpPL
+                        UpdatePlayerLoc( tmpPL );
+                        settings.PlayerLoc.L = string.format( tmpPL );
                         SaveSettings( false );
                     end
                 end
             end
         end);
-        UpdatePlayerLoc( pLLoc );
+        local plText = (_G.ControlData.PL and _G.ControlData.PL.text) or (settings.PlayerLoc and settings.PlayerLoc.L) or L["PLMsg"]
+        UpdatePlayerLoc( plText );
         PL[ "Ctr" ]:SetPosition( _G.ControlData.PL.location.x, _G.ControlData.PL.location.y );
     elseif value == "TI" then --Track Items
         import (AppCtrD.."TrackItems");
@@ -171,17 +174,20 @@ function ImportCtr( value )
 
                     local tmpIF = string.match(ifMess,ifPattern);
                     if tmpIF ~= nil then
-                        InfamyPTS = InfamyPTS + tmpIF;
+                        _G.ControlData.IF = _G.ControlData.IF or {}
+                        local currentPoints = tonumber(_G.ControlData.IF.points) or 0
+                        local delta = tonumber((string.gsub(tmpIF, "%p+", ""))) or 0
+                        _G.ControlData.IF.points = currentPoints + delta
 
                         for i=0, 14 do
-                            if tonumber(InfamyPTS) >= _G.InfamyRanks[i] and
-                                tonumber(InfamyPTS) < _G.InfamyRanks[i+1] then
-                                InfamyRank = i;
+                            if (_G.ControlData.IF.points >= _G.InfamyRanks[i]) and
+                                (_G.ControlData.IF.points < _G.InfamyRanks[i+1]) then
+                                _G.ControlData.IF.rank = i
                                 break
-                                end
+                            end
                         end
-                        settings.Infamy.P = string.format("%.0f", InfamyPTS);
-                        settings.Infamy.K = string.format("%.0f", InfamyRank);
+                        settings.Infamy.P = string.format("%.0f", _G.ControlData.IF.points);
+                        settings.Infamy.K = string.format("%.0f", _G.ControlData.IF.rank or 0);
                         SaveSettings( false );
                         UpdateInfamy();
                     end

@@ -143,9 +143,10 @@ local function GetPlayerData()
 	aPlayerData[PD.RACE] =		PlayerRaceIs
 
 	if PlayerAlign == 1 then -- freeps only
-		if ExpPTS then
+		local expPTS = (_G.ControlData and _G.ControlData.PI and _G.ControlData.PI.xp)
+		if expPTS then
 			-- experience data from chat
-			local sExpPTS = strgsub(ExpPTS,"%p+","")
+			local sExpPTS = strgsub(expPTS,"%p+","")
 			aPlayerData[PD.XP_CURRENT] = tonumber(sExpPTS)
 		end
 

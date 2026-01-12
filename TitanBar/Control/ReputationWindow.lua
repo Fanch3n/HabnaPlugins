@@ -59,24 +59,30 @@ function frmReputationWindow()
         end
     end
 
---[[-- Add a checkbox for people to be able to hide all factions that reach max 
-    -- reputation (then reshow if they loose rep)
-    RPPHMaxCtr = Turbine.UI.Lotro.CheckBox();
+    -- Add a checkbox to hide all factions that reach max reputation.
+    local RPPHMaxCtr = Turbine.UI.Lotro.CheckBox();
     RPPHMaxCtr:SetParent(wRP);
-    RPPHMaxCtr:SetText(L["RPPHMaxHide"]);
-    RPPHMaxCtr:SetSize(wRP:GetWidth() - 10, 20);
-    RPPHMaxCtr:SetPosition(45, 65);
+    RPPHMaxCtr:SetText(L["RPPHMaxShow"]);
+    RPPHMaxCtr:SetSize(wRP:GetWidth() - 40, 20);
+    RPPHMaxCtr:SetPosition(20, 95);
     RPPHMaxCtr:SetFont(Turbine.UI.Lotro.Font.TrajanPro16);
     RPPHMaxCtr:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
     RPPHMaxCtr:SetForeColor(Color["yellow"]);
-    RPPHMaxCtr:SetChecked(HideMaxReps);
+	RPPHMaxCtr:SetChecked((_G.ControlData and _G.ControlData.RP and _G.ControlData.RP.showMax) == true);
 
     RPPHMaxCtr.CheckedChanged = function(sender, args)
-        HideMaxReps = RPPHMaxCtr:IsChecked();
-            write("Hide maxed out reps: "..tostring(HideMaxReps));
-        SaveSettings();
+        _G.ControlData.RP = _G.ControlData.RP or {}
+        _G.ControlData.RP.showMax = (RPPHMaxCtr:IsChecked() == true)
+        settings.Reputation = settings.Reputation or {}
+        -- Persist legacy key as hideMax for backward compatibility.
+        settings.Reputation.H = (_G.ControlData.RP.showMax ~= true)
+
+        SaveSettings(false)
+
+        if type(RPRefreshListBox) == "function" and _G.ToolTipWin ~= nil and (_G.ToolTipWin.IsVisible == nil or _G.ToolTipWin:IsVisible()) then
+            RPRefreshListBox()
+        end
     end
---]]
 
     -- **v Set the reputation listbox v (using WindowFactory helper) **
     local rpLeft, rpTop = 20, 115

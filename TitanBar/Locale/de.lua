@@ -343,7 +343,7 @@ L[ "TAjustL" ] = "Timer seed";
 -- Reputation window
 L[ "RPt" ] = "Aktivieren / deaktivieren der Fraktionen\nRechtsklick, um aktuellen Stand einzugeben";
 L[ "RPnf" ] = "Ihr verfolgt keine Fraktion!\nLinksklick, um die Fraktionsliste zu sehen.";
-L[ "RPPHMaxHide" ] = "Verstecke Fraktionen mit maximalem Ruf";
+L[ "RPPHMaxShow" ] = "Zeige Fraktionen mit maximalem Ruf";
 
 -- All reputation names
 L[ "MenOfBree" ]    = "Menschen von Bree";

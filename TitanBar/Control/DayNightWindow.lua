@@ -4,7 +4,8 @@
 function frmDayNightWindow()
 	import(AppDirD .. "WindowFactory")
 	import(AppDirD .. "UIHelpers")
-	local prevTS = _G.TS
+	_G.ControlData.DN = _G.ControlData.DN or {}
+	local prevTS = _G.ControlData.DN.ts
 	local bHelp = false
 	
 	local windowWidth = (TBLocale == "fr") and 335 or 290
@@ -15,8 +16,9 @@ function frmDayNightWindow()
 		L["MDayNight"], windowWidth, 105,
 		{
 			onClosing = function(sender, args)
-				if tonumber(_G.TS) == 0 then _G.TS = tonumber(prevTS) end
-				settings.DayNight.S = string.format("%.0f", _G.TS)
+				local ts = tonumber(_G.ControlData.DN.ts) or 0
+				if ts == 0 then _G.ControlData.DN.ts = tonumber(prevTS) or 0 end
+				settings.DayNight.S = string.format("%.0f", tonumber(_G.ControlData.DN.ts) or 0)
 				SaveSettings(false)
 				UpdateDayNight()
 			end
@@ -29,12 +31,12 @@ function frmDayNightWindow()
 	NextTimeCB:SetPosition( 35, 40 );
 	NextTimeCB:SetText( L["NextT"] );
 	NextTimeCB:SetSize( NextTimeCB:GetTextLength() * 8.5, 20 );
-	NextTimeCB:SetChecked( _G.DNNextT );
+	NextTimeCB:SetChecked( (_G.ControlData.DN.next ~= false) );
 	NextTimeCB:SetForeColor( Color["rustedgold"] );
 
 	NextTimeCB.CheckedChanged = function( sender, args )
-		_G.DNNextT = NextTimeCB:IsChecked();
-		settings.DayNight.N = _G.DNNextT;
+		_G.ControlData.DN.next = NextTimeCB:IsChecked();
+		settings.DayNight.N = _G.ControlData.DN.next;
 		SaveSettings( false );
 		UpdateDayNight();
 	end
@@ -43,7 +45,7 @@ function frmDayNightWindow()
 	local TAjustlbl = CreateTitleLabel(wDN, L["TAjustL"], NextTimeCB:GetLeft(), NextTimeCB:GetTop() + 30, nil, Color["rustedgold"], 8.5, nil, 20)
 	-- **^
 	-- **v Timer seed - Text box v**
-	local TAjustTB = CreateInputTextBox(wDN, _G.TS, TAjustlbl:GetLeft() + TAjustlbl:GetWidth(), TAjustlbl:GetTop() - 5, 75);
+	local TAjustTB = CreateInputTextBox(wDN, tostring(tonumber(_G.ControlData.DN.ts) or 0), TAjustlbl:GetLeft() + TAjustlbl:GetWidth(), TAjustlbl:GetTop() - 5, 75);
 	TAjustTB:SetForeColor( Color["white"] );
 
 	TAjustTB.FocusGained = function( sender, args )
@@ -65,8 +67,8 @@ function frmDayNightWindow()
 			return
 		end
 
-		_G.TS = parsed_text;
-		settings.DayNight.S = string.format("%.0f",_G.TS);
+		_G.ControlData.DN.ts = tonumber(parsed_text) or 0
+		settings.DayNight.S = string.format("%.0f", tonumber(_G.ControlData.DN.ts) or 0);
 		SaveSettings( false );
 		UpdateDayNight();
 	end

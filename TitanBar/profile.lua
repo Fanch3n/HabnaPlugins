@@ -47,7 +47,8 @@ function frmProfile()
 		if LProfile then
 			write("TitanBar: "..L["PWProfile"].." `"..lblName[PrevItemClic]:GetText().."` "..L["PWLoaded"]);
 			settings = vPProfileSettings[PrevItemClic];
-			settings.PlayerLoc.L = pLLoc;
+			local plText = (_G.ControlData and _G.ControlData.PL and _G.ControlData.PL.text) or (settings.PlayerLoc and settings.PlayerLoc.L) or L["PLMsg"]
+			settings.PlayerLoc.L = plText;
 			settings.TitanBar.ZT = "Profile";
 			SaveSettings( false );
 			ReloadTitanBar();
@@ -105,7 +106,8 @@ function frmProfile()
 		settings.TitanBar.ZT = "Profile";
 		SavePlayerProfile();
 		SaveSettings( false );
-		settings.PlayerLoc.L = pLLoc;
+		local plText = (_G.ControlData and _G.ControlData.PL and _G.ControlData.PL.text) or (settings.PlayerLoc and settings.PlayerLoc.L) or L["PLMsg"]
+		settings.PlayerLoc.L = plText;
 		ReloadTitanBar(); -- Need to reload, because if create more then 1 profile, previous profile will be lost!
 		--[[
 		CreateCtr:SetVisible( false );

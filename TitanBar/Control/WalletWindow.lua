@@ -2,6 +2,8 @@
 -- Written by Habna
 -- Rewritten by Many
 
+local wcur
+
 function frmWalletWindow()
 	wcur = nil;
 	import (AppClassD.."ComboBox");
@@ -51,7 +53,7 @@ function frmWalletWindow()
 	end
 
    function WIFilter()
-        filterText = string.lower(WIFiltertxt.Text);
+		local filterText = string.lower(WIFiltertxt.Text);
         for i=1,WIListBox:GetItemCount() do
             local row = WIListBox:GetItem(i);
             if string.find(string.lower(row.curLbl:GetText()),filterText) == nil then
@@ -166,7 +168,7 @@ function frmWalletWindow()
 		WIWCtr:SetVisible( false );
 		WIWCtr:SetZOrder( 0 );
 
-		SelIndex = WIDD:GetSelection();
+		local SelIndex = WIDD:GetSelection();
 		--Where-> 1: On TitanBar / 2: In wallet control tooltip / 3: Don't show
 		if wcur == L["MGSC"] then
 			_G.ControlData.Money = _G.ControlData.Money or {}
@@ -252,6 +254,7 @@ function RefreshWIListBox()
 				LPWCtr:SetVisible( false );
 				WIbutSave:SetPosition( WIWCtr:GetWidth()/2 - WIbutSave:GetWidth()/2, WIDD:GetTop()+WIDD:GetHeight()+10 );
 
+				local tw
 				if wcur == L["MGSC"] then
 					tw = (_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE -- Money
 				elseif wcur == L["MLotroPoints"] then

@@ -335,7 +335,7 @@ function UpdatePlayersInfos()
 	--Update visuale
 	PI[ "Icon" ]:SetBackground(resources.PlayerIconCode[PlayerClassIdIs]) -- if class icon is unknown in the resource then background image is set to nil: nothing visible
 	
-	PI["Lvl"]:SetText(Player:GetLevel())
+	PI["Lvl"]:SetText(tostring(Player:GetLevel()))
 	PI["Lvl"]:SetSize(PI["Lvl"]:GetTextLength() * NM+1, CTRHeight)
 	PI["Name"]:SetPosition(PI["Lvl"]:GetLeft() + PI["Lvl"]:GetWidth() + 5, 0)
 	--PI["Name"]:SetText("OneVeryLongCharacterName") --Debug purpose
@@ -427,7 +427,8 @@ function UpdateDayNight()
 	DNLen1 = string.len(DNTime) * TM;
 	DNLen = DNLen1;
 	
-	if _G.DNNextT then --Show next day & night time
+	local dnData = (_G.ControlData and _G.ControlData.DN) or {}
+	if dnData.next ~= false then --Show next day & night time
 		if totalseconds >= 60 then NDNTime = cdminutes .. " min: " .. ntimer;
 		else NDNTime = totalseconds .. " sec: " .. ntimer; end
 
@@ -735,8 +736,9 @@ end
 function GetInGameTime()
 	local nowtime = Turbine.Engine.GetLocalTime();
 	local gametime = Turbine.Engine.GetGameTime();
-	local InitDawn =  nowtime - gametime + _G.TS;
-	local adjust = (nowtime - (nowtime - gametime + _G.TS)) % Constants.GAME_TIME_CYCLE;
+	local ts = (_G.ControlData and _G.ControlData.DN and tonumber(_G.ControlData.DN.ts)) or 0
+	local InitDawn =  nowtime - gametime + ts;
+	local adjust = (nowtime - (nowtime - gametime + ts)) % Constants.GAME_TIME_CYCLE;
   local darray = {572, 1722, 1067, 1678, 1101, 570, 1679, 539, 1141, 1091};
 	local dtarray = {
         L["Dawn"], L["Morning"], L["Noon"], L["Afternoon"], L["Dusk"], 

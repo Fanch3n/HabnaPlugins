@@ -21,13 +21,19 @@ function ShowRPWindow()
 end
 
 function RPRefreshListBox()
+    if _G.ToolTipWin == nil or RPTTListBox == nil then
+        return
+    end
+    if _G.ToolTipWin.IsVisible ~= nil and not _G.ToolTipWin:IsVisible() then
+        return
+    end
     RPTTListBox:ClearItems();
     RPTTPosY = 0;
     local bFound = false;
+    local showMaxReps = ((_G.ControlData and _G.ControlData.RP and _G.ControlData.RP.showMax) == true)
 
     for _, faction in ipairs(_G.Factions.list) do
         if PlayerReputation[PN][faction.name].V then
-            HideMaxReps = true; -- TODO add option to hide/show
             HideBonus = true;
             if faction.name == "ReputationAcceleration" then
                 if tonumber(PlayerReputation[PN][faction.name].Total) > 0 then
@@ -122,7 +128,7 @@ function RPRefreshListBox()
             RPLvl:SetSize( RPTTListBox:GetWidth() - RPPB:GetWidth(), 15 );
             RPLvl:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 
-            if HideMaxReps and percentage_done == "max" then
+			if (not showMaxReps) and percentage_done == "max" then
                 repLbl:SetVisible( false );
                 RPPBFill:SetVisible( false );
                 RPPB:SetVisible( false );

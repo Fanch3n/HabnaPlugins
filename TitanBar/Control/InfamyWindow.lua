@@ -27,7 +27,9 @@ function frmInfamyWindow()
 
 	local lblName = CreateTitleLabel(IFWCtr, L["IFIF"], 0, 2, nil, Color["rustedgold"], 7.5, nil, 15, Turbine.UI.ContentAlignment.MiddleLeft)
 
-	local txtInfamy = CreateInputTextBox(IFWCtr, InfamyPTS, lblName:GetLeft()+lblName:GetWidth()+5, lblName:GetTop()-2);
+	_G.ControlData.IF = _G.ControlData.IF or {}
+	local currentPoints = tonumber(_G.ControlData.IF.points) or 0
+	local txtInfamy = CreateInputTextBox(IFWCtr, tostring(currentPoints), lblName:GetLeft()+lblName:GetWidth()+5, lblName:GetTop()-2);
 	if PlayerAlign == 2 then txtInfamy:SetBackColor( Color["red"] ); end
 
 	txtInfamy.FocusGained = function( sender, args )
@@ -61,19 +63,23 @@ function frmInfamyWindow()
 			txtInfamy:SetText( "0" );
 			txtInfamy:Focus();
 			return
-		elseif parsed_text == _G.InfamyPTS then
+		elseif parsed_text == tostring(tonumber(_G.ControlData.IF.points) or 0) then
 			txtInfamy:Focus();
 			return
 		end
-			
-		InfamyPTS = txtInfamy:GetText();
+		
+		local newPoints = tonumber(parsed_text) or 0
+		_G.ControlData.IF.points = newPoints
 		
 		for i = 0, 14 do
-			if tonumber(InfamyPTS) >= _G.InfamyRanks[i] and tonumber(InfamyPTS) < _G.InfamyRanks[i+1] then InfamyRank = i; break end
+			if newPoints >= _G.InfamyRanks[i] and newPoints < _G.InfamyRanks[i+1] then
+				_G.ControlData.IF.rank = i
+				break
+			end
 		end
 
-		settings.Infamy.P = string.format("%.0f", InfamyPTS);
-		settings.Infamy.K = string.format("%.0f", InfamyRank);
+		settings.Infamy.P = string.format("%.0f", _G.ControlData.IF.points);
+		settings.Infamy.K = string.format("%.0f", _G.ControlData.IF.rank or 0);
 		SaveSettings( false );
 
 		txtInfamy:Focus();

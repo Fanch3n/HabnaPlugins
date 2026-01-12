@@ -198,11 +198,13 @@ function frmOptions()
 	end
 	-- **^
 	
-	local PILayoutCB = CreateAutoSizedCheckBox(wOptions, L["Layout"], TBTopCB:GetLeft(), TBTopCB:GetTop()+20, PILayout, 8.5, 30);
+	local currentLayout = (_G.ControlData and _G.ControlData.PI and _G.ControlData.PI.layout) or false
+	local PILayoutCB = CreateAutoSizedCheckBox(wOptions, L["Layout"], TBTopCB:GetLeft(), TBTopCB:GetTop()+20, currentLayout, 8.5, 30);
 	
 	PILayoutCB.CheckedChanged = function( sender, args )
-		PILayout = PILayoutCB:IsChecked();
-		settings.PlayerInfos.Layout = PILayout;
+		_G.ControlData.PI = _G.ControlData.PI or {}
+		_G.ControlData.PI.layout = PILayoutCB:IsChecked();
+		settings.PlayerInfos.Layout = _G.ControlData.PI.layout;
 		SaveSettings( false );
 		ReloadTitanBar();
 	end

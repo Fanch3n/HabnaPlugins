@@ -341,9 +341,9 @@ L[ "NextT" ] = "Afficher le prochain temps";
 L[ "TAjustL" ] = "Code de minuterie";
 
 -- Reputation window
-L[ "RPt" ] = "S\195\169lectionner / d\195\169s\195\169lectionner une faction\nclick droit pour voir ces configurations";
+L[ "RPt" ] = "Sélectionner / désélectionner une faction\nclick droit pour voir ces configurations";
 L[ "RPnf" ] = "Vous suivez aucune faction!\nFaites un clic gauche pour voir la liste des factions.";
-L[ "RPPHMaxHide" ] = "Masquer les factions \195\160 une r\195\169putation maximale";-- Google: https://translate.google.com/#auto/fr/Hide%20factions%20at%20maximum%20reputation
+L[ "RPPHMaxShow" ] = "Afficher les factions à leur réputation maximale";
 
 -- All reputation names
 L[ "MenOfBree" ]    = "Hommes de Bree";

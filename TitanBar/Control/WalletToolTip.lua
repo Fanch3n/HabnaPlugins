@@ -23,11 +23,14 @@ end
 
 function RefreshWITTListBox()
 	WITTListBox:ClearItems();
-	WITTPosY, totWidth = 0, 0;
+	local WITTPosY, totWidth = 0, 0;
 	local bFound = false;
 
 	for i = 1, #MenuItem do
-		wttcur = MenuItem[i];
+		local wttcur = MenuItem[i];
+		local ttw = Constants.Position.NONE
+		local CtrIconCodeIs
+		local CtrQteIs
 		if wttcur == L["MGSC"] then
 			ttw = (_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE
 		elseif wttcur == L["MLotroPoints"] then
@@ -38,11 +41,11 @@ function RefreshWITTListBox()
 		for k,v in pairs(_G.currencies.list) do
 			if wttcur == L["M" .. v.name] then
 				ttw = _G.CurrencyData[v.name].Where
-				CtrIconCodeIs=v.icon
+				CtrIconCodeIs = v.icon
 				if wttcur == L["MDestinyPoints"] then
 					CtrQteIs = GetPlayerAttributes():GetDestinyPoints()
 				else
-					CtrQteIs=GetCurrency(L["M" .. v.name]);
+					CtrQteIs = GetCurrency(L["M" .. v.name]);
 				end
 			end
 		end
