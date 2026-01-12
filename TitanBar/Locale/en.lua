@@ -263,6 +263,9 @@ L["HuntersGuildMarkh"] = "Your Hunter's Guild Marks";
 -- Blighted Relic
 L["MBlightedRelic"] = "Blighted Relic";
 L["BlightedRelich"] = "Your Blighted Relics";
+-- Tattered Shadows
+L["MTatteredShadow"] = "Tattered Shadow";
+L["atteredShadowh"] = "Your Tattered Shadows";
 
 -- Control Menu
 L[ "MCU" ] = "Unload ...";

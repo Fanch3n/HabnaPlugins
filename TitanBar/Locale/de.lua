@@ -263,6 +263,9 @@ L["HuntersGuildMarkh"] = "Eure Jägergildenzeichen";
 -- Blighted Relic
 L["MBlightedRelic"] = "Verderbtes Relikt";
 L["BlightedRelich"] = "Eure Verderbten Relikte";
+-- Tattered Shadows
+L["MTatteredShadow"] = "Zerfledderter Schatten";
+L["atteredShadowh"] = "Eure Zerfledderten Schatten";
 
 -- Control Menu
 L[ "MCU" ] = "entfernen ...";

@@ -263,6 +263,9 @@ L["HuntersGuildMarkh"] = "Ce sont vos Marques de la guilde des chasseurs";
 -- Blighted Relic
 L["MBlightedRelic"] = "Relique infectée";
 L["BlightedRelich"] = "Ce sont vos Reliques infectées";
+-- Tattered Shadows
+L["MTatteredShadow"] = "Ombre en lambeaux";
+L["atteredShadowh"] = "Ombres en lambeaux";
 
 -- Control Menu
 L[ "MCU" ] = "D\195\169charger ...";
