@@ -424,10 +424,11 @@ function LoadSettings()
 	gameTime.O = gameTime.O or false -- True = Show both server and real time
 	gameTime.M = gameTime.M or Constants.FormatInt(0)
 	LoadControlSettings("GT", gameTime)
-	_G.Clock24h = gameTime.H
-	_G.ShowST = gameTime.S
-	_G.ShowBT = gameTime.O
-	_G.UserGMT = gameTime.M
+	_G.ControlData.GT = _G.ControlData.GT or {}
+	_G.ControlData.GT.clock24h = (gameTime.H == true)
+	_G.ControlData.GT.showST = (gameTime.S == true)
+	_G.ControlData.GT.showBT = (gameTime.O == true)
+	_G.ControlData.GT.userGMT = tonumber(gameTime.M) or 0
 	
 	for k,v in pairs(_G.currencies.list) do
 		CreateSettingsForCurrency(v)
@@ -586,10 +587,10 @@ function SaveSettings(str)
 		-- GameTime
 		if not settings.GameTime then settings.GameTime = {} end
 		SaveControlSettings("GT", settings.GameTime)
-		settings.GameTime.H = _G.Clock24h
-		settings.GameTime.S = _G.ShowST
-		settings.GameTime.O = _G.ShowBT
-		settings.GameTime.M = Constants.FormatInt(_G.UserGMT)
+		settings.GameTime.H = (_G.ControlData.GT and _G.ControlData.GT.clock24h) == true
+		settings.GameTime.S = (_G.ControlData.GT and _G.ControlData.GT.showST) == true
+		settings.GameTime.O = (_G.ControlData.GT and _G.ControlData.GT.showBT) == true
+		settings.GameTime.M = Constants.FormatInt(((_G.ControlData.GT and tonumber(_G.ControlData.GT.userGMT)) or 0))
 				
 		for k,v in pairs(_G.currencies.list) do
 			SetSettings(v.name)
@@ -632,6 +633,11 @@ function ResetSettings()
 	_G.ControlData.DI.icon, _G.ControlData.DI.text = true, true
 	_G.ControlData.RP = _G.ControlData.RP or {}
 	_G.ControlData.RP.showMax = false
+	_G.ControlData.GT = _G.ControlData.GT or {}
+	_G.ControlData.GT.clock24h = false
+	_G.ControlData.GT.showST = false
+	_G.ControlData.GT.showBT = false
+	_G.ControlData.GT.userGMT = 0
 	_G.ControlData.DN = _G.ControlData.DN or {}
 	_G.ControlData.DN.next = true
 	

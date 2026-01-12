@@ -5,6 +5,7 @@
 function frmGameTimeWindow()
 	import(AppDirD .. "WindowFactory")
 	import(AppDirD .. "UIHelpers")
+	local gtData = _G.ControlData.GT
 
 	-- Create window via helper
 	local wGT = CreateControlWindow(
@@ -16,14 +17,14 @@ function frmGameTimeWindow()
 	local GMT = Turbine.UI.Lotro.TextBox();
 	local ShowSTcb = Turbine.UI.Lotro.CheckBox();
 	local ShowBTcb;  -- Forward declaration
-	local Clock24Ctr = CreateAutoSizedCheckBox(wGT, L["GTW24h"], 35, 40, _G.Clock24h, 8);
+	local Clock24Ctr = CreateAutoSizedCheckBox(wGT, L["GTW24h"], 35, 40, gtData.clock24h == true, 8);
 
 	Clock24Ctr.CheckedChanged = function( sender, args )
-		_G.Clock24h = Clock24Ctr:IsChecked();
-		settings.GameTime.H = _G.Clock24h;
+		gtData.clock24h = Clock24Ctr:IsChecked() == true
+		settings.GameTime.H = gtData.clock24h
 		SaveSettings( false );
-		if _G.ShowBT then ShowSTcb:SetChecked(ShowBT); UpdateGameTime("bt");
-		elseif _G.ShowST then UpdateGameTime("st");
+		if gtData.showBT then ShowSTcb:SetChecked(gtData.showBT); UpdateGameTime("bt");
+		elseif gtData.showST then UpdateGameTime("st");
 		else UpdateGameTime("gt") end
 	end
 	-- **^
@@ -34,21 +35,21 @@ function frmGameTimeWindow()
 	ShowSTcb:SetSize( ShowSTcb:GetTextLength() * 8, 20 );
 	--ShowSTcb:SetVisible( true );
 	--ShowSTcb:SetEnabled( false );
-	ShowSTcb:SetChecked( _G.ShowST );
+	ShowSTcb:SetChecked( gtData.showST == true );
 	ShowSTcb:SetForeColor( Color["rustedgold"] );
 
 	ShowSTcb.CheckedChanged = function( sender, args )
-		_G.ShowST = ShowSTcb:IsChecked();
-		if not _G.ShowST then ShowBTcb:SetChecked(false); end
-		settings.GameTime.S = _G.ShowST;
-		_G.UserGMT = GMT:GetText();
+		gtData.showST = ShowSTcb:IsChecked() == true
+		if not gtData.showST then ShowBTcb:SetChecked(false); end
+		settings.GameTime.S = gtData.showST
+		gtData.userGMT = tonumber(GMT:GetText()) or 0
 		SaveSettings( false );
-		if not _G.ShowBT then UpdateGameTime("st"); end
+		if not gtData.showBT then UpdateGameTime("st"); end
 	end
 	-- **^
 	-- **v GMT - Text box v**
 	GMT:SetParent( ShowSTcb );
-	GMT:SetText( _G.UserGMT );
+	GMT:SetText( tostring(tonumber(gtData.userGMT) or 0) );
 	GMT:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
 	GMT:SetSize( Constants.GMT_FIELD_WIDTH, Constants.GMT_FIELD_HEIGHT );
 	--GMT:SetVisible( true );
@@ -78,27 +79,27 @@ function frmGameTimeWindow()
 			GMT:SetText( string.sub( parsed_text, 2 ) );
 			return
 		end
-		_G.UserGMT = GMT:GetText();
-		settings.GameTime.M = string.format("%.0f",_G.UserGMT);
+		gtData.userGMT = tonumber(GMT:GetText()) or 0
+		settings.GameTime.M = Constants.FormatInt(gtData.userGMT)
 		SaveSettings( false );
-		if _G.ShowST then
-			if _G.ShowBT then UpdateGameTime("bt");
-			elseif _G.ShowST then UpdateGameTime("st");
+		if gtData.showST then
+			if gtData.showBT then UpdateGameTime("bt");
+			elseif gtData.showST then UpdateGameTime("st");
 			else UpdateGameTime("gt") end
 		end
 	end
 	-- **^
 	-- **v Show both time - Check box v**
-	ShowBTcb = CreateAutoSizedCheckBox(wGT, L["GTWSBT"], 35, ShowSTcb:GetTop() + 20, _G.ShowBT);
+	ShowBTcb = CreateAutoSizedCheckBox(wGT, L["GTWSBT"], 35, ShowSTcb:GetTop() + 20, gtData.showBT == true);
 
 	ShowBTcb.CheckedChanged = function( sender, args )
-		_G.ShowBT = ShowBTcb:IsChecked();
-		settings.GameTime.O = _G.ShowBT;
+		gtData.showBT = ShowBTcb:IsChecked() == true
+		settings.GameTime.O = gtData.showBT
 		SaveSettings( false );
-		ShowSTcb:SetChecked(ShowBT);
+		ShowSTcb:SetChecked(gtData.showBT);
 				
-		if _G.ShowBT then UpdateGameTime("bt");
-		elseif _G.ShowST then UpdateGameTime("st");
+		if gtData.showBT then UpdateGameTime("bt");
+		elseif gtData.showST then UpdateGameTime("st");
 		else UpdateGameTime("gt") end
 	end
 	-- **^

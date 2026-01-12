@@ -467,6 +467,12 @@ end
 --**^
 --**v Update game time on TitanBar v**
 function UpdateGameTime(str)
+	local gtData = _G.ControlData and _G.ControlData.GT
+	local clock24h = gtData and gtData.clock24h == true
+	local showST = gtData and gtData.showST == true
+	local showBT = gtData and gtData.showBT == true
+	local userGMT = (gtData and tonumber(gtData.userGMT)) or 0
+
 	local cdate = Turbine.Engine.GetDate();
 	local chour = cdate.Hour;
 	local cminute = cdate.Minute;
@@ -476,7 +482,7 @@ function UpdateGameTime(str)
 
 	local function formatTime(hour, minute)
 		local suffix = "";
-		if not _G.Clock24h then
+		if not clock24h then
 			if hour == 12 then suffix = "pm";
 			elseif hour >= 13 then hour = hour - 12; suffix = "pm";
 			else if hour == 0 then hour = 12; end suffix = "am"; end
@@ -486,8 +492,8 @@ function UpdateGameTime(str)
 	end
 
 	if str == "st" then
-		if _G.ShowST then
-			chour = chour + _G.UserGMT;
+		if showST then
+			chour = chour + userGMT;
 			if chour < 0 then
 				chour = 24 + chour;
 				if chour == 0 then chour = 24; end

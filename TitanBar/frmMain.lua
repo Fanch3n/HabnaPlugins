@@ -303,8 +303,8 @@ function frmMain()
 		
 		if (oldminute ~= currentminute) then
 			if _G.ControlData.GT.show then-- Until I find the minute changed event or something similar
-				if _G.ShowBT then UpdateGameTime("bt");
-				elseif _G.ShowST then UpdateGameTime("st");
+				if _G.ControlData.GT.showBT then UpdateGameTime("bt");
+				elseif _G.ControlData.GT.showST then UpdateGameTime("st");
 				else UpdateGameTime("gt") end
 			end
 		end

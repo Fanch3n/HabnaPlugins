@@ -244,8 +244,8 @@ function ImportCtr( value )
         --AddCallback(PlayerTime, "MinuteChanged",
         --    function(sender, args) UpdateGameTime(); end
         --);
-        if _G.ShowBT then UpdateGameTime("bt");
-        elseif _G.ShowST then UpdateGameTime("st");
+        if _G.ControlData.GT.showBT then UpdateGameTime("bt");
+        elseif _G.ControlData.GT.showST then UpdateGameTime("st");
         else UpdateGameTime("gt") end
         if _G.ControlData.GT.location.x + GT[ "Ctr" ]:GetWidth() > screenWidth then
             _G.ControlData.GT.location.x = screenWidth - GT[ "Ctr" ]:GetWidth();
