@@ -228,7 +228,9 @@ function ImportCtr( value )
                         local tmpLP = string.match(tpMess,tpPattern);
                         if tmpLP ~= nil then
                             LPTS = tmpLP;
-                            _G.LOTROPTS = _G.LOTROPTS + LPTS;
+                            _G.ControlData.LP = _G.ControlData.LP or {}
+                            local currentPoints = tonumber(_G.ControlData.LP.points) or 0
+                            _G.ControlData.LP.points = tostring(currentPoints + tonumber(LPTS));
                             UpdateLOTROPoints()
                         end
                     end
@@ -927,12 +929,15 @@ end
 function LoadPlayerLOTROPoints()
     PlayerLOTROPoints = Turbine.PluginData.Load(Turbine.DataScope.Account, "TitanBarLOTROPoints") or {}
     PlayerLOTROPoints["PTS"] = PlayerLOTROPoints.PTS or "0"
-    _G.LOTROPTS = PlayerLOTROPoints.PTS;
+    _G.ControlData.LP = _G.ControlData.LP or {}
+    _G.ControlData.LP.points = PlayerLOTROPoints.PTS;
     SavePlayerLOTROPoints()
 end
 
 function SavePlayerLOTROPoints()
-    PlayerLOTROPoints["PTS"] = string.format("%.0f", _G.LOTROPTS);
+    local lpData = _G.ControlData and _G.ControlData.LP
+    local points = (lpData and tonumber(lpData.points)) or 0
+    PlayerLOTROPoints["PTS"] = string.format("%.0f", points);
     Turbine.PluginData.Save(Turbine.DataScope.Account, "TitanBarLOTROPoints", PlayerLOTROPoints);
 end
 

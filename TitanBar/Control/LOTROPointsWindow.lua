@@ -28,7 +28,9 @@ function frmLOTROPointsWindow()
 
 	local lblLOTROPTS = CreateTitleLabel(LPWCtr, L["MLotroPoints"], 0, 2, nil, Color["rustedgold"], 7.5, nil, 15, Turbine.UI.ContentAlignment.MiddleLeft)
 
-	local txtLOTROPTS = CreateInputTextBox(LPWCtr, _G.LOTROPTS, lblLOTROPTS:GetLeft()+lblLOTROPTS:GetWidth()+5, lblLOTROPTS:GetTop()-2);
+	local lpData = _G.ControlData and _G.ControlData.LP
+	local initialPoints = (lpData and lpData.points) or "0"
+	local txtLOTROPTS = CreateInputTextBox(LPWCtr, initialPoints, lblLOTROPTS:GetLeft()+lblLOTROPTS:GetWidth()+5, lblLOTROPTS:GetTop()-2);
 	if PlayerAlign == 2 then txtLOTROPTS:SetBackColor( Color["red"] ); end
 
 	txtLOTROPTS.FocusGained = function( sender, args )
@@ -61,12 +63,17 @@ function frmLOTROPointsWindow()
 			txtLOTROPTS:SetText( "0" );
 			txtLOTROPTS:Focus();
 			return
-		elseif parsed_text == _G.LOTROPTS then
-			txtLOTROPTS:Focus();
-			return
+		else
+			local lpData = _G.ControlData and _G.ControlData.LP
+			local currentPoints = (lpData and lpData.points) or "0"
+			if parsed_text == currentPoints then
+				txtLOTROPTS:Focus();
+				return
+			end
 		end
 
-		_G.LOTROPTS = txtLOTROPTS:GetText();
+		_G.ControlData.LP = _G.ControlData.LP or {}
+		_G.ControlData.LP.points = txtLOTROPTS:GetText();
 		UpdateLOTROPoints();
 		txtLOTROPTS:Focus();
 	end

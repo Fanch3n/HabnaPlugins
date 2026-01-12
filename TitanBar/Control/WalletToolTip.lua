@@ -36,7 +36,8 @@ function RefreshWITTListBox()
 		elseif wttcur == L["MLotroPoints"] then
 			ttw = (_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE
 			CtrIconCodeIs=_G.resources.LOTROPoints;
-			CtrQteIs=_G.LOTROPTS;
+			local lpData = _G.ControlData and _G.ControlData.LP
+			CtrQteIs = (lpData and lpData.points) or 0;
 		end
 		for k,v in pairs(_G.currencies.list) do
 			if wttcur == L["M" .. v.name] then

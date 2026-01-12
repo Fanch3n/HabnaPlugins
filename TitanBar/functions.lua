@@ -251,7 +251,9 @@ end
 function UpdateLOTROPoints()
 	local where = (_G.ControlData and _G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE
 	if where == Constants.Position.TITANBAR then
-		LP["Lbl"]:SetText(_G.LOTROPTS)
+		local lpData = _G.ControlData and _G.ControlData.LP
+		local points = (lpData and tonumber(lpData.points)) or 0
+		LP["Lbl"]:SetText(tostring(points))
 		LP["Lbl"]:SetSize(LP["Lbl"]:GetTextLength() * NM, CTRHeight)
 		AjustIcon("LP")
 	end
@@ -502,22 +504,22 @@ function UpdateGameTime(str)
 			end
 		end
 
-		_G.STime = formatTime(chour, cminute);
-		TheTime = _G.STime;
+		gtData.stime = formatTime(chour, cminute);
+		TheTime = gtData.stime;
 		TextLen = string.len(TheTime) * NM;
 	elseif str == "gt" then
 		--write("Game Time");
-		_G.GTime = formatTime(chour, cminute);
-		TheTime = _G.GTime;
+		gtData.gtime = formatTime(chour, cminute);
+		TheTime = gtData.gtime;
 		TextLen = string.len(TheTime) * TM;
 	elseif str == "bt" then
 		--write("Both Time");
 		UpdateGameTime("st");
 		UpdateGameTime("gt");
-		TheTime = L["GTWST"] .. _G.STime;
+		TheTime = L["GTWST"] .. gtData.stime;
 		TextLen = string.len(TheTime) * NM;
 		TheTime = 
-            L["GTWST"] .. _G.STime .. "\n" .. L["GTWRT"] .. _G.GTime .. " ";
+            L["GTWST"] .. gtData.stime .. "\n" .. L["GTWRT"] .. gtData.gtime .. " ";
 	end
 	
 	GT[ "Lbl" ]:SetText( TheTime );

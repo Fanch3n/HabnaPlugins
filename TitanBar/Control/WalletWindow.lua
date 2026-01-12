@@ -135,7 +135,6 @@ function frmWalletWindow()
 	--WIlblLOTROPTS:SetBackColor( Color["red"] ); -- debug purpose
 
 	WItxtLOTROPTS = CreateInputTextBox(LPWCtr, nil, WIlblLOTROPTS:GetLeft()+WIlblLOTROPTS:GetWidth()+5, WIlblLOTROPTS:GetTop()-2);
-	--WItxtLOTROPTS:SetText( _G.LOTROPTS );
 	if PlayerAlign == 2 then WItxtLOTROPTS:SetBackColor( Color["red"] ); end
 
 	WItxtLOTROPTS.FocusGained = function( sender, args )
@@ -196,12 +195,17 @@ function frmWalletWindow()
 				WItxtLOTROPTS:SetText( "0" );
 				WItxtLOTROPTS:Focus();
 				return
-			elseif parsed_text == _G.LOTROPTS then
+			end
+			
+			local lpData = _G.ControlData and _G.ControlData.LP
+			local currentPoints = (lpData and lpData.points) or "0"
+			if parsed_text == currentPoints then
 				WItxtLOTROPTS:Focus();
 				return
 			end
 			
-			_G.LOTROPTS = WItxtLOTROPTS:GetText();
+			_G.ControlData.LP = _G.ControlData.LP or {}
+			_G.ControlData.LP.points = WItxtLOTROPTS:GetText();
 			UpdateLOTROPoints()
 		else
 			local cur = _G.CurrencyLangMap[wcur]
@@ -260,7 +264,9 @@ function RefreshWIListBox()
 				elseif wcur == L["MLotroPoints"] then
 					tw = (_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE -- LOTRO Points
 					LPWCtr:SetVisible( true ); -- LOTRO Points
-					WItxtLOTROPTS:SetText( _G.LOTROPTS ); -- LOTRO Points
+					local lpData = _G.ControlData and _G.ControlData.LP
+					local points = (lpData and lpData.points) or "0"
+					WItxtLOTROPTS:SetText( points ); -- LOTRO Points
 					WItxtLOTROPTS:Focus(); -- LOTRO Points
 					WIbutSave:SetPosition( WIWCtr:GetWidth()/2 - WIbutSave:GetWidth()/2, LPWCtr:GetTop()+LPWCtr:GetHeight()+10); -- LOTRO Points
 				else
