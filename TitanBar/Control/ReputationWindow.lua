@@ -49,13 +49,15 @@ function frmReputationWindow()
 			end
 		}
 	)
+	ui.window = wRP
+	local window = ui.window
     -- Use CreateTitleLabel for the reputation header
-    local RPlbltext = CreateTitleLabel(wRP, L["RPt"], 20, 35, nil, Color["green"], nil, wRP:GetWidth() - 40, 35, Turbine.UI.ContentAlignment.MiddleCenter)
+    local RPlbltext = CreateTitleLabel(window, L["RPt"], 20, 35, nil, Color["green"], nil, window:GetWidth() - 40, 35, Turbine.UI.ContentAlignment.MiddleCenter)
 
-    local RPFilterlbl = CreateFieldLabel(wRP, "Search:", 20, 75, 8, 60)
+    local RPFilterlbl = CreateFieldLabel(window, "Search:", 20, 75, 8, 60)
 
     -- Use factory helper to create a search TextBox + delete icon
-    local rpSearch = CreateSearchControl(wRP, RPFilterlbl:GetLeft() + RPFilterlbl:GetWidth(), RPFilterlbl:GetTop(), wRP:GetWidth() - 120, 20, Turbine.UI.Lotro.Font.Verdana16, resources)
+    local rpSearch = CreateSearchControl(window, RPFilterlbl:GetLeft() + RPFilterlbl:GetWidth(), RPFilterlbl:GetTop(), window:GetWidth() - 120, 20, Turbine.UI.Lotro.Font.Verdana16, resources)
     local RPFiltertxt = rpSearch.TextBox
         ui.RPFilterDelIcon = rpSearch.DelIcon
         ui.RPFiltertxt = RPFiltertxt
@@ -90,7 +92,7 @@ function frmReputationWindow()
 
     -- Add a checkbox to hide all factions that reach max reputation.
     local RPPHMaxCtr = CreateAutoSizedCheckBox(
-        wRP,
+        window,
         L["RPPHMaxShow"],
         20, 95,
         (_G.ControlData and _G.ControlData.RP and _G.ControlData.RP.showMax) == true
@@ -111,11 +113,11 @@ function frmReputationWindow()
     end
 
     local rpLeft, rpTop = 20, 115
-    local rpWidth, rpHeight = wRP:GetWidth() - 40, wRP:GetHeight() - 130
-    local rplb = CreateListBoxWithBorder(wRP, rpLeft, rpTop, rpWidth, rpHeight, nil)
+    local rpWidth, rpHeight = window:GetWidth() - 40, window:GetHeight() - 130
+    local rplb = CreateListBoxWithBorder(window, rpLeft, rpTop, rpWidth, rpHeight, nil)
     local RPListBox = rplb.ListBox
     ui.RPListBox = RPListBox
-    RPListBox:SetParent(wRP)
+    RPListBox:SetParent(window)
     RPListBox:SetZOrder(1)
     ConfigureListBox(RPListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
     local RPListBoxScrollBar = rplb.ScrollBar
@@ -127,7 +129,7 @@ function frmReputationWindow()
     RPListBoxScrollBar:SetPosition(RPListBox:GetWidth() - 10, 0)
     RPListBoxScrollBar:SetSize(12, RPListBox:GetHeight())
 
-    local RPWCtr = CreateControl(Turbine.UI.Control, wRP, RPListBox:GetLeft(), RPListBox:GetTop(), RPListBox:GetWidth(), RPListBox:GetHeight());
+    local RPWCtr = CreateControl(Turbine.UI.Control, window, RPListBox:GetLeft(), RPListBox:GetTop(), RPListBox:GetWidth(), RPListBox:GetHeight());
     ui.RPWCtr = RPWCtr
     RPWCtr:SetZOrder(0);
     RPWCtr:SetVisible(false);

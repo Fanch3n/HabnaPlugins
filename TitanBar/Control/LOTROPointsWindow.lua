@@ -5,6 +5,9 @@
 function frmLOTROPointsWindow()
 	import(AppDirD .. "WindowFactory")
 	import(AppDirD .. "UIHelpers")
+	_G.ControlData.LP = _G.ControlData.LP or {}
+	_G.ControlData.LP.ui = _G.ControlData.LP.ui or {}
+	local ui = _G.ControlData.LP.ui
 	local wLP = CreateControlWindow(
 		"LOTROPoints", "LP",
 		L["MLotroPoints"], 300, 80,
@@ -12,12 +15,15 @@ function frmLOTROPointsWindow()
 			onKeyDown = function(sender, args)
 				if args.Action == Constants.KEY_ENTER then
 					if buttonSave then buttonSave.Click(sender, args) end
-					local window = _G.ControlData.LP.windowInstance
-					if window then window:Close() end
+					if ui.window then ui.window:Close() end
 				end
+			end,
+			onClosing = function(sender, args)
+				_G.ControlData.LP.ui = nil
 			end
 		}
 	)
+	ui.window = wLP
 
 
 	local LPWCtr = Turbine.UI.Control();

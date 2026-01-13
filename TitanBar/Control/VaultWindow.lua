@@ -9,6 +9,11 @@ function frmVault()
 	VICB = HabnaPlugins.TitanBar.Class.ComboBox();
 	import(AppDirD .. "WindowFactory")
 
+	-- Initialize UI state table
+	_G.ControlData.VT = _G.ControlData.VT or {}
+	_G.ControlData.VT.ui = _G.ControlData.VT.ui or {}
+	local ui = _G.ControlData.VT.ui
+
 	-- Create window via helper
 	local wVT = CreateControlWindow(
 		"Vault", "VT",
@@ -18,9 +23,11 @@ function frmVault()
 			onClosing = function(sender, args)
 				if VICB and VICB.dropDownWindow then VICB.dropDownWindow:SetVisible(false) end
 				RemoveCallback( tvaultpack, "CountChanged" )
+				_G.ControlData.VT.ui = nil
 			end
 		}
 	)
+	ui.window = wVT
 
 	-- Set up dropdown after window is created
 	VICB:SetParent(wVT)
@@ -30,42 +37,42 @@ function frmVault()
 	VICB.dropDownWindow:SetPosition(VICB:GetLeft(), VICB:GetTop() + VICB:GetHeight() + 2)
 
 	VICB.ItemChanged = function(sender, args)
-		wVT.SearchTextBox:SetText("");
-		wVT.SearchTextBox.TextChanged(sender, args);
+		ui.SearchTextBox:SetText("");
+		ui.SearchTextBox.TextChanged(sender, args);
 		SelCN = VICB.label:GetText();
 		CountVIItems();
 	end
 
 	CreateVIComboBox();
 
-	wVT.searchLabel = CreateTitleLabel(wVT, L["VTSe"], 15, 60, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
+	ui.searchLabel = CreateTitleLabel(wVT, L["VTSe"], 15, 60, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
 
-	local searchLeft = wVT.searchLabel:GetLeft() + wVT.searchLabel:GetWidth()
+	local searchLeft = ui.searchLabel:GetLeft() + ui.searchLabel:GetWidth()
 	local searchWidth = wVT:GetWidth() - 150
-	local search = CreateSearchControl(wVT, searchLeft, wVT.searchLabel:GetTop(), searchWidth + 24, 18, Turbine.UI.Lotro.Font.Verdana14, resources)
-	wVT.SearchTextBox = search.TextBox
-	wVT.DelIcon = search.DelIcon
+	local search = CreateSearchControl(wVT, searchLeft, ui.searchLabel:GetTop(), searchWidth + 24, 18, Turbine.UI.Lotro.Font.Verdana14, resources)
+	ui.SearchTextBox = search.TextBox
+	ui.DelIcon = search.DelIcon
 
-	wVT.SearchTextBox.TextChanged = function(sender, args)
-		wVT.searchText = string.lower(wVT.SearchTextBox:GetText());
-		if wVT.searchText == "" then wVT.searchText = nil; end
+	ui.SearchTextBox.TextChanged = function(sender, args)
+		ui.searchText = string.lower(ui.SearchTextBox:GetText());
+		if ui.searchText == "" then ui.searchText = nil; end
 		CountVIItems();
 	end
 
 	local lbTop = 85
 	local lb = CreateListBoxWithBorder(wVT, 15, lbTop, wVT:GetWidth() - 30, Constants.LISTBOX_HEIGHT_STANDARD, Color["grey"])
-	wVT.ListBoxBorder = lb.Border
-	wVT.ListBox = lb.ListBox
-	wVT.ListBoxScrollBar = lb.ScrollBar
-	wVT.ListBox:SetMaxItemsPerLine(1);
-	ConfigureListBox(wVT.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
+	ui.ListBoxBorder = lb.Border
+	ui.ListBox = lb.ListBox
+	ui.ListBoxScrollBar = lb.ScrollBar
+	ui.ListBox:SetMaxItemsPerLine(1);
+	ConfigureListBox(ui.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
 
-	wVT.ButtonDelete = Turbine.UI.Lotro.Button();
-	wVT.ButtonDelete:SetParent( wVT );
-	wVT.ButtonDelete:SetText( L["ButDel"] );
-	wVT.ButtonDelete:SetSize( wVT.ButtonDelete:GetTextLength() * 11, 15 ); --Auto size with text lenght
+	ui.ButtonDelete = Turbine.UI.Lotro.Button();
+	ui.ButtonDelete:SetParent( wVT );
+	ui.ButtonDelete:SetText( L["ButDel"] );
+	ui.ButtonDelete:SetSize( ui.ButtonDelete:GetTextLength() * 11, 15 ); --Auto size with text lenght
 
-	wVT.ButtonDelete.Click = function( sender, args )
+	ui.ButtonDelete.Click = function( sender, args )
 		PlayerVault[SelCN] = nil;
 		SavePlayerVault();
 		write( SelCN .. L["VTID"] );
@@ -77,7 +84,8 @@ function frmVault()
 
 	AddCallback(tvaultpack, "CountChanged", 
 		function(sender, args)
-		if _G.ControlData.VT.windowInstance then
+		local ui = _G.ControlData.VT and _G.ControlData.VT.ui
+		if ui then
 			if SelCN == PN or SelCN == L["VTAll"] then CountVIItems(); end
 		end
 	end);
@@ -96,68 +104,71 @@ function CreateVIComboBox()
 end
 
 function CountVIItems()
-	local wVT = _G.ControlData.VT.windowInstance
+	local ui = _G.ControlData.VT and _G.ControlData.VT.ui
+	if not ui then return end
 	local vaultpackCount = 0;
-	wVT.ListBox:ClearItems();
+	ui.ListBox:ClearItems();
 	itemCtl = {};
 
 	if SelCN == L["VTAll"] then
-		wVT.ButtonDelete:SetEnabled( false );
+		ui.ButtonDelete:SetEnabled( false );
         for i in pairs(PlayerVault) do
 			for k, v in pairs(PlayerVault[i]) do vaultpackCount = vaultpackCount + 1; end
             AddVaultPack(i, true, vaultpackCount);
 			vaultpackCount = 0;
         end
     else
-		if SelCN == PN then wVT.ButtonDelete:SetEnabled( false );
-		else wVT.ButtonDelete:SetEnabled( true ); end
+		if SelCN == PN then ui.ButtonDelete:SetEnabled( false );
+		else ui.ButtonDelete:SetEnabled( true ); end
 		for k, v in pairs(PlayerVault[SelCN]) do vaultpackCount = vaultpackCount + 1; end
 		if vaultpackCount == 0 then SetEmptyVault();
 		else AddVaultPack(SelCN, false, vaultpackCount); end
     end
  
-    wVT.ButtonDelete:SetPosition( wVT:GetWidth()/2 - wVT.ButtonDelete:GetWidth()/2, wVT.ListBox:GetTop()+wVT.ListBox:GetHeight()+10 );
+    ui.ButtonDelete:SetPosition( ui.window:GetWidth()/2 - ui.ButtonDelete:GetWidth()/2, ui.ListBox:GetTop()+ui.ListBox:GetHeight()+10 );
 end
 
 function SetEmptyVault()
-	local wVT = _G.ControlData.VT.windowInstance
+	local ui = _G.ControlData.VT and _G.ControlData.VT.ui
+	if not ui then return end
 	local itemCtl = Turbine.UI.Control();
-	itemCtl:SetSize( wVT.ListBox:GetWidth(), 35 );
+	itemCtl:SetSize( ui.ListBox:GetWidth(), 35 );
 
 	local lblmgs = CreateTitleLabel(itemCtl, L["VTnd"], 0, 0, nil, Color["green"], nil, itemCtl:GetWidth(), itemCtl:GetHeight(), Turbine.UI.ContentAlignment.MiddleCenter)
 
-	wVT.ListBox:AddItem( itemCtl );
-	wVT.ButtonDelete:SetVisible( false );
+	ui.ListBox:AddItem( itemCtl );
+	ui.ButtonDelete:SetVisible( false );
 
-	wVT.ListBoxBorder:SetPosition( 15, 85 );
-	wVT.ListBoxBorder:SetHeight( lblmgs:GetHeight() + 4 );
-	wVT.ListBox:SetPosition( wVT.ListBoxBorder:GetLeft() + 2, wVT.ListBoxBorder:GetTop() + 2 );
-	wVT.ListBox:SetHeight( lblmgs:GetHeight() )
-	wVT.ListBoxScrollBar:SetVisible( false );
-	wVT:SetHeight( itemCtl:GetHeight() + 85 );
+	ui.ListBoxBorder:SetPosition( 15, 85 );
+	ui.ListBoxBorder:SetHeight( lblmgs:GetHeight() + 4 );
+	ui.ListBox:SetPosition( ui.ListBoxBorder:GetLeft() + 2, ui.ListBoxBorder:GetTop() + 2 );
+	ui.ListBox:SetHeight( lblmgs:GetHeight() )
+	ui.ListBoxScrollBar:SetVisible( false );
+	ui.window:SetHeight( itemCtl:GetHeight() + 85 );
 end
 
 function AddVaultPack(n, addCharacterName, vaultpackCount)
-	local wVT = _G.ControlData.VT.windowInstance
+	local ui = _G.ControlData.VT and _G.ControlData.VT.ui
+	if not ui then return end
 	for i = 1, vaultpackCount do
 		local itemName = PlayerVault[n][tostring(i)].T;
-		if not wVT.searchText or string.find(string.lower( itemName ), wVT.searchText, 1, true) then
+		if not ui.searchText or string.find(string.lower( itemName ), ui.searchText, 1, true) then
 			-- Use CreateItemRow for vault item
 			local data = PlayerVault[n][tostring(i)]
-			local row = CreateItemRow(wVT.ListBox, wVT.ListBox:GetWidth(), 35, false, data)
+			local row = CreateItemRow(ui.ListBox, ui.ListBox:GetWidth(), 35, false, data)
 			itemCtl[i] = row.Container
 			if row.ItemQuantity and data and data.N then row.ItemQuantity:SetText( tonumber(data.N) ) end
 			row.ItemLabel:SetText( data.T )
 			if addCharacterName then row.ItemLabel:AppendText( " (" .. n .. ")" ) end
-			wVT.ListBox:AddItem( itemCtl[i] )
-			wVT.ButtonDelete:SetVisible( true );
+			ui.ListBox:AddItem( itemCtl[i] )
+			ui.ButtonDelete:SetVisible( true );
 		end
 		end
 	
-	wVT.ListBoxBorder:SetPosition( 15, wVT.searchLabel:GetTop() + wVT.searchLabel:GetHeight() + 5 );
-	wVT.ListBoxBorder:SetHeight( Constants.LISTBOX_HEIGHT_STANDARD );
-	wVT.ListBox:SetPosition( wVT.ListBoxBorder:GetLeft() + 2, wVT.ListBoxBorder:GetTop() + 2 );
-	wVT.ListBox:SetHeight( wVT.ListBoxBorder:GetHeight() - 4 );
-	wVT.ListBoxScrollBar:SetHeight( wVT.ListBox:GetHeight() );
-	wVT:SetHeight( 520 );
+	ui.ListBoxBorder:SetPosition( 15, ui.searchLabel:GetTop() + ui.searchLabel:GetHeight() + 5 );
+	ui.ListBoxBorder:SetHeight( Constants.LISTBOX_HEIGHT_STANDARD );
+	ui.ListBox:SetPosition( ui.ListBoxBorder:GetLeft() + 2, ui.ListBoxBorder:GetTop() + 2 );
+	ui.ListBox:SetHeight( ui.ListBoxBorder:GetHeight() - 4 );
+	ui.ListBoxScrollBar:SetHeight( ui.ListBox:GetHeight() );
+	ui.window:SetHeight( 520 );
 end

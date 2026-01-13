@@ -37,18 +37,20 @@ function frmWalletWindow()
 			end
 		}
 	)
+	ui.window = wWI
+	local window = ui.window
 	ui.WIDD = WIDD
 
 	
 	local WIlbltextHeight = 35;
 	-- Use CreateTitleLabel for the centered wallet title
-	local WIlbltext = CreateTitleLabel(wWI, L["WIt"], 20, 35, nil, Color["green"], nil, wWI:GetWidth()-40, WIlbltextHeight, Turbine.UI.ContentAlignment.MiddleCenter)
+	local WIlbltext = CreateTitleLabel(window, L["WIt"], 20, 35, nil, Color["green"], nil, window:GetWidth()-40, WIlbltextHeight, Turbine.UI.ContentAlignment.MiddleCenter)
 
 	local WIFilterlblHeight = 20;
-	local WIFilterlbl = CreateFieldLabel(wWI, "Search:", 20, 75, 8, 60)
+	local WIFilterlbl = CreateFieldLabel(window, "Search:", 20, 75, 8, 60)
 
 	-- Use factory helper to create the search TextBox + delete icon
-	local wSearch = CreateSearchControl(wWI, WIFilterlbl:GetLeft() + WIFilterlbl:GetWidth(), WIFilterlbl:GetTop(), wWI:GetWidth() - 120, 20, Turbine.UI.Lotro.Font.Verdana16, resources)
+	local wSearch = CreateSearchControl(window, WIFilterlbl:GetLeft() + WIFilterlbl:GetWidth(), WIFilterlbl:GetTop(), window:GetWidth() - 120, 20, Turbine.UI.Lotro.Font.Verdana16, resources)
 	local WIFiltertxt = wSearch.TextBox
 	ui.WIFilterDelIcon = wSearch.DelIcon
 	ui.WIFiltertxt = WIFiltertxt
@@ -76,15 +78,15 @@ function frmWalletWindow()
 	end
 	ui.WIFilter = WIFilter
 
-	local WIListBoxHeight = wWI:GetHeight()-95 - WIlbltextHeight - WIFilterlblHeight;
+	local WIListBoxHeight = window:GetHeight()-95 - WIlbltextHeight - WIFilterlblHeight;
 	local wileft, witop = 20, 115
-	local wilb = CreateListBoxWithBorder(wWI, wileft, witop, wWI:GetWidth()-40, WIListBoxHeight, nil)
+	local wilb = CreateListBoxWithBorder(window, wileft, witop, window:GetWidth()-40, WIListBoxHeight, nil)
 	local WIListBox = wilb.ListBox
 	ui.WIListBox = WIListBox
-	WIListBox:SetParent( wWI );
+	WIListBox:SetParent( window );
 	WIListBox:SetZOrder( 1 );
 	WIListBox:SetPosition( 20, 115 );
-	WIListBox:SetSize( wWI:GetWidth()-40, WIListBoxHeight );
+	WIListBox:SetSize( window:GetWidth()-40, WIListBoxHeight );
 	ConfigureListBox(WIListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
 	local WIListBoxScrollBar = wilb.ScrollBar
 	ui.WIListBoxScrollBar = WIListBoxScrollBar
@@ -95,7 +97,7 @@ function frmWalletWindow()
 	WIListBoxScrollBar:SetPosition( WIListBox:GetWidth() - 10, 0 );
 	WIListBoxScrollBar:SetSize( 12, WIListBox:GetHeight() );
 
-	local WIWCtr = CreateControl(Turbine.UI.Control, wWI, WIListBox:GetLeft(), WIListBox:GetTop(), WIListBox:GetWidth(), WIListBox:GetHeight());
+	local WIWCtr = CreateControl(Turbine.UI.Control, window, WIListBox:GetLeft(), WIListBox:GetTop(), WIListBox:GetWidth(), WIListBox:GetHeight());
 	ui.WIWCtr = WIWCtr
 	WIWCtr:SetZOrder( 0 );
 	WIWCtr:SetVisible( false );
@@ -247,8 +249,7 @@ end
 function RefreshWIListBox()
 	local wiData = _G.ControlData and _G.ControlData.WI
 	local ui = wiData and wiData.ui
-	local wWI = wiData and wiData.windowInstance
-	if not wWI or not ui then return end
+	if not ui or not ui.window then return end
 	local WIListBox = ui.WIListBox
 	if not WIListBox then return end
 	local WIWCtr = ui.WIWCtr

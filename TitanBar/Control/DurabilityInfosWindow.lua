@@ -16,6 +16,12 @@ function frmDurabilityInfosWindow()
 		L["DWTitle"], (TBLocale == "fr") and 400 or 300, 90
 	)
 
+	-- Initialize UI table
+	_G.ControlData.DI.ui = {
+		window = wDI
+	}
+	local ui = _G.ControlData.DI.ui
+
 	local TTIcon = CreateAutoSizedCheckBox(wDI, L["DIIcon"], 30, 40, diData.icon);
 
 	TTIcon.CheckedChanged = function( sender, args )
@@ -30,5 +36,10 @@ function frmDurabilityInfosWindow()
 		diData.text = TTItemName:IsChecked();
 		settings.DurabilityInfos.N = diData.text;
 		SaveSettings( false );
+	end
+
+	-- Handle window close
+	wDI.Closed = function(sender, args)
+		_G.ControlData.DI.ui = nil;
 	end
 end

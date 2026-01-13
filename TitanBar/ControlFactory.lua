@@ -183,7 +183,7 @@ function SetupControlInteraction(config)
 
 	local function toggleWindowDefault()
 		-- Check if window exists in ControlData
-		local window = _G.ControlData[controlId].windowInstance
+		local window = _G.ControlData[controlId].ui and _G.ControlData[controlId].ui.window
 		if window then
 			-- Window is open, close it
 			local ok, err = pcall(function()

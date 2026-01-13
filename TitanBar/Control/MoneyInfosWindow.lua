@@ -19,16 +19,18 @@ function frmMoneyInfosWindow()
 	)
 	moneyData.ui = moneyData.ui or {}
 	local ui = moneyData.ui
+	ui.window = wMI
+	local window = ui.window
 
 	local miListBox = Turbine.UI.ListBox();
 	ui.MIListBox = miListBox
-	miListBox:SetParent( wMI );
+	miListBox:SetParent( window );
 	miListBox:SetPosition( 20, 35 );
-	miListBox:SetWidth( wMI:GetWidth() - 40 );
+	miListBox:SetWidth( window:GetWidth() - 40 );
 	ConfigureListBox(miListBox)
 	--MIListBox:SetBackColor( Color["darkgrey"] ); --debug purpose
 
-	local allCharCB = CreateAutoSizedCheckBox(wMI, L["MIWAll"], 0, 0, moneyData.stm)
+	local allCharCB = CreateAutoSizedCheckBox(window, L["MIWAll"], 0, 0, moneyData.stm)
 	ui.AllCharCB = allCharCB
 
 	allCharCB.CheckedChanged = function( sender, args )
@@ -38,7 +40,7 @@ function frmMoneyInfosWindow()
 		UpdateMoney();
 	end
 
-	local thisCharCB = CreateAutoSizedCheckBox(wMI, L["MIWCM"], 0, 0, moneyData.scm)
+	local thisCharCB = CreateAutoSizedCheckBox(window, L["MIWCM"], 0, 0, moneyData.scm)
 	ui.ThisCharCB = thisCharCB
 
 	thisCharCB.CheckedChanged = function( sender, args )
@@ -48,7 +50,7 @@ function frmMoneyInfosWindow()
 		RefreshMIListBox();
 	end
 
-	local toAllCharCB = CreateAutoSizedCheckBox(wMI, L["MIWCMAll"], 0, 0, moneyData.scma)
+	local toAllCharCB = CreateAutoSizedCheckBox(window, L["MIWCMAll"], 0, 0, moneyData.scma)
 	ui.ToAllCharCB = toAllCharCB
 
 	toAllCharCB.CheckedChanged = function( sender, args )
@@ -56,7 +58,7 @@ function frmMoneyInfosWindow()
 		SavePlayerMoney( false );
 	end
 
-	local sssCB = CreateAutoSizedCheckBox(wMI, L["MIWSSS"], 0, 0, moneyData.sss)
+	local sssCB = CreateAutoSizedCheckBox(window, L["MIWSSS"], 0, 0, moneyData.sss)
 	ui.SSSCB = sssCB
 
 	sssCB.CheckedChanged = function(sender, args)
@@ -65,7 +67,7 @@ function frmMoneyInfosWindow()
 		SaveSettings(false);
 	end
 
-	local stsCB = CreateAutoSizedCheckBox(wMI, L["MIWSTS"], 0, 0, moneyData.sts)
+	local stsCB = CreateAutoSizedCheckBox(window, L["MIWSTS"], 0, 0, moneyData.sts)
 	ui.STSCB = stsCB
 
 	stsCB.CheckedChanged = function( sender, args )
@@ -76,14 +78,13 @@ function frmMoneyInfosWindow()
 
 	RefreshMIListBox();
 
-	wMI:SetPosition( _G.ControlData.Money.window.left, _G.ControlData.Money.window.top );
+	window:SetPosition( _G.ControlData.Money.window.left, _G.ControlData.Money.window.top );
 end
 
 function RefreshMIListBox()
 	local moneyData = _G.ControlData and _G.ControlData.Money
-	local wMI = moneyData and moneyData.windowInstance
-	if not wMI then return end
 	local ui = moneyData and moneyData.ui
+	if not ui or not ui.window then return end
 	local miListBox = ui and ui.MIListBox
 	if not miListBox then return end
 	local allCharCB = ui and ui.AllCharCB
@@ -166,5 +167,5 @@ function RefreshMIListBox()
 	MIPosY = MIPosY + 20;
 	stsCB:SetPosition( miListBox:GetLeft(), MIPosY );
 	
-	wMI:SetHeight( MIPosY + 45 );
+	ui.window:SetHeight( MIPosY + 45 );
 end

@@ -13,10 +13,20 @@ function frmGameTimeWindow()
 		L["GTWTitle"], 200, 120
 	)
 
+	-- Initialize UI table
+	_G.ControlData.GT.ui = {
+		window = wGT
+	}
+	local ui = _G.ControlData.GT.ui
+
 	local GMT = Turbine.UI.Lotro.TextBox();
+	ui.GMT = GMT;
 	local ShowSTcb
 	local ShowBTcb;  -- Forward declaration
 	local Clock24Ctr = CreateAutoSizedCheckBox(wGT, L["GTW24h"], 35, 40, gtData.clock24h == true, 8);
+	ui.Clock24Ctr = Clock24Ctr;
+	ui.ShowSTcb_ref = nil;  -- will be set after creation
+	ui.ShowBTcb_ref = nil;  -- will be set after creation
 
 	Clock24Ctr.CheckedChanged = function( sender, args )
 		gtData.clock24h = Clock24Ctr:IsChecked() == true
@@ -28,6 +38,7 @@ function frmGameTimeWindow()
 	end
 
 	ShowSTcb = CreateAutoSizedCheckBox(wGT, L["GTWSST"], 35, Clock24Ctr:GetTop() + 20, gtData.showST == true, 8, 20)
+	ui.ShowSTcb_ref = ShowSTcb;
 
 	ShowSTcb.CheckedChanged = function( sender, args )
 		gtData.showST = ShowSTcb:IsChecked() == true
@@ -80,6 +91,7 @@ function frmGameTimeWindow()
 	end
 
 	ShowBTcb = CreateAutoSizedCheckBox(wGT, L["GTWSBT"], 35, ShowSTcb:GetTop() + 20, gtData.showBT == true);
+	ui.ShowBTcb_ref = ShowBTcb;
 
 	ShowBTcb.CheckedChanged = function( sender, args )
 		gtData.showBT = ShowBTcb:IsChecked() == true
@@ -97,5 +109,10 @@ function frmGameTimeWindow()
 	if TBLocale == "fr" then
 		GMT:SetPosition( ShowSTcb:GetWidth() - 70, 0 );
 		wGT:SetWidth( ShowSTcb:GetWidth() + 85 );
+	end
+
+	-- Handle window close
+	wGT.Closed = function(sender, args)
+		_G.ControlData.GT.ui = nil;
 	end
 end

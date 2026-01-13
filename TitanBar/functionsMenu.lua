@@ -18,7 +18,7 @@ function ShowHideWallet()
 		WI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		--write( "TitanBar: Hiding wallet control");
-		local window = _G.ControlData.WI.windowInstance; if window then window:Close(); end
+		local window = _G.ControlData.WI.ui and _G.ControlData.WI.ui.window; if window then window:Close(); end
 	end
 	WI[ "Ctr" ]:SetVisible( controlData.show );
 	opt_WI:SetChecked( controlData.show );
@@ -40,7 +40,7 @@ function ShowHideMoney()
 		MI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		--write( "TitanBar: Hiding money");
-		local window = _G.ControlData.Money.windowInstance; if window then window:Close(); end
+		local window = _G.ControlData.Money.ui and _G.ControlData.Money.ui.window; if window then window:Close(); end
 	end
 	MI[ "Ctr" ]:SetVisible( controlData.show );
 end
@@ -58,7 +58,7 @@ function ShowHideLOTROPoints()
 		local colors = _G.ControlData.LP.colors
 		LP[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
-		local window = _G.ControlData.LP.windowInstance; if window then window:Close(); end
+		local window = _G.ControlData.LP.ui and _G.ControlData.LP.ui.window; if window then window:Close(); end
 	end
 	LP[ "Ctr" ]:SetVisible( controlData.show );
 end
@@ -77,7 +77,7 @@ function ShowHideBackpackInfos()
 	else
 		RemoveCallback(backpack, "ItemAdded");
 		RemoveCallback(backpack, "ItemRemoved");
-		local window = _G.ControlData.BI.windowInstance; if window then window:Close(); end
+		local window = _G.ControlData.BI.ui and _G.ControlData.BI.ui.window; if window then window:Close(); end
 	end
 	BI[ "Ctr" ]:SetVisible( controlData.show );
 	opt_BI:SetChecked( controlData.show );
@@ -120,7 +120,7 @@ function ShowHideEquipInfos()
 	else
 		RemoveCallback(PlayerEquipment, "ItemEquipped");
 		RemoveCallback(PlayerEquipment, "ItemUnequipped");
-		local window = _G.ControlData.EI.windowInstance; if window then window:Close(); end
+		local window = _G.ControlData.EI.ui and _G.ControlData.EI.ui.window; if window then window:Close(); end
 	end
 	EI[ "Ctr" ]:SetVisible( controlData.show );
 	opt_EI:SetChecked( controlData.show );
@@ -143,7 +143,7 @@ function ShowHideDurabilityInfos()
 	else
 		RemoveCallback(PlayerEquipment, "ItemEquipped");
 		RemoveCallback(PlayerEquipment, "ItemUnequipped");
-		local window = _G.ControlData.DI.windowInstance; if window then window:Close(); end
+		local window = _G.ControlData.DI.ui and _G.ControlData.DI.ui.window; if window then window:Close(); end
 	end
 	DI[ "Ctr" ]:SetVisible( controlData.show );
 	opt_DI:SetChecked( controlData.show );
@@ -161,7 +161,7 @@ function ShowHideTrackItems()
 		local colors = _G.ControlData.TI.colors
 		TI[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
-		local window = _G.ControlData.TI.windowInstance; if window then window:Close(); end
+		local window = _G.ControlData.TI.ui and _G.ControlData.TI.ui.window; if window then window:Close(); end
 	end
 	TI[ "Ctr" ]:SetVisible( controlData.show );
 	opt_TI:SetChecked( controlData.show );
@@ -180,7 +180,7 @@ function ShowHideInfamy()
 		IF[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(Turbine.Chat, "Received", IFcb);
-		local window = _G.ControlData.IF.windowInstance; if window then window:Close(); end
+		local window = _G.ControlData.IF.ui and _G.ControlData.IF.ui.window; if window then window:Close(); end
 	end
 	IF[ "Ctr" ]:SetVisible( controlData.show );
 	opt_IF:SetChecked( controlData.show );
@@ -199,7 +199,7 @@ function ShowHideVault()
 		VT[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(vaultpack, "CountChanged");
-		local window = _G.ControlData.VT.windowInstance; if window then window:Close(); end
+		local window = _G.ControlData.VT.ui and _G.ControlData.VT.ui.window; if window then window:Close(); end
 	end
 	VT[ "Ctr" ]:SetVisible( controlData.show );
 	opt_VT:SetChecked( controlData.show );
@@ -218,7 +218,7 @@ function ShowHideSharedStorage()
 		SS[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(sspack, "CountChanged");
-		local window = _G.ControlData.SS.windowInstance; if window then window:Close(); end
+		local window = _G.ControlData.SS.ui and _G.ControlData.SS.ui.window; if window then window:Close(); end
 	end
 	SS[ "Ctr" ]:SetVisible( controlData.show );
 	opt_SS:SetChecked( controlData.show );
@@ -236,7 +236,7 @@ function ShowHideDayNight()
 		local colors = _G.ControlData.DN.colors
 		DN[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
-		local window = _G.ControlData.DN.windowInstance; if window then window:Close(); end
+		local window = _G.ControlData.DN.ui and _G.ControlData.DN.ui.window; if window then window:Close(); end
 	end
 	DN[ "Ctr" ]:SetVisible( controlData.show );
 	opt_DN:SetChecked( controlData.show );
@@ -255,7 +255,7 @@ function ShowHideReputation()
 		RP[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(Turbine.Chat, "Received", ReputationCallback);
-		local window = _G.ControlData.RP.windowInstance; if window then window:Close(); end
+		local window = _G.ControlData.RP.ui and _G.ControlData.RP.ui.window; if window then window:Close(); end
 	end
 	RP[ "Ctr" ]:SetVisible( controlData.show );
 	opt_RP:SetChecked( controlData.show );
@@ -292,7 +292,7 @@ function ShowHideGameTime()
 		local colors = _G.ControlData.GT.colors
 		GT[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
-		local window = _G.ControlData.GT.windowInstance; if window then window:Close(); end
+		local window = _G.ControlData.GT.ui and _G.ControlData.GT.ui.window; if window then window:Close(); end
 	end
 	GT[ "Ctr" ]:SetVisible( controlData.show );
 	opt_GT:SetChecked( controlData.show );

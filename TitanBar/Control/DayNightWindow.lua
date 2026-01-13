@@ -5,6 +5,8 @@ function frmDayNightWindow()
 	import(AppDirD .. "WindowFactory")
 	import(AppDirD .. "UIHelpers")
 	_G.ControlData.DN = _G.ControlData.DN or {}
+	_G.ControlData.DN.ui = _G.ControlData.DN.ui or {}
+	local ui = _G.ControlData.DN.ui
 	local prevTS = _G.ControlData.DN.ts
 	local bHelp = false
 	
@@ -21,9 +23,11 @@ function frmDayNightWindow()
 				settings.DayNight.S = string.format("%.0f", tonumber(_G.ControlData.DN.ts) or 0)
 				SaveSettings(false)
 				UpdateDayNight()
+				_G.ControlData.DN.ui = nil
 			end
 		}
 	)
+	ui.window = wDN
 
 	local NextTimeCB = CreateAutoSizedCheckBox(wDN, L["NextT"], 35, 40, (_G.ControlData.DN.next ~= false), 8.5, 20)
 
@@ -75,25 +79,26 @@ function frmDayNightWindow()
 		ShowHelpSection(bHelp);
 	end
 
-	HelpTB = Turbine.UI.Label();
-	HelpTB:SetParent( wDN );
+	ui.HelpTB = Turbine.UI.Label();
+	ui.HelpTB:SetParent( wDN );
 	
-	HelpTB:SetPosition( TAjustlbl:GetLeft(), TAjustlbl:GetTop()+TAjustlbl:GetHeight()+10 );
-	HelpTB:SetForeColor( Color["rustedgold"] );
-	HelpTB:SetVisible( bHelp );
-	HelpTB:SetSize( wDN:GetWidth()-60, 250 );
-	HelpTB:SetText( "Try using does value if time is not sync:\n\n* Arkenstone: ... 1295018461\n* Brandywine: ... 1295011363\n* Crickhollow: .. 1295013525\n* Gladden: ...... 1295020785\n* Landroval: .... 1295028066" );
+	ui.HelpTB:SetPosition( TAjustlbl:GetLeft(), TAjustlbl:GetTop()+TAjustlbl:GetHeight()+10 );
+	ui.HelpTB:SetForeColor( Color["rustedgold"] );
+	ui.HelpTB:SetVisible( bHelp );
+	ui.HelpTB:SetSize( wDN:GetWidth()-60, 250 );
+	ui.HelpTB:SetText( "Try using does value if time is not sync:\n\n* Arkenstone: ... 1295018461\n* Brandywine: ... 1295011363\n* Crickhollow: .. 1295013525\n* Gladden: ...... 1295020785\n* Landroval: .... 1295028066" );
 
 	ShowHelpSection(bHelp);
 end
 
 function ShowHelpSection(bHelp)
-	local wDN = _G.ControlData.DN.windowInstance
+	local ui = _G.ControlData.DN and _G.ControlData.DN.ui
+	if not ui then return end
 	if bHelp then
-			wDN:SetHeight( wDN:GetHeight() + 125 );
+			ui.window:SetHeight( ui.window:GetHeight() + 125 );
 	else
-		wDN:SetHeight( 105 );
+		ui.window:SetHeight( 105 );
 	end
-	HelpTB:SetVisible( bHelp );
+	ui.HelpTB:SetVisible( bHelp );
 end
 

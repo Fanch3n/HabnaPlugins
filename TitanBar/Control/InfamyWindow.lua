@@ -19,6 +19,12 @@ function frmInfamyWindow()
 		}
 	)
 
+	-- Initialize UI table
+	_G.ControlData.IF.ui = {
+		window = wIF
+	}
+	local ui = _G.ControlData.IF.ui
+
 	local IFWCtr = Turbine.UI.Control();
 	IFWCtr:SetParent( wIF );
 	IFWCtr:SetPosition( 15, 50 )
@@ -91,4 +97,9 @@ function frmInfamyWindow()
 	wIF:SetSize( IFWCtr:GetWidth()+30, 80 );
 
 	txtInfamy:Focus();
+
+	-- Handle window close
+	wIF.Closed = function(sender, args)
+		_G.ControlData.IF.ui = nil;
+	end
 end

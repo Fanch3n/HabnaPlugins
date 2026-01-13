@@ -145,7 +145,7 @@ MI["CLbl"].MouseClick = function( sender, args )
 	TB["win"].MouseMove();
 	if ( args.Button == Turbine.UI.MouseButton.Left ) then
 		if not _G.WasDrag then
-			local window = _G.ControlData.Money.windowInstance
+			local window = _G.ControlData.Money.ui and _G.ControlData.Money.ui.window
 			if window then
 				window:Close();
 			else
