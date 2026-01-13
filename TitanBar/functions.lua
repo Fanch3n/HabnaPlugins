@@ -691,6 +691,7 @@ function AjustIcon(str)
 
 			-- Icon-only controls keep the icon at x=0.
 			local iconOnly = (label == nil)
+				or (str == "EI")
 				or (str == "WI")
 				or (str == "TI")
 				or (str == "VT")

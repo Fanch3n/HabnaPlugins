@@ -9,7 +9,6 @@ _G.ControlData.EI.controls = EI
 local colors = _G.ControlData.EI.colors
 CreateTitanBarControl(EI, colors.alpha, colors.red, colors.green, colors.blue)
 _G.ControlData.EI.ui.control = EI["Ctr"]
-EI["Ctr"]:SetSize(Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 
 EI["Icon"] = CreateControlIcon(EI["Ctr"], Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 EI["Icon"]:SetBackground(0x410f2ea5)
@@ -25,5 +24,3 @@ SetupControlInteraction({
 })
 
 DelegateMouseEvents(EI["Icon"], EI["Lbl"])
---**^
---]]
