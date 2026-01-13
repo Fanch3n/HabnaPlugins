@@ -4,7 +4,9 @@
 import(AppDirD .. "UIHelpers")
 import(AppDirD .. "ControlFactory")
 
-_G.GT = {}; -- Game Time table in _G
+-- Use _G.ControlData.GT.controls for all UI controls
+local GT = {}
+_G.ControlData.GT.controls = GT
 
 local colors = _G.ControlData.GT.colors
 CreateTitanBarControl(GT, colors.alpha, colors.red, colors.green, colors.blue)

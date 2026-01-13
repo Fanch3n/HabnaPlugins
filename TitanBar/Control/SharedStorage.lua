@@ -5,7 +5,9 @@ import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "SharedStorageToolTip")
 import(AppDirD .. "ControlFactory")
 
-_G.SS = {}; -- Shared Storage table in _G
+-- Use _G.ControlData.SS.controls for all UI controls
+local SS = {}
+_G.ControlData.SS.controls = SS
 
 local colors = _G.ControlData.SS.colors
 CreateTitanBarControl(SS, colors.alpha, colors.red, colors.green, colors.blue)

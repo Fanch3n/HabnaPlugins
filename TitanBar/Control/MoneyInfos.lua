@@ -4,7 +4,9 @@
 import(AppDirD .. "UIHelpers")
 import(AppDirD .. "ControlFactory")
 
-_G.MI = {}; -- Money Infos table in _G
+-- Use _G.ControlData.Money.controls for all UI controls
+local MI = {}
+_G.ControlData.Money.controls = MI
 
 --**v Control of Gold/Silver/Copper currencies v**
 local colors = _G.ControlData.Money.colors

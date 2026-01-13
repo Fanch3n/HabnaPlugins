@@ -90,7 +90,7 @@ function SetupControlInteraction(config)
 	local controlId = config.controlId
 	if not controlId and controlTable then
 		for id, data in pairs(_G.ControlData) do
-			if data.ui.control == controlTable["Ctr"] then
+			if data.ui and data.ui.control == controlTable["Ctr"] then
 				controlId = id
 				break
 			end

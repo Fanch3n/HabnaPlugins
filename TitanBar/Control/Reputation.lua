@@ -6,7 +6,9 @@ import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "ReputationToolTip")
 import(AppDirD .. "ControlFactory")
 
-_G.RP = {}; -- Reputation table in _G
+-- Use _G.ControlData.RP.controls for all UI controls
+local RP = {}
+_G.ControlData.RP.controls = RP
 
 --**v Reputation Control v**
 local colors = _G.ControlData.RP.colors

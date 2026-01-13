@@ -5,7 +5,9 @@ import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "VaultToolTip")
 import(AppDirD .. "ControlFactory")
 
-_G.VT = {}; -- Vault table in _G
+-- Use _G.ControlData.VT.controls for all UI controls
+local VT = {}
+_G.ControlData.VT.controls = VT
 
 --**v Vault Control v**
 local colors = _G.ControlData.VT.colors

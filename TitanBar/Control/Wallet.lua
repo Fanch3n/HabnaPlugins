@@ -5,7 +5,9 @@ import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "WalletToolTip")
 import(AppDirD .. "ControlFactory")
 
-_G.WI = {}; -- Wallet table in _G
+-- Use _G.ControlData.WI.controls for all UI controls
+local WI = {}
+_G.ControlData.WI.controls = WI
 
 --**v Wallet Control v**
 local colors = _G.ControlData.WI.colors

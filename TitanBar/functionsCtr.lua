@@ -8,13 +8,13 @@ function ImportCtr( value )
         import (AppCtrD.."Wallet");
         import (AppCtrD.."WalletToolTip");
         UpdateWallet();
-        WI[ "Ctr" ]:SetPosition( _G.ControlData.WI.location.x, _G.ControlData.WI.location.y );
+        _G.ControlData.WI.controls[ "Ctr" ]:SetPosition( _G.ControlData.WI.location.x, _G.ControlData.WI.location.y );
     elseif value == "MI" then --Money Infos
 		local moneyWhere = (_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE
 		if moneyWhere == Constants.Position.TITANBAR then
             import (AppCtrD.."MoneyInfos");
             import (AppCtrD.."MoneyInfosToolTip");
-            MI[ "Ctr" ]:SetPosition( _G.ControlData.Money.location.x, _G.ControlData.Money.location.y );
+            _G.ControlData.Money.controls[ "Ctr" ]:SetPosition( _G.ControlData.Money.location.x, _G.ControlData.Money.location.y );
         end
 		if moneyWhere ~= Constants.Position.NONE then
             AddCallback(GetPlayerAttributes(), "MoneyChanged",
@@ -43,20 +43,20 @@ function ImportCtr( value )
         --    function(sender, args) UpdateBackpackInfos(); end
         --    ); --Add when workaround is not needed anymore
         UpdateBackpackInfos();
-        BI[ "Ctr" ]:SetPosition( _G.ControlData.BI.location.x, _G.ControlData.BI.location.y );
+        _G.ControlData.BI.controls[ "Ctr" ]:SetPosition( _G.ControlData.BI.location.x, _G.ControlData.BI.location.y );
     elseif value == "PI" then --Player Infos
         import (AppCtrD.."PlayerInfos");
         import (AppCtrD.."PlayerInfosToolTip");
         AddCallback(Player, "LevelChanged",
             function(sender, args)
-                PI["Lvl"]:SetText( tostring(Player:GetLevel()) );
-                PI["Lvl"]:SetSize( PI["Lvl"]:GetTextLength() * NM+1, CTRHeight );
-                PI["Name"]:SetPosition( PI["Lvl"]:GetLeft() + PI["Lvl"]:GetWidth() + 5, 0 );
+                _G.ControlData.PI.controls["Lvl"]:SetText( tostring(Player:GetLevel()) );
+                _G.ControlData.PI.controls["Lvl"]:SetSize( _G.ControlData.PI.controls["Lvl"]:GetTextLength() * NM+1, CTRHeight );
+                _G.ControlData.PI.controls["Name"]:SetPosition( _G.ControlData.PI.controls["Lvl"]:GetLeft() + _G.ControlData.PI.controls["Lvl"]:GetWidth() + 5, 0 );
             end);
         AddCallback(Player, "NameChanged",
             function(sender, args)
-                PI["Name"]:SetText( Player:GetName() );
-                PI["Name"]:SetSize( PI["Name"]:GetTextLength() * TM, CTRHeight );
+                _G.ControlData.PI.controls["Name"]:SetText( Player:GetName() );
+                _G.ControlData.PI.controls["Name"]:SetSize( _G.ControlData.PI.controls["Name"]:GetTextLength() * TM, CTRHeight );
                 AjustIcon("PI");
             end);
         XPcb = AddCallback(Turbine.Chat, "Received",
@@ -83,17 +83,17 @@ function ImportCtr( value )
             end
             end);
         UpdatePlayersInfos();
-        PI[ "Ctr" ]:SetPosition( _G.ControlData.PI.location.x, _G.ControlData.PI.location.y );
+        _G.ControlData.PI.controls[ "Ctr" ]:SetPosition( _G.ControlData.PI.location.x, _G.ControlData.PI.location.y );
     elseif value == "DI" then --Durability Infos
         import (AppCtrD.."DurabilityInfos");
         import (AppCtrD.."DurabilityInfosToolTip");
         UpdateDurabilityInfos();
-        DI[ "Ctr" ]:SetPosition( _G.ControlData.DI.location.x, _G.ControlData.DI.location.y );
+        _G.ControlData.DI.controls[ "Ctr" ]:SetPosition( _G.ControlData.DI.location.x, _G.ControlData.DI.location.y );
     elseif value == "EI" then --Equipment Infos
         import (AppCtrD.."EquipInfos");
         import (AppCtrD.."EquipInfosToolTip");
         UpdateEquipsInfos();
-        EI[ "Ctr" ]:SetPosition( _G.ControlData.EI.location.x, _G.ControlData.EI.location.y );
+        _G.ControlData.EI.controls[ "Ctr" ]:SetPosition( _G.ControlData.EI.location.x, _G.ControlData.EI.location.y );
     elseif value == "PL" then --Player Location
         import (AppCtrD.."PlayerLoc");
         --AddCallback(Player, "LocationChanged", UpdatePlayerLoc(); end);
@@ -129,7 +129,7 @@ function ImportCtr( value )
         import (AppCtrD.."TrackItems");
         import (AppCtrD.."TrackItemsToolTip");
         UpdateTrackItems();
-        TI[ "Ctr" ]:SetPosition( _G.ControlData.TI.location.x, _G.ControlData.TI.location.y );
+        _G.ControlData.TI.controls[ "Ctr" ]:SetPosition( _G.ControlData.TI.location.x, _G.ControlData.TI.location.y );
     elseif value == "IF" then --Infamy
         -- Use Infamy/Renown ranks from Constants
         _G.InfamyRanks = Constants.INFAMY_RANKS;
@@ -195,7 +195,7 @@ function ImportCtr( value )
             end
             end);
         UpdateInfamy();
-        IF[ "Ctr" ]:SetPosition( _G.ControlData.IF.location.x, _G.ControlData.IF.location.y );
+        _G.ControlData.IF.controls[ "Ctr" ]:SetPosition( _G.ControlData.IF.location.x, _G.ControlData.IF.location.y );
     elseif value == "DN" then --Day & Night Time
         import (AppCtrD.."DayNight");
         UpdateDayNight();
@@ -249,10 +249,10 @@ function ImportCtr( value )
         if _G.ControlData.GT.showBT then UpdateGameTime("bt");
         elseif _G.ControlData.GT.showST then UpdateGameTime("st");
         else UpdateGameTime("gt") end
-        if _G.ControlData.GT.location.x + GT[ "Ctr" ]:GetWidth() > screenWidth then
-            _G.ControlData.GT.location.x = screenWidth - GT[ "Ctr" ]:GetWidth();
+        if _G.ControlData.GT.location.x + _G.ControlData.GT.controls[ "Ctr" ]:GetWidth() > screenWidth then
+            _G.ControlData.GT.location.x = screenWidth - _G.ControlData.GT.controls[ "Ctr" ]:GetWidth();
         end --Replace if out of screen
-        GT[ "Ctr" ]:SetPosition( _G.ControlData.GT.location.x, _G.ControlData.GT.location.y );
+        _G.ControlData.GT.controls[ "Ctr" ]:SetPosition( _G.ControlData.GT.location.x, _G.ControlData.GT.location.y );
     elseif value == "VT" then --Vault
         import (AppCtrD.."Vault");
         import (AppCtrD.."VaultToolTip");
@@ -260,7 +260,7 @@ function ImportCtr( value )
             function(sender, args) SavePlayerVault(); end
             );
         UpdateVault();
-        VT[ "Ctr" ]:SetPosition( _G.ControlData.VT.location.x, _G.ControlData.VT.location.y );
+        _G.ControlData.VT.controls[ "Ctr" ]:SetPosition( _G.ControlData.VT.location.x, _G.ControlData.VT.location.y );
     elseif value == "SS" then --Shared Storage
         import (AppCtrD.."SharedStorage");
         import (AppCtrD.."SharedStorageToolTip");
@@ -268,7 +268,7 @@ function ImportCtr( value )
             function(sender, args) SavePlayerSharedStorage(); end
             );
         UpdateSharedStorage();
-        SS[ "Ctr" ]:SetPosition( _G.ControlData.SS.location.x, _G.ControlData.SS.location.y );
+        _G.ControlData.SS.controls[ "Ctr" ]:SetPosition( _G.ControlData.SS.location.x, _G.ControlData.SS.location.y );
 	elseif value == "RP" then --Reputation Points
         import (AppCtrD.."Reputation");
         import (AppCtrD.."ReputationToolTip");
@@ -346,7 +346,7 @@ function ImportCtr( value )
             end
         );
         UpdateReputation();
-        RP[ "Ctr" ]:SetPosition( _G.ControlData.RP.location.x, _G.ControlData.RP.location.y );
+        _G.ControlData.RP.controls[ "Ctr" ]:SetPosition( _G.ControlData.RP.location.x, _G.ControlData.RP.location.y );
     else
         if _G.CurrencyData[value].Where == 1 then
             createCurrencyTable(value)

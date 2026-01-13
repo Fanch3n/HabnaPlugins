@@ -2,7 +2,9 @@ import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "InfamyToolTip")
 import(AppDirD .. "ControlFactory")
 
-_G.IF = {}; -- Infamy table in _G
+-- Use _G.ControlData.IF.controls for all UI controls
+local IF = {}
+_G.ControlData.IF.controls = IF
 
 local colors = _G.ControlData.IF.colors
 CreateTitanBarControl(IF, colors.alpha, colors.red, colors.green, colors.blue)

@@ -4,7 +4,9 @@
 import(AppDirD .. "UIHelpers")
 import(AppDirD .. "ControlFactory")
 
-_G.BI = {}; -- Backpack Infos table in _G
+-- Use _G.ControlData.BI.controls for all UI controls
+local BI = {}
+_G.ControlData.BI.controls = BI
 
 --**v Control for backpack infos v**
 local colors = _G.ControlData.BI.colors

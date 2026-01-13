@@ -15,7 +15,15 @@ function frmMoneyInfosWindow()
 	-- Create window via helper
 	local wMI = CreateControlWindow(
 		"Money", "Money",
-		L["MIWTitle"], 325, 640
+		L["MIWTitle"], 325, 640,
+		{
+			onClosing = function(sender, args)
+				-- Clear the ui.window reference when window closes
+				if moneyData.ui then
+					moneyData.ui.window = nil
+				end
+			end
+		}
 	)
 	moneyData.ui = moneyData.ui or {}
 	local ui = moneyData.ui
@@ -77,8 +85,6 @@ function frmMoneyInfosWindow()
 	end
 
 	RefreshMIListBox();
-
-	window:SetPosition( _G.ControlData.Money.window.left, _G.ControlData.Money.window.top );
 end
 
 function RefreshMIListBox()

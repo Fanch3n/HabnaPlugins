@@ -5,7 +5,9 @@ import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "DurabilityInfosToolTip")
 import(AppDirD .. "ControlFactory")
 
-_G.DI = {}; -- Durability Infos table in _G
+-- Use _G.ControlData.DI.controls for all UI controls
+local DI = {}
+_G.ControlData.DI.controls = DI
 
 local colors = _G.ControlData.DI.colors
 CreateTitanBarControl(DI, colors.alpha, colors.red, colors.green, colors.blue)

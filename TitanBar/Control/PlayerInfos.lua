@@ -2,7 +2,9 @@ import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "PlayerInfosToolTip")
 import(AppDirD .. "ControlFactory")
 
-_G.PI = {}; -- Player Infos table in _G
+-- Use _G.ControlData.PI.controls for all UI controls
+local PI = {}
+_G.ControlData.PI.controls = PI
 
 local colors = _G.ControlData.PI.colors
 CreateTitanBarControl(PI, colors.alpha, colors.red, colors.green, colors.blue)

@@ -156,51 +156,37 @@ function UpdateMoney()
 		local moneyData = (_G.ControlData and _G.ControlData.Money) or {}
 		local showTotal = moneyData.stm == true
 		local money = GetPlayerAttributes():GetMoney();
-		local gold, silver, copper = DecryptMoney(money);
+	local gold, silver, copper = DecryptMoney(money);
 	
-		MI[ "GLbl" ]:SetText( string.format( "%.0f", gold ) );
-		MI[ "SLbl" ]:SetText( string.format( "%.0f", silver ) );
-		MI[ "CLbl" ]:SetText( string.format( "%.0f", copper ) );
+	_G.ControlData.Money.controls[ "GLbl" ]:SetText( string.format( "%.0f", gold ) );
+	_G.ControlData.Money.controls[ "SLbl" ]:SetText( string.format( "%.0f", silver ) );
+	_G.ControlData.Money.controls[ "CLbl" ]:SetText( string.format( "%.0f", copper ) );	SavePlayerMoney( false );
 
-		SavePlayerMoney( false );
+	_G.ControlData.Money.controls[ "GLbl" ]:SetSize( _G.ControlData.Money.controls[ "GLbl" ]:GetTextLength() * NM, CTRHeight ); 
+        --Auto size with text length
+	_G.ControlData.Money.controls[ "SLbl" ]:SetSize( 4 * NM, CTRHeight ); --Auto size with text length
+	_G.ControlData.Money.controls[ "CLbl" ]:SetSize( 3 * NM, CTRHeight ); --Auto size with text length	_G.ControlData.Money.controls[ "GLblT" ]:SetVisible( showTotal );
+	_G.ControlData.Money.controls[ "GLbl" ]:SetVisible( not showTotal );	_G.ControlData.Money.controls[ "SLblT" ]:SetVisible( showTotal );
+	_G.ControlData.Money.controls[ "SLbl" ]:SetVisible( not showTotal );
 
-		MI[ "GLbl" ]:SetSize( MI[ "GLbl" ]:GetTextLength() * NM, CTRHeight ); 
-            --Auto size with text length
-		MI[ "SLbl" ]:SetSize( 4 * NM, CTRHeight ); --Auto size with text length
-		MI[ "CLbl" ]:SetSize( 3 * NM, CTRHeight ); --Auto size with text length
-
-		MI[ "GLblT" ]:SetVisible( showTotal );
-		MI[ "GLbl" ]:SetVisible( not showTotal );
-
-		MI[ "SLblT" ]:SetVisible( showTotal );
-		MI[ "SLbl" ]:SetVisible( not showTotal );
-
-		MI[ "CLblT" ]:SetVisible( showTotal );
-		MI[ "CLbl" ]:SetVisible( not showTotal );
-	
-		if showTotal then --Add Total Money on TitanBar Money control.
-			local strData = L[ "MIWTotal" ] .. ": ";
-			local strData1 = string.format( "%.0f", GoldTot );
-			local strData2 = L[ "You" ] .. MI[ "GLbl" ]:GetText();
-			local TextLen = string.len( strData ) * TM + string.len( strData1 ) * NM;
-			if TBFontT == "TrajanPro25" then TextLen = TextLen + 7; end
-			MI[ "GLblT" ]:SetText(strData .. strData1 .. "\n" .. strData2 .. " ");
-			MI[ "GLblT" ]:SetSize( TextLen, CTRHeight );
-
-			strData1 = string.format( "%.0f", SilverTot );
-			strData2 = MI[ "SLbl" ]:GetText();
-			TextLen = 4 * NM + 6;
-			MI[ "SLblT" ]:SetText( strData1 .. "\n" .. strData2 .. " " );
-			MI[ "SLblT" ]:SetSize( TextLen, CTRHeight );
-
-			strData1 = string.format( "%.0f", CopperTot );
-			strData2 = MI[ "CLbl" ]:GetText();
-			TextLen = 3 * NM + 6;
-			MI[ "CLblT" ]:SetText( strData1 .. "\n" .. strData2 .. " " );
-			MI[ "CLblT" ]:SetSize( TextLen, CTRHeight );
-		end
-
-		--Statistics section
+	_G.ControlData.Money.controls[ "CLblT" ]:SetVisible( showTotal );
+	_G.ControlData.Money.controls[ "CLbl" ]:SetVisible( not showTotal );	if showTotal then --Add Total Money on TitanBar Money control.
+		local strData = L[ "MIWTotal" ] .. ": ";
+		local strData1 = string.format( "%.0f", GoldTot );
+		local strData2 = L[ "You" ] .. _G.ControlData.Money.controls[ "GLbl" ]:GetText();
+		local TextLen = string.len( strData ) * TM + string.len( strData1 ) * NM;
+		if TBFontT == "TrajanPro25" then TextLen = TextLen + 7; end
+		_G.ControlData.Money.controls[ "GLblT" ]:SetText(strData .. strData1 .. "\n" .. strData2 .. " ");
+		_G.ControlData.Money.controls[ "GLblT" ]:SetSize( TextLen, CTRHeight );		strData1 = string.format( "%.0f", SilverTot );
+		strData2 = _G.ControlData.Money.controls[ "SLbl" ]:GetText();
+		TextLen = 4 * NM + 6;
+		_G.ControlData.Money.controls[ "SLblT" ]:SetText( strData1 .. "\n" .. strData2 .. " " );
+		_G.ControlData.Money.controls[ "SLblT" ]:SetSize( TextLen, CTRHeight );		strData1 = string.format( "%.0f", CopperTot );
+		strData2 = _G.ControlData.Money.controls[ "CLbl" ]:GetText();
+		TextLen = 3 * NM + 6;
+		_G.ControlData.Money.controls[ "CLblT" ]:SetText( strData1 .. "\n" .. strData2 .. " " );
+		_G.ControlData.Money.controls[ "CLblT" ]:SetSize( TextLen, CTRHeight );
+	end		--Statistics section
 		local PN = Player:GetName();
 		local bIncome = true;
 		bSumSSS, bSumSTS = true, true;
@@ -288,15 +274,15 @@ function UpdateBackpackInfos()
 	local showMax = (biData.max ~= false) -- default true
 
 	if showUsed and showMax then 
-        BI[ "Lbl" ]:SetText( max - freeslots .. "/" .. max );
+        _G.ControlData.BI.controls[ "Lbl" ]:SetText( max - freeslots .. "/" .. max );
 	elseif showUsed and not showMax then 
-        BI[ "Lbl" ]:SetText( max - freeslots );
+        _G.ControlData.BI.controls[ "Lbl" ]:SetText( max - freeslots );
 	elseif (not showUsed) and showMax then 
-        BI[ "Lbl" ]:SetText( freeslots .. "/" .. max );
+        _G.ControlData.BI.controls[ "Lbl" ]:SetText( freeslots .. "/" .. max );
 	elseif (not showUsed) and (not showMax) then 
-        BI[ "Lbl" ]:SetText( freeslots ); 
+        _G.ControlData.BI.controls[ "Lbl" ]:SetText( freeslots ); 
     end
-	BI[ "Lbl" ]:SetSize( BI[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
+	_G.ControlData.BI.controls[ "Lbl" ]:SetSize( _G.ControlData.BI.controls[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
 
 	--Change bag icon with capacity
 	local i = nil;
@@ -310,7 +296,7 @@ function UpdateBackpackInfos()
 	if bi == 100 then i = 5; end-- 100% Full bag
 	--if bi >= 101 then BagIcon = 0x41007ecf; end-- over loaded bag
 	
-	BI[ "Icon" ]:SetBackground( resources.BagIcon[i] );
+	_G.ControlData.BI.controls[ "Icon" ]:SetBackground( resources.BagIcon[i] );
 
 	AjustIcon( "BI" );
 end
@@ -335,14 +321,14 @@ function UpdatePlayersInfos()
 	end
 
 	--Update visuale
-	PI[ "Icon" ]:SetBackground(resources.PlayerIconCode[PlayerClassIdIs]) -- if class icon is unknown in the resource then background image is set to nil: nothing visible
+	_G.ControlData.PI.controls[ "Icon" ]:SetBackground(resources.PlayerIconCode[PlayerClassIdIs]) -- if class icon is unknown in the resource then background image is set to nil: nothing visible
 	
-	PI["Lvl"]:SetText(tostring(Player:GetLevel()))
-	PI["Lvl"]:SetSize(PI["Lvl"]:GetTextLength() * NM+1, CTRHeight)
-	PI["Name"]:SetPosition(PI["Lvl"]:GetLeft() + PI["Lvl"]:GetWidth() + 5, 0)
-	--PI["Name"]:SetText("OneVeryLongCharacterName") --Debug purpose
-	PI["Name"]:SetText(Player:GetName())
-	PI["Name"]:SetSize(PI["Name"]:GetTextLength() * TM, CTRHeight);
+	_G.ControlData.PI.controls["Lvl"]:SetText(tostring(Player:GetLevel()))
+	_G.ControlData.PI.controls["Lvl"]:SetSize(_G.ControlData.PI.controls["Lvl"]:GetTextLength() * NM+1, CTRHeight)
+	_G.ControlData.PI.controls["Name"]:SetPosition(_G.ControlData.PI.controls["Lvl"]:GetLeft() + _G.ControlData.PI.controls["Lvl"]:GetWidth() + 5, 0)
+	--_G.ControlData.PI.controls["Name"]:SetText("OneVeryLongCharacterName") --Debug purpose
+	_G.ControlData.PI.controls["Name"]:SetText(Player:GetName())
+	_G.ControlData.PI.controls["Name"]:SetSize(_G.ControlData.PI.controls["Name"]:GetTextLength() * TM, CTRHeight);
 
 	AjustIcon("PI");
 end
@@ -377,11 +363,11 @@ function UpdateDurabilityInfos()
 	if TDPts >= 0 and TDPts <= 33 then DurIcon = 1; end--0x41007e29
 	if TDPts >= 34 and TDPts <= 66 then DurIcon = 2; end--0x41007e29
 	if TDPts >= 67 and TDPts <= 100 then DurIcon = 3; end--0x41007e28
-	DI[ "Icon" ]:SetBackground( resources.Durability[DurIcon] );
+	_G.ControlData.DI.controls[ "Icon" ]:SetBackground( resources.Durability[DurIcon] );
 
 	TDPts = string.format( "%.0f", TDPts );
-	DI[ "Lbl" ]:SetText( TDPts .. "%" );
-	DI[ "Lbl" ]:SetSize( DI[ "Lbl" ]:GetTextLength() * NM + 5, CTRHeight ); 
+	_G.ControlData.DI.controls[ "Lbl" ]:SetText( TDPts .. "%" );
+	_G.ControlData.DI.controls[ "Lbl" ]:SetSize( _G.ControlData.DI.controls[ "Lbl" ]:GetTextLength() * NM + 5, CTRHeight ); 
 	AjustIcon( "DI" );
 end
 --**^
@@ -400,7 +386,7 @@ end
 --**v Update Infamy points on TitanBar v**
 function UpdateInfamy()
 	--Change Rank icon with infamy points
-	IF[ "Icon" ]:SetBackground( InfIcon[tonumber(settings.Infamy.K)] );
+	_G.ControlData.IF.controls[ "Icon" ]:SetBackground( InfIcon[tonumber(settings.Infamy.K)] );
 	
 	AjustIcon( "IF" );
 end
@@ -522,9 +508,9 @@ function UpdateGameTime(str)
             L["GTWST"] .. gtData.stime .. "\n" .. L["GTWRT"] .. gtData.gtime .. " ";
 	end
 	
-	GT[ "Lbl" ]:SetText( TheTime );
-	GT[ "Lbl" ]:SetSize( TextLen, CTRHeight ); --Auto size with text length
-	GT[ "Ctr" ]:SetSize( GT[ "Lbl" ]:GetWidth(), CTRHeight );
+	_G.ControlData.GT.controls[ "Lbl" ]:SetText( TheTime );
+	_G.ControlData.GT.controls[ "Lbl" ]:SetSize( TextLen, CTRHeight ); --Auto size with text length
+	_G.ControlData.GT.controls[ "Ctr" ]:SetSize( _G.ControlData.GT.controls[ "Lbl" ]:GetWidth(), CTRHeight );
 end
 --**^
 
@@ -611,8 +597,18 @@ end
 ---@param controlName string
 function KeepIconControlInBar(controlName)
 	local container = nil;
-	if (_G[controlName] and _G[controlName]["Ctr"]) then container = _G[controlName];
-	elseif (_G.CurrencyData[controlName] and _G.CurrencyData[controlName].Ctr) then container = _G.CurrencyData[controlName];
+	
+	-- Try to find the control in ControlData first
+	if _G.ControlData and _G.ControlData[controlName] and _G.ControlData[controlName].controls then
+		container = _G.ControlData[controlName].controls
+	-- Special case for MI which is stored as "Money"
+	elseif controlName == "MI" and _G.ControlData and _G.ControlData.Money and _G.ControlData.Money.controls then
+		container = _G.ControlData.Money.controls
+	-- Fall back to old global lookup for controls not yet migrated
+	elseif (_G[controlName] and _G[controlName]["Ctr"]) then 
+		container = _G[controlName];
+	elseif (_G.CurrencyData[controlName] and _G.CurrencyData[controlName].Ctr) then 
+		container = _G.CurrencyData[controlName];
 	end
 
 	if (container and container["Ctr"]) then
@@ -656,17 +652,17 @@ function AjustIcon(str)
         local setleft = 0;
         for i = 1,3 do 
             local index = p[i] .. "Lbl" .. t;
-            MI[p[i] .. "Ctr"]:SetLeft(setleft);
-            local getright = MI[index]:GetLeft() + MI[index]:GetWidth();
-            MI[p[i] .. "Icon"]:SetStretchMode(1);
-		    MI[p[i] .. "Icon"]:SetPosition(getright - 4, Y + 1 );
-		    MI[p[i] .. "Ctr"]:SetSize(getright + TBIconSize, CTRHeight);
-            MI[p[i] .. "Icon"]:SetSize( TBIconSize, TBIconSize );
-		    MI[p[i] .. "Icon"]:SetStretchMode( 3 );
-            setleft = MI[p[i].."Ctr"]:GetLeft() + MI[p[i].."Ctr"]:GetWidth();
+            _G.ControlData.Money.controls[p[i] .. "Ctr"]:SetLeft(setleft);
+            local getright = _G.ControlData.Money.controls[index]:GetLeft() + _G.ControlData.Money.controls[index]:GetWidth();
+            _G.ControlData.Money.controls[p[i] .. "Icon"]:SetStretchMode(1);
+		    _G.ControlData.Money.controls[p[i] .. "Icon"]:SetPosition(getright - 4, Y + 1 );
+		    _G.ControlData.Money.controls[p[i] .. "Ctr"]:SetSize(getright + TBIconSize, CTRHeight);
+            _G.ControlData.Money.controls[p[i] .. "Icon"]:SetSize( TBIconSize, TBIconSize );
+		    _G.ControlData.Money.controls[p[i] .. "Icon"]:SetStretchMode( 3 );
+            setleft = _G.ControlData.Money.controls[p[i].."Ctr"]:GetLeft() + _G.ControlData.Money.controls[p[i].."Ctr"]:GetWidth();
         end
-		MI[ "Ctr" ]:SetSize( MI["GCtr"]:GetWidth() + MI["SCtr"]:GetWidth() + 
-            MI["CCtr"]:GetWidth(), CTRHeight );
+		_G.ControlData.Money.controls[ "Ctr" ]:SetSize( _G.ControlData.Money.controls["GCtr"]:GetWidth() + _G.ControlData.Money.controls["SCtr"]:GetWidth() + 
+            _G.ControlData.Money.controls["CCtr"]:GetWidth(), CTRHeight );
 	elseif (_G.CurrencyData[str] and _G.CurrencyData[str].Icon) then
 		local iconLeft = _G.CurrencyData[str].Lbl:GetLeft() + _G.CurrencyData[str].Lbl:GetWidth();
 		if str ~= "DestinyPoints" then
@@ -677,7 +673,19 @@ function AjustIcon(str)
 		-- Generic standard control layout.
 		-- Any control with a global table containing ["Ctr"] and ["Icon"] will be handled here.
 		-- This makes it much harder to forget adding a new control (e.g., EI).
-		local container = _G[str];
+		
+		local container = nil
+		-- Try to find the control in ControlData first
+		if _G.ControlData and _G.ControlData[str] and _G.ControlData[str].controls then
+			container = _G.ControlData[str].controls
+		-- Special case for MI which is stored as "Money"
+		elseif str == "MI" and _G.ControlData and _G.ControlData.Money and _G.ControlData.Money.controls then
+			container = _G.ControlData.Money.controls
+		-- Fall back to old global lookup for controls not yet migrated
+		elseif _G[str] then
+			container = _G[str]
+		end
+		
 		if container and container["Ctr"] and container["Icon"] then
 			local label = container["Lbl"] or container["Name"];
 

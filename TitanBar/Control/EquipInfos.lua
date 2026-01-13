@@ -2,7 +2,9 @@ import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "EquipInfosToolTip")
 import(AppDirD .. "ControlFactory")
 
-_G.EI = {}; -- Equipment Infos table in _G
+-- Use _G.ControlData.EI.controls for all UI controls
+local EI = {}
+_G.ControlData.EI.controls = EI
 
 local colors = _G.ControlData.EI.colors
 CreateTitanBarControl(EI, colors.alpha, colors.red, colors.green, colors.blue)

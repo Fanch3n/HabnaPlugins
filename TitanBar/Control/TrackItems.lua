@@ -2,7 +2,9 @@ import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "TrackItemsToolTip")
 import(AppDirD .. "ControlFactory")
 
-_G.TI = {}; -- Track Items table in _G
+-- Use _G.ControlData.TI.controls for all UI controls
+local TI = {}
+_G.ControlData.TI.controls = TI
 
 local colors = _G.ControlData.TI.colors
 CreateTitanBarControl(TI, colors.alpha, colors.red, colors.green, colors.blue)
