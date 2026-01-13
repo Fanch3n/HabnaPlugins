@@ -124,7 +124,9 @@ function ImportCtr( value )
         end);
         local plText = (_G.ControlData.PL and _G.ControlData.PL.text) or (settings.PlayerLoc and settings.PlayerLoc.L) or L["PLMsg"]
         UpdatePlayerLoc( plText );
-        PL[ "Ctr" ]:SetPosition( _G.ControlData.PL.location.x, _G.ControlData.PL.location.y );
+		if _G.ControlData.PL and _G.ControlData.PL.controls then
+			_G.ControlData.PL.controls[ "Ctr" ]:SetPosition( _G.ControlData.PL.location.x, _G.ControlData.PL.location.y );
+		end
     elseif value == "TI" then --Track Items
         import (AppCtrD.."TrackItems");
         import (AppCtrD.."TrackItemsToolTip");
@@ -199,12 +201,16 @@ function ImportCtr( value )
     elseif value == "DN" then --Day & Night Time
         import (AppCtrD.."DayNight");
         UpdateDayNight();
-        DN[ "Ctr" ]:SetPosition( _G.ControlData.DN.location.x, _G.ControlData.DN.location.y );
+		if _G.ControlData.DN and _G.ControlData.DN.controls then
+			_G.ControlData.DN.controls[ "Ctr" ]:SetPosition( _G.ControlData.DN.location.x, _G.ControlData.DN.location.y );
+		end
     elseif value == "LP" then --LOTRO points
 		local lpWhere = (_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE
 		if lpWhere == Constants.Position.TITANBAR then
             import (AppCtrD.."LOTROPoints");
-            LP[ "Ctr" ]:SetPosition( _G.ControlData.LP.location.x, _G.ControlData.LP.location.y );
+			if _G.ControlData.LP and _G.ControlData.LP.controls then
+				_G.ControlData.LP.controls[ "Ctr" ]:SetPosition( _G.ControlData.LP.location.x, _G.ControlData.LP.location.y );
+			end
             UpdateLOTROPoints();
         end
 		if lpWhere ~= Constants.Position.NONE then

@@ -239,8 +239,8 @@ function UpdateLOTROPoints()
 	if where == Constants.Position.TITANBAR then
 		local lpData = _G.ControlData and _G.ControlData.LP
 		local points = (lpData and tonumber(lpData.points)) or 0
-		LP["Lbl"]:SetText(tostring(points))
-		LP["Lbl"]:SetSize(LP["Lbl"]:GetTextLength() * NM, CTRHeight)
+		_G.ControlData.LP.controls["Lbl"]:SetText(tostring(points))
+		_G.ControlData.LP.controls["Lbl"]:SetSize(_G.ControlData.LP.controls["Lbl"]:GetTextLength() * NM, CTRHeight)
 		AdjustIcon("LP")
 	end
 	SavePlayerLOTROPoints()
@@ -423,17 +423,17 @@ function UpdateDayNight()
 		local DNLen2 = string.len(NDNTime) * TM;
 		if DNLen2 > DNLen1 then DNLen = DNLen2; end
 
-		DN[ "Lbl" ]:SetText( DNTime .. "\n" .. NDNTime );
+		_G.ControlData.DN.controls[ "Lbl" ]:SetText( DNTime .. "\n" .. NDNTime );
 	else
-		DN[ "Lbl" ]:SetText( DNTime );
+		_G.ControlData.DN.controls[ "Lbl" ]:SetText( DNTime );
 	end
 
-	DN[ "Lbl" ]:SetSize( DNLen, CTRHeight ); --Auto size with text length
+	_G.ControlData.DN.controls[ "Lbl" ]:SetSize( DNLen, CTRHeight ); --Auto size with text length
 	--DN[ "Lbl" ]:SetBackColor( Color["white"] ); -- Debug purpose
 
-	if sDay == "day" then DN[ "Icon" ]:SetBackground( resources.Sun );
+	if sDay == "day" then _G.ControlData.DN.controls[ "Icon" ]:SetBackground( resources.Sun );
         -- Sun in-game icon (0x4101f898 or 0x4101f89b)
-	else DN[ "Icon" ]:SetBackground( resources.Moon ); end -- Moon in-game icon
+	else _G.ControlData.DN.controls[ "Icon" ]:SetBackground( resources.Moon ); end -- Moon in-game icon
 
 	AdjustIcon( "DN" );
 end
@@ -447,10 +447,10 @@ end
 function UpdatePlayerLoc( value )
 	fontMetric=FontMetric();
     fontMetric:SetFont(_G.TBFont);
-    PL[ "Lbl" ]:SetText( value );
-	PL[ "Lbl" ]:SetSize( fontMetric:GetTextWidth(value,fontMetric.FontSize), CTRHeight );
+	_G.ControlData.PL.controls[ "Lbl" ]:SetText( value );
+	_G.ControlData.PL.controls[ "Lbl" ]:SetSize( fontMetric:GetTextWidth(value,fontMetric.FontSize), CTRHeight );
 
-	PL[ "Ctr" ]:SetSize( PL[ "Lbl" ]:GetWidth(), CTRHeight );
+	_G.ControlData.PL.controls[ "Ctr" ]:SetSize( _G.ControlData.PL.controls[ "Lbl" ]:GetWidth(), CTRHeight );
 end
 --**^
 --**v Update game time on TitanBar v**

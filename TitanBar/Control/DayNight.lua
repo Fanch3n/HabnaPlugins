@@ -4,7 +4,8 @@
 import(AppDirD .. "UIHelpers")
 import(AppDirD .. "ControlFactory")
 
-_G.DN = {}; -- Day & Night table in _G
+local DN = {}
+_G.ControlData.DN.controls = DN
 
 --**v Control of Day & Night v**
 local colors = _G.ControlData.DN.colors

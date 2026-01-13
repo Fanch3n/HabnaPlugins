@@ -1,7 +1,8 @@
 import(AppDirD .. "UIHelpers")
 import(AppDirD .. "ControlFactory")
 
-_G.LP = {}; -- LOTRO Points table in _G
+local LP = {}
+_G.ControlData.LP.controls = LP
 
 local colors = _G.ControlData.LP.colors
 LP["Ctr"] = CreateTitanBarControl(LP, colors.alpha, colors.red, colors.green, colors.blue)

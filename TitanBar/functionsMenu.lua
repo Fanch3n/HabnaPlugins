@@ -56,11 +56,11 @@ function ShowHideLOTROPoints()
 	ImportCtr( "LP" );
 	if controlData.show then
 		local colors = _G.ControlData.LP.colors
-		LP[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
+		_G.ControlData.LP.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		local window = _G.ControlData.LP.ui and _G.ControlData.LP.ui.window; if window then window:Close(); end
 	end
-	LP[ "Ctr" ]:SetVisible( controlData.show );
+	_G.ControlData.LP.controls[ "Ctr" ]:SetVisible( controlData.show );
 end
 -- **^
 -- **v Show/Hide backpack Infos v**
@@ -234,11 +234,11 @@ function ShowHideDayNight()
 	if controlData.show then
 		ImportCtr( "DN" );
 		local colors = _G.ControlData.DN.colors
-		DN[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
+		_G.ControlData.DN.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		local window = _G.ControlData.DN.ui and _G.ControlData.DN.ui.window; if window then window:Close(); end
 	end
-	DN[ "Ctr" ]:SetVisible( controlData.show );
+	_G.ControlData.DN.controls[ "Ctr" ]:SetVisible( controlData.show );
 	opt_DN:SetChecked( controlData.show );
 end
 -- **^
@@ -272,11 +272,11 @@ function ShowHidePlayerLoc()
 	if controlData.show then
 		ImportCtr( "PL" );
 		local colors = _G.ControlData.PL.colors
-		PL[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
+		_G.ControlData.PL.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
 		RemoveCallback(Turbine.Chat, "Received", PLcb);
 	end
-	PL[ "Ctr" ]:SetVisible( controlData.show );
+	_G.ControlData.PL.controls[ "Ctr" ]:SetVisible( controlData.show );
 	opt_PL:SetChecked( controlData.show );
 end
 --**^

@@ -4,7 +4,8 @@
 import(AppDirD .. "UIHelpers")
 import(AppDirD .. "ControlFactory")
 
-_G.PL = {}; -- Player Location table in _G
+local PL = {}
+_G.ControlData.PL.controls = PL
 
 local colors = _G.ControlData.PL.colors
 CreateTitanBarControl(PL, colors.alpha, colors.red, colors.green, colors.blue)

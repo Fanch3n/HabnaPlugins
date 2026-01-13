@@ -18,10 +18,10 @@ function GetWalletControls()
 	if _G.ControlData.IF and _G.ControlData.IF.controls then walletControls[ "IF" ] = { IsVisible = _G.ControlData.IF.show, Control = _G.ControlData.IF.controls[ "Ctr" ] }; end
 	if _G.ControlData.VT and _G.ControlData.VT.controls then walletControls[ "VT" ] = { IsVisible = _G.ControlData.VT.show, Control = _G.ControlData.VT.controls[ "Ctr" ] }; end
 	if _G.ControlData.SS and _G.ControlData.SS.controls then walletControls[ "SS" ] = { IsVisible = _G.ControlData.SS.show, Control = _G.ControlData.SS.controls[ "Ctr" ] }; end
-	if DN ~= nil then walletControls[ "DN" ] = { IsVisible = _G.ControlData.DN.show, Control = DN[ "Ctr" ] }; end
+	if _G.ControlData.DN and _G.ControlData.DN.controls then walletControls[ "DN" ] = { IsVisible = _G.ControlData.DN.show, Control = _G.ControlData.DN.controls[ "Ctr" ] }; end
 	if _G.ControlData.RP and _G.ControlData.RP.controls then walletControls[ "RP" ] = { IsVisible = _G.ControlData.RP.show, Control = _G.ControlData.RP.controls[ "Ctr" ] }; end
-	if LP ~= nil then walletControls[ "LP" ] = { IsVisible = _G.ControlData.LP.show, Control = LP[ "Ctr" ] }; end
-	if PL ~= nil then walletControls[ "PL" ] = { IsVisible = _G.ControlData.PL.show, Control = PL[ "Ctr" ] }; end
+	if _G.ControlData.LP and _G.ControlData.LP.controls then walletControls[ "LP" ] = { IsVisible = _G.ControlData.LP.show, Control = _G.ControlData.LP.controls[ "Ctr" ] }; end
+	if _G.ControlData.PL and _G.ControlData.PL.controls then walletControls[ "PL" ] = { IsVisible = _G.ControlData.PL.show, Control = _G.ControlData.PL.controls[ "Ctr" ] }; end
 	if _G.ControlData.GT and _G.ControlData.GT.controls then walletControls[ "GT" ] = { IsVisible = _G.ControlData.GT.show, Control = _G.ControlData.GT.controls[ "Ctr" ] }; end
 
 	for _, currency in pairs(_G.currencies.list) do
@@ -221,7 +221,7 @@ function ResizeControls()
 		AdjustIcon( ItemID );
 	end 
 
-	if _G.ControlData.PL.show then PL[ "Ctr" ]:SetHeight( CTRHeight ); PL[ "Lbl" ]:SetHeight( CTRHeight ); end
+	if _G.ControlData.PL.show and _G.ControlData.PL.controls then _G.ControlData.PL.controls[ "Ctr" ]:SetHeight( CTRHeight ); _G.ControlData.PL.controls[ "Lbl" ]:SetHeight( CTRHeight ); end
 	if _G.ControlData.GT.show  then _G.ControlData.GT.controls[ "Ctr" ]:SetHeight( CTRHeight );	_G.ControlData.GT.controls[ "Lbl" ]:SetHeight( CTRHeight ); end
 end
 
