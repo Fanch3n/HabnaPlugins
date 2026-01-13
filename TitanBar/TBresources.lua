@@ -111,7 +111,5 @@ _G.resources = {
 	WalletWindowRefresh = 0x4100013B
 };
 
-_G.DurabilitySlotsBG = { 0x41007eed, 0x41007ef6, 0x41007ef7, 0x41007eef, 0x41007eee, 0x41007ee9, 0x41007ef0, 0x41007ef9, 0x41007ef8,
-	0x41007ef4, 0x41007ef3, 0x41007ef2, 0x41007ef1, 0x41007ef5, 0x41007efa, 0x41007eea, 0x41007eeb, 0x41007eec,
-	0x41007efb, 0x410e8680
-};
+-- DurabilitySlotsBG will be assigned after Constants is available
+_G.DurabilitySlotsBG = nil;

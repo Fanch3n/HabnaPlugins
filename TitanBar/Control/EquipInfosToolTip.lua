@@ -6,21 +6,17 @@ SlotsText = {L["EWST1"], L["EWST2"], L["EWST3"], L["EWST4"], L["EWST5"], L["EWST
 		L["EWST10"], L["EWST11"], L["EWST12"], L["EWST13"], L["EWST14"], L["EWST15"], L["EWST16"], L["EWST17"],	L["EWST18"],
 		L["EWST19"], L["EWST20"]};
 
+import(AppDirD .. "UIHelpers")
+
 function ShowEIWindow()
-	-- ( offsetX, offsetY, width, height, bubble side )
-	local x, y, w, h, bblTo = -5, -15, 592, 495, "left";
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
+	local w, h = 592, 495
 	
-	if w + mouseX > screenWidth then bblTo = "right"; x = w - 10; end
-	if not TBTop then y = h; end
+	local tt = CreateTooltipWindow({
+		width = w,
+		height = h
+	})
 	
-	_G.ToolTipWin = Turbine.UI.Window();
-	_G.ToolTipWin:SetSize( w, h );
-	_G.ToolTipWin:SetZOrder( 1 );
-	--_G.ToolTipWin.xOffset = x;
-	--_G.ToolTipWin.yOffset = y;
-	_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
-	_G.ToolTipWin:SetVisible( true );
+	PositionAndShowTooltip(_G.ToolTipWin, -5, -15, true)
 
 	--**v Control of all equipment infos v**
 	local AEICtr = Turbine.UI.Control();
@@ -35,32 +31,24 @@ function ShowEIWindow()
 	lblBackPack:SetParent( AEICtr );
 	lblBackPack:SetText( L["EWLbl"] );
 	lblBackPack:SetPosition( 15, 15);
-	lblBackPack:SetSize( 350, 15 );
+	lblBackPack:SetSize( 350, Constants.LABEL_HEIGHT_STANDARD );
 	lblBackPack:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 	lblBackPack:SetForeColor( Color["green"] );
 
 	lblBackPackD = Turbine.UI.Label();
 	lblBackPackD:SetParent( AEICtr );
 	lblBackPackD:SetText( L["EWLblD"] );
-	lblBackPackD:SetSize( 80, 15 );
+	lblBackPackD:SetSize( Constants.LABEL_WIDTH_NARROW, Constants.LABEL_HEIGHT_STANDARD );
 	lblBackPackD:SetPosition( AEICtr:GetWidth() - lblBackPackD:GetWidth() - 20 , 15);
 	lblBackPackD:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
 	lblBackPackD:SetForeColor( Color["green"] );
 
-	ListBoxBorder = Turbine.UI.Control();
-	ListBoxBorder:SetParent( AEICtr );
-	ListBoxBorder:SetPosition( lblBackPack:GetLeft(), lblBackPack:GetTop() + lblBackPack:GetHeight() + 2 );
-	ListBoxBorder:SetSize( 562, 444 );
+	ListBoxBorder = CreateControl(Turbine.UI.Control, AEICtr, lblBackPack:GetLeft(), lblBackPack:GetTop() + lblBackPack:GetHeight() + 2, 562, 444);
 	ListBoxBorder:SetBackColor( Color["grey"] );
 	ListBoxBorder:SetVisible( true );
 
-	EIListBox = Turbine.UI.ListBox();
-	EIListBox:SetParent( AEICtr );
-	EIListBox:SetPosition( ListBoxBorder:GetLeft() + 2, ListBoxBorder:GetTop() + 2 );
-	EIListBox:SetSize( ListBoxBorder:GetWidth() - 4, ListBoxBorder:GetHeight() - 4 );
-	EIListBox:SetMaxItemsPerLine( 6 );
-	EIListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
-	EIListBox:SetBackColor( Color["black"] );
+	EIListBox = CreateControl(Turbine.UI.ListBox, AEICtr, ListBoxBorder:GetLeft() + 2, ListBoxBorder:GetTop() + 2, ListBoxBorder:GetWidth() - 4, ListBoxBorder:GetHeight() - 4);
+	ConfigureListBox(EIListBox, 6, Turbine.UI.Orientation.Horizontal, Color["black"])
 
 	EIRefreshListBox();
 
@@ -77,25 +65,19 @@ function EIRefreshListBox()
 	for i = 1, 20 do
 		-- Item background
 		EIitemCtl[i] = Turbine.UI.Control();
-		EIitemCtl[i]:SetSize( 44, 44 );
+		EIitemCtl[i]:SetSize( Constants.ICON_SIZE_XXLARGE, Constants.ICON_SIZE_XXLARGE );
 		EIitemCtl[i]:SetBackground( DurabilitySlotsBG[i] );
 		EIitemCtl[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
 		-- Item Background/Underlay/Shadow/Item
 		if (itemEquip[i].BImgID and itemEquip[i].BImgID > 0) then
-			EIitemBG[i] = Turbine.UI.Control();
-			EIitemBG[i]:SetParent( EIitemCtl[i] );
-			EIitemBG[i]:SetSize( 32, 32 );
-			EIitemBG[i]:SetPosition( 6, 6 );
+			EIitemBG[i] = CreateControl(Turbine.UI.Control, EIitemCtl[i], 6, 6, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 			EIitemBG[i]:SetBackground(itemEquip[i].BImgID);
 			EIitemBG[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		end
 
 		if (itemEquip[i].UImgID and itemEquip[i].UImgID > 0) then
-			EIitemU[i] = Turbine.UI.Control();
-			EIitemU[i]:SetParent( EIitemCtl[i] );
-			EIitemU[i]:SetSize( 32, 32 );
-			EIitemU[i]:SetPosition( 6, 6 );
+			EIitemU[i] = CreateControl(Turbine.UI.Control, EIitemCtl[i], 6, 6, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 			EIitemU[i]:SetBackground(itemEquip[i].UImgID);
 			EIitemU[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		end
@@ -104,18 +86,12 @@ function EIRefreshListBox()
 		-- (e.g. Mended Dwarf-make Leather Tunic, minstrel L.I. Book)
 		-- were getting 0 for their SImgID which messed up the final composite.
 		if (itemEquip[i].SImgID and itemEquip[i].SImgID > 0) then
-			EIitemS[i] = Turbine.UI.Control();
-			EIitemS[i]:SetParent( EIitemCtl[i] );
-			EIitemS[i]:SetSize( 32, 32 );
-			EIitemS[i]:SetPosition( 6, 6 );
+			EIitemS[i] = CreateControl(Turbine.UI.Control, EIitemCtl[i], 6, 6, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 			EIitemS[i]:SetBackground(itemEquip[i].SImgID);
 			EIitemS[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		end
 
-		EIitem[i] = Turbine.UI.Control();
-		EIitem[i]:SetParent( EIitemCtl[i] );
-		EIitem[i]:SetSize( 32, 32 );
-		EIitem[i]:SetPosition( 6, 6 );
+		EIitem[i] = CreateControl(Turbine.UI.Control, EIitemCtl[i], 6, 6, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
 		EIitem[i]:SetBackground(itemEquip[i].IImgID);
 		EIitem[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		

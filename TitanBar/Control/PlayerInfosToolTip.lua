@@ -1,5 +1,7 @@
 -- Written By Giseldah (inspired by original work by Habna, 4andreas)
 
+import(AppDirD .. "UIHelpers")
+
 local mathmax = math.max
 local strfind = string.find
 local strformat = string.format
@@ -141,9 +143,10 @@ local function GetPlayerData()
 	aPlayerData[PD.RACE] =		PlayerRaceIs
 
 	if PlayerAlign == 1 then -- freeps only
-		if ExpPTS then
+		local expPTS = (_G.ControlData and _G.ControlData.PI and _G.ControlData.PI.xp)
+		if expPTS then
 			-- experience data from chat
-			local sExpPTS = strgsub(ExpPTS,"%p+","")
+			local sExpPTS = strgsub(expPTS,"%p+","")
 			aPlayerData[PD.XP_CURRENT] = tonumber(sExpPTS)
 		end
 
@@ -693,23 +696,18 @@ function ShowPIWindow()
 	end
 
 	-- offsetX, offsetY, width, height
-	local x, y, w, h = -5, -15, aLayoutDef.Width, aLayoutDef.Height
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition()
-	if w+mouseX > screenWidth then x = w+41 - 10 end
-	if not TBTop then y = h+38 end
-
-	_G.ToolTipWin = Turbine.UI.Window()
-	_G.ToolTipWin:SetZOrder(1)
-	_G.ToolTipWin:SetPosition(mouseX-x,mouseY-y)
-	_G.ToolTipWin:SetSize(w+41,h+38)
-	_G.ToolTipWin:SetVisible(true)
+	local w, h = aLayoutDef.Width, aLayoutDef.Height
+	
+	local tt = CreateTooltipWindow({
+		width = w + 41,
+		height = h + 38
+	})
+	
+	PositionAndShowTooltip(_G.ToolTipWin, -5, -15, false)
 
 	--**v Control of all player infos v**
-	local APICtr = Turbine.UI.Control()
-	APICtr:SetParent(_G.ToolTipWin)
+	local APICtr = CreateControl(Turbine.UI.Control, _G.ToolTipWin, 20, 19, w, h)
 	APICtr:SetZOrder(1)
-	APICtr:SetPosition(20,19)
-	APICtr:SetSize(w,h)
 	APICtr:SetBlendMode(Turbine.UI.BlendMode.AlphaBlend)
 	--APICtr:SetBackColor(Color["trueblue"]) -- test size
 	--APICtr:SetBackground("HabnaPlugins/TitanBar/Resources/".."PIbk.tga")

@@ -41,7 +41,6 @@ L[ "MTI" ] = "Artikel verfolgen";
 --L[ "MView" ] = "Anzeigen ";
 L[ "MVault" ] = "Bankfach";
 L[ "MStorage" ] = "gemeinsamer Lagerraum";
---L[ "MBank" ] = "Bank";
 L[ "MDayNight" ] = "Tages- & Nacht-Zeit";
 L[ "MReputation" ] = "Ruf";
 
@@ -264,6 +263,9 @@ L["HuntersGuildMarkh"] = "Eure Jägergildenzeichen";
 -- Blighted Relic
 L["MBlightedRelic"] = "Verderbtes Relikt";
 L["BlightedRelich"] = "Eure Verderbten Relikte";
+-- Tattered Shadows
+L["MTatteredShadow"] = "Zerfledderter Schatten";
+L["atteredShadowh"] = "Eure Zerfledderten Schatten";
 
 -- Control Menu
 L[ "MCU" ] = "entfernen ...";
@@ -327,9 +329,6 @@ L[ "SSnd" ] = "Ihr m\195\188sst Euren Lagerraum mindestens einmal \195\182ffnen"
 L[ "BIh" ] = "Rucksack";
 L[ "BID" ] = " Rucksackinfo gel\195\182scht!"; 
 
--- Bank window
-L[ "BKh" ] = "Bank";
-
 -- Day & Night window
 L[ "Dawn" ] = "Morgend\195\164mmerung";
 L[ "Morning" ] = "Vormittag";
@@ -347,7 +346,7 @@ L[ "TAjustL" ] = "Timer seed";
 -- Reputation window
 L[ "RPt" ] = "Aktivieren / deaktivieren der Fraktionen\nRechtsklick, um aktuellen Stand einzugeben";
 L[ "RPnf" ] = "Ihr verfolgt keine Fraktion!\nLinksklick, um die Fraktionsliste zu sehen.";
-L[ "RPPHMaxHide" ] = "Verstecke Fraktionen mit maximalem Ruf";
+L[ "RPPHMaxShow" ] = "Zeige Fraktionen mit maximalem Ruf";
 
 -- All reputation names
 L[ "MenOfBree" ]    = "Menschen von Bree";

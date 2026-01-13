@@ -2,33 +2,35 @@
 -- Written by Habna
 -- Rewritten by many
 
+import(AppDirD .. "UIHelpers")
 
 function frmBackground()
 	sFrom = _G.sFromCtr;
 	curColor = {};
 	bClick = false;
+
+	import(AppDirD .. "WindowFactory")
 	
-	-- **v Set some window stuff v**
-	wBackground = Turbine.UI.Lotro.Window();
-	wBackground.Opacity = 1;
-	wBackground:SetText( L["BWTitle"] );
-	wBackground:SetSize( 400, 210 );
-	wBackground:SetPosition( BGWLeft, BGWTop );
-	wBackground:SetVisible( true );
-	wBackground:SetWantsKeyEvents( true );
-	--wBackground:SetZOrder( 2 );
-	--wBackground:Activate();
+	-- **v Create window via factory v**
+	wBackground = CreateWindow({
+		text = L["BWTitle"],
+		width = 400,
+		height = 210,
+		left = BGWLeft,
+		top = BGWTop,
+		config = {
+			settingsKey = "Background",
+			windowGlobalVar = "wBackground",
+			formGlobalVar = "frmBackground",
+			onPositionChanged = function(left, top)
+				BGWLeft, BGWTop = left, top
+			end
+		}
+	})
+	wBackground.Opacity = 1
 	-- **^
 	-- **v Check box - label v**
-	local SetToAllCtr = Turbine.UI.Lotro.CheckBox();
-	SetToAllCtr:SetParent( wBackground );
-	SetToAllCtr:SetPosition( 40, wBackground:GetHeight() - 70 );
-	SetToAllCtr:SetText( L["BWApply"] );
-	SetToAllCtr:SetSize( SetToAllCtr:GetTextLength() * 8, 30 );
-	SetToAllCtr:SetVisible( true );
-	--SetToAllCtr:SetEnabled( false );
-	SetToAllCtr:SetChecked( BGWToAll );
-	SetToAllCtr:SetForeColor( Color["rustedgold"] );
+	local SetToAllCtr = CreateAutoSizedCheckBox(wBackground, L["BWApply"], 40, wBackground:GetHeight() - 70, BGWToAll, 8, 30)
 
 	SetToAllCtr.CheckedChanged = function( sender, args )
 		BGWToAll = SetToAllCtr:IsChecked();
@@ -39,25 +41,13 @@ function frmBackground()
 	-- **^
 
 	-- **v Currently set color - label v**
-	local CurSetColorLbl = Turbine.UI.Label();
-	CurSetColorLbl:SetParent( wBackground );
-	CurSetColorLbl:SetPosition( 305, 35 );
-	CurSetColorLbl:SetSize( 80, 30 );
-	CurSetColorLbl:SetText( L["BWCurSetColor"] );
-	CurSetColorLbl:SetVisible( true );
-	CurSetColorLbl:SetForeColor( Color["rustedgold"] );
+	local CurSetColorLbl = CreateTitleLabel(wBackground, L["BWCurSetColor"], 305, 35, nil, Color["rustedgold"], nil, 80, 30)
 	-- **^
 	-- **v Currently Selected color - box v**
-	curSelColorBorder = Turbine.UI.Label();
-	curSelColorBorder:SetParent( wBackground );
-	curSelColorBorder:SetSize( 73, 73 );
-	curSelColorBorder:SetPosition( 305, 60 );
+	curSelColorBorder = CreateControl(Turbine.UI.Label, wBackground, 305, 60, 73, 73);
 	curSelColorBorder:SetBackColor( Color["white"] );
 
-	curSelColor = Turbine.UI.Label();
-	curSelColor:SetParent( curSelColorBorder );
-	curSelColor:SetSize( 71, 71 );
-	curSelColor:SetPosition( 1, 1 );
+	curSelColor = CreateControl(Turbine.UI.Label, curSelColorBorder, 1, 1, 71, 71);
 	
 	-- Set backcolor window setting to currently control color
 	if sFrom == "TitanBar" then
@@ -65,27 +55,28 @@ function frmBackground()
 		curSelRed = bcRed
 		curSelGreen = bcGreen
 		curSelBlue = bcBlue
-	elseif sFrom == "Money" then
-		curSelAlpha = MIbcAlpha
-		curSelRed = MIbcRed
-		curSelGreen = MIbcGreen
-		curSelBlue = MIbcBlue
 	else
-		curSelAlpha = _G.CurrencyData[sFrom].bcAlpha
-		curSelRed = _G.CurrencyData[sFrom].bcRed
-		curSelGreen = _G.CurrencyData[sFrom].bcGreen
-		curSelBlue = _G.CurrencyData[sFrom].bcBlue
+		-- Try to get from ControlRegistry first
+		local data = _G.ControlRegistry.Get(sFrom)
+		if data then
+			curSelAlpha = data.colors.alpha
+			curSelRed = data.colors.red
+			curSelGreen = data.colors.green
+			curSelBlue = data.colors.blue
+		elseif _G.CurrencyData[sFrom] then
+			-- Fall back to currency data
+			curSelAlpha = _G.CurrencyData[sFrom].bcAlpha
+			curSelRed = _G.CurrencyData[sFrom].bcRed
+			curSelGreen = _G.CurrencyData[sFrom].bcGreen
+			curSelBlue = _G.CurrencyData[sFrom].bcBlue
+		end
 	end
 	
 	curAlpha, curColor.R, curColor.G, curColor.B = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
 	curSelColor:SetBackColor( Turbine.UI.Color( curSelAlpha, curSelRed, curSelGreen, curSelBlue ) );
 	-- **^
 	-- **v Save button v**
-	local buttonSave = Turbine.UI.Lotro.Button();
-	buttonSave:SetParent( wBackground );
-	buttonSave:SetText( L["BWSave"] );
-	buttonSave:SetSize( buttonSave:GetTextLength() * 10, 15 ); --Auto size with text length
-	buttonSave:SetPosition( wBackground:GetWidth() - buttonSave:GetWidth() - 15 , wBackground:GetHeight() - 34 );
+	local buttonSave = CreateAutoSizedButton(wBackground, L["BWSave"], wBackground:GetWidth() - 110, wBackground:GetHeight() - 34)
 	buttonSave:SetVisible( true );
 
 	buttonSave.Click = function( sender, args )
@@ -106,10 +97,7 @@ function frmBackground()
 	alphalabel:SetBackColor( Color["black"] );
 	alphalabel:SetTextAlignment( Turbine.UI.ContentAlignment.TopCenter );
 	
-	local alphaScrollBar = Turbine.UI.Lotro.ScrollBar();
-	alphaScrollBar:SetParent( alphalabel );
-	alphaScrollBar:SetPosition( 0, 0 );
-	alphaScrollBar:SetSize( 242, 10 );
+	local alphaScrollBar = CreateControl(Turbine.UI.Lotro.ScrollBar, alphalabel, 0, 0, 242, 10);
 	alphaScrollBar:SetMinimum( 0 );
 	alphaScrollBar:SetMaximum( 100 );
 	alphaScrollBar:SetValue( curSelAlpha * 100);
@@ -124,11 +112,7 @@ function frmBackground()
 	end
 	-- **^
 	-- **v Default button v**
-	local buttonDefault = Turbine.UI.Lotro.Button();
-	buttonDefault:SetParent( wBackground );
-	buttonDefault:SetPosition( 23, wBackground:GetHeight() - 34 );
-	buttonDefault:SetText( L["BWDef"] );
-	buttonDefault:SetSize( buttonDefault:GetTextLength() * 10, 15 ); --Auto size with text length
+	local buttonDefault = CreateAutoSizedButton(wBackground, L["BWDef"], 23, wBackground:GetHeight() - 34)
 	buttonDefault:SetVisible( true );
 
 	buttonDefault.Click = function(sender, args)
@@ -144,11 +128,7 @@ function frmBackground()
 	end
 	-- **^
 	-- **v Black button v**
-	local buttonBlack = Turbine.UI.Lotro.Button();
-	buttonBlack:SetParent( wBackground );
-	buttonBlack:SetPosition( buttonDefault:GetLeft() + buttonDefault:GetWidth() + 5, wBackground:GetHeight() - 34 );
-	buttonBlack:SetText( L["BWBlack"] );
-	buttonBlack:SetSize( buttonBlack:GetTextLength() * 10, 15 ); --Auto size with text length
+	local buttonBlack = CreateAutoSizedButton(wBackground, L["BWBlack"], buttonDefault:GetLeft() + buttonDefault:GetWidth() + 5, wBackground:GetHeight() - 34)
 	buttonBlack:SetVisible( true );
 
 	buttonBlack.Click = function(sender, args)
@@ -164,11 +144,7 @@ function frmBackground()
 	end
 	-- **^
 	-- **v Transparent button v**
-	local buttonTrans = Turbine.UI.Lotro.Button();
-	buttonTrans:SetParent( wBackground );
-	buttonTrans:SetPosition( buttonBlack:GetLeft() + buttonBlack:GetWidth() + 5, wBackground:GetHeight() - 34 );
-	buttonTrans:SetText( L["BWTrans"] );
-	buttonTrans:SetSize( buttonTrans:GetTextLength() * 10, 15 ); --Auto size with text length
+	local buttonTrans = CreateAutoSizedButton(wBackground, L["BWTrans"], buttonBlack:GetLeft() + buttonBlack:GetWidth() + 5, wBackground:GetHeight() - 34)
 	buttonTrans:SetVisible( true );
 
 	buttonTrans.Click = function(sender, args)
@@ -184,18 +160,12 @@ function frmBackground()
 	end
 	-- **^
 	-- Create Colour Picker window/border.
-	ColourPickerBorder = Turbine.UI.Label();
-	ColourPickerBorder:SetParent( wBackground );
-	ColourPickerBorder:SetPosition( 40, 60 );
-	ColourPickerBorder:SetSize( 242, 73 );
+	ColourPickerBorder = CreateControl(Turbine.UI.Label, wBackground, 40, 60, 242, 73);
 	ColourPickerBorder:SetBackColor( Turbine.UI.Color( 1, .2, .2, .2  ) );
 	ColourPickerBorder:SetVisible( true );
 	
 	-- Create Colour Picker.
-	ColourPicker = Turbine.UI.Label();
-	ColourPicker:SetParent( ColourPickerBorder );
-	ColourPicker:SetPosition( 1, 1 );
-	ColourPicker:SetSize( 240, 71 );
+	ColourPicker = CreateControl(Turbine.UI.Label, ColourPickerBorder, 1, 1, 240, 71);
 	ColourPicker:SetBackground( resources.Picker ); -- 0x41007e13 / resources.Picker.Background
 
 	ColourPicker.GetColorFromCoord = function( sender, X, Y )
@@ -275,7 +245,7 @@ function frmBackground()
 	wBackground.KeyDown = function( sender, args )
 		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
 			wBackground:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
+		elseif ( args.Action == Constants.KEY_TOGGLE_UI ) or ( args.Action == Constants.KEY_TOGGLE_LAYOUT_MODE ) then -- Hide if F12 key is press or reposition UI
 			wBackground:SetVisible( not wBackground:IsVisible() );
 		end
 	end
@@ -304,22 +274,16 @@ function UpdateBCvariable()
 	curSelAlpha = curAlpha;
 	if BGWToAll then
 		bcAlpha, bcRed, bcGreen, bcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		WIbcAlpha, WIbcRed, WIbcGreen, WIbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		MIbcAlpha, MIbcRed, MIbcGreen, MIbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		BIbcAlpha, BIbcRed, BIbcGreen, BIbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		PIbcAlpha, PIbcRed, PIbcGreen, PIbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		EIbcAlpha, EIbcRed, EIbcGreen, EIbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		DIbcAlpha, DIbcRed, DIbcGreen, DIbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		TIbcAlpha, TIbcRed, TIbcGreen, TIbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		IFbcAlpha, IFbcRed, IFbcGreen, IFbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		VTbcAlpha, VTbcRed, VTbcGreen, VTbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		SSbcAlpha, SSbcRed, SSbcGreen, SSbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		BKbcAlpha, BKbcRed, BKbcGreen, BKbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		DNbcAlpha, DNbcRed, DNbcGreen, DNbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		RPbcAlpha, RPbcRed, RPbcGreen, RPbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		LPbcAlpha, LPbcRed, LPbcGreen, LPbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		PLbcAlpha, PLbcRed, PLbcGreen, PLbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
-		GTbcAlpha, GTbcRed, GTbcGreen, GTbcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
+		
+		-- Update all standard controls via ControlRegistry
+		_G.ControlRegistry.ForEach(function(controlId, data)
+			data.colors.alpha = curSelAlpha
+			data.colors.red = curSelRed
+			data.colors.green = curSelGreen
+			data.colors.blue = curSelBlue
+		end)
+		
+		-- Update all currency controls
 		for k,v in pairs(_G.currencies.list) do
 			_G.CurrencyData[v.name].bcAlpha = curSelAlpha
 			_G.CurrencyData[v.name].bcRed = curSelRed
@@ -327,28 +291,26 @@ function UpdateBCvariable()
 			_G.CurrencyData[v.name].bcBlue = curSelBlue
 		end
 	else
-		if sFrom == "TitanBar" then bcAlpha = curSelAlpha; bcRed = curSelRed; bcGreen = curSelGreen; bcBlue = curSelBlue;
-		elseif sFrom == "WI" then WIbcAlpha = curSelAlpha; WIbcRed = curSelRed; WIbcGreen = curSelGreen; WIbcBlue = curSelBlue;
-		elseif sFrom == "Money" then MIbcAlpha = curSelAlpha; MIbcRed = curSelRed; MIbcGreen = curSelGreen; MIbcBlue = curSelBlue;
-		elseif sFrom == "BI" then BIbcAlpha = curSelAlpha; BIbcRed = curSelRed; BIbcGreen = curSelGreen; BIbcBlue = curSelBlue;
-		elseif sFrom == "PI" then PIbcAlpha = curSelAlpha; PIbcRed = curSelRed; PIbcGreen = curSelGreen; PIbcBlue = curSelBlue;
-		elseif sFrom == "EI" then EIbcAlpha = curSelAlpha; EIbcRed = curSelRed; EIbcGreen = curSelGreen; EIbcBlue = curSelBlue;
-		elseif sFrom == "DI" then DIbcAlpha = curSelAlpha; DIbcRed = curSelRed; DIbcGreen = curSelGreen; DIbcBlue = curSelBlue;
-		elseif sFrom == "TI" then TIbcAlpha = curSelAlpha; TIbcRed = curSelRed; TIbcGreen = curSelGreen; TIbcBlue = curSelBlue;
-		elseif sFrom == "IF" then IFbcAlpha = curSelAlpha; IFbcRed = curSelRed; IFbcGreen = curSelGreen; IFbcBlue = curSelBlue;
-		elseif sFrom == "VT" then VTbcAlpha = curSelAlpha; VTbcRed = curSelRed; VTbcGreen = curSelGreen; VTbcBlue = curSelBlue;
-		elseif sFrom == "SS" then SSbcAlpha = curSelAlpha; SSbcRed = curSelRed; SSbcGreen = curSelGreen; SSbcBlue = curSelBlue;
-		elseif sFrom == "BK" then BKbcAlpha = curSelAlpha; BKbcRed = curSelRed; BKbcGreen = curSelGreen; BKbcBlue = curSelBlue;
-		elseif sFrom == "DN" then DNbcAlpha = curSelAlpha; DNbcRed = curSelRed; DNbcGreen = curSelGreen; DNbcBlue = curSelBlue;
-		elseif sFrom == "RP" then RPbcAlpha = curSelAlpha; RPbcRed = curSelRed; RPbcGreen = curSelGreen; RPbcBlue = curSelBlue;
-		elseif sFrom == "LP" then LPbcAlpha = curSelAlpha; LPbcRed = curSelRed; LPbcGreen = curSelGreen; LPbcBlue = curSelBlue;
-		elseif sFrom == "PL" then PLbcAlpha = curSelAlpha; PLbcRed = curSelRed; PLbcGreen = curSelGreen; PLbcBlue = curSelBlue;
-		elseif sFrom == "GT" then GTbcAlpha = curSelAlpha; GTbcRed = curSelRed; GTbcGreen = curSelGreen; GTbcBlue = curSelBlue;
+		if sFrom == "TitanBar" then 
+			bcAlpha = curSelAlpha
+			bcRed = curSelRed
+			bcGreen = curSelGreen
+			bcBlue = curSelBlue
 		else
-			_G.CurrencyData[sFrom].bcAlpha = curSelAlpha
-			_G.CurrencyData[sFrom].bcRed = curSelRed
-			_G.CurrencyData[sFrom].bcGreen = curSelGreen
-			_G.CurrencyData[sFrom].bcBlue = curSelBlue
+			-- Try to get from ControlRegistry first
+			local data = _G.ControlRegistry.Get(sFrom)
+			if data then
+				data.colors.alpha = curSelAlpha
+				data.colors.red = curSelRed
+				data.colors.green = curSelGreen
+				data.colors.blue = curSelBlue
+			elseif _G.CurrencyData[sFrom] then
+				-- Fall back to currency data
+				_G.CurrencyData[sFrom].bcAlpha = curSelAlpha
+				_G.CurrencyData[sFrom].bcRed = curSelRed
+				_G.CurrencyData[sFrom].bcGreen = curSelGreen
+				_G.CurrencyData[sFrom].bcBlue = curSelBlue
+			end
 		end
 	end
 end

@@ -3,65 +3,40 @@
 
 
 function frmLOTROPointsWindow()
-	-- **v Set some window stuff v**
-	_G.wLP = Turbine.UI.Lotro.Window()
-	_G.wLP:SetPosition( LPWLeft, LPWTop );
-	--_G.wLP:SetSize( 300, 80 );
-	_G.wLP:SetText( L["MLotroPoints"] );
-	_G.wLP:SetWantsKeyEvents( true );
-	_G.wLP:SetVisible( true );
-	--_G.wLP:SetZOrder( 2 );
-	_G.wLP:Activate();
+	import(AppDirD .. "WindowFactory")
+	import(AppDirD .. "UIHelpers")
+	_G.ControlData.LP = _G.ControlData.LP or {}
+	_G.ControlData.LP.ui = _G.ControlData.LP.ui or {}
+	local ui = _G.ControlData.LP.ui
+	local wLP = CreateControlWindow(
+		"LOTROPoints", "LP",
+		L["MLotroPoints"], 300, 80,
+		{
+			onKeyDown = function(sender, args)
+				if args.Action == Constants.KEY_ENTER then
+					if buttonSave then buttonSave.Click(sender, args) end
+					if ui.window then ui.window:Close() end
+				end
+			end,
+			onClosing = function(sender, args)
+				_G.ControlData.LP.ui = nil
+			end
+		}
+	)
+	ui.window = wLP
 
-	_G.wLP.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wLP:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			_G.wLP:SetVisible( not _G.wLP:IsVisible() );
-		elseif ( args.Action == 162 ) then --Enter key was pressed
-			buttonSave.Click( sender, args );
-			_G.wLP:Close()
-		end
-	end
-
-	_G.wLP.MouseUp = function( sender, args )
-		settings.LOTROPoints.L = string.format("%.0f", _G.wLP:GetLeft());
-		settings.LOTROPoints.T = string.format("%.0f", _G.wLP:GetTop());
-		LPWLeft, LPWTop = _G.wLP:GetPosition();
-		SaveSettings( false );
-	end
-
-	_G.wLP.Closing = function( sender, args ) -- Function for the Upper right X icon
-		_G.wLP:SetWantsKeyEvents( false );
-		_G.wLP = nil;
-		_G.frmLP = nil;
-	end
-	-- **^
 
 	local LPWCtr = Turbine.UI.Control();
-	LPWCtr:SetParent( _G.wLP );
+	LPWCtr:SetParent( wLP );
 	LPWCtr:SetPosition( 15, 50 );
 	LPWCtr:SetZOrder( 2 );
 	--LPWCtr:SetBackColor( Color["red"] ); -- debug purpose
 
-	local lblLOTROPTS = Turbine.UI.Label();
-	lblLOTROPTS:SetParent( LPWCtr );
-	--lblLOTROPTS:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
-	lblLOTROPTS:SetText( L["MLotroPoints"] );
-	lblLOTROPTS:SetPosition( 0, 2 );
-	lblLOTROPTS:SetSize( lblLOTROPTS:GetTextLength() * 7.5, 15 ); --Auto size with text lenght
-	lblLOTROPTS:SetForeColor( Color["rustedgold"] );
-	lblLOTROPTS:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-	--lblLOTROPTS:SetBackColor( Color["red"] ); -- debug purpose
+	local lblLOTROPTS = CreateTitleLabel(LPWCtr, L["MLotroPoints"], 0, 2, nil, Color["rustedgold"], 7.5, nil, 15, Turbine.UI.ContentAlignment.MiddleLeft)
 
-	local txtLOTROPTS = Turbine.UI.Lotro.TextBox();
-	txtLOTROPTS:SetParent( LPWCtr );
-	txtLOTROPTS:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
-	txtLOTROPTS:SetText( _G.LOTROPTS );
-	txtLOTROPTS:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-	txtLOTROPTS:SetPosition( lblLOTROPTS:GetLeft()+lblLOTROPTS:GetWidth()+5, lblLOTROPTS:GetTop()-2 );
-	txtLOTROPTS:SetSize( 80, 20 );
-	txtLOTROPTS:SetMultiline( false );
+	local lpData = _G.ControlData and _G.ControlData.LP
+	local initialPoints = (lpData and lpData.points) or "0"
+	local txtLOTROPTS = CreateInputTextBox(LPWCtr, initialPoints, lblLOTROPTS:GetLeft()+lblLOTROPTS:GetWidth()+5, lblLOTROPTS:GetTop()-2);
 	if PlayerAlign == 2 then txtLOTROPTS:SetBackColor( Color["red"] ); end
 
 	txtLOTROPTS.FocusGained = function( sender, args )
@@ -85,12 +60,7 @@ function frmLOTROPointsWindow()
 		end
 	end
 
-	buttonSave = Turbine.UI.Lotro.Button();
-	buttonSave:SetParent( LPWCtr );
-	buttonSave:SetText( L["PWSave"] );
-	buttonSave:SetSize( buttonSave:GetTextLength() * 10, 15 ); --Auto size with text lenght
-	buttonSave:SetPosition( txtLOTROPTS:GetLeft()+txtLOTROPTS:GetWidth()+5, txtLOTROPTS:GetTop() );
-	--buttonSave:SetEnabled( true );
+	buttonSave = CreateAutoSizedButton(LPWCtr, L["PWSave"], txtLOTROPTS:GetLeft()+txtLOTROPTS:GetWidth()+5, txtLOTROPTS:GetTop())
 
 	buttonSave.Click = function( sender, args )
 		local parsed_text = txtLOTROPTS:GetText();
@@ -99,18 +69,23 @@ function frmLOTROPointsWindow()
 			txtLOTROPTS:SetText( "0" );
 			txtLOTROPTS:Focus();
 			return
-		elseif parsed_text == _G.LOTROPTS then
-			txtLOTROPTS:Focus();
-			return
+		else
+			local lpData = _G.ControlData and _G.ControlData.LP
+			local currentPoints = (lpData and lpData.points) or "0"
+			if parsed_text == currentPoints then
+				txtLOTROPTS:Focus();
+				return
+			end
 		end
 
-		_G.LOTROPTS = txtLOTROPTS:GetText();
+		_G.ControlData.LP = _G.ControlData.LP or {}
+		_G.ControlData.LP.points = txtLOTROPTS:GetText();
 		UpdateLOTROPoints();
 		txtLOTROPTS:Focus();
 	end
 
 	LPWCtr:SetSize( lblLOTROPTS:GetWidth()+txtLOTROPTS:GetWidth()+buttonSave:GetWidth()+10, 20 );
-	_G.wLP:SetSize( LPWCtr:GetWidth()+30, 80 );
+	wLP:SetSize( LPWCtr:GetWidth()+30, 80 );
 
 	txtLOTROPTS:Focus();
 end

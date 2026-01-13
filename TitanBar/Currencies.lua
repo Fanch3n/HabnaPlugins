@@ -391,6 +391,11 @@ _G.currencies = {
       visibleInMonsterPlay = false,
       icon = 0x4125E425,
     },
+    {
+      name = "TatteredShadow",
+      visibleInMonsterPlay = false,
+      icon = 0x41251BDA,
+    },
   },
   byName = {}
 }

@@ -3,83 +3,56 @@
 
 
 function frmGameTimeWindow()
-	-- **v Set some window stuff v**
-	_G.wGT = Turbine.UI.Lotro.Window()
-	_G.wGT:SetPosition( GTWLeft, GTWTop );
-	_G.wGT:SetHeight( 120 );
-	_G.wGT:SetText( L["GTWTitle"] );
-	_G.wGT:SetWantsKeyEvents( true );
-	_G.wGT:SetVisible( true );
-	--_G.wGT:SetZOrder( 2 );
-	_G.wGT:Activate();
+	import(AppDirD .. "WindowFactory")
+	import(AppDirD .. "UIHelpers")
+	local gtData = _G.ControlData.GT
 
-	_G.wGT.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			_G.wGT:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			_G.wGT:SetVisible( not _G.wGT:IsVisible() );
-		end
-	end
+	-- Create window via helper
+	local wGT = CreateControlWindow(
+		"GameTime", "GT",
+		L["GTWTitle"], 200, 120
+	)
 
-	_G.wGT.MouseUp = function( sender, args )
-		settings.GameTime.L = string.format("%.0f", _G.wGT:GetLeft());
-		settings.GameTime.T = string.format("%.0f", _G.wGT:GetTop());
-		GTWLeft, GTWTop = _G.wGT:GetPosition();
-		SaveSettings( false );
-	end
+	-- Initialize UI table
+	_G.ControlData.GT.ui = {
+		window = wGT
+	}
+	local ui = _G.ControlData.GT.ui
 
-	_G.wGT.Closing = function( sender, args ) -- Function for the Upper right X icon
-		_G.wGT:SetWantsKeyEvents( false );
-		_G.wGT = nil;
-		_G.frmGT = nil;
-	end
-	-- **^
-	-- **v 24h clock - Check box v**
 	local GMT = Turbine.UI.Lotro.TextBox();
-	local ShowSTcb = Turbine.UI.Lotro.CheckBox();
-	local Clock24Ctr = Turbine.UI.Lotro.CheckBox();
-	Clock24Ctr:SetParent( _G.wGT );
-	Clock24Ctr:SetPosition( 35, 40 );
-	Clock24Ctr:SetText( L["GTW24h"] );
-	Clock24Ctr:SetSize( Clock24Ctr:GetTextLength() * 8, 20 );
-	--Clock24Ctr:SetVisible( true );
-	--Clock24Ctr:SetEnabled( false );
-	Clock24Ctr:SetChecked( _G.Clock24h );
-	Clock24Ctr:SetForeColor( Color["rustedgold"] );
+	ui.GMT = GMT;
+	local ShowSTcb
+	local ShowBTcb;  -- Forward declaration
+	local Clock24Ctr = CreateAutoSizedCheckBox(wGT, L["GTW24h"], 35, 40, gtData.clock24h == true, 8);
+	ui.Clock24Ctr = Clock24Ctr;
+	ui.ShowSTcb_ref = nil;  -- will be set after creation
+	ui.ShowBTcb_ref = nil;  -- will be set after creation
 
 	Clock24Ctr.CheckedChanged = function( sender, args )
-		_G.Clock24h = Clock24Ctr:IsChecked();
-		settings.GameTime.H = _G.Clock24h;
+		gtData.clock24h = Clock24Ctr:IsChecked() == true
+		settings.GameTime.H = gtData.clock24h
 		SaveSettings( false );
-		if _G.ShowBT then ShowSTcb:SetChecked(ShowBT); UpdateGameTime("bt");
-		elseif _G.ShowST then UpdateGameTime("st");
+		if gtData.showBT then ShowSTcb:SetChecked(gtData.showBT); UpdateGameTime("bt");
+		elseif gtData.showST then UpdateGameTime("st");
 		else UpdateGameTime("gt") end
 	end
-	-- **^
-	-- **v Show server time - Check box v**
-	ShowSTcb:SetParent( _G.wGT );
-	ShowSTcb:SetPosition( 35, Clock24Ctr:GetTop() + 20 );
-	ShowSTcb:SetText( L["GTWSST"] );
-	ShowSTcb:SetSize( ShowSTcb:GetTextLength() * 8, 20 );
-	--ShowSTcb:SetVisible( true );
-	--ShowSTcb:SetEnabled( false );
-	ShowSTcb:SetChecked( _G.ShowST );
-	ShowSTcb:SetForeColor( Color["rustedgold"] );
+
+	ShowSTcb = CreateAutoSizedCheckBox(wGT, L["GTWSST"], 35, Clock24Ctr:GetTop() + 20, gtData.showST == true, 8, 20)
+	ui.ShowSTcb_ref = ShowSTcb;
 
 	ShowSTcb.CheckedChanged = function( sender, args )
-		_G.ShowST = ShowSTcb:IsChecked();
-		if not _G.ShowST then ShowBTcb:SetChecked(false); end
-		settings.GameTime.S = _G.ShowST;
-		_G.UserGMT = GMT:GetText();
+		gtData.showST = ShowSTcb:IsChecked() == true
+		if not gtData.showST then ShowBTcb:SetChecked(false); end
+		settings.GameTime.S = gtData.showST
+		gtData.userGMT = tonumber(GMT:GetText()) or 0
 		SaveSettings( false );
-		if not _G.ShowBT then UpdateGameTime("st"); end
+		if not gtData.showBT then UpdateGameTime("st"); end
 	end
-	-- **^
-	-- **v GMT - Text box v**
+
 	GMT:SetParent( ShowSTcb );
-	GMT:SetText( _G.UserGMT );
+	GMT:SetText( tostring(tonumber(gtData.userGMT) or 0) );
 	GMT:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
-	GMT:SetSize( 30, 20 );
+	GMT:SetSize( Constants.GMT_FIELD_WIDTH, Constants.GMT_FIELD_HEIGHT );
 	--GMT:SetVisible( true );
 	--GMT:SetEnabled( false );
 	GMT:SetForeColor( Color["white"] );
@@ -107,43 +80,39 @@ function frmGameTimeWindow()
 			GMT:SetText( string.sub( parsed_text, 2 ) );
 			return
 		end
-		_G.UserGMT = GMT:GetText();
-		settings.GameTime.M = string.format("%.0f",_G.UserGMT);
+		gtData.userGMT = tonumber(GMT:GetText()) or 0
+		settings.GameTime.M = Constants.FormatInt(gtData.userGMT)
 		SaveSettings( false );
-		if _G.ShowST then
-			if _G.ShowBT then UpdateGameTime("bt");
-			elseif _G.ShowST then UpdateGameTime("st");
+		if gtData.showST then
+			if gtData.showBT then UpdateGameTime("bt");
+			elseif gtData.showST then UpdateGameTime("st");
 			else UpdateGameTime("gt") end
 		end
 	end
-	-- **^
-	-- **v Show both time - Check box v**
-	ShowBTcb = Turbine.UI.Lotro.CheckBox();
-	ShowBTcb:SetParent( _G.wGT );
-	ShowBTcb:SetPosition( 35, ShowSTcb:GetTop() + 20 );
-	ShowBTcb:SetText( L["GTWSBT"] );
-	ShowBTcb:SetSize( ShowBTcb:GetTextLength() * 8.5, 20 );
-	--ShowBTcb:SetVisible( true );
-	--ShowBTcb:SetEnabled( false );
-	ShowBTcb:SetChecked( _G.ShowBT );
-	ShowBTcb:SetForeColor( Color["rustedgold"] );
+
+	ShowBTcb = CreateAutoSizedCheckBox(wGT, L["GTWSBT"], 35, ShowSTcb:GetTop() + 20, gtData.showBT == true);
+	ui.ShowBTcb_ref = ShowBTcb;
 
 	ShowBTcb.CheckedChanged = function( sender, args )
-		_G.ShowBT = ShowBTcb:IsChecked();
-		settings.GameTime.O = _G.ShowBT;
+		gtData.showBT = ShowBTcb:IsChecked() == true
+		settings.GameTime.O = gtData.showBT
 		SaveSettings( false );
-		ShowSTcb:SetChecked(ShowBT);
+		ShowSTcb:SetChecked(gtData.showBT);
 				
-		if _G.ShowBT then UpdateGameTime("bt");
-		elseif _G.ShowST then UpdateGameTime("st");
+		if gtData.showBT then UpdateGameTime("bt");
+		elseif gtData.showST then UpdateGameTime("st");
 		else UpdateGameTime("gt") end
 	end
-	-- **^
 
 	GMT:SetPosition( ShowSTcb:GetWidth() - 65, 0 );
-	_G.wGT:SetWidth( Clock24Ctr:GetWidth() + 60 );
+	wGT:SetWidth( Clock24Ctr:GetWidth() + 60 );
 	if TBLocale == "fr" then
 		GMT:SetPosition( ShowSTcb:GetWidth() - 70, 0 );
-		_G.wGT:SetWidth( ShowSTcb:GetWidth() + 85 );
+		wGT:SetWidth( ShowSTcb:GetWidth() + 85 );
+	end
+
+	-- Handle window close
+	wGT.Closed = function(sender, args)
+		_G.ControlData.GT.ui = nil;
 	end
 end

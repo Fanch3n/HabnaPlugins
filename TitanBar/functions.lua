@@ -2,6 +2,8 @@
 -- Written By Habna
 -- rewritten by many
 
+import(AppDirD .. "UIHelpers")
+
 function AddCallback(object, event, callback)
 	if object[event] == nil then
 		object[event] = callback;
@@ -39,10 +41,7 @@ function ApplySkin() --Tooltip skin
 
 	-- Create and position tooltip corners and edges
 	local function createTooltipPart(name, x, y, width, height, background)
-		local part = Turbine.UI.Control()
-		part:SetParent(ToolTipWin)
-		part:SetPosition(x, y)
-		part:SetSize(width, height)
+		local part = CreateControl(Turbine.UI.Control, ToolTipWin, x, y, width, height)
 		part:SetBackground(background)
 	end
 
@@ -57,45 +56,34 @@ function ApplySkin() --Tooltip skin
 	createTooltipPart("botRightCorner", ToolTipWin:GetWidth() - 36, ToolTipWin:GetHeight() - 36, 36, 36, Box.BottomRight)
 end
 
---**v Create a ToolTip Window v**
 function createToolTipWin( xOffset, yOffset, xSize, ySize, side, header, text1,
         text2, text3 )
 	local txt = {text1, text2, text3};
 	_G.ToolTipWin = Turbine.UI.Window();
 	_G.ToolTipWin:SetSize( xSize, ySize );
 	--_G.ToolTipWin:SetMouseVisible( false );
-	_G.ToolTipWin:SetZOrder( 1 );
+	_G.ToolTipWin:SetZOrder( Constants.ZORDER_TOOLTIP );
 	_G.ToolTipWin.xOffset = xOffset;
 	_G.ToolTipWin.yOffset = yOffset;
 	--_G.ToolTipWin:SetBackColor( Color["black"] ); --Debug purpose
 
 	ApplySkin();
 
-	--**v Text in Header v**
-	lblheader = Turbine.UI.Label();
-	lblheader:SetParent( _G.ToolTipWin );
-	lblheader:SetPosition( 40, 7 ); --10
-	lblheader:SetSize( xSize, ySize );
+	local lblheader = CreateControl(Turbine.UI.Label, _G.ToolTipWin, 40, 7, xSize, ySize);
 	lblheader:SetForeColor( Color["green"] );
 	lblheader:SetFont(Turbine.UI.Lotro.Font.Verdana16);
 	lblheader:SetText( header );
-	--**^
 	
 	local YPos = 25;
-	
-	--**v Text v**
+
 	for i = 1, #txt do
-		local lbltext = Turbine.UI.Label();
-		lbltext:SetParent( _G.ToolTipWin );
-		lbltext:SetPosition( 40, YPos ); --10
-		lbltext:SetSize( xSize, 15 );
+		local lbltext = CreateControl(Turbine.UI.Label, _G.ToolTipWin, 40, YPos, xSize, 15);
 		lbltext:SetForeColor( Color["white"] );
 		lbltext:SetFont(Turbine.UI.Lotro.Font.Verdana14);
 		lbltext:SetText( txt[i] );
 		YPos = YPos + 15;
 	end
-	--**^
-
+	
 	return _G.ToolTipWin;
 end
 
@@ -106,6 +94,16 @@ function ShowToolTipWin(ToShow)
 	local bblTo, x, y= "left", -5, -15
 	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
 	local h = 80
+	local TTW = nil
+
+	local headerKeys = {
+		BI = "MBI",
+		GT = "GTh",
+		VT = "MVault",
+		SS = "MStorage",
+		DN = "MDayNight",
+		LP = "LotroPointsh",
+	}
 
 	-- TODO if DI (DurIcon) is replaced this needs to change
 	if TBLocale == "fr" then w = 315;
@@ -123,31 +121,15 @@ function ShowToolTipWin(ToShow)
 		y = h
 	end
 
-	if ToShow == "BI" then -- Bag Infos
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MBI"], L["EIt1"], L["EIt2"], L["EIt3"] );
-	elseif ToShow == "GT" then -- Game Time
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["GTh"], L["EIt1"], 
-            L["EIt2"], L["EIt3"] );
-	elseif ToShow == "VT" then -- Vault
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MVault"], L["EIt1"], 
-            L["EIt2"], L["EIt3"] );
-	elseif ToShow == "SS" then -- Shared Storage
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MStorage"], L["EIt1"], 
-            L["EIt2"], L["EIt3"] );
---[[	elseif ToShow == "BK" then -- Bank
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MBank"], L["EIt1"], 
-            L["EIt2"], L["EIt3"] ); --]]
-	elseif ToShow == "DN" then -- Day & Night
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["MDayNight"], L["EIt1"], 
-            L["EIt2"], L["EIt3"] );
-	elseif ToShow == "LP" then -- LOTRO points
-		TTW = createToolTipWin( x, y, w, h, bblTo, L["LotroPointsh"], L["EIt1"], 
-            L["EIt2"], L["EIt3"] );
+	local headerKey = headerKeys[ToShow]
+	if headerKey then
+		TTW = createToolTipWin(x, y, w, h, bblTo, L[headerKey], L["EIt1"], L["EIt2"], L["EIt3"])
 	elseif ToShow == "DP" or ToShow == "PL" or _G.currencies.byName[ToShow] then
 		h = 65;
-		TTW = createToolTipWin( x, y, w, h, bblTo, L[ToShow .. "h"], L["EIt2"], L["EIt3"] );
+		TTW = createToolTipWin(x, y, w, h, bblTo, L[ToShow .. "h"], L["EIt2"], L["EIt3"])
 	else
 		write(ToShow .. " not recognized for Tooltip creation, add in functions.lua")
+		return
 	end
 
 	_G.ToolTipWin:SetPosition(
@@ -156,61 +138,48 @@ function ShowToolTipWin(ToShow)
 	)
 	_G.ToolTipWin:SetVisible(true);
 end
---**^
---**v Update Wallet on TitanBar v**
+
 function UpdateWallet()
-	AjustIcon( "WI" );
+	AdjustIcon( "WI" );
 end
---**^
---**v Update money on TitanBar v**
+
 function UpdateMoney()
-	if _G.MIWhere == 1 then
+	local where = (_G.ControlData and _G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE
+	if where == Constants.Position.TITANBAR then
+		local moneyData = (_G.ControlData and _G.ControlData.Money) or {}
+		local showTotal = moneyData.stm == true
 		local money = GetPlayerAttributes():GetMoney();
-		local gold, silver, copper = DecryptMoney(money);
+	local gold, silver, copper = DecryptMoney(money);
 	
-		MI[ "GLbl" ]:SetText( string.format( "%.0f", gold ) );
-		MI[ "SLbl" ]:SetText( string.format( "%.0f", silver ) );
-		MI[ "CLbl" ]:SetText( string.format( "%.0f", copper ) );
+	_G.ControlData.Money.controls[ "GLbl" ]:SetText( string.format( "%.0f", gold ) );
+	_G.ControlData.Money.controls[ "SLbl" ]:SetText( string.format( "%.0f", silver ) );
+	_G.ControlData.Money.controls[ "CLbl" ]:SetText( string.format( "%.0f", copper ) );	SavePlayerMoney( false );
 
-		SavePlayerMoney( false );
+	_G.ControlData.Money.controls[ "GLbl" ]:SetSize( _G.ControlData.Money.controls[ "GLbl" ]:GetTextLength() * NM, CTRHeight ); 
+        --Auto size with text length
+	_G.ControlData.Money.controls[ "SLbl" ]:SetSize( 4 * NM, CTRHeight ); --Auto size with text length
+	_G.ControlData.Money.controls[ "CLbl" ]:SetSize( 3 * NM, CTRHeight ); --Auto size with text length	_G.ControlData.Money.controls[ "GLblT" ]:SetVisible( showTotal );
+	_G.ControlData.Money.controls[ "GLbl" ]:SetVisible( not showTotal );	_G.ControlData.Money.controls[ "SLblT" ]:SetVisible( showTotal );
+	_G.ControlData.Money.controls[ "SLbl" ]:SetVisible( not showTotal );
 
-		MI[ "GLbl" ]:SetSize( MI[ "GLbl" ]:GetTextLength() * NM, CTRHeight ); 
-            --Auto size with text length
-		MI[ "SLbl" ]:SetSize( 4 * NM, CTRHeight ); --Auto size with text length
-		MI[ "CLbl" ]:SetSize( 3 * NM, CTRHeight ); --Auto size with text length
-
-		MI[ "GLblT" ]:SetVisible( _G.STM );
-		MI[ "GLbl" ]:SetVisible( not _G.STM );
-
-		MI[ "SLblT" ]:SetVisible( _G.STM );
-		MI[ "SLbl" ]:SetVisible( not _G.STM );
-
-		MI[ "CLblT" ]:SetVisible( _G.STM );
-		MI[ "CLbl" ]:SetVisible( not _G.STM );
-	
-		if _G.STM then --Add Total Money on TitanBar Money control.
-			local strData = L[ "MIWTotal" ] .. ": ";
-			local strData1 = string.format( "%.0f", GoldTot );
-			local strData2 = L[ "You" ] .. MI[ "GLbl" ]:GetText();
-			local TextLen = string.len( strData ) * TM + string.len( strData1 ) * NM;
-			if TBFontT == "TrajanPro25" then TextLen = TextLen + 7; end
-			MI[ "GLblT" ]:SetText(strData .. strData1 .. "\n" .. strData2 .. " ");
-			MI[ "GLblT" ]:SetSize( TextLen, CTRHeight );
-
-			strData1 = string.format( "%.0f", SilverTot );
-			strData2 = MI[ "SLbl" ]:GetText();
-			TextLen = 4 * NM + 6;
-			MI[ "SLblT" ]:SetText( strData1 .. "\n" .. strData2 .. " " );
-			MI[ "SLblT" ]:SetSize( TextLen, CTRHeight );
-
-			strData1 = string.format( "%.0f", CopperTot );
-			strData2 = MI[ "CLbl" ]:GetText();
-			TextLen = 3 * NM + 6;
-			MI[ "CLblT" ]:SetText( strData1 .. "\n" .. strData2 .. " " );
-			MI[ "CLblT" ]:SetSize( TextLen, CTRHeight );
-		end
-
-		--Statistics section
+	_G.ControlData.Money.controls[ "CLblT" ]:SetVisible( showTotal );
+	_G.ControlData.Money.controls[ "CLbl" ]:SetVisible( not showTotal );	if showTotal then --Add Total Money on TitanBar Money control.
+		local strData = L[ "MIWTotal" ] .. ": ";
+		local strData1 = string.format( "%.0f", GoldTot );
+		local strData2 = L[ "You" ] .. _G.ControlData.Money.controls[ "GLbl" ]:GetText();
+		local TextLen = string.len( strData ) * TM + string.len( strData1 ) * NM;
+		if TBFontT == "TrajanPro25" then TextLen = TextLen + 7; end
+		_G.ControlData.Money.controls[ "GLblT" ]:SetText(strData .. strData1 .. "\n" .. strData2 .. " ");
+		_G.ControlData.Money.controls[ "GLblT" ]:SetSize( TextLen, CTRHeight );		strData1 = string.format( "%.0f", SilverTot );
+		strData2 = _G.ControlData.Money.controls[ "SLbl" ]:GetText();
+		TextLen = 4 * NM + 6;
+		_G.ControlData.Money.controls[ "SLblT" ]:SetText( strData1 .. "\n" .. strData2 .. " " );
+		_G.ControlData.Money.controls[ "SLblT" ]:SetSize( TextLen, CTRHeight );		strData1 = string.format( "%.0f", CopperTot );
+		strData2 = _G.ControlData.Money.controls[ "CLbl" ]:GetText();
+		TextLen = 3 * NM + 6;
+		_G.ControlData.Money.controls[ "CLblT" ]:SetText( strData1 .. "\n" .. strData2 .. " " );
+		_G.ControlData.Money.controls[ "CLblT" ]:SetSize( TextLen, CTRHeight );
+	end		--Statistics section
 		local PN = Player:GetName();
 		local bIncome = true;
 		bSumSSS, bSumSTS = true, true;
@@ -253,22 +222,22 @@ function UpdateMoney()
 		Turbine.PluginData.Save( 
             Turbine.DataScope.Server, "TitanBarPlayerWalletStats", walletStats);
 	
-		AjustIcon( "MI" );
+		AdjustIcon( "MI" );
 	end
 end
---**^
---**v Update LOTRO points on TitanBar v**
+
 function UpdateLOTROPoints()
-	if _G.LPWhere == Position.TITANBAR then
-		LP["Lbl"]:SetText(_G.LOTROPTS)
-		LP["Lbl"]:SetSize(LP["Lbl"]:GetTextLength() * NM, CTRHeight)
-		AjustIcon("LP")
+	local where = (_G.ControlData and _G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE
+	if where == Constants.Position.TITANBAR then
+		local lpData = _G.ControlData and _G.ControlData.LP
+		local points = (lpData and tonumber(lpData.points)) or 0
+		_G.ControlData.LP.controls["Lbl"]:SetText(tostring(points))
+		_G.ControlData.LP.controls["Lbl"]:SetSize(_G.ControlData.LP.controls["Lbl"]:GetTextLength() * NM, CTRHeight)
+		AdjustIcon("LP")
 	end
 	SavePlayerLOTROPoints()
 end
---**^
--- AU3 MARKER 2 - DO NOT REMOVE
---**v Update currency on TitanBar v**
+
 function UpdateCurrencyDisplay(currencyName)
 	if _G.CurrencyData[currencyName].Where == 1 then
 		if currencyName == "DestinyPoints" then
@@ -277,11 +246,10 @@ function UpdateCurrencyDisplay(currencyName)
 			_G.CurrencyData[currencyName].Lbl:SetText(GetCurrency(L["M"..currencyName]))
 		end
 		_G.CurrencyData[currencyName].Lbl:SetSize(_G.CurrencyData[currencyName].Lbl:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon(currencyName);
+		AdjustIcon(currencyName);
 	end
 end
---**^
---**v Update backpack infos on TitanBar v**
+
 function UpdateBackpackInfos()
 	local max = backpack:GetSize();
 	local freeslots = 0;
@@ -290,20 +258,24 @@ function UpdateBackpackInfos()
 		if ( backpack:GetItem( i ) == nil ) then freeslots = freeslots + 1; end
 	end
 
-	if _G.BIUsed and _G.BIMax then 
-        BI[ "Lbl" ]:SetText( max - freeslots .. "/" .. max );
-	elseif _G.BIUsed and not _G.BIMax then 
-        BI[ "Lbl" ]:SetText( max - freeslots );
-	elseif not _G.BIUsed and _G.BIMax then 
-        BI[ "Lbl" ]:SetText( freeslots .. "/" .. max );
-	elseif not _G.BIUsed and not _G.BIMax then 
-        BI[ "Lbl" ]:SetText( freeslots ); 
+	local biData = (_G.ControlData and _G.ControlData.BI) or {}
+	local showUsed = (biData.used ~= false) -- default true
+	local showMax = (biData.max ~= false) -- default true
+
+	if showUsed and showMax then 
+        _G.ControlData.BI.controls[ "Lbl" ]:SetText( max - freeslots .. "/" .. max );
+	elseif showUsed and not showMax then 
+        _G.ControlData.BI.controls[ "Lbl" ]:SetText( max - freeslots );
+	elseif (not showUsed) and showMax then 
+        _G.ControlData.BI.controls[ "Lbl" ]:SetText( freeslots .. "/" .. max );
+	elseif (not showUsed) and (not showMax) then 
+        _G.ControlData.BI.controls[ "Lbl" ]:SetText( freeslots ); 
     end
-	BI[ "Lbl" ]:SetSize( BI[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
+	_G.ControlData.BI.controls[ "Lbl" ]:SetSize( _G.ControlData.BI.controls[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
 
 	--Change bag icon with capacity
 	local i = nil;
-	usedslots = max - freeslots;
+	local usedslots = max - freeslots;
 	local bi = round((( usedslots / max ) * 100));
 
 	if bi >= 0 and bi <= 15 then i = 1; end-- 0% to 15% Full bag
@@ -313,13 +285,11 @@ function UpdateBackpackInfos()
 	if bi == 100 then i = 5; end-- 100% Full bag
 	--if bi >= 101 then BagIcon = 0x41007ecf; end-- over loaded bag
 	
-	BI[ "Icon" ]:SetBackground( resources.BagIcon[i] );
+	_G.ControlData.BI.controls[ "Icon" ]:SetBackground( resources.BagIcon[i] );
 
-	AjustIcon( "BI" );
+	AdjustIcon( "BI" );
 end
---**^
 
---**v Update player infos on TitanBar v**
 function UpdatePlayersInfos()
 	--Race
 	PlayerRaceIdIs = Player:GetRace();
@@ -338,18 +308,17 @@ function UpdatePlayersInfos()
 	end
 
 	--Update visuale
-	PI[ "Icon" ]:SetBackground(resources.PlayerIconCode[PlayerClassIdIs]) -- if class icon is unknown in the resource then background image is set to nil: nothing visible
+	_G.ControlData.PI.controls[ "Icon" ]:SetBackground(resources.PlayerIconCode[PlayerClassIdIs]) -- if class icon is unknown in the resource then background image is set to nil: nothing visible
 	
-	PI["Lvl"]:SetText(Player:GetLevel())
-	PI["Lvl"]:SetSize(PI["Lvl"]:GetTextLength() * NM+1, CTRHeight)
-	PI["Name"]:SetPosition(PI["Lvl"]:GetLeft() + PI["Lvl"]:GetWidth() + 5, 0)
-	--PI["Name"]:SetText("OneVeryLongCharacterName") --Debug purpose
-	PI["Name"]:SetText(Player:GetName())
-	PI["Name"]:SetSize(PI["Name"]:GetTextLength() * TM, CTRHeight);
+	_G.ControlData.PI.controls["Lvl"]:SetText(tostring(Player:GetLevel()))
+	_G.ControlData.PI.controls["Lvl"]:SetSize(_G.ControlData.PI.controls["Lvl"]:GetTextLength() * NM+1, CTRHeight)
+	_G.ControlData.PI.controls["Name"]:SetPosition(_G.ControlData.PI.controls["Lvl"]:GetLeft() + _G.ControlData.PI.controls["Lvl"]:GetWidth() + 5, 0)
+	--_G.ControlData.PI.controls["Name"]:SetText("OneVeryLongCharacterName") --Debug purpose
+	_G.ControlData.PI.controls["Name"]:SetText(Player:GetName())
+	_G.ControlData.PI.controls["Name"]:SetSize(_G.ControlData.PI.controls["Name"]:GetTextLength() * TM, CTRHeight);
 
-	AjustIcon("PI");
+	AdjustIcon("PI");
 end
---**^
 
 function ChangeWearState(value)
 	-- Set new wear state in table
@@ -366,7 +335,6 @@ function ChangeWearState(value)
 	UpdateDurabilityInfos();
 end
 
---**v Update Player Durability infos on TitanBar v**
 function UpdateDurabilityInfos()
 	local TDPts = 0;
 	for i = 1, 20 do
@@ -380,49 +348,39 @@ function UpdateDurabilityInfos()
 	if TDPts >= 0 and TDPts <= 33 then DurIcon = 1; end--0x41007e29
 	if TDPts >= 34 and TDPts <= 66 then DurIcon = 2; end--0x41007e29
 	if TDPts >= 67 and TDPts <= 100 then DurIcon = 3; end--0x41007e28
-	DI[ "Icon" ]:SetBackground( resources.Durability[DurIcon] );
+	_G.ControlData.DI.controls[ "Icon" ]:SetBackground( resources.Durability[DurIcon] );
 
 	TDPts = string.format( "%.0f", TDPts );
-	DI[ "Lbl" ]:SetText( TDPts .. "%" );
-	DI[ "Lbl" ]:SetSize( DI[ "Lbl" ]:GetTextLength() * NM + 5, CTRHeight ); 
-	AjustIcon( "DI" );
+	_G.ControlData.DI.controls[ "Lbl" ]:SetText( TDPts .. "%" );
+	_G.ControlData.DI.controls[ "Lbl" ]:SetSize( _G.ControlData.DI.controls[ "Lbl" ]:GetTextLength() * NM + 5, CTRHeight ); 
+	AdjustIcon( "DI" );
 end
---**^
---**v Update equipment infos on TitanBar v**
+
 function UpdateEquipsInfos()
     TotalItemsScore = 0;
     for i = 1,20 do TotalItemsScore = TotalItemsScore + itemEquip[i].Score; end
+		AdjustIcon("EI")
 end
---**^
---**v Update Track Items on TitanBar v**
+
 function UpdateTrackItems()
-	AjustIcon( "TI" );
+	AdjustIcon( "TI" );
 end
---**^
---**v Update Infamy points on TitanBar v**
+
 function UpdateInfamy()
 	--Change Rank icon with infamy points
-	IF[ "Icon" ]:SetBackground( InfIcon[tonumber(settings.Infamy.K)] );
+	_G.ControlData.IF.controls[ "Icon" ]:SetBackground( InfIcon[tonumber(settings.Infamy.K)] );
 	
-	AjustIcon( "IF" );
+	AdjustIcon( "IF" );
 end
---**^
---**v Update Vault on TitanBar v**
+
 function UpdateVault()
-	AjustIcon( "VT" );
+	AdjustIcon( "VT" );
 end
---**^
---**v Update Shared Storage on TitanBar v**
+
 function UpdateSharedStorage()
-	AjustIcon( "SS" );
+	AdjustIcon( "SS" );
 end
---**^
---**v Update Bank on TitanBar v**
-function UpdateBank()
-	AjustIcon( "BK" );
-end
---**^
---**v Update Day & Night time on TitanBar v**
+
 function UpdateDayNight()
 	local cdate = Turbine.Engine.GetDate();
 	local chour = cdate.Hour;
@@ -436,45 +394,49 @@ function UpdateDayNight()
 	DNLen1 = string.len(DNTime) * TM;
 	DNLen = DNLen1;
 	
-	if _G.DNNextT then --Show next day & night time
+	local dnData = (_G.ControlData and _G.ControlData.DN) or {}
+	if dnData.next ~= false then --Show next day & night time
 		if totalseconds >= 60 then NDNTime = cdminutes .. " min: " .. ntimer;
 		else NDNTime = totalseconds .. " sec: " .. ntimer; end
 
 		local DNLen2 = string.len(NDNTime) * TM;
 		if DNLen2 > DNLen1 then DNLen = DNLen2; end
 
-		DN[ "Lbl" ]:SetText( DNTime .. "\n" .. NDNTime );
+		_G.ControlData.DN.controls[ "Lbl" ]:SetText( DNTime .. "\n" .. NDNTime );
 	else
-		DN[ "Lbl" ]:SetText( DNTime );
+		_G.ControlData.DN.controls[ "Lbl" ]:SetText( DNTime );
 	end
 
-	DN[ "Lbl" ]:SetSize( DNLen, CTRHeight ); --Auto size with text length
+	_G.ControlData.DN.controls[ "Lbl" ]:SetSize( DNLen, CTRHeight ); --Auto size with text length
 	--DN[ "Lbl" ]:SetBackColor( Color["white"] ); -- Debug purpose
 
-	if sDay == "day" then DN[ "Icon" ]:SetBackground( resources.Sun );
+	if sDay == "day" then _G.ControlData.DN.controls[ "Icon" ]:SetBackground( resources.Sun );
         -- Sun in-game icon (0x4101f898 or 0x4101f89b)
-	else DN[ "Icon" ]:SetBackground( resources.Moon ); end -- Moon in-game icon
+	else _G.ControlData.DN.controls[ "Icon" ]:SetBackground( resources.Moon ); end -- Moon in-game icon
 
-	AjustIcon( "DN" );
+	AdjustIcon( "DN" );
 end
---**^
---**v Update Reputation on TitanBar v**
+
 function UpdateReputation()
-	AjustIcon( "RP" );
+	AdjustIcon( "RP" );
 end
---**^
---**v Update Player Location on TitanBar v**
+
 function UpdatePlayerLoc( value )
 	fontMetric=FontMetric();
     fontMetric:SetFont(_G.TBFont);
-    PL[ "Lbl" ]:SetText( value );
-	PL[ "Lbl" ]:SetSize( fontMetric:GetTextWidth(value,fontMetric.FontSize), CTRHeight );
+	_G.ControlData.PL.controls[ "Lbl" ]:SetText( value );
+	_G.ControlData.PL.controls[ "Lbl" ]:SetSize( fontMetric:GetTextWidth(value,fontMetric.FontSize), CTRHeight );
 
-	PL[ "Ctr" ]:SetSize( PL[ "Lbl" ]:GetWidth(), CTRHeight );
+	_G.ControlData.PL.controls[ "Ctr" ]:SetSize( _G.ControlData.PL.controls[ "Lbl" ]:GetWidth(), CTRHeight );
 end
---**^
---**v Update game time on TitanBar v**
+
 function UpdateGameTime(str)
+	local gtData = _G.ControlData and _G.ControlData.GT
+	local clock24h = gtData and gtData.clock24h == true
+	local showST = gtData and gtData.showST == true
+	local showBT = gtData and gtData.showBT == true
+	local userGMT = (gtData and tonumber(gtData.userGMT)) or 0
+
 	local cdate = Turbine.Engine.GetDate();
 	local chour = cdate.Hour;
 	local cminute = cdate.Minute;
@@ -482,11 +444,20 @@ function UpdateGameTime(str)
 	TheTime = nil;
 	TextLen = nil;
 
-	if cminute < 10 then cminute = "0" .. cminute; end
+	local function formatTime(hour, minute)
+		local suffix = "";
+		if not clock24h then
+			if hour == 12 then suffix = "pm";
+			elseif hour >= 13 then hour = hour - 12; suffix = "pm";
+			else if hour == 0 then hour = 12; end suffix = "am"; end
+		end
+
+		return hour .. ":" .. string.format("%02d", minute) .. suffix;
+	end
 
 	if str == "st" then
-		if _G.ShowST then
-			chour = chour + _G.UserGMT;
+		if showST then
+			chour = chour + userGMT;
 			if chour < 0 then
 				chour = 24 + chour;
 				if chour == 0 then chour = 24; end
@@ -494,81 +465,62 @@ function UpdateGameTime(str)
 				chour = 24 - chour;
 			end
 		end
-		--
-	
-		-- Convert 24h to 12h format
-		if not _G.Clock24h then
-			if chour == 12 then ampm = "pm";
-			elseif chour >= 13 then chour = chour - 12; ampm = "pm";
-			else if chour == 0 then chour = 12; end ampm = "am"; end
-		end
 
-		_G.STime = chour .. ":" .. cminute .. ampm;
-		TheTime = _G.STime;
+		gtData.stime = formatTime(chour, cminute);
+		TheTime = gtData.stime;
 		TextLen = string.len(TheTime) * NM;
 	elseif str == "gt" then
 		--write("Game Time");
-		-- Convert 24h to 12h format
-		if not _G.Clock24h then
-			if chour == 12 then ampm = "pm";
-			elseif chour >= 13 then chour = chour - 12; ampm = "pm";
-			else if chour == 0 then chour = 12; end ampm = "am"; end
-		end
-
-		_G.GTime = chour .. ":" .. cminute .. ampm;
-		TheTime = _G.GTime;
+		gtData.gtime = formatTime(chour, cminute);
+		TheTime = gtData.gtime;
 		TextLen = string.len(TheTime) * TM;
 	elseif str == "bt" then
 		--write("Both Time");
 		UpdateGameTime("st");
 		UpdateGameTime("gt");
-		TheTime = L["GTWST"] .. _G.STime;
+		TheTime = L["GTWST"] .. gtData.stime;
 		TextLen = string.len(TheTime) * NM;
 		TheTime = 
-            L["GTWST"] .. _G.STime .. "\n" .. L["GTWRT"] .. _G.GTime .. " ";
+            L["GTWST"] .. gtData.stime .. "\n" .. L["GTWRT"] .. gtData.gtime .. " ";
 	end
 	
-	GT[ "Lbl" ]:SetText( TheTime );
-	GT[ "Lbl" ]:SetSize( TextLen, CTRHeight ); --Auto size with text length
-	GT[ "Ctr" ]:SetSize( GT[ "Lbl" ]:GetWidth(), CTRHeight );
+	_G.ControlData.GT.controls[ "Lbl" ]:SetText( TheTime );
+	_G.ControlData.GT.controls[ "Lbl" ]:SetSize( TextLen, CTRHeight ); --Auto size with text length
+	_G.ControlData.GT.controls[ "Ctr" ]:SetSize( _G.ControlData.GT.controls[ "Lbl" ]:GetWidth(), CTRHeight );
 end
---**^
 
-
--- **v Change back color v**
 function ChangeColor(tColor)
 	if BGWToAll then
 		TB["win"]:SetBackColor( tColor );
-		if ShowWallet then WI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowMoney then MI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowBagInfos then BI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowPlayerInfos then PI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowEquipInfos then EI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowDurabilityInfos then DI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowTrackItems then TI[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowInfamy then IF[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowVault then VT[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowSharedStorage then SS[ "Ctr" ]:SetBackColor( tColor ); end
-		--if ShowBank then BK[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowDayNight then DN[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowReputation then RP[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowLOTROPoints then LP[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowPlayerLoc then PL[ "Ctr" ]:SetBackColor( tColor ); end
-		if ShowGameTime then GT[ "Ctr" ]:SetBackColor( tColor ); end
+		
+		-- Apply to all standard controls via ControlRegistry
+		_G.ControlRegistry.ForEach(function(controlId, data)
+			if data.show and data.ui.control then
+				data.ui.control:SetBackColor(tColor)
+			end
+		end)
+		
+		-- Apply to all currency controls
 		for k,v in pairs(_G.currencies.list) do
 			if _G.CurrencyData[v.name].IsVisible then
 				_G.CurrencyData[v.name].Ctr:SetBackColor(tColor)
 			end
 		end
 	else
-		if sFrom == "TitanBar" then TB["win"]:SetBackColor( tColor )
-		elseif sFrom == "Money" then MI[ "Ctr" ]:SetBackColor( tColor )
+		if sFrom == "TitanBar" then 
+			TB["win"]:SetBackColor( tColor )
 		else
-			_G.CurrencyData[sFrom].Ctr:SetBackColor(tColor)
+			-- Try to get from ControlRegistry first
+			local data = _G.ControlRegistry.Get(sFrom)
+			if data and data.ui.control then
+				data.ui.control:SetBackColor(tColor)
+			elseif _G.CurrencyData[sFrom] then
+				-- Fall back to currency data
+				_G.CurrencyData[sFrom].Ctr:SetBackColor(tColor)
+			end
 		end
 	end
 end
---**^
 
 function LoadEquipmentTable()
 	Slots = {
@@ -617,8 +569,15 @@ end
 ---@param controlName string
 function KeepIconControlInBar(controlName)
 	local container = nil;
-	if (_G[controlName] and _G[controlName]["Ctr"]) then container = _G[controlName];
-	elseif (_G.CurrencyData[controlName] and _G.CurrencyData[controlName].Ctr) then container = _G.CurrencyData[controlName];
+	
+	-- Try to find the control in ControlData first
+	if _G.ControlData and _G.ControlData[controlName] and _G.ControlData[controlName].controls then
+		container = _G.ControlData[controlName].controls
+	-- Special case for MI which is stored as "Money"
+	elseif controlName == "MI" and _G.ControlData and _G.ControlData.Money and _G.ControlData.Money.controls then
+		container = _G.ControlData.Money.controls
+	elseif (_G.CurrencyData[controlName] and _G.CurrencyData[controlName].Ctr) then 
+		container = _G.CurrencyData[controlName];
 	end
 
 	if (container and container["Ctr"]) then
@@ -640,110 +599,103 @@ function KeepIconControlInBar(controlName)
 	end
 end
 
-function AjustIcon(str)
+function AdjustIcon(str)
 	--if TBHeight > 30 then CTRHeight = 30; end 
     --Stop ajusting icon size if TitanBar height is > 30px
 	--CTRHeight=TBHeight;
 	local Y = -1 - ((TBIconSize - CTRHeight) / 2);
 
-	if str == "WI" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition( 0, Y );
-		_G[str][ "Ctr" ]:SetSize( TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "MI" then
+	local function layoutIcon(icon, ctr, iconLeft, iconTop, ctrWidth)
+		icon:SetStretchMode( 1 );
+		icon:SetPosition( iconLeft, iconTop );
+		ctr:SetSize( ctrWidth, CTRHeight );
+		icon:SetSize( TBIconSize, TBIconSize );
+		icon:SetStretchMode( 3 );
+	end
+
+	if str == "MI" then
+		local moneyData = (_G.ControlData and _G.ControlData.Money) or {}
 		local t = "" 
-        if _G.STM then t = "T"; end 
-        local p = { "G", "S", "C" }; --prefix for Gold, Silver, Copper controls
-        local setleft = 0;
-        for i = 1,3 do 
-            local index = p[i] .. "Lbl" .. t;
-            MI[p[i] .. "Ctr"]:SetLeft(setleft);
-            local getright = MI[index]:GetLeft() + MI[index]:GetWidth();
-            MI[p[i] .. "Icon"]:SetStretchMode(1);
-		    MI[p[i] .. "Icon"]:SetPosition(getright - 4, Y + 1 );
-		    MI[p[i] .. "Ctr"]:SetSize(getright + TBIconSize, CTRHeight);
-            MI[p[i] .. "Icon"]:SetSize( TBIconSize, TBIconSize );
-		    MI[p[i] .. "Icon"]:SetStretchMode( 3 );
-            setleft = MI[p[i].."Ctr"]:GetLeft() + MI[p[i].."Ctr"]:GetWidth();
-        end
-		MI[ "Ctr" ]:SetSize( MI["GCtr"]:GetWidth() + MI["SCtr"]:GetWidth() + 
-            MI["CCtr"]:GetWidth(), CTRHeight );
-	elseif str == "DI" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition( _G[str][ "Lbl" ]:GetLeft() + _G[str][ "Lbl" ]:GetWidth(), Y );
-		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "SP" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition( _G[str][ "Lbl" ]:GetLeft() + _G[str][ "Lbl" ]:GetWidth()-2, Y );
-		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "BI" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition( _G[str][ "Lbl" ]:GetLeft() + _G[str][ "Lbl" ]:GetWidth()+3, Y+1 );
-		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "PI" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition( _G[str][ "Name" ]:GetLeft() + _G[str][ "Name" ]:GetWidth()+3, Y );
-		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "TI" or str == "VT" or str == "SS" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition( 0, Y );
-		_G[str][ "Ctr" ]:SetSize( TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "IF" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition( 0, Y );
-		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
---[[	elseif str == "BK" then
-		BK[ "Icon" ]:SetStretchMode( 1 );
-		BK[ "Icon" ]:SetPosition( 0, Y );
-		BK[ "Ctr" ]:SetSize( TBIconSize, CTRHeight );
-		BK[ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		BK[ "Icon" ]:SetStretchMode( 3 ); --]]
-	elseif str == "DN" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition(_G[str][ "Lbl" ]:GetLeft() + _G[str][ "Lbl" ]:GetWidth(), Y+1);
-		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "RP" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition( 0, Y + 2 );
-		_G[str][ "Ctr" ]:SetSize( TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
-	elseif str == "LP" then
-		_G[str][ "Icon" ]:SetStretchMode( 1 );
-		_G[str][ "Icon" ]:SetPosition(_G[str][ "Lbl" ]:GetLeft()+_G[str][ "Lbl" ]:GetWidth()+2, Y+1);
-		_G[str][ "Ctr" ]:SetSize( _G[str][ "Icon" ]:GetLeft() + TBIconSize, CTRHeight );
-		_G[str][ "Icon" ]:SetSize( TBIconSize, TBIconSize );
-		_G[str][ "Icon" ]:SetStretchMode( 3 );
+		if moneyData.stm == true then t = "T"; end
+			local p = { "G", "S", "C" }; --prefix for Gold, Silver, Copper controls
+			local setleft = 0;
+			for i = 1,3 do
+				local index = p[i] .. "Lbl" .. t;
+				_G.ControlData.Money.controls[p[i] .. "Ctr"]:SetLeft(setleft);
+				local getright = _G.ControlData.Money.controls[index]:GetLeft() + _G.ControlData.Money.controls[index]:GetWidth();
+				_G.ControlData.Money.controls[p[i] .. "Icon"]:SetStretchMode(1);
+				_G.ControlData.Money.controls[p[i] .. "Icon"]:SetPosition(getright - 4, Y + 1 );
+				_G.ControlData.Money.controls[p[i] .. "Ctr"]:SetSize(getright + TBIconSize, CTRHeight);
+				_G.ControlData.Money.controls[p[i] .. "Icon"]:SetSize( TBIconSize, TBIconSize );
+				_G.ControlData.Money.controls[p[i] .. "Icon"]:SetStretchMode( 3 );
+				setleft = _G.ControlData.Money.controls[p[i].."Ctr"]:GetLeft() + _G.ControlData.Money.controls[p[i].."Ctr"]:GetWidth();
+			end
+			_G.ControlData.Money.controls[ "Ctr" ]:SetSize(_G.ControlData.Money.controls["GCtr"]:GetWidth() + _G.ControlData.Money.controls["SCtr"]:GetWidth() + 
+            _G.ControlData.Money.controls["CCtr"]:GetWidth(), CTRHeight );
 	elseif (_G.CurrencyData[str] and _G.CurrencyData[str].Icon) then
-		_G.CurrencyData[str].Icon:SetStretchMode(1);
-		if str == "DestinyPoints" then
-			_G.CurrencyData[str].Icon:SetPosition(
-				_G.CurrencyData[str].Lbl:GetLeft() + _G.CurrencyData[str].Lbl:GetWidth(), Y
-			)
-		else
-			_G.CurrencyData[str].Icon:SetPosition(
-				_G.CurrencyData[str].Lbl:GetLeft() + _G.CurrencyData[str].Lbl:GetWidth() + 3, Y
-			)
+		local iconLeft = _G.CurrencyData[str].Lbl:GetLeft() + _G.CurrencyData[str].Lbl:GetWidth();
+		if str ~= "DestinyPoints" then
+			iconLeft = iconLeft + 3;
 		end
-		_G.CurrencyData[str].Ctr:SetSize( _G.CurrencyData[str].Icon:GetLeft() + TBIconSize, CTRHeight );
-		_G.CurrencyData[str].Icon:SetSize( TBIconSize, TBIconSize );
-		_G.CurrencyData[str].Icon:SetStretchMode(3);
+		layoutIcon( _G.CurrencyData[str].Icon, _G.CurrencyData[str].Ctr, iconLeft, Y, iconLeft + TBIconSize );
+	else
+		-- Generic standard control layout.
+		
+		local container = nil
+		-- Try to find the control in ControlData first
+		if _G.ControlData and _G.ControlData[str] and _G.ControlData[str].controls then
+			container = _G.ControlData[str].controls
+		-- Special case for MI which is stored as "Money"
+		elseif str == "MI" and _G.ControlData and _G.ControlData.Money and _G.ControlData.Money.controls then
+			container = _G.ControlData.Money.controls
+		end
+		
+		if container and container["Ctr"] and container["Icon"] then
+			local label = container["Lbl"] or container["Name"];
+
+			-- Icon-only controls keep the icon at x=0.
+			local iconOnly = (label == nil)
+				or (str == "EI")
+				or (str == "WI")
+				or (str == "TI")
+				or (str == "VT")
+				or (str == "SS")
+				or (str == "IF")
+				or (str == "RP");
+
+			local dx = 0;
+			local dy = 0;
+			if str == "SP" then
+				dx = -2;
+			elseif str == "BI" then
+				dx = 3;
+				dy = 1;
+			elseif str == "PI" then
+				dx = 3;
+			elseif str == "DN" then
+				dy = 1;
+			elseif str == "LP" then
+				dx = 2;
+				dy = 1;
+			elseif str == "RP" then
+				dy = 2;
+			end
+
+			local iconLeft = 0;
+			if (not iconOnly) and label then
+				iconLeft = label:GetLeft() + label:GetWidth();
+			end
+			iconLeft = iconLeft + dx;
+
+			local ctrWidth = TBIconSize;
+			if (not iconOnly) and label then
+				ctrWidth = iconLeft + TBIconSize;
+			end
+
+			layoutIcon( container["Icon"], container["Ctr"], iconLeft, Y + dy, ctrWidth );
+		elseif _G.ControlData and _G.ControlData[str] then
+			write("AdjustIcon: no layout handler for " .. tostring(str));
+		end
 	end
 
 	KeepIconControlInBar(str);
@@ -765,8 +717,9 @@ end
 function GetInGameTime()
 	local nowtime = Turbine.Engine.GetLocalTime();
 	local gametime = Turbine.Engine.GetGameTime();
-	local InitDawn =  nowtime - gametime + _G.TS;
-	local adjust = (nowtime - (nowtime - gametime + _G.TS))% 11160;
+	local ts = (_G.ControlData and _G.ControlData.DN and tonumber(_G.ControlData.DN.ts)) or 0
+	local InitDawn =  nowtime - gametime + ts;
+	local adjust = (nowtime - (nowtime - gametime + ts)) % Constants.GAME_TIME_CYCLE;
   local darray = {572, 1722, 1067, 1678, 1101, 570, 1679, 539, 1141, 1091};
 	local dtarray = {
         L["Dawn"], L["Morning"], L["Noon"], L["Afternoon"], L["Dusk"], 

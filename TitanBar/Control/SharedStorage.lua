@@ -1,108 +1,26 @@
 -- SharedStorage.lua
 -- Written by Habna
 
+import(AppDirD .. "UIHelpers")
+import(AppCtrD .. "SharedStorageToolTip")
+import(AppDirD .. "ControlFactory")
 
-_G.SS = {}; -- Infamy table in _G
+-- Use _G.ControlData.SS.controls for all UI controls
+local SS = {}
+_G.ControlData.SS.controls = SS
 
---**v Vault Control v**
-SS["Ctr"] = Turbine.UI.Control();
-SS["Ctr"]:SetParent( TB["win"] );
-SS["Ctr"]:SetMouseVisible( false );
-SS["Ctr"]:SetZOrder( 2 );
-SS["Ctr"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-SS["Ctr"]:SetBackColor( Turbine.UI.Color( SSbcAlpha, SSbcRed, SSbcGreen, SSbcBlue ) );
---SS["Ctr"]:SetBackColor( Color["red"] ); -- Debug purpose
---**^
---**v Vault icon on TitanBar v**
-SS["Icon"] = Turbine.UI.Control();
-SS["Icon"]:SetParent( SS["Ctr"] );
-SS["Icon"]:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-SS["Icon"]:SetSize( 32, 32 );
-SS["Icon"]:SetBackground( resources.Storage.Shared );-- in-game icon 32x32
---SS["Icon"]:SetBackColor( Color["blue"] ); -- Debug purpose
+local colors = _G.ControlData.SS.colors
+CreateTitanBarControl(SS, colors.alpha, colors.red, colors.green, colors.blue)
+_G.ControlData.SS.ui.control = SS["Ctr"]
 
-SS["Icon"].MouseMove = function( sender, args )
-	--SS["Icon"].MouseLeave( sender, args );
-	TB["win"].MouseMove();
-	if dragging then
-		MoveSSCtr(sender, args);
-	else
-		if not SSTT then
-			SSTT = true;
-			ShowSharedToolTip();
-		else
-			local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-			
-			--[[if _G.ToolTipWin:GetWidth() + mouseX + 5 > screenWidth then x = _G.ToolTipWin:GetWidth() - 10;
-			else x = -5; end
-			
-			if TBTop then y = -15;
-			else y = _G.ToolTipWin:GetHeight() end
+SS["Icon"] = CreateControlIcon(SS["Ctr"], Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE, resources.Storage.Shared, Turbine.UI.BlendMode.AlphaBlend)
 
-			_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);]]
-		end
-	end
-end
-
-SS["Icon"].MouseLeave = function( sender, args )
-	ResetToolTipWin();
-	SSTT = false;
-end
-
-SS["Icon"].MouseClick = function( sender, args )
-	TB["win"].MouseMove();
-	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		if not WasDrag then
-			if _G.frmSS then _G.frmSS = false; wSS:Close();
-			else
-				_G.frmSS = true;
-				import (AppCtrD.."SharedStorageWindow");
-				frmSharedStorage();
-			end
-		end
-	elseif ( args.Button == Turbine.UI.MouseButton.Right ) then
-		_G.sFromCtr = "SS";
-		ControlMenu:ShowMenu();
-	end
-	WasDrag = false;
-end
-
-SS["Icon"].MouseDown = function( sender, args )
-	if ( args.Button == Turbine.UI.MouseButton.Left ) then
-		SS["Ctr"]:SetZOrder( 3 );
-		dragStartX = args.X;
-		dragStartY = args.Y;
-		dragging = true;
-	end
-end
-
-SS["Icon"].MouseUp = function( sender, args )
-	SS["Ctr"]:SetZOrder( 2 );
-	dragging = false;
-	SS.SavePosition();
-end
-
-SS.SavePosition = function()
-	_G.SSLocX = SS["Ctr"]:GetLeft();
-	settings.SharedStorage.X = string.format("%.0f", _G.SSLocX);
-	_G.SSLocY = SS["Ctr"]:GetTop();
-	settings.SharedStorage.Y = string.format("%.0f", _G.SSLocY);
-	SaveSettings( false );
-end
---**^
-
-function MoveSSCtr(sender, args)
-	SS["Icon"].MouseLeave( sender, args );
-	local CtrLocX = SS["Ctr"]:GetLeft();
-	local CtrWidth = SS["Ctr"]:GetWidth();
-	CtrLocX = CtrLocX + ( args.X - dragStartX );
-	if CtrLocX < 0 then CtrLocX = 0; elseif CtrLocX + CtrWidth > screenWidth then CtrLocX = screenWidth - CtrWidth; end
-
-	local CtrLocY = SS["Ctr"]:GetTop();
-	local CtrHeight = SS["Ctr"]:GetHeight();
-	CtrLocY = CtrLocY + ( args.Y - dragStartY );
-	if CtrLocY < 0 then CtrLocY = 0; elseif CtrLocY + CtrHeight > TB["win"]:GetHeight() then CtrLocY = TB["win"]:GetHeight() - CtrHeight; end
-
-	SS["Ctr"]:SetPosition( CtrLocX, CtrLocY );
-	WasDrag = true;
-end
+SetupControlInteraction({
+	icon = SS["Icon"],
+	controlTable = SS,
+	settingsSection = settings.SharedStorage,
+	windowImportPath = AppCtrD .. "SharedStorageWindow",
+	windowFunction = "frmSharedStorage",
+	tooltipKey = "SS",
+	customTooltipHandler = ShowSharedToolTip
+})

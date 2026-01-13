@@ -8,14 +8,15 @@ function ImportCtr( value )
         import (AppCtrD.."Wallet");
         import (AppCtrD.."WalletToolTip");
         UpdateWallet();
-        WI[ "Ctr" ]:SetPosition( _G.WILocX, _G.WILocY );
+        _G.ControlData.WI.controls[ "Ctr" ]:SetPosition( _G.ControlData.WI.location.x, _G.ControlData.WI.location.y );
     elseif value == "MI" then --Money Infos
-        if _G.MIWhere == 1 then
+		local moneyWhere = (_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE
+		if moneyWhere == Constants.Position.TITANBAR then
             import (AppCtrD.."MoneyInfos");
             import (AppCtrD.."MoneyInfosToolTip");
-            MI[ "Ctr" ]:SetPosition( _G.MILocX, _G.MILocY );
+            _G.ControlData.Money.controls[ "Ctr" ]:SetPosition( _G.ControlData.Money.location.x, _G.ControlData.Money.location.y );
         end
-        if _G.MIWhere ~= 3 then
+		if moneyWhere ~= Constants.Position.NONE then
             AddCallback(GetPlayerAttributes(), "MoneyChanged",
                 function(sender, args) UpdateMoney(); end
                 );
@@ -42,21 +43,21 @@ function ImportCtr( value )
         --    function(sender, args) UpdateBackpackInfos(); end
         --    ); --Add when workaround is not needed anymore
         UpdateBackpackInfos();
-        BI[ "Ctr" ]:SetPosition( _G.BILocX, _G.BILocY );
+        _G.ControlData.BI.controls[ "Ctr" ]:SetPosition( _G.ControlData.BI.location.x, _G.ControlData.BI.location.y );
     elseif value == "PI" then --Player Infos
         import (AppCtrD.."PlayerInfos");
         import (AppCtrD.."PlayerInfosToolTip");
         AddCallback(Player, "LevelChanged",
             function(sender, args)
-                PI["Lvl"]:SetText( Player:GetLevel() );
-                PI["Lvl"]:SetSize( PI["Lvl"]:GetTextLength() * NM+1, CTRHeight );
-                PI["Name"]:SetPosition( PI["Lvl"]:GetLeft() + PI["Lvl"]:GetWidth() + 5, 0 );
+                _G.ControlData.PI.controls["Lvl"]:SetText( tostring(Player:GetLevel()) );
+                _G.ControlData.PI.controls["Lvl"]:SetSize( _G.ControlData.PI.controls["Lvl"]:GetTextLength() * NM+1, CTRHeight );
+                _G.ControlData.PI.controls["Name"]:SetPosition( _G.ControlData.PI.controls["Lvl"]:GetLeft() + _G.ControlData.PI.controls["Lvl"]:GetWidth() + 5, 0 );
             end);
         AddCallback(Player, "NameChanged",
             function(sender, args)
-                PI["Name"]:SetText( Player:GetName() );
-                PI["Name"]:SetSize( PI["Name"]:GetTextLength() * TM, CTRHeight );
-                AjustIcon(" PI ");
+                _G.ControlData.PI.controls["Name"]:SetText( Player:GetName() );
+                _G.ControlData.PI.controls["Name"]:SetSize( _G.ControlData.PI.controls["Name"]:GetTextLength() * TM, CTRHeight );
+                AdjustIcon("PI");
             end);
         XPcb = AddCallback(Turbine.Chat, "Received",
             function(sender, args)
@@ -73,25 +74,26 @@ function ImportCtr( value )
                     end
                     local tmpXP = string.match(xpMess,xpPattern);
                     if tmpXP ~= nil then
-                        ExpPTS = tmpXP;
-                        settings.PlayerInfos.XP = ExpPTS;
+                        _G.ControlData.PI = _G.ControlData.PI or {}
+                        _G.ControlData.PI.xp = tmpXP;
+                        settings.PlayerInfos.XP = tmpXP;
                         SaveSettings( false );
                     end
                 end
             end
             end);
         UpdatePlayersInfos();
-        PI[ "Ctr" ]:SetPosition( _G.PILocX, _G.PILocY );
+        _G.ControlData.PI.controls[ "Ctr" ]:SetPosition( _G.ControlData.PI.location.x, _G.ControlData.PI.location.y );
     elseif value == "DI" then --Durability Infos
         import (AppCtrD.."DurabilityInfos");
         import (AppCtrD.."DurabilityInfosToolTip");
         UpdateDurabilityInfos();
-        DI[ "Ctr" ]:SetPosition( _G.DILocX, _G.DILocY );
+        _G.ControlData.DI.controls[ "Ctr" ]:SetPosition( _G.ControlData.DI.location.x, _G.ControlData.DI.location.y );
     elseif value == "EI" then --Equipment Infos
         import (AppCtrD.."EquipInfos");
         import (AppCtrD.."EquipInfosToolTip");
         UpdateEquipsInfos();
-        EI[ "Ctr" ]:SetPosition( _G.EILocX, _G.EILocY );
+        _G.ControlData.EI.controls[ "Ctr" ]:SetPosition( _G.ControlData.EI.location.x, _G.ControlData.EI.location.y );
     elseif value == "PL" then --Player Location
         import (AppCtrD.."PlayerLoc");
         --AddCallback(Player, "LocationChanged", UpdatePlayerLoc(); end);
@@ -101,38 +103,38 @@ function ImportCtr( value )
                 plMess = args.Message;
                 if plMess ~= nil then
                     if GLocale == "en" then
-                        plPattern = "Entered the ([%a%p%u%l%s]*) %-";
+                        plPattern = "Entered the%s+(.-)%s*%-";
                     elseif GLocale == "fr" then
-                        plPattern = "Canal ([%a%p%u%l%s]*) %-";
+                        plPattern = "Canal%s+(.-)%s*%-";
                     elseif GLocale == "de" then
-                        plPattern = "Chat%-Kanal '([%a%p%u%l%s]*) %-";
+                        plPattern = "Chat%-Kanal%s+'(.-)%s*%-";
                     end
 
                     local tmpPL = string.match( plMess, plPattern );
                     if tmpPL ~= nil then
                         --write("'".. tmpPL .. "'"); -- debug purpose
-                        pLLoc = tmpPL;
-                        UpdatePlayerLoc( pLLoc );
-                        settings.PlayerLoc.L = string.format( pLLoc );
+                        _G.ControlData.PL = _G.ControlData.PL or {}
+                        _G.ControlData.PL.text = tmpPL
+                        UpdatePlayerLoc( tmpPL );
+                        settings.PlayerLoc.L = string.format( tmpPL );
                         SaveSettings( false );
                     end
                 end
             end
         end);
-        UpdatePlayerLoc( pLLoc );
-        PL[ "Ctr" ]:SetPosition( _G.PLLocX, _G.PLLocY );
+        local plText = (_G.ControlData.PL and _G.ControlData.PL.text) or (settings.PlayerLoc and settings.PlayerLoc.L) or L["PLMsg"]
+        UpdatePlayerLoc( plText );
+		if _G.ControlData.PL and _G.ControlData.PL.controls then
+			_G.ControlData.PL.controls[ "Ctr" ]:SetPosition( _G.ControlData.PL.location.x, _G.ControlData.PL.location.y );
+		end
     elseif value == "TI" then --Track Items
         import (AppCtrD.."TrackItems");
         import (AppCtrD.."TrackItemsToolTip");
         UpdateTrackItems();
-        TI[ "Ctr" ]:SetPosition( _G.TILocX, _G.TILocY );
+        _G.ControlData.TI.controls[ "Ctr" ]:SetPosition( _G.ControlData.TI.location.x, _G.ControlData.TI.location.y );
     elseif value == "IF" then --Infamy
-        _G.InfamyRanks = {
-            [0] = 0, [1] = 500, [2] = 1250, [3] = 2750, [4] = 5750,
-            [5] = 14750, [6] = 33500, [7] = 71000, [8] = 146000, [9] = 258500,
-            [10] = 408500, [11] = 633500, [12] = 1008500, [13] = 1608500,
-            [14] = 2508500, [15] = 3708500,
-            };
+        -- Use Infamy/Renown ranks from Constants
+        _G.InfamyRanks = Constants.INFAMY_RANKS;
 
         if PlayerAlign == 1 then
             --Free people rank icon 0 to 15
@@ -174,17 +176,20 @@ function ImportCtr( value )
 
                     local tmpIF = string.match(ifMess,ifPattern);
                     if tmpIF ~= nil then
-                        InfamyPTS = InfamyPTS + tmpIF;
+                        _G.ControlData.IF = _G.ControlData.IF or {}
+                        local currentPoints = tonumber(_G.ControlData.IF.points) or 0
+                        local delta = tonumber((string.gsub(tmpIF, "%p+", ""))) or 0
+                        _G.ControlData.IF.points = currentPoints + delta
 
                         for i=0, 14 do
-                            if tonumber(InfamyPTS) >= _G.InfamyRanks[i] and
-                                tonumber(InfamyPTS) < _G.InfamyRanks[i+1] then
-                                InfamyRank = i;
+                            if (_G.ControlData.IF.points >= _G.InfamyRanks[i]) and
+                                (_G.ControlData.IF.points < _G.InfamyRanks[i+1]) then
+                                _G.ControlData.IF.rank = i
                                 break
-                                end
+                            end
                         end
-                        settings.Infamy.P = string.format("%.0f", InfamyPTS);
-                        settings.Infamy.K = string.format("%.0f", InfamyRank);
+                        settings.Infamy.P = string.format("%.0f", _G.ControlData.IF.points);
+                        settings.Infamy.K = string.format("%.0f", _G.ControlData.IF.rank or 0);
                         SaveSettings( false );
                         UpdateInfamy();
                     end
@@ -192,18 +197,23 @@ function ImportCtr( value )
             end
             end);
         UpdateInfamy();
-        IF[ "Ctr" ]:SetPosition( _G.IFLocX, _G.IFLocY );
+        _G.ControlData.IF.controls[ "Ctr" ]:SetPosition( _G.ControlData.IF.location.x, _G.ControlData.IF.location.y );
     elseif value == "DN" then --Day & Night Time
         import (AppCtrD.."DayNight");
         UpdateDayNight();
-        DN[ "Ctr" ]:SetPosition( _G.DNLocX, _G.DNLocY );
+		if _G.ControlData.DN and _G.ControlData.DN.controls then
+			_G.ControlData.DN.controls[ "Ctr" ]:SetPosition( _G.ControlData.DN.location.x, _G.ControlData.DN.location.y );
+		end
     elseif value == "LP" then --LOTRO points
-        if _G.LPWhere == 1 then
+		local lpWhere = (_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE
+		if lpWhere == Constants.Position.TITANBAR then
             import (AppCtrD.."LOTROPoints");
-            LP[ "Ctr" ]:SetPosition( _G.LPLocX, _G.LPLocY );
+			if _G.ControlData.LP and _G.ControlData.LP.controls then
+				_G.ControlData.LP.controls[ "Ctr" ]:SetPosition( _G.ControlData.LP.location.x, _G.ControlData.LP.location.y );
+			end
             UpdateLOTROPoints();
         end
-        if _G.LPWhere ~= Position.NONE then
+		if lpWhere ~= Constants.Position.NONE then
             --PlayerLP = Player:GetLOTROPoints();
             --AddCallback(PlayerLP, "LOTROPointsChanged",
             --    function(sender, args) UpdateLOTROPoints(); end
@@ -224,7 +234,9 @@ function ImportCtr( value )
                         local tmpLP = string.match(tpMess,tpPattern);
                         if tmpLP ~= nil then
                             LPTS = tmpLP;
-                            _G.LOTROPTS = _G.LOTROPTS + LPTS;
+                            _G.ControlData.LP = _G.ControlData.LP or {}
+                            local currentPoints = tonumber(_G.ControlData.LP.points) or 0
+                            _G.ControlData.LP.points = tostring(currentPoints + tonumber(LPTS));
                             UpdateLOTROPoints()
                         end
                     end
@@ -240,13 +252,13 @@ function ImportCtr( value )
         --AddCallback(PlayerTime, "MinuteChanged",
         --    function(sender, args) UpdateGameTime(); end
         --);
-        if _G.ShowBT then UpdateGameTime("bt");
-        elseif _G.ShowST then UpdateGameTime("st");
+        if _G.ControlData.GT.showBT then UpdateGameTime("bt");
+        elseif _G.ControlData.GT.showST then UpdateGameTime("st");
         else UpdateGameTime("gt") end
-        if _G.GTLocX + GT[ "Ctr" ]:GetWidth() > screenWidth then
-            _G.GTLocX = screenWidth - GT[ "Ctr" ]:GetWidth();
+        if _G.ControlData.GT.location.x + _G.ControlData.GT.controls[ "Ctr" ]:GetWidth() > screenWidth then
+            _G.ControlData.GT.location.x = screenWidth - _G.ControlData.GT.controls[ "Ctr" ]:GetWidth();
         end --Replace if out of screen
-        GT[ "Ctr" ]:SetPosition( _G.GTLocX, _G.GTLocY );
+        _G.ControlData.GT.controls[ "Ctr" ]:SetPosition( _G.ControlData.GT.location.x, _G.ControlData.GT.location.y );
     elseif value == "VT" then --Vault
         import (AppCtrD.."Vault");
         import (AppCtrD.."VaultToolTip");
@@ -254,7 +266,7 @@ function ImportCtr( value )
             function(sender, args) SavePlayerVault(); end
             );
         UpdateVault();
-        VT[ "Ctr" ]:SetPosition( _G.VTLocX, _G.VTLocY );
+        _G.ControlData.VT.controls[ "Ctr" ]:SetPosition( _G.ControlData.VT.location.x, _G.ControlData.VT.location.y );
     elseif value == "SS" then --Shared Storage
         import (AppCtrD.."SharedStorage");
         import (AppCtrD.."SharedStorageToolTip");
@@ -262,7 +274,7 @@ function ImportCtr( value )
             function(sender, args) SavePlayerSharedStorage(); end
             );
         UpdateSharedStorage();
-        SS[ "Ctr" ]:SetPosition( _G.SSLocX, _G.SSLocY );
+        _G.ControlData.SS.controls[ "Ctr" ]:SetPosition( _G.ControlData.SS.location.x, _G.ControlData.SS.location.y );
 	elseif value == "RP" then --Reputation Points
         import (AppCtrD.."Reputation");
         import (AppCtrD.."ReputationToolTip");
@@ -340,7 +352,7 @@ function ImportCtr( value )
             end
         );
         UpdateReputation();
-        RP[ "Ctr" ]:SetPosition( _G.RPLocX, _G.RPLocY );
+        _G.ControlData.RP.controls[ "Ctr" ]:SetPosition( _G.ControlData.RP.location.x, _G.ControlData.RP.location.y );
     else
         if _G.CurrencyData[value].Where == 1 then
             createCurrencyTable(value)
@@ -475,8 +487,10 @@ function LoadPlayerMoney()
     if wallet[PN] == nil then wallet[PN] = {}; end
     if wallet[PN].Show == nil then wallet[PN].Show = true; end
     if wallet[PN].ShowToAll == nil then wallet[PN].ShowToAll = true; end
-    _G.SCM = wallet[PN].Show;
-    _G.SCMA = wallet[PN].ShowToAll;
+	_G.ControlData = _G.ControlData or {}
+	_G.ControlData.Money = _G.ControlData.Money or {}
+	_G.ControlData.Money.scm = wallet[PN].Show
+	_G.ControlData.Money.scma = wallet[PN].ShowToAll
 
 
     --Convert wallet
@@ -558,8 +572,11 @@ end
 function SavePlayerMoney(save)
     if string.sub( PN, 1, 1 ) == "~" then return end; --Ignore session play
 
-    wallet[PN].Show = _G.SCM;
-    wallet[PN].ShowToAll = _G.SCMA;
+    _G.ControlData.Money = _G.ControlData.Money or {}
+    if _G.ControlData.Money.scm == nil then _G.ControlData.Money.scm = true end
+    if _G.ControlData.Money.scma == nil then _G.ControlData.Money.scma = true end
+    wallet[PN].Show = _G.ControlData.Money.scm
+    wallet[PN].ShowToAll = _G.ControlData.Money.scma
     wallet[PN].Money = tostring(GetPlayerAttributes():GetMoney());
 
     -- Calculate Gold/Silver/Copper Total
@@ -918,12 +935,15 @@ end
 function LoadPlayerLOTROPoints()
     PlayerLOTROPoints = Turbine.PluginData.Load(Turbine.DataScope.Account, "TitanBarLOTROPoints") or {}
     PlayerLOTROPoints["PTS"] = PlayerLOTROPoints.PTS or "0"
-    _G.LOTROPTS = PlayerLOTROPoints.PTS;
+    _G.ControlData.LP = _G.ControlData.LP or {}
+    _G.ControlData.LP.points = PlayerLOTROPoints.PTS;
     SavePlayerLOTROPoints()
 end
 
 function SavePlayerLOTROPoints()
-    PlayerLOTROPoints["PTS"] = string.format("%.0f", _G.LOTROPTS);
+    local lpData = _G.ControlData and _G.ControlData.LP
+    local points = (lpData and tonumber(lpData.points)) or 0
+    PlayerLOTROPoints["PTS"] = string.format("%.0f", points);
     Turbine.PluginData.Save(Turbine.DataScope.Account, "TitanBarLOTROPoints", PlayerLOTROPoints);
 end
 
@@ -943,7 +963,7 @@ function SetCurrencyToZero(str)
                 if _G.CurrencyData[currency.name].Where == 1 then
                     _G.CurrencyData[currency.name].Lbl:SetText("0");
                     _G.CurrencyData[currency.name].Lbl:SetSize(_G.CurrencyData[currency.name].Lbl:GetTextLength() * NM, CTRHeight );
-                    AjustIcon(currency.name);
+                    AdjustIcon(currency.name);
                 end
             end
         end
@@ -957,7 +977,7 @@ function SetCurrencyFromZero(str, amount)
                 if _G.CurrencyData[currency.name].Where == 1 then
                     _G.CurrencyData[currency.name].Lbl:SetText(amount);
                     _G.CurrencyData[currency.name].Lbl:SetSize(_G.CurrencyData[currency.name].Lbl:GetTextLength() * NM, CTRHeight );
-                    AjustIcon(currency.name);
+                    AdjustIcon(currency.name);
                 end
             end
         end

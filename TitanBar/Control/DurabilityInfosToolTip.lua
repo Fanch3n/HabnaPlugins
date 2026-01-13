@@ -1,35 +1,25 @@
 -- DurabilityInfosToolTip.lua
 -- Written by Habna
 
+import(AppDirD .. "UIHelpers")
+
 
 SlotsText = {L["EWST1"], L["EWST2"], L["EWST3"], L["EWST4"], L["EWST5"], L["EWST6"], L["EWST7"], L["EWST8"], L["EWST9"],
 		L["EWST10"], L["EWST11"], L["EWST12"], L["EWST13"], L["EWST14"], L["EWST15"], L["EWST16"], L["EWST17"],	L["EWST18"],
 		L["EWST19"], L["EWST20"]};
 
 function ShowDIWindow()
-	-- ( offsetX, offsetY, width, height, bubble side )
-	--x, y, w, h = -5, -15, 0, 0;
-	--mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
+	local tt = CreateTooltipWindow({
+		hasListBox = true,
+		listBoxPosition = {x = 15, y = 12}
+	})
 	
-	--if w + mouseX > screenWidth then x = w - 10; end
-	
-	_G.ToolTipWin = Turbine.UI.Window();
-	_G.ToolTipWin:SetZOrder( 1 );
-	--_G.ToolTipWin.xOffset = x;
-	--_G.ToolTipWin.yOffset = y;
-	_G.ToolTipWin:SetVisible( true );
-	
-	DIListBox = Turbine.UI.ListBox();
-	DIListBox:SetParent( _G.ToolTipWin );
-	DIListBox:SetZOrder( 1 );
-	DIListBox:SetPosition( 15, 12 );
-	DIListBox:SetMaxItemsPerLine( 1 );
-	DIListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
-	--DIListBox:SetBackColor( Color["darkgrey"] ); --debug purpose
+	DIListBox = tt.listBox
+	ConfigureListBox(DIListBox)
 
-	DIRefreshListBox();
+	DIRefreshListBox()
 
-	ApplySkin();
+	ApplySkin()
 end
 
 function DIRefreshListBox()
@@ -42,8 +32,11 @@ function DIRefreshListBox()
 	DITTPosY = 36;
 
 	mis, mts, nint = 0, 0, false;
+	local diData = (_G.ControlData and _G.ControlData.DI) or {}
+	local showIcon = (diData.icon ~= false) -- default true
+	local showText = (diData.text ~= false) -- default true
 
-	if not DIIcon and not DIText then nint=true; end
+	if (not showIcon) and (not showText) then nint=true; end
 
 	iFound = 0;
 
@@ -70,12 +63,12 @@ function DIRefreshListBox()
 			end
 		end
 		lblName:SetPosition( 0, 0 );
-		lblName:SetSize( 210, 35 );
+		lblName:SetSize( Constants.LABEL_WIDTH_EXTRA_WIDE, Constants.LABEL_HEIGHT_ITEM );
 		lblName:SetForeColor( Color["green"] );
 		lblName:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 		--lblName:SetBackColor( Color["red"] ); -- debug purpose
 
-		DIListBox:SetWidth( 250 );
+		DIListBox:SetWidth( Constants.LABEL_WIDTH_TOOLTIP );
 		DIListBox:AddItem( lblName );
 		
 		DITTPosY = DITTPosY + 36;
@@ -97,59 +90,41 @@ function DIRefreshListBox()
 				--DIitemCtl[i]:SetBackColor( Color["red"] ); -- debug purpose
 
 
-				if DIIcon then
+				if showIcon then
 					-- Item Background/Underlay/Shadow/Item
-					DIitemBG[i] = Turbine.UI.Control();
-					DIitemBG[i]:SetParent( DIitemCtl[i] );
-					DIitemBG[i]:SetSize( 32, 32 );
-					DIitemBG[i]:SetPosition( 0, 2 );
-					DIitemBG[i]:SetBackground(itemEquip[i].BImgID);
-					DIitemBG[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
-		
-					DIitemU[i] = Turbine.UI.Control();
-					DIitemU[i]:SetParent( DIitemCtl[i] );
-					DIitemU[i]:SetSize( 32, 32 );
-					DIitemU[i]:SetPosition( 0, 2 );
-					DIitemU[i]:SetBackground(itemEquip[i].UImgID);
-					DIitemU[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
+				DIitemBG[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
+				DIitemBG[i]:SetBackground(itemEquip[i].BImgID);
+				DIitemBG[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
+	
+				DIitemU[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
+				DIitemU[i]:SetBackground(itemEquip[i].UImgID);
+				DIitemU[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
-					DIitemS[i] = Turbine.UI.Control();
-					DIitemS[i]:SetParent( DIitemCtl[i] );
-					DIitemS[i]:SetSize( 32, 32 );
-					DIitemS[i]:SetPosition( 0, 2 );
-					DIitemS[i]:SetBackground(itemEquip[i].SImgID);
-					DIitemS[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
+				DIitemS[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
+				DIitemS[i]:SetBackground(itemEquip[i].SImgID);
+				DIitemS[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
-					DIitem[i] = Turbine.UI.Control();
-					DIitem[i]:SetParent( DIitemCtl[i] );
-					DIitem[i]:SetSize( 32, 32 );
-					DIitem[i]:SetPosition( 0, 2 );
-					DIitem[i]:SetBackground(itemEquip[i].IImgID);
-					DIitem[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
+				DIitem[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
+				DIitem[i]:SetBackground(itemEquip[i].IImgID);
+				DIitem[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
-					-- Item Durability (over the icon)
-					DIitemLblScore[i] = Turbine.UI.Label();
-					DIitemLblScore[i]:SetParent( DIitemCtl[i] );
-					DIitemLblScore[i]:SetPosition( 0, 26 );
-					DIitemLblScore[i]:SetSize( 30, 15 );
-					DIitemLblScore[i]:SetText( itemEquip[i].WearStatePts .. "%" );
-					DIitemLblScore[i]:SetForeColor( TheColor );
-					DIitemLblScore[i]:SetFont( Turbine.UI.Lotro.Font.Verdana10 );
-					DIitemLblScore[i]:SetFontStyle( Turbine.UI.FontStyle.Outline );
-					DIitemLblScore[i]:SetOutlineColor( Color["black"] );
-					DIitemLblScore[i]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
-					--DIitemLblScore[i]:SetBackColorBlendMode( Turbine.UI.BlendMode.Overlay );
+				-- Item Durability (over the icon)
+				DIitemLblScore[i] = CreateControl(Turbine.UI.Label, DIitemCtl[i], 0, 26, 30, 15)
+				DIitemLblScore[i]:SetText( itemEquip[i].WearStatePts .. "%" );
+				DIitemLblScore[i]:SetForeColor( TheColor );
+				DIitemLblScore[i]:SetFont( Turbine.UI.Lotro.Font.Verdana10 );
+				DIitemLblScore[i]:SetFontStyle( Turbine.UI.FontStyle.Outline );
+				DIitemLblScore[i]:SetOutlineColor( Color["black"] );
+				DIitemLblScore[i]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
+				--DIitemLblScore[i]:SetBackColorBlendMode( Turbine.UI.BlendMode.Overlay );
 				else
 					mis=37;
 				end
 
-				if DIText then
+				if showText then
 					cw=cw+208;
 					-- Item name
-					DIitemLbl[i] = Turbine.UI.Label();
-					DIitemLbl[i]:SetParent( DIitemCtl[i] );
-					DIitemLbl[i]:SetPosition( 37-mis, 2 );
-					DIitemLbl[i]:SetSize( 208, DIitemCtl[i]:GetHeight() );
+					DIitemLbl[i] = CreateControl(Turbine.UI.Label, DIitemCtl[i], 37-mis, 2, 208, DIitemCtl[i]:GetHeight());
 					DIitemLbl[i]:SetFont(Turbine.UI.Lotro.Font.TrajanPro12 );
 					DIitemLbl[i]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 					--DIitemLbl[i]:SetForeColor( Color["white"] );
@@ -163,7 +138,7 @@ function DIRefreshListBox()
 					end
 					DIitemLbl[i]:SetForeColor( TheColor );
 
-					if not DIIcon then
+					if not showIcon then
 						-- Item Durability
 						DIitemLblScore[i] = Turbine.UI.Label();
 						DIitemLblScore[i]:SetParent( DIitemCtl[i] );
@@ -190,13 +165,5 @@ function DIRefreshListBox()
 	if iFound == 0 then _G.ToolTipWin:SetSize( cw, DITTPosY-10 );
 	else _G.ToolTipWin:SetSize( cw+30, DITTPosY-10 ); end
 
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-			
-	if _G.ToolTipWin:GetWidth() + mouseX + 5 > screenWidth then x = _G.ToolTipWin:GetWidth() - 10;
-	else x = -5; end
-			
-	if TBTop then y = -15;
-	else y = _G.ToolTipWin:GetHeight() end
-
-	_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
+	PositionToolTipWindow();
 end

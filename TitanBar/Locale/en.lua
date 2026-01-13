@@ -41,7 +41,6 @@ L[ "MTI" ] = "Track Items";
 --L[ "MView" ] = "View your ";
 L[ "MVault" ] = "Vault";
 L[ "MStorage" ] = "Shared Storage";
---L[ "MBank" ] = "Bank";
 L[ "MDayNight" ] = "Day & Night Time";
 L[ "MReputation" ] = "Reputation";
 
@@ -264,6 +263,9 @@ L["HuntersGuildMarkh"] = "Your Hunter's Guild Marks";
 -- Blighted Relic
 L["MBlightedRelic"] = "Blighted Relic";
 L["BlightedRelich"] = "Your Blighted Relics";
+-- Tattered Shadows
+L["MTatteredShadow"] = "Tattered Shadow";
+L["atteredShadowh"] = "Your Tattered Shadows";
 
 -- Control Menu
 L[ "MCU" ] = "Unload ...";
@@ -327,9 +329,6 @@ L[ "SSnd" ] = "Need to open your shared storage at least once";
 L[ "BIh" ] = "backpack";
 L[ "BID" ] = " bags info deleted!"
 
--- Bank window
-L[ "BKh" ] = "bank";
-
 -- Day & Night window
 L[ "Dawn" ] = "Dawn";
 L[ "Morning" ] = "Morning";
@@ -347,7 +346,7 @@ L[ "TAjustL" ] = "Timer seed";
 -- Reputation window
 L[ "RPt" ] = "select / unselect a faction\nright click to get its settings";
 L[ "RPnf" ] = "You track no faction!\nLeft click to see the faction list.";
-L[ "RPPHMaxHide" ] = "Hide factions at maximum reputation";
+L[ "RPPHMaxShow" ] = "Show factions at maximum reputation";
 
 -- All reputation names
 L[ "MenOfBree" ]    = "Men of Bree";

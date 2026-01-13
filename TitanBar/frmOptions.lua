@@ -2,31 +2,32 @@
 -- written by Habna
 -- rewritten by many
 
+import(AppDirD .. "UIHelpers")
+
 if _G.Debug then write("frmOptions.lua"); end
 
 function GetWalletControls()
 	local walletControls = { };
-	if WI ~= nil then walletControls[ "WI" ] = { ShowHide = ShowWallet, Control = WI[ "Ctr" ] }; end
-	if MI ~= nil then walletControls[ "MI" ] = { ShowHide = ShowMoney, Control = MI[ "Ctr" ] }; end
-	if BI ~= nil then walletControls[ "BI" ] = { ShowHide = ShowBagInfos, Control = BI[ "Ctr" ] }; end
-	if PI ~= nil then walletControls[ "PI" ] = { ShowHide = ShowPlayerInfos, Control = PI[ "Ctr" ] }; end
-	if EI ~= nil then walletControls[ "EI" ] = { ShowHide = ShowEquipInfos, Control = EI[ "Ctr" ] }; end
-	if DI ~= nil then walletControls[ "DI" ] = { ShowHide = ShowDurabilityInfos, Control = DI[ "Ctr" ] };end
-	if TI ~= nil then walletControls[ "TI" ] = { ShowHide = ShowTrackItems, Control = TI[ "Ctr" ] }; end
-	if IF ~= nil then walletControls[ "IF" ] = { ShowHide = ShowInfamy, Control = IF[ "Ctr" ] }; end
-	if VT ~= nil then walletControls[ "VT" ] = { ShowHide = ShowVault, Control = VT[ "Ctr" ] }; end
-	if SS ~= nil then walletControls[ "SS" ] = { ShowHide = ShowSharedStorage, Control = SS[ "Ctr" ] }; end
-	--if BK ~= nil then walletControls[ "BK" ] = { ShowHide = ShowBank, Control = BK[ "Ctr" ] }; end
-	if DN ~= nil then walletControls[ "DN" ] = { ShowHide = ShowDayNight, Control = DN[ "Ctr" ] }; end
-	if RP ~= nil then walletControls[ "RP" ] = { ShowHide = ShowReputation, Control = RP[ "Ctr" ] }; end
-	if LP ~= nil then walletControls[ "LP" ] = { ShowHide = ShowLOTROPoints, Control = LP[ "Ctr" ] }; end
-	if PL ~= nil then walletControls[ "PL" ] = { ShowHide = ShowPlayerLoc, Control = PL[ "Ctr" ] }; end
-	if GT ~= nil then walletControls[ "GT" ] = { ShowHide = ShowGameTime, Control = GT[ "Ctr" ] }; end
+	if _G.ControlData.WI and _G.ControlData.WI.controls then walletControls[ "WI" ] = { IsVisible = _G.ControlData.WI.show, Control = _G.ControlData.WI.controls[ "Ctr" ] }; end
+	if _G.ControlData.Money and _G.ControlData.Money.controls then walletControls[ "MI" ] = { IsVisible = _G.ControlData.Money.show, Control = _G.ControlData.Money.controls[ "Ctr" ] }; end
+	if _G.ControlData.BI and _G.ControlData.BI.controls then walletControls[ "BI" ] = { IsVisible = _G.ControlData.BI.show, Control = _G.ControlData.BI.controls[ "Ctr" ] }; end
+	if _G.ControlData.PI and _G.ControlData.PI.controls then walletControls[ "PI" ] = { IsVisible = _G.ControlData.PI.show, Control = _G.ControlData.PI.controls[ "Ctr" ] }; end
+	if _G.ControlData.EI and _G.ControlData.EI.controls then walletControls[ "EI" ] = { IsVisible = _G.ControlData.EI.show, Control = _G.ControlData.EI.controls[ "Ctr" ] }; end
+	if _G.ControlData.DI and _G.ControlData.DI.controls then walletControls[ "DI" ] = { IsVisible = _G.ControlData.DI.show, Control = _G.ControlData.DI.controls[ "Ctr" ] };end
+	if _G.ControlData.TI and _G.ControlData.TI.controls then walletControls[ "TI" ] = { IsVisible = _G.ControlData.TI.show, Control = _G.ControlData.TI.controls[ "Ctr" ] }; end
+	if _G.ControlData.IF and _G.ControlData.IF.controls then walletControls[ "IF" ] = { IsVisible = _G.ControlData.IF.show, Control = _G.ControlData.IF.controls[ "Ctr" ] }; end
+	if _G.ControlData.VT and _G.ControlData.VT.controls then walletControls[ "VT" ] = { IsVisible = _G.ControlData.VT.show, Control = _G.ControlData.VT.controls[ "Ctr" ] }; end
+	if _G.ControlData.SS and _G.ControlData.SS.controls then walletControls[ "SS" ] = { IsVisible = _G.ControlData.SS.show, Control = _G.ControlData.SS.controls[ "Ctr" ] }; end
+	if _G.ControlData.DN and _G.ControlData.DN.controls then walletControls[ "DN" ] = { IsVisible = _G.ControlData.DN.show, Control = _G.ControlData.DN.controls[ "Ctr" ] }; end
+	if _G.ControlData.RP and _G.ControlData.RP.controls then walletControls[ "RP" ] = { IsVisible = _G.ControlData.RP.show, Control = _G.ControlData.RP.controls[ "Ctr" ] }; end
+	if _G.ControlData.LP and _G.ControlData.LP.controls then walletControls[ "LP" ] = { IsVisible = _G.ControlData.LP.show, Control = _G.ControlData.LP.controls[ "Ctr" ] }; end
+	if _G.ControlData.PL and _G.ControlData.PL.controls then walletControls[ "PL" ] = { IsVisible = _G.ControlData.PL.show, Control = _G.ControlData.PL.controls[ "Ctr" ] }; end
+	if _G.ControlData.GT and _G.ControlData.GT.controls then walletControls[ "GT" ] = { IsVisible = _G.ControlData.GT.show, Control = _G.ControlData.GT.controls[ "Ctr" ] }; end
 
 	for _, currency in pairs(_G.currencies.list) do
 		if _G.CurrencyData[currency.name] ~= nil then
 			walletControls[currency.name] = {
-				ShowHide = _G.CurrencyData[currency.name].IsVisible,
+				IsVisible = _G.CurrencyData[currency.name].IsVisible,
 				Control = _G.CurrencyData[currency.name].Ctr
 			}
 		end
@@ -56,65 +57,41 @@ function frmOptions()
 	FontDD = HabnaPlugins.TitanBar.Class.ComboBox();
 
 	-- **v Set some window stuff v**
-	wOptions = Turbine.UI.Lotro.Window()
-	wOptions:SetSize( 275, 275 );
-	wOptions:SetPosition( OPWLeft, OPWTop );
-	wOptions:SetText( L[ "OPWTitle" ] );
-	wOptions:SetWantsKeyEvents( true );
-	wOptions:SetVisible( true );
-	--wOptions:SetZOrder( 2 );
-	--wOptions:Activate();
+	import(AppDirD .. "WindowFactory")
 
-	wOptions.KeyDown = function( sender, args )
-		if ( args.Action == Turbine.UI.Lotro.Action.Escape ) then
-			wOptions:Close();
-		elseif ( args.Action == 268435635 ) or ( args.Action == 268435579 ) then -- Hide if F12 key is press or reposition UI
-			wOptions:SetVisible( not wOptions:IsVisible() );
-		end
-	end
+	-- Create options window via factory
+	wOptions = CreateWindow({
+		text = L[ "OPWTitle" ],
+		width = 275,
+		height = 275,
+		left = OPWLeft,
+		top = OPWTop,
+		config = {
+			settingsKey = "Options",
+			windowGlobalVar = "wOptions",
+			onPositionChanged = function(left, top)
+				OPWLeft, OPWTop = left, top
+			end,
+			onMouseMove = function(sender, args)
+				-- Close dropdowns when window is being dragged
+				if FontDD and FontDD.dropped then FontDD:CloseDropDown(); end
+				if AutoDD and AutoDD.dropped then AutoDD:CloseDropDown(); end
+			end,
+			onClosing = function( sender, args )
+				if FontDD and FontDD.dropDownWindow then FontDD.dropDownWindow:SetVisible( false ); end
+				if AutoDD and AutoDD.dropDownWindow then AutoDD.dropDownWindow:SetVisible( false ); end
+				if TBAutoHide == L[ "OPAHE" ] then windowOpen = true; TB[ "win" ].MouseLeave(); end
+				opt_options:SetEnabled( true );
+			end,
+		}
+	})
 
-	wOptions.MouseDown = function( sender, args )
-		if ( args.Button == Turbine.UI.MouseButton.Left ) then dragging = true; end
-	end
-
-	wOptions.MouseMove = function( sender, args )
-		if dragging then
-			if FontDD.dropped then FontDD:CloseDropDown(); end
-			if AutoDD.dropped then AutoDD:CloseDropDown(); end
-		end
-	end
-
-	wOptions.MouseUp = function( sender, args )
-		dragging = false;
-		settings.Options.L = string.format( "%.0f", wOptions:GetLeft() );
-		settings.Options.T = string.format( "%.0f", wOptions:GetTop() );
-		OPWLeft, OPWTop = wOptions:GetPosition();
-		SaveSettings( false );
-	end
-
-	wOptions.Closing = function( sender, args ) -- Function for the Upper right X icon
-		FontDD.dropDownWindow:SetVisible( false );
-		AutoDD.dropDownWindow:SetVisible( false );
-		wOptions:SetWantsKeyEvents( false );
-		if TBAutoHide == L[ "OPAHE" ] then windowOpen = true; TB[ "win" ].MouseLeave(); end
-		wOptions = nil;
-		opt_options:SetEnabled( true );
-	end
-	-- **^
 	
 	-- **v TitanBar Height - label v**
-	local lblHeight = Turbine.UI.Label();
-	lblHeight:SetParent( wOptions );
-	lblHeight:SetPosition( 25, 40 );
-	lblHeight:SetText( L[ "OPHText" ] );
-	lblHeight:SetSize( wOptions:GetWidth() - 25, 15 );
-	lblHeight:SetForeColor( Color[ "rustedgold" ] );
+	local lblHeight = CreateTitleLabel(wOptions, L["OPHText"], 25, 40, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	-- **^
 	-- **v Set the scrollbar v**
-	wScrollBar = Turbine.UI.Lotro.ScrollBar();
-	wScrollBar:SetParent( wOptions );
-	wScrollBar:SetPosition( lblHeight:GetLeft(), lblHeight:GetTop() + 15 );
-	wScrollBar:SetSize( wOptions:GetWidth() - 75, 10 );
+	wScrollBar = CreateControl(Turbine.UI.Lotro.ScrollBar, wOptions, lblHeight:GetLeft(), lblHeight:GetTop() + 15, wOptions:GetWidth() - 75, 10);
 	wScrollBar:SetOrientation( Turbine.UI.Orientation.Horizontal );
 	wScrollBar:SetMinimum( 10 );
 	wScrollBar:SetMaximum( 100 );
@@ -133,24 +110,14 @@ function frmOptions()
 	end
 	-- **^
 	-- **v TitanBar Height Value - label v**
-	lblHeightV = Turbine.UI.Label();
-	lblHeightV:SetParent( wOptions );
-	lblHeightV:SetPosition( wScrollBar:GetLeft() + wScrollBar:GetWidth() + 5, wScrollBar:GetTop() );
-	lblHeightV:SetText( wScrollBar:GetValue() );
-	lblHeightV:SetSize( 20, 15 );
-	lblHeightV:SetForeColor( Color["rustedgold"] );
+	lblHeightV = CreateTitleLabel(wOptions, wScrollBar:GetValue(), wScrollBar:GetLeft() + wScrollBar:GetWidth() + 5, wScrollBar:GetTop(), nil, Color["rustedgold"], nil, 20, 15)
 	-- **^
 
 	-- **v TitanBar Font - label & DropDown box v**
-	lblFont = Turbine.UI.Label();
-	lblFont:SetParent( wOptions );
-	lblFont:SetPosition( 25, wScrollBar:GetTop() + 20 );
-	lblFont:SetText( L[ "OPFText" ] );
-	lblFont:SetSize( wOptions:GetWidth() - 25, 15 );
-	lblFont:SetForeColor( Color[ "rustedgold" ] );
+	lblFont = CreateTitleLabel(wOptions, L["OPFText"], 25, wScrollBar:GetTop() + 20, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	
 	FontDD:SetParent( wOptions );
-	FontDD:SetSize( 159, 19 );
+	FontDD:SetSize( Constants.DROPDOWN_WIDTH, Constants.DROPDOWN_HEIGHT );
 	FontDD:SetPosition( 25, lblFont:GetTop() + 15 );
 	FontDD.label:SetText( TBFontT );
 
@@ -172,16 +139,11 @@ function frmOptions()
 	-- **^
 
 	-- **v TitanBar Auto hide - label & DropDown box v**
-	lblAuto = Turbine.UI.Label();
-	lblAuto:SetParent( wOptions );
-	lblAuto:SetPosition( 25, FontDD:GetTop() + 30 );
-	lblAuto:SetText( L[ "OPAText" ] );
-	lblAuto:SetSize( wOptions:GetWidth() - 25, 15 );
-	lblAuto:SetForeColor( Color[ "rustedgold" ] );
+	lblAuto = CreateTitleLabel(wOptions, L["OPAText"], 25, FontDD:GetTop() + 30, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	
 	AutoDD = HabnaPlugins.TitanBar.Class.ComboBox();
 	AutoDD:SetParent( wOptions );
-	AutoDD:SetSize( 159, 19 );
+	AutoDD:SetSize( Constants.DROPDOWN_WIDTH, Constants.DROPDOWN_HEIGHT );
 	AutoDD:SetPosition( 25, lblAuto:GetTop() + 15 );
 	AutoDD.label:SetText( TBFontT );
 
@@ -202,20 +164,12 @@ function frmOptions()
 	end
 	-- **^
 	-- **v TitanBar Icon Size - label & DropDown box v**
-	lblIconSize = Turbine.UI.Label();
-	lblIconSize:SetParent( wOptions );
-	lblIconSize:SetPosition( 25, AutoDD:GetTop() + 30 );
-	lblIconSize:SetText( L[ "OPIText" ] );
-	lblIconSize:SetSize( wOptions:GetWidth() - 25, 15 );
-	lblIconSize:SetForeColor( Color[ "rustedgold" ] );
+	lblIconSize = CreateTitleLabel(wOptions, L["OPIText"], 25, AutoDD:GetTop() + 30, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	
-	wIconScrollBar = Turbine.UI.Lotro.ScrollBar();
-	wIconScrollBar:SetParent( wOptions );
-	wIconScrollBar:SetPosition( lblIconSize:GetLeft(), lblIconSize:GetTop() + 15 );
-	wIconScrollBar:SetSize( wOptions:GetWidth() - 75, 10 );
+	wIconScrollBar = CreateControl(Turbine.UI.Lotro.ScrollBar, wOptions, lblIconSize:GetLeft(), lblIconSize:GetTop() + 15, wOptions:GetWidth() - 75, 10);
 	wIconScrollBar:SetOrientation( Turbine.UI.Orientation.Horizontal );
-	wIconScrollBar:SetMinimum( 16 );
-	wIconScrollBar:SetMaximum( 32 );
+	wIconScrollBar:SetMinimum( Constants.ICON_SIZE_SMALL );
+	wIconScrollBar:SetMaximum( Constants.ICON_SIZE_LARGE );
 	wIconScrollBar:SetValue( TBIconSize );
 
 	wIconScrollBar.ValueChanged = function( sender, args )
@@ -228,23 +182,10 @@ function frmOptions()
 	end
 	-- **^
 	-- **v TitanBar Icon Size Value - label v**
-	lblIconSizeV = Turbine.UI.Label();
-	lblIconSizeV:SetParent( wOptions );
-	lblIconSizeV:SetPosition( wIconScrollBar:GetLeft() + wIconScrollBar:GetWidth() + 5, wIconScrollBar:GetTop() );
-	lblIconSizeV:SetText( wIconScrollBar:GetValue() );
-	lblIconSizeV:SetSize( 20, 15 );
-	lblIconSizeV:SetForeColor( Color[ "rustedgold" ] );
+	lblIconSizeV = CreateTitleLabel(wOptions, wIconScrollBar:GetValue(), wIconScrollBar:GetLeft() + wIconScrollBar:GetWidth() + 5, wIconScrollBar:GetTop(), nil, Color["rustedgold"], nil, 20, 15)
 	-- **^
 	-- **v Set TitanBar at Top of screen - Check box v**
-	local TBTopCB = Turbine.UI.Lotro.CheckBox();
-	TBTopCB:SetParent( wOptions );
-	TBTopCB:SetPosition( wIconScrollBar:GetLeft(), wIconScrollBar:GetTop() + 20 );
-	TBTopCB:SetText( L["OPTBTop"] );
-	TBTopCB:SetSize( TBTopCB:GetTextLength() * 8.5, 20 );
-	--TBTopCB:SetVisible( true );
-	--TBTopCB:SetEnabled( false );
-	TBTopCB:SetChecked( TBTop );
-	TBTopCB:SetForeColor( Color[ "rustedgold" ] );
+	local TBTopCB = CreateAutoSizedCheckBox(wOptions, L["OPTBTop"], wIconScrollBar:GetLeft(), wIconScrollBar:GetTop() + 20, TBTop);
 
 	TBTopCB.CheckedChanged = function( sender, args )
 		TBTop = TBTopCB:IsChecked();
@@ -257,17 +198,13 @@ function frmOptions()
 	end
 	-- **^
 	
-	local PILayoutCB = Turbine.UI.Lotro.CheckBox();
-	PILayoutCB:SetParent( wOptions );
-	PILayoutCB:SetText( L[ "Layout" ] );
-	PILayoutCB:SetPosition(TBTopCB:GetLeft(), TBTopCB:GetTop()+20);
-	PILayoutCB:SetSize( PILayoutCB:GetTextLength() * 8.5, 30 ); --Auto size with text length
-	PILayoutCB:SetChecked( PILayout );
-	PILayoutCB:SetForeColor( Color[ "rustedgold" ] );
+	local currentLayout = (_G.ControlData and _G.ControlData.PI and _G.ControlData.PI.layout) or false
+	local PILayoutCB = CreateAutoSizedCheckBox(wOptions, L["Layout"], TBTopCB:GetLeft(), TBTopCB:GetTop()+20, currentLayout, 8.5, 30);
 	
 	PILayoutCB.CheckedChanged = function( sender, args )
-		PILayout = PILayoutCB:IsChecked();
-		settings.PlayerInfos.Layout = PILayout;
+		_G.ControlData.PI = _G.ControlData.PI or {}
+		_G.ControlData.PI.layout = PILayoutCB:IsChecked();
+		settings.PlayerInfos.Layout = _G.ControlData.PI.layout;
 		SaveSettings( false );
 		ReloadTitanBar();
 	end
@@ -280,18 +217,18 @@ function ResizeControls()
 	if TBHeight > 30 then CTRHeight = 30; end--Set control maximum height
 	
 	for ItemID, ShowItem in pairs( GetWalletControls() ) do
-		if ShowItem.ShowHide then ShowItem.Control:SetHeight( CTRHeight ); end
-		AjustIcon( ItemID );
+		if ShowItem.IsVisible then ShowItem.Control:SetHeight( CTRHeight ); end
+		AdjustIcon( ItemID );
 	end 
 
-	if ShowPlayerLoc then PL[ "Ctr" ]:SetHeight( CTRHeight ); PL[ "Lbl" ]:SetHeight( CTRHeight ); end
-	if ShowGameTime  then GT[ "Ctr" ]:SetHeight( CTRHeight );	GT[ "Lbl" ]:SetHeight( CTRHeight ); end
+	if _G.ControlData.PL.show and _G.ControlData.PL.controls then _G.ControlData.PL.controls[ "Ctr" ]:SetHeight( CTRHeight ); _G.ControlData.PL.controls[ "Lbl" ]:SetHeight( CTRHeight ); end
+	if _G.ControlData.GT.show  then _G.ControlData.GT.controls[ "Ctr" ]:SetHeight( CTRHeight );	_G.ControlData.GT.controls[ "Lbl" ]:SetHeight( CTRHeight ); end
 end
 
 function ResizeIcon()
 	for ItemID, ShowItem in pairs( GetWalletControls() ) do
-		if ShowItem.ShowHide then
-			AjustIcon(ItemID)
+		if ShowItem.IsVisible then
+			AdjustIcon(ItemID)
 		end
 	end
 end

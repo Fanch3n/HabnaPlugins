@@ -14,10 +14,21 @@ AppClassD = AppDirD.."Class.";
 AppCtrD = AppDirD.."Control.";
 AppLocaleD = AppDirD.."Locale.";
 
+-- Ensure path globals are accessible to dynamically loaded modules
+_G.AppDir = AppDir;
+_G.AppDirD = AppDirD;
+_G.AppClassD = AppClassD;
+_G.AppCtrD = AppCtrD;
+_G.AppLocaleD = AppLocaleD;
+
 Version = Plugins["TitanBar"]:GetVersion();--> ** TitanBar current version **
 _G.TB = {};
 windowOpen = true;
 _G.Debug = false;-- True will enable some functions when I'm debugging
+
+-- Import and initialize control registry
+import(AppDirD.."ControlRegistry");
+_G.ControlRegistry.InitializeAll();
 
 -- BlendMode 1: Color / 2: Normal / 3: Multiply / 4: AlphaBlend / 5: Overlay / 
 -- 6: Grayscale / 7: Screen / 8: Undefined
@@ -62,20 +73,35 @@ else GLocale = "en";
 end
 --**^
 
-Position = {
-	TITANBAR = 1,
-	TOOLTIP = 2,
-	NONE = 3
-}
+import (AppDirD.."Constants");
 
 import (AppDirD.."TBresources");
 import (AppDirD.."Currencies");
 import (AppDirD.."Factions");
 import (AppClassD.."Class");
-import (AppDir);
 import (AppDirD.."color");
 import (AppDirD.."settings");
+
+-- Initialize Turbine-dependent constants before using them
+Constants.InitializeAlignments();
+
+-- Assign durability slots now that Constants is initialized
+_G.DurabilitySlotsBG = Constants.DURABILITY_SLOTS_BG;
+
 LoadSettings();
+
+-- Ensure settings is globally accessible for dynamically loaded controls
+_G.settings = settings;
+
+import (AppDirD.."UIHelpers");
+import (AppDirD.."ControlFactory");
+
+-- Ensure ControlFactory functions are globally accessible for dynamically loaded controls
+_G.CreateTitanBarControl = CreateTitanBarControl;
+_G.CreateControlIcon = CreateControlIcon;
+_G.SetupControlInteraction = SetupControlInteraction;
+_G.CreateControlLabel = CreateControlLabel;
+
 import (AppDirD.."functions");
 import (AppCtrD.."CurrencyLogic");
 import (AppDirD.."functionsCtr");
@@ -114,7 +140,8 @@ if PlayerAlign == 1 then
 		L["MEngravedOnyxSigil"], L["MSandSmoothedBurl"], L["MLumpOfRedRockSalt"], L["MIronSignetOfTheSeaShadow"],	L["MIronSignetOfTheFist"],
 		L["MIronSignetOfTheAxe"],	L["MIronSignetOfTheBlackMoon"],	L["MIronSignetOfTheNecromancer"],	L["MIronSignetOfTheTwinFlame"],
     L["MPhialCrimsonExtract"], L["MPhialUmberExtract"], L["MPhialVerdantExtract"], L["MPhialGoldenExtract"], L["MPhialVioletExtract"], L["MPhialAmberExtract"],
-		L["MPhialSapphireExtract"], L["MShaganiGhin"], L["MHamatiUrgul"], L["MMurGhalaSarz"], L["MSilverSerpent"], L["MHuntersGuildMark"], L["MBlightedRelic"]
+		L["MPhialSapphireExtract"], L["MShaganiGhin"], L["MHamatiUrgul"], L["MMurGhalaSarz"], L["MSilverSerpent"], L["MHuntersGuildMark"], L["MBlightedRelic"],
+		L["MTatteredShadow"],
 	}
 else
 	MenuItem = { L["MCommendation"], L["MLotroPoints"] }
@@ -197,6 +224,7 @@ _G.CurrencyLangMap = { -- reverse lookup table necessary to get the internal ite
 	[L["MSilverSerpent"]] = "SilverSerpent",
 	[L["MHuntersGuildMark"]] = "HuntersGuildMark",
 	[L["MBlightedRelic"]] = "BlightedRelic",
+	[L["MTatteredShadow"]] = "TatteredShadow",
 }
 
 function CheckForReputationImport()

@@ -41,7 +41,6 @@ L[ "MTI" ] = "Suivre des articles";
 --L[ "MView" ] = "Voir votre ";
 L[ "MVault" ] = "Coffre";
 L[ "MStorage" ] = "Stockage Partag\195\169";
---L[ "MBank" ] = "Banque";
 L[ "MDayNight" ] = "Jour & Nuit";
 L[ "MReputation" ] = "R\195\169putation";
 
@@ -264,6 +263,9 @@ L["HuntersGuildMarkh"] = "Ce sont vos Marques de la guilde des chasseurs";
 -- Blighted Relic
 L["MBlightedRelic"] = "Relique infectée";
 L["BlightedRelich"] = "Ce sont vos Reliques infectées";
+-- Tattered Shadows
+L["MTatteredShadow"] = "Ombre en lambeaux";
+L["atteredShadowh"] = "Ombres en lambeaux";
 
 -- Control Menu
 L[ "MCU" ] = "D\195\169charger ...";
@@ -327,9 +329,6 @@ L[ "SSnd" ] = "Besoin d'ouvrir votre stockage partag\195\169 au moins une fois";
 L[ "BIh" ] = "Sac \195\160 dos";
 L[ "BID" ] = " infos sacs supprim\195\169!"
 
--- Bank window
-L[ "BKh" ] = "banque";
-
 -- Day & Night window
 L[ "Dawn" ] = "Aube";
 L[ "Morning" ] = "Matin";
@@ -345,9 +344,9 @@ L[ "NextT" ] = "Afficher le prochain temps";
 L[ "TAjustL" ] = "Code de minuterie";
 
 -- Reputation window
-L[ "RPt" ] = "S\195\169lectionner / d\195\169s\195\169lectionner une faction\nclick droit pour voir ces configurations";
+L[ "RPt" ] = "Sélectionner / désélectionner une faction\nclick droit pour voir ces configurations";
 L[ "RPnf" ] = "Vous suivez aucune faction!\nFaites un clic gauche pour voir la liste des factions.";
-L[ "RPPHMaxHide" ] = "Masquer les factions \195\160 une r\195\169putation maximale";-- Google: https://translate.google.com/#auto/fr/Hide%20factions%20at%20maximum%20reputation
+L[ "RPPHMaxShow" ] = "Afficher les factions à leur réputation maximale";
 
 -- All reputation names
 L[ "MenOfBree" ]    = "Hommes de Bree";

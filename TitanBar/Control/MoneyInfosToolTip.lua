@@ -2,24 +2,24 @@
 -- written by Habna
 -- refactored by 4andreas
 
+import(AppDirD .. "UIHelpers")
+
 function ShowMIWindow()
-	_G.ToolTipWin = Turbine.UI.Window();
-	_G.ToolTipWin:SetZOrder( 1 );
-	_G.ToolTipWin:SetWidth( 325 );
-	_G.ToolTipWin:SetVisible( true );
+	local tt = CreateTooltipWindow({
+		width = Constants.TOOLTIP_WIDTH_MEDIUM,
+		hasListBox = true,
+		listBoxPosition = {x = 15, y = 20}
+	})
+	
+	MITTListBox = tt.listBox
+	MITTListBox:SetWidth(_G.ToolTipWin:GetWidth() - 30)
+	MITTListBox:SetMaxItemsPerLine(1)
+	MITTListBox:SetOrientation(Turbine.UI.Orientation.Horizontal)
 
-	MITTListBox = Turbine.UI.ListBox();
-	MITTListBox:SetParent( _G.ToolTipWin );
-	MITTListBox:SetZOrder( 1 );
-	MITTListBox:SetPosition( 15, 20 );
-	MITTListBox:SetWidth( _G.ToolTipWin:GetWidth() - 30 );
-	MITTListBox:SetMaxItemsPerLine( 1 );
-	MITTListBox:SetOrientation( Turbine.UI.Orientation.Horizontal );
-
-	MIRefreshMITTListBox();
-  MITTListBox:SetHeight( MITTPosY);
-  
-	ApplySkin();
+	MIRefreshMITTListBox()
+	MITTListBox:SetHeight(MITTPosY)
+	
+	ApplySkin()
 end
 
 function MoneyToCoins(m)
@@ -59,17 +59,12 @@ function MIRefreshMITTListBox()
 	
 	if not iFound then--No wallet info found, show a message
 		--**v Control of message v**
-		local MsgCtr = Turbine.UI.Control();
-		MsgCtr:SetParent( MITTListBox );
-		MsgCtr:SetSize( MITTListBox:GetWidth(), 19 );
+		local MsgCtr = CreateControl(Turbine.UI.Control, MITTListBox, 0, 0, MITTListBox:GetWidth(), 19)
 		MsgCtr:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 		--**^
 		--**v Message v**
-		local MsgLbl = Turbine.UI.Label();
-		MsgLbl:SetParent( MsgCtr );
-		MsgLbl:SetPosition( 0, 0 );
+		local MsgLbl = CreateControl(Turbine.UI.Label, MsgCtr, 0, 0, MsgCtr:GetWidth(), MsgCtr:GetHeight())
 		MsgLbl:SetText( L["MIMsg"] );
-		MsgLbl:SetSize( MsgCtr:GetWidth(), MsgCtr:GetHeight() );
 		MsgLbl:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 		MsgLbl:SetForeColor( Color["red"] );
 		--**^
@@ -79,16 +74,11 @@ function MIRefreshMITTListBox()
 	end
 
 	--**v Line Control v**
-	local LineCtr = Turbine.UI.Control();
-	LineCtr:SetParent( MITTListBox );
-	LineCtr:SetSize( MITTListBox:GetWidth(), 7 );
+	local LineCtr = CreateControl(Turbine.UI.Control, MITTListBox, 0, 0, MITTListBox:GetWidth(), 7)
 	--LineCtr:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 
-	local LineLbl = Turbine.UI.Label();
-	LineLbl:SetParent( LineCtr );
+	local LineLbl = CreateControl(Turbine.UI.Label, LineCtr, 0, 2, MITTListBox:GetWidth(), 1)
 	LineLbl:SetText( "" );
-	LineLbl:SetPosition( 0, 2 );
-	LineLbl:SetSize( MITTListBox:GetWidth(), 1 );
 	LineLbl:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 	LineLbl:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
 	LineLbl:SetBackColor( Color["trueblue"] );
@@ -103,10 +93,11 @@ function MIRefreshMITTListBox()
 
 	--**v Statistics section v**
 	local PN = Player:GetName();
+	local moneyData = (_G.ControlData and _G.ControlData.Money) or {}
 	
-	if _G.SSS then --Show session statistics if true
+	if moneyData.sss == true then --Show session statistics if true
   	local space = Turbine.UI.Label();
-    space:SetSize( 140, 10 );
+    space:SetSize( Constants.LABEL_WIDTH_STANDARD, Constants.LABEL_HEIGHT_SMALL );
     MITTListBox:AddItem( space );
     MITTPosY = 	MITTPosY + 10;
     
@@ -114,7 +105,7 @@ function MIRefreshMITTListBox()
 		LblStat:SetParent( MITTListBox );
 		MITTListBox:AddItem( LblStat );
 		LblStat:SetForeColor( Color["rustedgold"] );
-		LblStat:SetSize( 140, 19 );
+		LblStat:SetSize( Constants.LABEL_WIDTH_STANDARD, Constants.LABEL_HEIGHT_LARGE );
 		LblStat:SetFont(Turbine.UI.Lotro.Font.TrajanPro14);
 		LblStat:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 		LblStat:SetText( L["MISession"] );
@@ -134,9 +125,9 @@ function MIRefreshMITTListBox()
   end
 	
 
-	if _G.STS then --Show today statistics if true
+	if moneyData.sts == true then --Show today statistics if true
 		local space = Turbine.UI.Label();
-    space:SetSize( 140, 10 );
+    space:SetSize( Constants.LABEL_WIDTH_STANDARD, Constants.LABEL_HEIGHT_SMALL );
     MITTListBox:AddItem( space );
     MITTPosY = 	MITTPosY + 10;
     
@@ -144,7 +135,7 @@ function MIRefreshMITTListBox()
 		LblStat:SetParent( MITTListBox );
     MITTListBox:AddItem( LblStat );
 		LblStat:SetForeColor( Color["rustedgold"] );
-		LblStat:SetSize( 140, 19 );
+		LblStat:SetSize( Constants.LABEL_WIDTH_STANDARD, Constants.LABEL_HEIGHT_LARGE );
 		LblStat:SetFont(Turbine.UI.Lotro.Font.TrajanPro14);
 		LblStat:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 		LblStat:SetText( L["MIDaily"] );
@@ -163,30 +154,21 @@ function MIRefreshMITTListBox()
     MITTPosY = MITTPosY + 3*19;
 	end
 
-	_G.ToolTipWin:SetHeight( MITTPosY + 40);
+	_G.ToolTipWin:SetSize( _G.ToolTipWin:GetWidth(), MITTPosY + 5 );
 
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-			
-	if _G.ToolTipWin:GetWidth() + mouseX + 5 > screenWidth then x = _G.ToolTipWin:GetWidth() - 10;
-	else x = -5; end
-			
-	if TBTop then y = -15;
-	else y = _G.ToolTipWin:GetHeight() end
-
-	_G.ToolTipWin:SetPosition( mouseX - x, mouseY - y);
+	PositionToolTipWindow();
 end
 
 function MITTShowData(parent,l,m,lc,mc,showDelIcon) -- l = label, m = money, lc = label color, money color
 	iFound = true;
 	local g = {};
 	g[1], g[2], g[3] = MoneyToCoins(m);
-	--**v Control of Gold/Silver/Copper currencies v**
+
 	local MoneyCtr = Turbine.UI.Control();
 	MoneyCtr:SetParent( parent );
 	MoneyCtr:SetSize( parent:GetWidth(), 19 );
 	MoneyCtr:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-	--**^
-	--**v Player name v**
+
 	local lblName = Turbine.UI.Label();
 	lblName:SetParent( MoneyCtr );
 	lblName:SetText( l );
@@ -194,36 +176,37 @@ function MITTShowData(parent,l,m,lc,mc,showDelIcon) -- l = label, m = money, lc 
 	lblName:SetSize( lblName:GetTextLength() * 7.5, MoneyCtr:GetHeight() );
 	lblName:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 	lblName:SetForeColor(lc);
-  --**^
-  
-  --**v Delete icon v**
+
 	if showDelIcon then
     lblName:SetPosition( 15, 0 );  
-    local DelIcon = Turbine.UI.Label();
-  	DelIcon:SetParent( MoneyCtr );
-  	DelIcon:SetPosition( 0, 0 );
-  	DelIcon:SetSize( 16, 16 );
+    local DelIcon = CreateControl(Turbine.UI.Label, MoneyCtr, 0, 0, Constants.DELETE_ICON_SIZE, Constants.DELETE_ICON_SIZE);
   	DelIcon:SetBackground( resources.DelIcon );
   	DelIcon:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
   	DelIcon:SetVisible( true );
-  	if k == Player:GetName() then DelIcon:SetVisible( false ); end
-  				
+		if l == Player:GetName() then DelIcon:SetVisible( false ); end
+
   	DelIcon.MouseClick = function( sender, args )
   		if ( args.Button == Turbine.UI.MouseButton.Left ) then
   			write(l .. L["MIWID"]);
   			wallet[l].ShowToAll = false;
-  			if _G.STM then AllCharCB:SetChecked( false ); SavePlayerMoney(true); AllCharCB:SetChecked( true ); else SavePlayerMoney(true); end
+				local showTotal = (_G.ControlData and _G.ControlData.Money and _G.ControlData.Money.stm) == true
+				local moneyUi = _G.ControlData and _G.ControlData.Money and _G.ControlData.Money.ui
+				local allCharCB = moneyUi and moneyUi.AllCharCB
+				if showTotal and allCharCB then
+					allCharCB:SetChecked( false );
+					SavePlayerMoney(true);
+					allCharCB:SetChecked( true );
+				else
+					SavePlayerMoney(true);
+				end
   			RefreshMIListBox();
   		end
   	end
   end
-	--**^
+
   local pos = MoneyCtr:GetWidth() + 4;
 	for i = 1,3 do
-        local NewIcon = Turbine.UI.Control();
-        NewIcon:SetParent(MoneyCtr);
-        NewIcon:SetSize(27, 21);
-        NewIcon:SetPosition(pos - 34, -2);
+        local NewIcon = CreateControl(Turbine.UI.Control, MoneyCtr, pos - 34, -2, 27, 21);
         NewIcon:SetBlendMode(Turbine.UI.BlendMode.AlphaBlend);
         NewIcon:SetBackground(MoneyIcons[i]);
 
