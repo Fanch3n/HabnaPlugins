@@ -2,6 +2,25 @@
 -- Written by many
 
 
+local function CreateCheckBox(parent, text, left, top, width, height, checked, foreColor, font, alignment)
+    local cb = Turbine.UI.Lotro.CheckBox()
+    cb:SetParent(parent)
+    if text ~= nil then cb:SetText(text) end
+    cb:SetPosition(left or 0, top or 0)
+    if font then cb:SetFont(font) end
+    if alignment then cb:SetTextAlignment(alignment) end
+    cb:SetForeColor(foreColor or Color["rustedgold"])
+    if checked ~= nil then cb:SetChecked(checked) end
+    local h = height or 20
+    local w = width
+    if w == nil then
+        w = cb:GetTextLength() * 8.5
+    end
+    cb:SetSize(w, h)
+    return cb
+end
+
+
 function frmReputationWindow()
     _G.SelectedFaction = nil;
     import(AppClassD.."ComboBox");
@@ -70,15 +89,12 @@ function frmReputationWindow()
 	ui.RPFilter = RPFilter
 
     -- Add a checkbox to hide all factions that reach max reputation.
-    local RPPHMaxCtr = Turbine.UI.Lotro.CheckBox();
-    RPPHMaxCtr:SetParent(wRP);
-    RPPHMaxCtr:SetText(L["RPPHMaxShow"]);
-    RPPHMaxCtr:SetSize(wRP:GetWidth() - 40, 20);
-    RPPHMaxCtr:SetPosition(20, 95);
-    RPPHMaxCtr:SetFont(Turbine.UI.Lotro.Font.TrajanPro16);
-    RPPHMaxCtr:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
-    RPPHMaxCtr:SetForeColor(Color["yellow"]);
-	RPPHMaxCtr:SetChecked((_G.ControlData and _G.ControlData.RP and _G.ControlData.RP.showMax) == true);
+    local RPPHMaxCtr = CreateAutoSizedCheckBox(
+        wRP,
+        L["RPPHMaxShow"],
+        20, 95,
+        (_G.ControlData and _G.ControlData.RP and _G.ControlData.RP.showMax) == true
+    )
 
     RPPHMaxCtr.CheckedChanged = function(sender, args)
         _G.ControlData.RP = _G.ControlData.RP or {}
@@ -242,16 +258,17 @@ function RefreshRPListBox()
         RPCtr:SetSize(RPListBox:GetWidth() - 10, 20);
 
         -- Reputation name
-        local repLbl = Turbine.UI.Lotro.CheckBox();
+        local repLbl = CreateCheckBox(
+            RPCtr,
+            L[faction.name],
+            0, 0,
+            RPListBox:GetWidth() - 10, 20,
+            PlayerReputation[PN][faction.name].V,
+            Color["nicegold"],
+            Turbine.UI.Lotro.Font.TrajanPro16,
+            Turbine.UI.ContentAlignment.MiddleLeft
+        )
         RPCtr.repLbl = repLbl;
-        repLbl:SetParent(RPCtr);
-        repLbl:SetText(L[faction.name])
-        repLbl:SetSize(RPListBox:GetWidth() - 10, 20);
-        repLbl:SetPosition(0, 0);
-        repLbl:SetFont(Turbine.UI.Lotro.Font.TrajanPro16);
-        repLbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
-        repLbl:SetForeColor(Color["nicegold"]);
-        repLbl:SetChecked(PlayerReputation[PN][faction.name].V);
         repLbl.MouseClick = function(sender, args)
             if args.Button == Turbine.UI.MouseButton.Right then
                 _G.SelectedFaction = faction.name

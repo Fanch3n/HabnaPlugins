@@ -25,13 +25,7 @@ function frmDayNightWindow()
 		}
 	)
 
-	local NextTimeCB = Turbine.UI.Lotro.CheckBox();
-	NextTimeCB:SetParent( wDN );
-	NextTimeCB:SetPosition( 35, 40 );
-	NextTimeCB:SetText( L["NextT"] );
-	NextTimeCB:SetSize( NextTimeCB:GetTextLength() * 8.5, 20 );
-	NextTimeCB:SetChecked( (_G.ControlData.DN.next ~= false) );
-	NextTimeCB:SetForeColor( Color["rustedgold"] );
+	local NextTimeCB = CreateAutoSizedCheckBox(wDN, L["NextT"], 35, 40, (_G.ControlData.DN.next ~= false), 8.5, 20)
 
 	NextTimeCB.CheckedChanged = function( sender, args )
 		_G.ControlData.DN.next = NextTimeCB:IsChecked();

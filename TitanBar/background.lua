@@ -30,15 +30,7 @@ function frmBackground()
 	wBackground.Opacity = 1
 	-- **^
 	-- **v Check box - label v**
-	local SetToAllCtr = Turbine.UI.Lotro.CheckBox();
-	SetToAllCtr:SetParent( wBackground );
-	SetToAllCtr:SetPosition( 40, wBackground:GetHeight() - 70 );
-	SetToAllCtr:SetText( L["BWApply"] );
-	SetToAllCtr:SetSize( SetToAllCtr:GetTextLength() * 8, 30 );
-	SetToAllCtr:SetVisible( true );
-	--SetToAllCtr:SetEnabled( false );
-	SetToAllCtr:SetChecked( BGWToAll );
-	SetToAllCtr:SetForeColor( Color["rustedgold"] );
+	local SetToAllCtr = CreateAutoSizedCheckBox(wBackground, L["BWApply"], 40, wBackground:GetHeight() - 70, BGWToAll, 8, 30)
 
 	SetToAllCtr.CheckedChanged = function( sender, args )
 		BGWToAll = SetToAllCtr:IsChecked();

@@ -4,6 +4,7 @@
 
 function frmMoneyInfosWindow()
 	import(AppDirD .. "WindowFactory")
+	import(AppDirD .. "UIHelpers")
 	_G.ControlData.Money = _G.ControlData.Money or {}
 	local moneyData = _G.ControlData.Money
 	if moneyData.stm == nil then moneyData.stm = false end
@@ -27,13 +28,8 @@ function frmMoneyInfosWindow()
 	ConfigureListBox(miListBox)
 	--MIListBox:SetBackColor( Color["darkgrey"] ); --debug purpose
 
-	local allCharCB = Turbine.UI.Lotro.CheckBox();
+	local allCharCB = CreateAutoSizedCheckBox(wMI, L["MIWAll"], 0, 0, moneyData.stm)
 	ui.AllCharCB = allCharCB
-	allCharCB:SetParent( wMI );
-	allCharCB:SetText( L["MIWAll"] );
-	allCharCB:SetSize( wMI:GetWidth(), 30 );
-	allCharCB:SetChecked( moneyData.stm );
-	allCharCB:SetForeColor( Color["rustedgold"] );
 
 	allCharCB.CheckedChanged = function( sender, args )
 		moneyData.stm = allCharCB:IsChecked();
@@ -42,13 +38,8 @@ function frmMoneyInfosWindow()
 		UpdateMoney();
 	end
 
-	local thisCharCB = Turbine.UI.Lotro.CheckBox();
+	local thisCharCB = CreateAutoSizedCheckBox(wMI, L["MIWCM"], 0, 0, moneyData.scm)
 	ui.ThisCharCB = thisCharCB
-	thisCharCB:SetParent( wMI );
-	thisCharCB:SetText( L["MIWCM"] );
-	thisCharCB:SetSize( wMI:GetWidth(), 30 );
-	thisCharCB:SetChecked( moneyData.scm );
-	thisCharCB:SetForeColor( Color["rustedgold"] );
 
 	thisCharCB.CheckedChanged = function( sender, args )
 		moneyData.scm = thisCharCB:IsChecked();
@@ -57,26 +48,16 @@ function frmMoneyInfosWindow()
 		RefreshMIListBox();
 	end
 
-	local toAllCharCB = Turbine.UI.Lotro.CheckBox();
+	local toAllCharCB = CreateAutoSizedCheckBox(wMI, L["MIWCMAll"], 0, 0, moneyData.scma)
 	ui.ToAllCharCB = toAllCharCB
-	toAllCharCB:SetParent( wMI );
-	toAllCharCB:SetText( L["MIWCMAll"] );
-	toAllCharCB:SetSize( wMI:GetWidth(), 30 );
-	toAllCharCB:SetChecked( moneyData.scma );
-	toAllCharCB:SetForeColor( Color["rustedgold"] );
 
 	toAllCharCB.CheckedChanged = function( sender, args )
 		moneyData.scma = toAllCharCB:IsChecked();
 		SavePlayerMoney( false );
 	end
 
-	local sssCB = Turbine.UI.Lotro.CheckBox();
+	local sssCB = CreateAutoSizedCheckBox(wMI, L["MIWSSS"], 0, 0, moneyData.sss)
 	ui.SSSCB = sssCB
-	sssCB:SetParent( wMI );
-	sssCB:SetText( L["MIWSSS"] );
-	sssCB:SetSize( wMI:GetWidth(), 30 );
-	sssCB:SetChecked( moneyData.sss );
-	sssCB:SetForeColor( Color["rustedgold"] );
 
 	sssCB.CheckedChanged = function(sender, args)
 		moneyData.sss = sssCB:IsChecked();
@@ -84,13 +65,8 @@ function frmMoneyInfosWindow()
 		SaveSettings(false);
 	end
 
-	local stsCB = Turbine.UI.Lotro.CheckBox();
+	local stsCB = CreateAutoSizedCheckBox(wMI, L["MIWSTS"], 0, 0, moneyData.sts)
 	ui.STSCB = stsCB
-	stsCB:SetParent( wMI );
-	stsCB:SetText( L["MIWSTS"] );
-	stsCB:SetSize( wMI:GetWidth(), 30 );
-	stsCB:SetChecked( moneyData.sts );
-	stsCB:SetForeColor( Color["rustedgold"] );
 
 	stsCB.CheckedChanged = function( sender, args )
 		moneyData.sts = stsCB:IsChecked();
