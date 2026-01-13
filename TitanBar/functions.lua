@@ -604,9 +604,6 @@ function KeepIconControlInBar(controlName)
 	-- Special case for MI which is stored as "Money"
 	elseif controlName == "MI" and _G.ControlData and _G.ControlData.Money and _G.ControlData.Money.controls then
 		container = _G.ControlData.Money.controls
-	-- Fall back to old global lookup for controls not yet migrated
-	elseif (_G[controlName] and _G[controlName]["Ctr"]) then 
-		container = _G[controlName];
 	elseif (_G.CurrencyData[controlName] and _G.CurrencyData[controlName].Ctr) then 
 		container = _G.CurrencyData[controlName];
 	end
@@ -647,21 +644,21 @@ function AdjustIcon(str)
 	if str == "MI" then
 		local moneyData = (_G.ControlData and _G.ControlData.Money) or {}
 		local t = "" 
-		if moneyData.stm == true then t = "T"; end 
-        local p = { "G", "S", "C" }; --prefix for Gold, Silver, Copper controls
-        local setleft = 0;
-        for i = 1,3 do 
-            local index = p[i] .. "Lbl" .. t;
-            _G.ControlData.Money.controls[p[i] .. "Ctr"]:SetLeft(setleft);
-            local getright = _G.ControlData.Money.controls[index]:GetLeft() + _G.ControlData.Money.controls[index]:GetWidth();
-            _G.ControlData.Money.controls[p[i] .. "Icon"]:SetStretchMode(1);
-		    _G.ControlData.Money.controls[p[i] .. "Icon"]:SetPosition(getright - 4, Y + 1 );
-		    _G.ControlData.Money.controls[p[i] .. "Ctr"]:SetSize(getright + TBIconSize, CTRHeight);
-            _G.ControlData.Money.controls[p[i] .. "Icon"]:SetSize( TBIconSize, TBIconSize );
-		    _G.ControlData.Money.controls[p[i] .. "Icon"]:SetStretchMode( 3 );
-            setleft = _G.ControlData.Money.controls[p[i].."Ctr"]:GetLeft() + _G.ControlData.Money.controls[p[i].."Ctr"]:GetWidth();
-        end
-		_G.ControlData.Money.controls[ "Ctr" ]:SetSize( _G.ControlData.Money.controls["GCtr"]:GetWidth() + _G.ControlData.Money.controls["SCtr"]:GetWidth() + 
+		if moneyData.stm == true then t = "T"; end
+			local p = { "G", "S", "C" }; --prefix for Gold, Silver, Copper controls
+			local setleft = 0;
+			for i = 1,3 do
+				local index = p[i] .. "Lbl" .. t;
+				_G.ControlData.Money.controls[p[i] .. "Ctr"]:SetLeft(setleft);
+				local getright = _G.ControlData.Money.controls[index]:GetLeft() + _G.ControlData.Money.controls[index]:GetWidth();
+				_G.ControlData.Money.controls[p[i] .. "Icon"]:SetStretchMode(1);
+				_G.ControlData.Money.controls[p[i] .. "Icon"]:SetPosition(getright - 4, Y + 1 );
+				_G.ControlData.Money.controls[p[i] .. "Ctr"]:SetSize(getright + TBIconSize, CTRHeight);
+				_G.ControlData.Money.controls[p[i] .. "Icon"]:SetSize( TBIconSize, TBIconSize );
+				_G.ControlData.Money.controls[p[i] .. "Icon"]:SetStretchMode( 3 );
+				setleft = _G.ControlData.Money.controls[p[i].."Ctr"]:GetLeft() + _G.ControlData.Money.controls[p[i].."Ctr"]:GetWidth();
+			end
+			_G.ControlData.Money.controls[ "Ctr" ]:SetSize(_G.ControlData.Money.controls["GCtr"]:GetWidth() + _G.ControlData.Money.controls["SCtr"]:GetWidth() + 
             _G.ControlData.Money.controls["CCtr"]:GetWidth(), CTRHeight );
 	elseif (_G.CurrencyData[str] and _G.CurrencyData[str].Icon) then
 		local iconLeft = _G.CurrencyData[str].Lbl:GetLeft() + _G.CurrencyData[str].Lbl:GetWidth();
@@ -671,8 +668,6 @@ function AdjustIcon(str)
 		layoutIcon( _G.CurrencyData[str].Icon, _G.CurrencyData[str].Ctr, iconLeft, Y, iconLeft + TBIconSize );
 	else
 		-- Generic standard control layout.
-		-- Any control with a global table containing ["Ctr"] and ["Icon"] will be handled here.
-		-- This makes it much harder to forget adding a new control (e.g., EI).
 		
 		local container = nil
 		-- Try to find the control in ControlData first
@@ -681,9 +676,6 @@ function AdjustIcon(str)
 		-- Special case for MI which is stored as "Money"
 		elseif str == "MI" and _G.ControlData and _G.ControlData.Money and _G.ControlData.Money.controls then
 			container = _G.ControlData.Money.controls
-		-- Fall back to old global lookup for controls not yet migrated
-		elseif _G[str] then
-			container = _G[str]
 		end
 		
 		if container and container["Ctr"] and container["Icon"] then
