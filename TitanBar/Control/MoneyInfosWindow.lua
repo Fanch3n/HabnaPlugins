@@ -16,76 +16,84 @@ function frmMoneyInfosWindow()
 		"Money", "Money",
 		L["MIWTitle"], 325, 640
 	)
+	moneyData.ui = moneyData.ui or {}
+	local ui = moneyData.ui
 
-	MIListBox = Turbine.UI.ListBox();
-	MIListBox:SetParent( wMI );
-	MIListBox:SetPosition( 20, 35 );
-	MIListBox:SetWidth( wMI:GetWidth() - 40 );
-	ConfigureListBox(MIListBox)
+	local miListBox = Turbine.UI.ListBox();
+	ui.MIListBox = miListBox
+	miListBox:SetParent( wMI );
+	miListBox:SetPosition( 20, 35 );
+	miListBox:SetWidth( wMI:GetWidth() - 40 );
+	ConfigureListBox(miListBox)
 	--MIListBox:SetBackColor( Color["darkgrey"] ); --debug purpose
 
-	AllCharCB = Turbine.UI.Lotro.CheckBox();
-	AllCharCB:SetParent( wMI );
-	AllCharCB:SetText( L["MIWAll"] );
-	AllCharCB:SetSize( wMI:GetWidth(), 30 );
-	AllCharCB:SetChecked( moneyData.stm );
-	AllCharCB:SetForeColor( Color["rustedgold"] );
+	local allCharCB = Turbine.UI.Lotro.CheckBox();
+	ui.AllCharCB = allCharCB
+	allCharCB:SetParent( wMI );
+	allCharCB:SetText( L["MIWAll"] );
+	allCharCB:SetSize( wMI:GetWidth(), 30 );
+	allCharCB:SetChecked( moneyData.stm );
+	allCharCB:SetForeColor( Color["rustedgold"] );
 
-	AllCharCB.CheckedChanged = function( sender, args )
-		moneyData.stm = AllCharCB:IsChecked();
+	allCharCB.CheckedChanged = function( sender, args )
+		moneyData.stm = allCharCB:IsChecked();
 		settings.Money.S = moneyData.stm;
 		SaveSettings( false );
 		UpdateMoney();
 	end
 
-	ThisCharCB = Turbine.UI.Lotro.CheckBox();
-	ThisCharCB:SetParent( wMI );
-	ThisCharCB:SetText( L["MIWCM"] );
-	ThisCharCB:SetSize( wMI:GetWidth(), 30 );
-	ThisCharCB:SetChecked( moneyData.scm );
-	ThisCharCB:SetForeColor( Color["rustedgold"] );
+	local thisCharCB = Turbine.UI.Lotro.CheckBox();
+	ui.ThisCharCB = thisCharCB
+	thisCharCB:SetParent( wMI );
+	thisCharCB:SetText( L["MIWCM"] );
+	thisCharCB:SetSize( wMI:GetWidth(), 30 );
+	thisCharCB:SetChecked( moneyData.scm );
+	thisCharCB:SetForeColor( Color["rustedgold"] );
 
-	ThisCharCB.CheckedChanged = function( sender, args )
-		moneyData.scm = ThisCharCB:IsChecked();
-		if moneyData.stm then AllCharCB:SetChecked( false ); SavePlayerMoney(true); AllCharCB:SetChecked( true );
+	thisCharCB.CheckedChanged = function( sender, args )
+		moneyData.scm = thisCharCB:IsChecked();
+		if moneyData.stm then allCharCB:SetChecked( false ); SavePlayerMoney(true); allCharCB:SetChecked( true );
 		else SavePlayerMoney(true); end
 		RefreshMIListBox();
 	end
 
-	ToAllCharCB = Turbine.UI.Lotro.CheckBox();
-	ToAllCharCB:SetParent( wMI );
-	ToAllCharCB:SetText( L["MIWCMAll"] );
-	ToAllCharCB:SetSize( wMI:GetWidth(), 30 );
-	ToAllCharCB:SetChecked( moneyData.scma );
-	ToAllCharCB:SetForeColor( Color["rustedgold"] );
+	local toAllCharCB = Turbine.UI.Lotro.CheckBox();
+	ui.ToAllCharCB = toAllCharCB
+	toAllCharCB:SetParent( wMI );
+	toAllCharCB:SetText( L["MIWCMAll"] );
+	toAllCharCB:SetSize( wMI:GetWidth(), 30 );
+	toAllCharCB:SetChecked( moneyData.scma );
+	toAllCharCB:SetForeColor( Color["rustedgold"] );
 
-	ToAllCharCB.CheckedChanged = function( sender, args )
-		moneyData.scma = ToAllCharCB:IsChecked();
+	toAllCharCB.CheckedChanged = function( sender, args )
+		moneyData.scma = toAllCharCB:IsChecked();
 		SavePlayerMoney( false );
 	end
 
-	SSSCB = Turbine.UI.Lotro.CheckBox();
-	SSSCB:SetParent( wMI );
-	SSSCB:SetText( L["MIWSSS"] );
-	SSSCB:SetSize( wMI:GetWidth(), 30 );
-	SSSCB:SetChecked( moneyData.sss );
-	SSSCB:SetForeColor( Color["rustedgold"] );
+	local sssCB = Turbine.UI.Lotro.CheckBox();
+	ui.SSSCB = sssCB
+	sssCB:SetParent( wMI );
+	sssCB:SetText( L["MIWSSS"] );
+	sssCB:SetSize( wMI:GetWidth(), 30 );
+	sssCB:SetChecked( moneyData.sss );
+	sssCB:SetForeColor( Color["rustedgold"] );
 
-	SSSCB.CheckedChanged = function(sender, args)
-		moneyData.sss = SSSCB:IsChecked();
+	sssCB.CheckedChanged = function(sender, args)
+		moneyData.sss = sssCB:IsChecked();
 		settings.Money.SS = moneyData.sss;
 		SaveSettings(false);
 	end
 
-	STSCB = Turbine.UI.Lotro.CheckBox();
-	STSCB:SetParent( wMI );
-	STSCB:SetText( L["MIWSTS"] );
-	STSCB:SetSize( wMI:GetWidth(), 30 );
-	STSCB:SetChecked( moneyData.sts );
-	STSCB:SetForeColor( Color["rustedgold"] );
+	local stsCB = Turbine.UI.Lotro.CheckBox();
+	ui.STSCB = stsCB
+	stsCB:SetParent( wMI );
+	stsCB:SetText( L["MIWSTS"] );
+	stsCB:SetSize( wMI:GetWidth(), 30 );
+	stsCB:SetChecked( moneyData.sts );
+	stsCB:SetForeColor( Color["rustedgold"] );
 
-	STSCB.CheckedChanged = function( sender, args )
-		moneyData.sts = STSCB:IsChecked();
+	stsCB.CheckedChanged = function( sender, args )
+		moneyData.sts = stsCB:IsChecked();
 		settings.Money.TS = moneyData.sts;
 		SaveSettings( false );
 	end
@@ -96,10 +104,21 @@ function frmMoneyInfosWindow()
 end
 
 function RefreshMIListBox()
-	local wMI = _G.ControlData.Money.windowInstance
-	MIListBox:ClearItems();
+	local moneyData = _G.ControlData and _G.ControlData.Money
+	local wMI = moneyData and moneyData.windowInstance
+	if not wMI then return end
+	local ui = moneyData and moneyData.ui
+	local miListBox = ui and ui.MIListBox
+	if not miListBox then return end
+	local allCharCB = ui and ui.AllCharCB
+	local thisCharCB = ui and ui.ThisCharCB
+	local toAllCharCB = ui and ui.ToAllCharCB
+	local sssCB = ui and ui.SSSCB
+	local stsCB = ui and ui.STSCB
+
+	miListBox:ClearItems();
 	local MIPosY = 0;
-	local iFound = false;
+	local found = false;
 	
 	--Create an array of character name, sort it, then use it as a reference.
 	local a = {};
@@ -111,63 +130,65 @@ function RefreshMIListBox()
 	for i = 1, #a do
 		if a[i] == Player:GetName() then
 			if wallet[a[i]].Show then 
-        MITTShowData(MIListBox, a[i], wallet[a[i]].Money, Color["green"], Color["green"], true); 
+		MITTShowData(miListBox, a[i], wallet[a[i]].Money, Color["green"], Color["green"], true);
+		found = true
         MIPosY = MIPosY + 19;
       end
 		else
 			if wallet[a[i]].ShowToAll or wallet[a[i]].ShowToAll == nil then 
-        MITTShowData(MIListBox, a[i], wallet[a[i]].Money, Color["white"], Color["white"], true); 
+		MITTShowData(miListBox, a[i], wallet[a[i]].Money, Color["white"], Color["white"], true);
+		found = true
         MIPosY = MIPosY + 19;
       end
 		end
 	end
 	
-	if not iFound then--No wallet info found, show a message
+	if not found then--No wallet info found, show a message
 		local MsgCtr = Turbine.UI.Control();
-		MsgCtr:SetParent( MIListBox );
-		MsgCtr:SetSize( MIListBox:GetWidth(), 19 );
+		MsgCtr:SetParent( miListBox );
+		MsgCtr:SetSize( miListBox:GetWidth(), 19 );
 		MsgCtr:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 		--MsgCtr:SetBackColor( Color["red"] ); -- Debug purpose
 
 		local MsgLbl = CreateTitleLabel(MsgCtr, L["MIMsg"], 0, 0, nil, Color["red"], nil, MsgCtr:GetWidth(), MsgCtr:GetHeight(), Turbine.UI.ContentAlignment.MiddleCenter)
 
-		MIListBox:AddItem( MsgCtr );
+		miListBox:AddItem( MsgCtr );
 		MIPosY = MIPosY + 19;
 	end
 
 	local LineCtr = Turbine.UI.Control();
-	LineCtr:SetParent( MIListBox );
-	LineCtr:SetSize( MIListBox:GetWidth(), 7 );
+	LineCtr:SetParent( miListBox );
+	LineCtr:SetSize( miListBox:GetWidth(), 7 );
 	--LineCtr:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 
 	local LineLbl = Turbine.UI.Label();
 	LineLbl:SetParent( LineCtr );
 	LineLbl:SetText( "" );
 	LineLbl:SetPosition( 0, 2 );
-	LineLbl:SetSize( MIListBox:GetWidth(), 1 );
+	LineLbl:SetSize( miListBox:GetWidth(), 1 );
 	LineLbl:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 	LineLbl:SetBackColor( Color["trueblue"] );
 
-	MIListBox:AddItem( LineCtr );
+	miListBox:AddItem( LineCtr );
 	MIPosY = MIPosY + 7;
 
-	MITTShowData(MIListBox, L["MIWTotal"], (GoldTot*100000+SilverTot*100+CopperTot), Color["white"], Color["white"]);
+	MITTShowData(miListBox, L["MIWTotal"], (GoldTot*100000+SilverTot*100+CopperTot), Color["white"], Color["white"]);
   MIPosY = MIPosY + 19;
 	
-	MIListBox:AddItem( TotMoneyCtr );
+	miListBox:AddItem( TotMoneyCtr );
 	MIPosY = MIPosY + 19;
-	MIListBox:SetHeight( MIPosY );
+	miListBox:SetHeight( MIPosY );
 
 	MIPosY = MIPosY + 50;
-	AllCharCB:SetPosition( MIListBox:GetLeft(), MIPosY );
+	allCharCB:SetPosition( miListBox:GetLeft(), MIPosY );
 	MIPosY = MIPosY + 20;
-	ThisCharCB:SetPosition( MIListBox:GetLeft(), MIPosY );
+	thisCharCB:SetPosition( miListBox:GetLeft(), MIPosY );
 	MIPosY = MIPosY + 20;
-	ToAllCharCB:SetPosition( MIListBox:GetLeft(), MIPosY );
+	toAllCharCB:SetPosition( miListBox:GetLeft(), MIPosY );
 	MIPosY = MIPosY + 20;
-	SSSCB:SetPosition( MIListBox:GetLeft(), MIPosY );
+	sssCB:SetPosition( miListBox:GetLeft(), MIPosY );
 	MIPosY = MIPosY + 20;
-	STSCB:SetPosition( MIListBox:GetLeft(), MIPosY );
+	stsCB:SetPosition( miListBox:GetLeft(), MIPosY );
 	
 	wMI:SetHeight( MIPosY + 45 );
 end

@@ -163,13 +163,12 @@ function MITTShowData(parent,l,m,lc,mc,showDelIcon) -- l = label, m = money, lc 
 	iFound = true;
 	local g = {};
 	g[1], g[2], g[3] = MoneyToCoins(m);
-	--**v Control of Gold/Silver/Copper currencies v**
+
 	local MoneyCtr = Turbine.UI.Control();
 	MoneyCtr:SetParent( parent );
 	MoneyCtr:SetSize( parent:GetWidth(), 19 );
 	MoneyCtr:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
-	--**^
-	--**v Player name v**
+
 	local lblName = Turbine.UI.Label();
 	lblName:SetParent( MoneyCtr );
 	lblName:SetText( l );
@@ -177,9 +176,7 @@ function MITTShowData(parent,l,m,lc,mc,showDelIcon) -- l = label, m = money, lc 
 	lblName:SetSize( lblName:GetTextLength() * 7.5, MoneyCtr:GetHeight() );
 	lblName:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 	lblName:SetForeColor(lc);
-  --**^
-  
-  --**v Delete icon v**
+
 	if showDelIcon then
     lblName:SetPosition( 15, 0 );  
     local DelIcon = CreateControl(Turbine.UI.Label, MoneyCtr, 0, 0, Constants.DELETE_ICON_SIZE, Constants.DELETE_ICON_SIZE);
@@ -187,18 +184,26 @@ function MITTShowData(parent,l,m,lc,mc,showDelIcon) -- l = label, m = money, lc 
   	DelIcon:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
   	DelIcon:SetVisible( true );
 		if l == Player:GetName() then DelIcon:SetVisible( false ); end
-  				
+
   	DelIcon.MouseClick = function( sender, args )
   		if ( args.Button == Turbine.UI.MouseButton.Left ) then
   			write(l .. L["MIWID"]);
   			wallet[l].ShowToAll = false;
 				local showTotal = (_G.ControlData and _G.ControlData.Money and _G.ControlData.Money.stm) == true
-				if showTotal then AllCharCB:SetChecked( false ); SavePlayerMoney(true); AllCharCB:SetChecked( true ); else SavePlayerMoney(true); end
+				local moneyUi = _G.ControlData and _G.ControlData.Money and _G.ControlData.Money.ui
+				local allCharCB = moneyUi and moneyUi.AllCharCB
+				if showTotal and allCharCB then
+					allCharCB:SetChecked( false );
+					SavePlayerMoney(true);
+					allCharCB:SetChecked( true );
+				else
+					SavePlayerMoney(true);
+				end
   			RefreshMIListBox();
   		end
   	end
   end
-	--**^
+
   local pos = MoneyCtr:GetWidth() + 4;
 	for i = 1,3 do
         local NewIcon = CreateControl(Turbine.UI.Control, MoneyCtr, pos - 34, -2, 27, 21);

@@ -8,7 +8,13 @@ function frmWalletWindow()
 	wcur = nil;
 	import (AppClassD.."ComboBox");
 	import(AppDirD .. "WindowFactory")
-	WIDD = HabnaPlugins.TitanBar.Class.ComboBox();
+	local WIDD = HabnaPlugins.TitanBar.Class.ComboBox();
+	local WIbutSave
+
+	_G.ControlData.WI = _G.ControlData.WI or {}
+	local wiData = _G.ControlData.WI
+	wiData.ui = wiData.ui or {}
+	local ui = wiData.ui
 
 	local w = 320;
 	if GLocale == "de" then w = 360;
@@ -22,6 +28,7 @@ function frmWalletWindow()
 			dropdown = WIDD,
 			onClosing = function(sender, args)
 				if WIDD and WIDD.dropDownWindow then WIDD.dropDownWindow:SetVisible(false) end
+				wiData.ui = nil
 			end,
 			onKeyDown = function(sender, args)
 				if args.Action == Constants.KEY_ENTER then
@@ -30,6 +37,7 @@ function frmWalletWindow()
 			end
 		}
 	)
+	ui.WIDD = WIDD
 
 	
 	local WIlbltextHeight = 35;
@@ -42,37 +50,44 @@ function frmWalletWindow()
 	-- Use factory helper to create the search TextBox + delete icon
 	local wSearch = CreateSearchControl(wWI, WIFilterlbl:GetLeft() + WIFilterlbl:GetWidth(), WIFilterlbl:GetTop(), wWI:GetWidth() - 120, 20, Turbine.UI.Lotro.Font.Verdana16, resources)
 	local WIFiltertxt = wSearch.TextBox
-	wWI.WIFilterDelIcon = wSearch.DelIcon
-	WIFiltertxt.Text = "";
+	ui.WIFilterDelIcon = wSearch.DelIcon
+	ui.WIFiltertxt = WIFiltertxt
+	local lastFilterText = ""
 	WIFiltertxt.TextChanged = function()
-		if WIFiltertxt.Text ~= WIFiltertxt:GetText() then
-			WIFiltertxt.Text = WIFiltertxt:GetText();
-			WIFilter(WIFiltertxt.Text);
+		local current = WIFiltertxt:GetText() or ""
+		if lastFilterText ~= current then
+			lastFilterText = current
+			if ui.WIFilter then ui.WIFilter() end
 		end
 	end
 
-   function WIFilter()
-		local filterText = string.lower(WIFiltertxt.Text);
-        for i=1,WIListBox:GetItemCount() do
-            local row = WIListBox:GetItem(i);
-            if string.find(string.lower(row.curLbl:GetText()),filterText) == nil then
-                row:SetHeight(0);
-            else
-                row:SetHeight(20);
-            end
-        end
-    end
+	local function WIFilter()
+		local wiListBox = ui.WIListBox
+		if not wiListBox then return end
+		local filterText = string.lower(WIFiltertxt:GetText() or "");
+		for i = 1, wiListBox:GetItemCount() do
+			local row = wiListBox:GetItem(i);
+			if string.find(string.lower(row.curLbl:GetText()), filterText) == nil then
+				row:SetHeight(0);
+			else
+				row:SetHeight(20);
+			end
+		end
+	end
+	ui.WIFilter = WIFilter
 
 	local WIListBoxHeight = wWI:GetHeight()-95 - WIlbltextHeight - WIFilterlblHeight;
 	local wileft, witop = 20, 115
 	local wilb = CreateListBoxWithBorder(wWI, wileft, witop, wWI:GetWidth()-40, WIListBoxHeight, nil)
-	WIListBox = wilb.ListBox
+	local WIListBox = wilb.ListBox
+	ui.WIListBox = WIListBox
 	WIListBox:SetParent( wWI );
 	WIListBox:SetZOrder( 1 );
 	WIListBox:SetPosition( 20, 115 );
 	WIListBox:SetSize( wWI:GetWidth()-40, WIListBoxHeight );
 	ConfigureListBox(WIListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
-	WIListBoxScrollBar = wilb.ScrollBar
+	local WIListBoxScrollBar = wilb.ScrollBar
+	ui.WIListBoxScrollBar = WIListBoxScrollBar
 	WIListBoxScrollBar:SetParent( WIListBox );
 	WIListBoxScrollBar:SetZOrder( 1 );
 	WIListBoxScrollBar:SetOrientation( Turbine.UI.Orientation.Vertical );
@@ -80,7 +95,8 @@ function frmWalletWindow()
 	WIListBoxScrollBar:SetPosition( WIListBox:GetWidth() - 10, 0 );
 	WIListBoxScrollBar:SetSize( 12, WIListBox:GetHeight() );
 
-	WIWCtr = CreateControl(Turbine.UI.Control, wWI, WIListBox:GetLeft(), WIListBox:GetTop(), WIListBox:GetWidth(), WIListBox:GetHeight());
+	local WIWCtr = CreateControl(Turbine.UI.Control, wWI, WIListBox:GetLeft(), WIListBox:GetTop(), WIListBox:GetWidth(), WIListBox:GetHeight());
+	ui.WIWCtr = WIWCtr
 	WIWCtr:SetZOrder( 0 );
 	WIWCtr:SetVisible( false );
 	WIWCtr:SetBlendMode( 5 );
@@ -94,13 +110,15 @@ function frmWalletWindow()
 		end
 	end
 	
-	WIlblFN = CreateControl(Turbine.UI.Label, WIWCtr, 0, WIWCtr:GetHeight()/2 - 40, WIWCtr:GetWidth(), 15);
+	local WIlblFN = CreateControl(Turbine.UI.Label, WIWCtr, 0, WIWCtr:GetHeight()/2 - 40, WIWCtr:GetWidth(), 15);
+	ui.WIlblFN = WIlblFN
 	WIlblFN:SetFont( Turbine.UI.Lotro.Font.TrajanPro16 );
 	WIlblFN:SetFontStyle( Turbine.UI.FontStyle.Outline );
 	WIlblFN:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 	WIlblFN:SetForeColor( Color["rustedgold"] );
 
-	WICBO = { L["WIot"], L["WIiw"], L["WIds"] } --Combobox options
+	local WICBO = { L["WIot"], L["WIiw"], L["WIds"] } --Combobox options
+	ui.WICBO = WICBO
 
 	WIDD:SetParent( WIWCtr );
 	WIDD:SetSize( 170, Constants.DROPDOWN_HEIGHT );
@@ -113,7 +131,8 @@ function frmWalletWindow()
 	PopulateDropDown(WIDD, WICBO, false, nil, nil)
 
 	--** LOTRO Point box
-	LPWCtr = Turbine.UI.Control();
+	local LPWCtr = Turbine.UI.Control();
+	ui.LPWCtr = LPWCtr
 	LPWCtr:SetParent( WIWCtr );
 	LPWCtr:SetPosition( WIListBox:GetLeft(), WIDD:GetTop()+WIDD:GetHeight()+10 );
 	LPWCtr:SetZOrder( 2 );
@@ -129,7 +148,8 @@ function frmWalletWindow()
 	WIlblLOTROPTS:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 	--WIlblLOTROPTS:SetBackColor( Color["red"] ); -- debug purpose
 
-	WItxtLOTROPTS = CreateInputTextBox(LPWCtr, nil, WIlblLOTROPTS:GetLeft()+WIlblLOTROPTS:GetWidth()+5, WIlblLOTROPTS:GetTop()-2);
+	local WItxtLOTROPTS = CreateInputTextBox(LPWCtr, nil, WIlblLOTROPTS:GetLeft()+WIlblLOTROPTS:GetWidth()+5, WIlblLOTROPTS:GetTop()-2);
+	ui.WItxtLOTROPTS = WItxtLOTROPTS
 	if PlayerAlign == 2 then WItxtLOTROPTS:SetBackColor( Color["red"] ); end
 
 	WItxtLOTROPTS.FocusGained = function( sender, args )
@@ -157,6 +177,7 @@ function frmWalletWindow()
 	--**
 
 	WIbutSave = CreateAutoSizedButton(WIWCtr, L["PWSave"])
+	ui.WIbutSave = WIbutSave
 
 	WIbutSave.Click = function( sender, args )
 		WIWCtr:SetVisible( false );
@@ -224,6 +245,20 @@ function frmWalletWindow()
 end
 
 function RefreshWIListBox()
+	local wiData = _G.ControlData and _G.ControlData.WI
+	local ui = wiData and wiData.ui
+	local wWI = wiData and wiData.windowInstance
+	if not wWI or not ui then return end
+	local WIListBox = ui.WIListBox
+	if not WIListBox then return end
+	local WIWCtr = ui.WIWCtr
+	local WIlblFN = ui.WIlblFN
+	local WIDD = ui.WIDD
+	local WICBO = ui.WICBO
+	local LPWCtr = ui.LPWCtr
+	local WIbutSave = ui.WIbutSave
+	local WItxtLOTROPTS = ui.WItxtLOTROPTS
+
 	WIListBox:ClearItems();
 	
 	for i = 1, #MenuItem do
@@ -280,5 +315,5 @@ function RefreshWIListBox()
 
 		WIListBox:AddItem( WICtr );
 	end
-	WIFilter();
+	if ui.WIFilter then ui.WIFilter() end
 end
