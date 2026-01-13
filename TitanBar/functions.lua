@@ -56,7 +56,6 @@ function ApplySkin() --Tooltip skin
 	createTooltipPart("botRightCorner", ToolTipWin:GetWidth() - 36, ToolTipWin:GetHeight() - 36, 36, 36, Box.BottomRight)
 end
 
---**v Create a ToolTip Window v**
 function createToolTipWin( xOffset, yOffset, xSize, ySize, side, header, text1,
         text2, text3 )
 	local txt = {text1, text2, text3};
@@ -70,16 +69,13 @@ function createToolTipWin( xOffset, yOffset, xSize, ySize, side, header, text1,
 
 	ApplySkin();
 
-	--**v Text in Header v**
 	local lblheader = CreateControl(Turbine.UI.Label, _G.ToolTipWin, 40, 7, xSize, ySize);
 	lblheader:SetForeColor( Color["green"] );
 	lblheader:SetFont(Turbine.UI.Lotro.Font.Verdana16);
 	lblheader:SetText( header );
-	--**^
 	
 	local YPos = 25;
-	
-	--**v Text v**
+
 	for i = 1, #txt do
 		local lbltext = CreateControl(Turbine.UI.Label, _G.ToolTipWin, 40, YPos, xSize, 15);
 		lbltext:SetForeColor( Color["white"] );
@@ -87,8 +83,7 @@ function createToolTipWin( xOffset, yOffset, xSize, ySize, side, header, text1,
 		lbltext:SetText( txt[i] );
 		YPos = YPos + 15;
 	end
-	--**^
-
+	
 	return _G.ToolTipWin;
 end
 
@@ -143,13 +138,11 @@ function ShowToolTipWin(ToShow)
 	)
 	_G.ToolTipWin:SetVisible(true);
 end
---**^
---**v Update Wallet on TitanBar v**
+
 function UpdateWallet()
 	AdjustIcon( "WI" );
 end
---**^
---**v Update money on TitanBar v**
+
 function UpdateMoney()
 	local where = (_G.ControlData and _G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE
 	if where == Constants.Position.TITANBAR then
@@ -232,8 +225,7 @@ function UpdateMoney()
 		AdjustIcon( "MI" );
 	end
 end
---**^
---**v Update LOTRO points on TitanBar v**
+
 function UpdateLOTROPoints()
 	local where = (_G.ControlData and _G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE
 	if where == Constants.Position.TITANBAR then
@@ -245,9 +237,7 @@ function UpdateLOTROPoints()
 	end
 	SavePlayerLOTROPoints()
 end
---**^
--- AU3 MARKER 2 - DO NOT REMOVE
---**v Update currency on TitanBar v**
+
 function UpdateCurrencyDisplay(currencyName)
 	if _G.CurrencyData[currencyName].Where == 1 then
 		if currencyName == "DestinyPoints" then
@@ -259,8 +249,7 @@ function UpdateCurrencyDisplay(currencyName)
 		AdjustIcon(currencyName);
 	end
 end
---**^
---**v Update backpack infos on TitanBar v**
+
 function UpdateBackpackInfos()
 	local max = backpack:GetSize();
 	local freeslots = 0;
@@ -300,9 +289,7 @@ function UpdateBackpackInfos()
 
 	AdjustIcon( "BI" );
 end
---**^
 
---**v Update player infos on TitanBar v**
 function UpdatePlayersInfos()
 	--Race
 	PlayerRaceIdIs = Player:GetRace();
@@ -332,7 +319,6 @@ function UpdatePlayersInfos()
 
 	AdjustIcon("PI");
 end
---**^
 
 function ChangeWearState(value)
 	-- Set new wear state in table
@@ -349,7 +335,6 @@ function ChangeWearState(value)
 	UpdateDurabilityInfos();
 end
 
---**v Update Player Durability infos on TitanBar v**
 function UpdateDurabilityInfos()
 	local TDPts = 0;
 	for i = 1, 20 do
@@ -370,38 +355,32 @@ function UpdateDurabilityInfos()
 	_G.ControlData.DI.controls[ "Lbl" ]:SetSize( _G.ControlData.DI.controls[ "Lbl" ]:GetTextLength() * NM + 5, CTRHeight ); 
 	AdjustIcon( "DI" );
 end
---**^
---**v Update equipment infos on TitanBar v**
+
 function UpdateEquipsInfos()
     TotalItemsScore = 0;
     for i = 1,20 do TotalItemsScore = TotalItemsScore + itemEquip[i].Score; end
 		AdjustIcon("EI")
 end
---**^
---**v Update Track Items on TitanBar v**
+
 function UpdateTrackItems()
 	AdjustIcon( "TI" );
 end
---**^
---**v Update Infamy points on TitanBar v**
+
 function UpdateInfamy()
 	--Change Rank icon with infamy points
 	_G.ControlData.IF.controls[ "Icon" ]:SetBackground( InfIcon[tonumber(settings.Infamy.K)] );
 	
 	AdjustIcon( "IF" );
 end
---**^
---**v Update Vault on TitanBar v**
+
 function UpdateVault()
 	AdjustIcon( "VT" );
 end
---**^
---**v Update Shared Storage on TitanBar v**
+
 function UpdateSharedStorage()
 	AdjustIcon( "SS" );
 end
---**^
---**v Update Day & Night time on TitanBar v**
+
 function UpdateDayNight()
 	local cdate = Turbine.Engine.GetDate();
 	local chour = cdate.Hour;
@@ -437,13 +416,11 @@ function UpdateDayNight()
 
 	AdjustIcon( "DN" );
 end
---**^
---**v Update Reputation on TitanBar v**
+
 function UpdateReputation()
 	AdjustIcon( "RP" );
 end
---**^
---**v Update Player Location on TitanBar v**
+
 function UpdatePlayerLoc( value )
 	fontMetric=FontMetric();
     fontMetric:SetFont(_G.TBFont);
@@ -452,8 +429,7 @@ function UpdatePlayerLoc( value )
 
 	_G.ControlData.PL.controls[ "Ctr" ]:SetSize( _G.ControlData.PL.controls[ "Lbl" ]:GetWidth(), CTRHeight );
 end
---**^
---**v Update game time on TitanBar v**
+
 function UpdateGameTime(str)
 	local gtData = _G.ControlData and _G.ControlData.GT
 	local clock24h = gtData and gtData.clock24h == true
@@ -512,10 +488,7 @@ function UpdateGameTime(str)
 	_G.ControlData.GT.controls[ "Lbl" ]:SetSize( TextLen, CTRHeight ); --Auto size with text length
 	_G.ControlData.GT.controls[ "Ctr" ]:SetSize( _G.ControlData.GT.controls[ "Lbl" ]:GetWidth(), CTRHeight );
 end
---**^
 
-
--- **v Change back color v**
 function ChangeColor(tColor)
 	if BGWToAll then
 		TB["win"]:SetBackColor( tColor );
@@ -548,7 +521,6 @@ function ChangeColor(tColor)
 		end
 	end
 end
---**^
 
 function LoadEquipmentTable()
 	Slots = {
