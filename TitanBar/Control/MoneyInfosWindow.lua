@@ -23,8 +23,7 @@ function frmMoneyInfosWindow()
 	MIListBox:SetWidth( wMI:GetWidth() - 40 );
 	ConfigureListBox(MIListBox)
 	--MIListBox:SetBackColor( Color["darkgrey"] ); --debug purpose
-	
-	-- **v Display total money - check box v**
+
 	AllCharCB = Turbine.UI.Lotro.CheckBox();
 	AllCharCB:SetParent( wMI );
 	AllCharCB:SetText( L["MIWAll"] );
@@ -38,8 +37,7 @@ function frmMoneyInfosWindow()
 		SaveSettings( false );
 		UpdateMoney();
 	end
-	-- **^
-	-- **v Display character money - check box v**
+
 	ThisCharCB = Turbine.UI.Lotro.CheckBox();
 	ThisCharCB:SetParent( wMI );
 	ThisCharCB:SetText( L["MIWCM"] );
@@ -53,8 +51,7 @@ function frmMoneyInfosWindow()
 		else SavePlayerMoney(true); end
 		RefreshMIListBox();
 	end
-	-- **^
-	-- **v Display to all character - check box v**
+
 	ToAllCharCB = Turbine.UI.Lotro.CheckBox();
 	ToAllCharCB:SetParent( wMI );
 	ToAllCharCB:SetText( L["MIWCMAll"] );
@@ -66,8 +63,7 @@ function frmMoneyInfosWindow()
 		moneyData.scma = ToAllCharCB:IsChecked();
 		SavePlayerMoney( false );
 	end
-	-- **^
-	-- **v Display session statistics - check box v**
+
 	SSSCB = Turbine.UI.Lotro.CheckBox();
 	SSSCB:SetParent( wMI );
 	SSSCB:SetText( L["MIWSSS"] );
@@ -75,13 +71,12 @@ function frmMoneyInfosWindow()
 	SSSCB:SetChecked( moneyData.sss );
 	SSSCB:SetForeColor( Color["rustedgold"] );
 
-	SSSCB.CheckedChanged = function( sender, args )
+	SSSCB.CheckedChanged = function(sender, args)
 		moneyData.sss = SSSCB:IsChecked();
 		settings.Money.SS = moneyData.sss;
-		SaveSettings( false );
+		SaveSettings(false);
 	end
-	-- **^
-	-- **v Display session statistics - check box v**
+
 	STSCB = Turbine.UI.Lotro.CheckBox();
 	STSCB:SetParent( wMI );
 	STSCB:SetText( L["MIWSTS"] );
@@ -94,7 +89,6 @@ function frmMoneyInfosWindow()
 		settings.Money.TS = moneyData.sts;
 		SaveSettings( false );
 	end
-	-- **^
 
 	RefreshMIListBox();
 
@@ -129,21 +123,18 @@ function RefreshMIListBox()
 	end
 	
 	if not iFound then--No wallet info found, show a message
-		--**v Control of message v**
 		local MsgCtr = Turbine.UI.Control();
 		MsgCtr:SetParent( MIListBox );
 		MsgCtr:SetSize( MIListBox:GetWidth(), 19 );
 		MsgCtr:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 		--MsgCtr:SetBackColor( Color["red"] ); -- Debug purpose
-		--**^
-		--**v Message v**
+
 		local MsgLbl = CreateTitleLabel(MsgCtr, L["MIMsg"], 0, 0, nil, Color["red"], nil, MsgCtr:GetWidth(), MsgCtr:GetHeight(), Turbine.UI.ContentAlignment.MiddleCenter)
 
 		MIListBox:AddItem( MsgCtr );
 		MIPosY = MIPosY + 19;
 	end
 
-	--**v Line Control v**
 	local LineCtr = Turbine.UI.Control();
 	LineCtr:SetParent( MIListBox );
 	LineCtr:SetSize( MIListBox:GetWidth(), 7 );
@@ -159,7 +150,7 @@ function RefreshMIListBox()
 
 	MIListBox:AddItem( LineCtr );
 	MIPosY = MIPosY + 7;
-	--**^
+
 	MITTShowData(MIListBox, L["MIWTotal"], (GoldTot*100000+SilverTot*100+CopperTot), Color["white"], Color["white"]);
   MIPosY = MIPosY + 19;
 	

@@ -13,7 +13,6 @@ function frmGameTimeWindow()
 		L["GTWTitle"], 200, 120
 	)
 
-	-- **v 24h clock - Check box v**
 	local GMT = Turbine.UI.Lotro.TextBox();
 	local ShowSTcb = Turbine.UI.Lotro.CheckBox();
 	local ShowBTcb;  -- Forward declaration
@@ -27,8 +26,7 @@ function frmGameTimeWindow()
 		elseif gtData.showST then UpdateGameTime("st");
 		else UpdateGameTime("gt") end
 	end
-	-- **^
-	-- **v Show server time - Check box v**
+
 	ShowSTcb:SetParent( wGT );
 	ShowSTcb:SetPosition( 35, Clock24Ctr:GetTop() + 20 );
 	ShowSTcb:SetText( L["GTWSST"] );
@@ -46,8 +44,7 @@ function frmGameTimeWindow()
 		SaveSettings( false );
 		if not gtData.showBT then UpdateGameTime("st"); end
 	end
-	-- **^
-	-- **v GMT - Text box v**
+
 	GMT:SetParent( ShowSTcb );
 	GMT:SetText( tostring(tonumber(gtData.userGMT) or 0) );
 	GMT:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
@@ -88,8 +85,7 @@ function frmGameTimeWindow()
 			else UpdateGameTime("gt") end
 		end
 	end
-	-- **^
-	-- **v Show both time - Check box v**
+
 	ShowBTcb = CreateAutoSizedCheckBox(wGT, L["GTWSBT"], 35, ShowSTcb:GetTop() + 20, gtData.showBT == true);
 
 	ShowBTcb.CheckedChanged = function( sender, args )
@@ -102,7 +98,6 @@ function frmGameTimeWindow()
 		elseif gtData.showST then UpdateGameTime("st");
 		else UpdateGameTime("gt") end
 	end
-	-- **^
 
 	GMT:SetPosition( ShowSTcb:GetWidth() - 65, 0 );
 	wGT:SetWidth( Clock24Ctr:GetWidth() + 60 );

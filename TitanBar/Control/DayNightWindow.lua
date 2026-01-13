@@ -24,8 +24,7 @@ function frmDayNightWindow()
 			end
 		}
 	)
-	
-	-- **v Show/Hide Next time - Check box v**
+
 	local NextTimeCB = Turbine.UI.Lotro.CheckBox();
 	NextTimeCB:SetParent( wDN );
 	NextTimeCB:SetPosition( 35, 40 );
@@ -40,11 +39,8 @@ function frmDayNightWindow()
 		SaveSettings( false );
 		UpdateDayNight();
 	end
-	-- **^
-	-- **v Timer seed - Label v**
+
 	local TAjustlbl = CreateTitleLabel(wDN, L["TAjustL"], NextTimeCB:GetLeft(), NextTimeCB:GetTop() + 30, nil, Color["rustedgold"], 8.5, nil, 20)
-	-- **^
-	-- **v Timer seed - Text box v**
 	local TAjustTB = CreateInputTextBox(wDN, tostring(tonumber(_G.ControlData.DN.ts) or 0), TAjustlbl:GetLeft() + TAjustlbl:GetWidth(), TAjustlbl:GetTop() - 5, 75);
 	TAjustTB:SetForeColor( Color["white"] );
 
@@ -72,8 +68,7 @@ function frmDayNightWindow()
 		SaveSettings( false );
 		UpdateDayNight();
 	end
-	-- **^
-	-- **v ? - Button v**
+
 	local Help = Turbine.UI.Lotro.Button();
 	Help:SetParent( wDN );
 	Help:SetPosition( TAjustTB:GetLeft()+TAjustTB:GetWidth() + 10, TAjustTB:GetTop() );
@@ -85,8 +80,7 @@ function frmDayNightWindow()
 		bHelp = not bHelp;
 		ShowHelpSection(bHelp);
 	end
-	-- **^
-	-- **v ? - TextBox v**
+
 	HelpTB = Turbine.UI.Label();
 	HelpTB:SetParent( wDN );
 	
@@ -95,8 +89,7 @@ function frmDayNightWindow()
 	HelpTB:SetVisible( bHelp );
 	HelpTB:SetSize( wDN:GetWidth()-60, 250 );
 	HelpTB:SetText( "Try using does value if time is not sync:\n\n* Arkenstone: ... 1295018461\n* Brandywine: ... 1295011363\n* Crickhollow: .. 1295013525\n* Gladden: ...... 1295020785\n* Landroval: .... 1295028066" );
-	-- **^
-	
+
 	ShowHelpSection(bHelp);
 end
 

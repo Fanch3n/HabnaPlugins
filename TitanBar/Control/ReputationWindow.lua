@@ -84,7 +84,6 @@ function frmReputationWindow()
         end
     end
 
-    -- **v Set the reputation listbox v (using WindowFactory helper) **
     local rpLeft, rpTop = 20, 115
     local rpWidth, rpHeight = wRP:GetWidth() - 40, wRP:GetHeight() - 130
     local rplb = CreateListBoxWithBorder(wRP, rpLeft, rpTop, rpWidth, rpHeight, nil)
@@ -99,7 +98,6 @@ function frmReputationWindow()
     RPListBox:SetVerticalScrollBar(RPListBoxScrollBar)
     RPListBoxScrollBar:SetPosition(RPListBox:GetWidth() - 10, 0)
     RPListBoxScrollBar:SetSize(12, RPListBox:GetHeight())
-    -- **^
 
     RPWCtr = CreateControl(Turbine.UI.Control, wRP, RPListBox:GetLeft(), RPListBox:GetTop(), RPListBox:GetWidth(), RPListBox:GetHeight());
     RPWCtr:SetZOrder(0);
@@ -132,7 +130,6 @@ function frmReputationWindow()
     RPlblRank:SetForeColor(Color["rustedgold"]);
     RPlblRank:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
 
-    -- **v Create drop down box v**
     RPDD:SetParent(RPWCtr);
     RPDD:SetSize(Constants.DROPDOWN_WIDTH, Constants.DROPDOWN_HEIGHT);
     RPDD:SetPosition(
@@ -140,7 +137,6 @@ function frmReputationWindow()
     RPDD.dropDownWindow:SetParent(RPWCtr);
     RPDD.dropDownWindow:SetPosition(
         RPDD:GetLeft(), RPDD:GetTop() + RPDD:GetHeight() + 2);
-    -- **^
 
     RPlblTotal = Turbine.UI.Label();
     RPlblTotal:SetParent(RPWCtr);
@@ -214,11 +210,10 @@ end
 function RefreshRPListBox()
     RPListBox:ClearItems();
     for _, faction in ipairs(_G.Factions.list) do
-        --**v Control of all data v**
         local RPCtr = Turbine.UI.Control();
         RPCtr:SetParent(RPListBox);
         RPCtr:SetSize(RPListBox:GetWidth() - 10, 20);
-        --**^
+
         -- Reputation name
         local repLbl = Turbine.UI.Lotro.CheckBox();
         RPCtr.repLbl = repLbl;

@@ -17,8 +17,6 @@ function frmSharedStorage()
 		}
 	)
 
-
-	-- **v search label & text box v**
 	wSS.searchLabel = CreateTitleLabel(wSS, L["VTSe"], 15, 40, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
 
 	local searchLeft = wSS.searchLabel:GetLeft() + wSS.searchLabel:GetWidth()
@@ -27,13 +25,10 @@ function frmSharedStorage()
 	wSS.SearchTextBox = search.TextBox
 	wSS.DelIcon = search.DelIcon
 
-	wSS.SearchTextBox.TextChanged = function( sender, args )
-		wSS.searchText = string.lower( wSS.SearchTextBox:GetText() );
+	wSS.SearchTextBox.TextChanged = function(sender, args)
+		wSS.searchText = string.lower(wSS.SearchTextBox:GetText());
 		if wSS.searchText == "" then wSS.searchText = nil; end
 		SetSharedStoragePack();
-	end
-
-	wSS.SearchTextBox.FocusLost = function( sender, args )
 	end
 
 	local lbTop = 80
@@ -41,7 +36,7 @@ function frmSharedStorage()
 	wSS.ListBoxBorder = lb.Border
 	wSS.ListBox = lb.ListBox
 	wSS.ListBoxScrollBar = lb.ScrollBar
-	wSS.ListBox:SetMaxItemsPerLine( 1 );
+	wSS.ListBox:SetMaxItemsPerLine(1);
 	ConfigureListBox(wSS.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
 	
 	sspackCount = 0;

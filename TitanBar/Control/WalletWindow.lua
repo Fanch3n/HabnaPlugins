@@ -10,7 +10,6 @@ function frmWalletWindow()
 	import(AppDirD .. "WindowFactory")
 	WIDD = HabnaPlugins.TitanBar.Class.ComboBox();
 
-	-- **v Create window via helper v**
 	local w = 320;
 	if GLocale == "de" then w = 360;
 	elseif GLocale == "fr" then w = 360;
@@ -64,7 +63,6 @@ function frmWalletWindow()
         end
     end
 
-	-- **v Set the Wallet listbox v (use helper for border/list/scroll)
 	local WIListBoxHeight = wWI:GetHeight()-95 - WIlbltextHeight - WIFilterlblHeight;
 	local wileft, witop = 20, 115
 	local wilb = CreateListBoxWithBorder(wWI, wileft, witop, wWI:GetWidth()-40, WIListBoxHeight, nil)
@@ -81,7 +79,6 @@ function frmWalletWindow()
 	WIListBox:SetVerticalScrollBar( WIListBoxScrollBar );
 	WIListBoxScrollBar:SetPosition( WIListBox:GetWidth() - 10, 0 );
 	WIListBoxScrollBar:SetSize( 12, WIListBox:GetHeight() );
-	-- **^
 
 	WIWCtr = CreateControl(Turbine.UI.Control, wWI, WIListBox:GetLeft(), WIListBox:GetTop(), WIListBox:GetWidth(), WIListBox:GetHeight());
 	WIWCtr:SetZOrder( 0 );
@@ -104,16 +101,14 @@ function frmWalletWindow()
 	WIlblFN:SetForeColor( Color["rustedgold"] );
 
 	WICBO = { L["WIot"], L["WIiw"], L["WIds"] } --Combobox options
-	
-	-- **v Create drop down box v**
+
 	WIDD:SetParent( WIWCtr );
 	WIDD:SetSize( 170, Constants.DROPDOWN_HEIGHT );
 	WIDD:SetPosition( WIWCtr:GetWidth()/2 - WIDD:GetWidth()/2, WIlblFN:GetTop()+WIlblFN:GetHeight()+10 );
 
 	WIDD.dropDownWindow:SetParent( WIWCtr );
 	WIDD.dropDownWindow:SetPosition(WIDD:GetLeft(), WIDD:GetTop() + WIDD:GetHeight()+2);
-	-- **^
-	
+
 	-- Populate the wallet combobox using the helper
 	PopulateDropDown(WIDD, WICBO, false, nil, nil)
 
@@ -231,12 +226,10 @@ end
 function RefreshWIListBox()
 	WIListBox:ClearItems();
 	
-	for i = 1, #MenuItem do		
-		--**v Control of all data v**
+	for i = 1, #MenuItem do
 		local WICtr = Turbine.UI.Control();
 		WICtr:SetParent( WIListBox );
 		WICtr:SetSize( WIListBox:GetWidth(), 20 );
-		--**^
 		
 		-- Wallet currency name
 		local curLbl = Turbine.UI.Label();

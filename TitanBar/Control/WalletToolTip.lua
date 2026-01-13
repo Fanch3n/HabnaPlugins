@@ -151,7 +151,6 @@ function RefreshWITTListBox()
 		lblName:SetSize( WITTListBox:GetWidth(), Constants.ICON_SIZE_LARGE );
 		lblName:SetForeColor( Color["green"] );
 		lblName:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
-		--lblName:SetBackColor( Color["red"] ); -- debug purpose
 
 		WITTListBox:AddItem( lblName );
 	end

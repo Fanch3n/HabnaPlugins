@@ -23,8 +23,6 @@ function frmTrackItemsWindow()
 	wTI.lblBackPack:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleCenter );
 	wTI.lblBackPack:SetForeColor( Color["green"] );
 
-	-- **v search label & text box v**
-	-- **v search label & text box v**
 	wTI.searchLabel = CreateTitleLabel(wTI, L["VTSe"], 15, 60, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
 
 	local searchLeft = wTI.searchLabel:GetLeft() + wTI.searchLabel:GetWidth()
@@ -33,7 +31,7 @@ function frmTrackItemsWindow()
 	wTI.SearchTextBox = search.TextBox
 	wTI.DelIcon = search.DelIcon
 
-	wTI.SearchTextBox.TextChanged = function( sender, args )
+	wTI.SearchTextBox.TextChanged = function(sender, args)
 		ApplySearch();
 	end
 	-- Needed to handle deleting text with the delete key:
@@ -41,15 +39,12 @@ function frmTrackItemsWindow()
 		ApplySearch();
 	end
 
-	wTI.SearchTextBox.FocusLost = function( sender, args )
-	end
-
 	local lbTop = 85
 	local lb = CreateListBoxWithBorder(wTI, 15, lbTop, wTI:GetWidth() - 30, Constants.LISTBOX_HEIGHT_STANDARD, Color["grey"])
 	wTI.ListBoxBorder = lb.Border
 	wTI.ListBox = lb.ListBox
 	wTI.ListBoxScrollBar = lb.ScrollBar
-	wTI.ListBox:SetMaxItemsPerLine( 1 );
+	wTI.ListBox:SetMaxItemsPerLine(1);
 	ConfigureListBox(wTI.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
 
 	CheckForStackableItems();

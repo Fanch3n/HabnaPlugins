@@ -7,8 +7,6 @@ function frmVault()
 	SelCN = PN;
 	import (AppClassD.."ComboBox");
 	VICB = HabnaPlugins.TitanBar.Class.ComboBox();
-
-	-- **v Set some window stuff v**
 	import(AppDirD .. "WindowFactory")
 
 	-- Create window via helper
@@ -24,26 +22,22 @@ function frmVault()
 		}
 	)
 
-	-- **^
-	-- **v Create drop down box v**
-	VICB:SetParent( wVT );
-	VICB:SetSize( 159, 19 );
-	VICB:SetPosition( 15, 35 );
+	-- Set up dropdown after window is created
+	VICB:SetParent(wVT)
+	VICB:SetSize(Constants.DROPDOWN_WIDTH, Constants.DROPDOWN_HEIGHT)
+	VICB:SetPosition(15, 35)
+	VICB.dropDownWindow:SetParent(wVT)
+	VICB.dropDownWindow:SetPosition(VICB:GetLeft(), VICB:GetTop() + VICB:GetHeight() + 2)
 
-	VICB.dropDownWindow:SetParent( wVT );
-	VICB.dropDownWindow:SetPosition(VICB:GetLeft(), VICB:GetTop() + VICB:GetHeight()+2);
-
-	VICB.ItemChanged = function( sender, args ) -- The event that's executed when a menu item is clicked.
-		wVT.SearchTextBox:SetText( "" );
-		wVT.SearchTextBox.TextChanged( sender, args );
+	VICB.ItemChanged = function(sender, args)
+		wVT.SearchTextBox:SetText("");
+		wVT.SearchTextBox.TextChanged(sender, args);
 		SelCN = VICB.label:GetText();
 		CountVIItems();
 	end
 
 	CreateVIComboBox();
-	-- **^
-	-- **v search label & text box v**
-	-- **v search label & text box v**
+
 	wVT.searchLabel = CreateTitleLabel(wVT, L["VTSe"], 15, 60, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
 
 	local searchLeft = wVT.searchLabel:GetLeft() + wVT.searchLabel:GetWidth()
@@ -52,13 +46,10 @@ function frmVault()
 	wVT.SearchTextBox = search.TextBox
 	wVT.DelIcon = search.DelIcon
 
-	wVT.SearchTextBox.TextChanged = function( sender, args )
-		wVT.searchText = string.lower( wVT.SearchTextBox:GetText() );
+	wVT.SearchTextBox.TextChanged = function(sender, args)
+		wVT.searchText = string.lower(wVT.SearchTextBox:GetText());
 		if wVT.searchText == "" then wVT.searchText = nil; end
 		CountVIItems();
-	end
-
-	wVT.SearchTextBox.FocusLost = function( sender, args )
 	end
 
 	local lbTop = 85
@@ -66,9 +57,9 @@ function frmVault()
 	wVT.ListBoxBorder = lb.Border
 	wVT.ListBox = lb.ListBox
 	wVT.ListBoxScrollBar = lb.ScrollBar
-	wVT.ListBox:SetMaxItemsPerLine( 1 );
+	wVT.ListBox:SetMaxItemsPerLine(1);
 	ConfigureListBox(wVT.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
-	-- **v Delete character infos button v**
+
 	wVT.ButtonDelete = Turbine.UI.Lotro.Button();
 	wVT.ButtonDelete:SetParent( wVT );
 	wVT.ButtonDelete:SetText( L["ButDel"] );
@@ -83,7 +74,6 @@ function frmVault()
 		CreateVIComboBox();
 		CountVIItems();
 	end
-	-- **^
 
 	AddCallback(tvaultpack, "CountChanged", 
 		function(sender, args)
@@ -96,7 +86,6 @@ function frmVault()
 end
 
 function CreateVIComboBox()
-	-- **v Create an array of character name, sort it, then use it as a reference - label & DropDown box v**
 	local newt = {}
 	for i in pairs(PlayerVault) do
 		if string.sub( i, 1, 1 ) == "~" then PlayerVault[i] = nil; else table.insert(newt,i); end --Delete session play character
@@ -104,7 +93,6 @@ function CreateVIComboBox()
 	table.sort(newt);
 	-- Use PopulateDropDown helper (adds All and selects PN if present)
 	PopulateDropDown(VICB, newt, true, L["VTAll"], PN)
-	-- **^
 end
 
 function CountVIItems()

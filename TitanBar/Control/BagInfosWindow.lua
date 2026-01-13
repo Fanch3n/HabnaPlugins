@@ -52,8 +52,7 @@ function frmBagInfos()
 		PopulateDropDown(bagInfosDropdown, newt, true, L["VTAll"], PN)
 	end
 	CreateBIComboBox()
-	-- **^
-	-- **v search label & text box v**
+
 	wBI.searchLabel = CreateTitleLabel(wBI, L["VTSe"], 15, 60, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
 
 	-- Use the factory helper to create a search TextBox + DelIcon
@@ -63,13 +62,10 @@ function frmBagInfos()
 	wBI.SearchTextBox = search.TextBox
 	wBI.DelIcon = search.DelIcon
 
-	wBI.SearchTextBox.TextChanged = function( sender, args )
-		wBI.searchText = string.lower( wBI.SearchTextBox:GetText() );
+	wBI.SearchTextBox.TextChanged = function(sender, args)
+		wBI.searchText = string.lower(wBI.SearchTextBox:GetText());
 		if wBI.searchText == "" then wBI.searchText = nil; end
 		CountBIItems();
-	end
-
-	wBI.SearchTextBox.FocusLost = function( sender, args )
 	end
 
 	-- Create list box area via helper
@@ -83,27 +79,25 @@ function frmBagInfos()
 	local biData = _G.ControlData.BI
 	if biData.used == nil then biData.used = true end
 	if biData.max == nil then biData.max = true end
-	-- **v Show used slot info in tooltip? v**
+
 	wBI.UsedSlots = CreateAutoSizedCheckBox(wBI, L["BIUsed"], 30, wBI.ListBox:GetTop() + wBI.ListBox:GetHeight() + 6, biData.used);
 
-	wBI.UsedSlots.CheckedChanged = function( sender, args )
+	wBI.UsedSlots.CheckedChanged = function(sender, args)
 		biData.used = wBI.UsedSlots:IsChecked();
 		settings.BagInfos.U = biData.used;
 		SaveSettings( false );
 		UpdateBackpackInfos();
 	end
-	-- **^
-	-- **v Show max slot in tooltip? v**
+
 	wBI.MaxSlots = CreateAutoSizedCheckBox(wBI, L["BIMax"], 30, wBI.UsedSlots:GetTop() + wBI.UsedSlots:GetHeight(), biData.max);
 
-	wBI.MaxSlots.CheckedChanged = function( sender, args )
+	wBI.MaxSlots.CheckedChanged = function(sender, args)
 		biData.max = wBI.MaxSlots:IsChecked();
 		settings.BagInfos.M = biData.max;
 		SaveSettings( false );
 		UpdateBackpackInfos();
 	end
-	-- **^
-	-- **v Delete character infos button v**
+
 	wBI.ButtonDelete = Turbine.UI.Lotro.Button();
 	wBI.ButtonDelete:SetParent( wBI );
 	wBI.ButtonDelete:SetText( L["ButDel"] );
@@ -118,7 +112,6 @@ function frmBagInfos()
 		CreateBIComboBox();
 		CountBIItems();
 	end
-	-- **^
 
 	AddCallback(tbackpack, "ItemAdded", 
 		function(sender, args)
@@ -128,7 +121,7 @@ function frmBagInfos()
 		end
 	end);
 
-	--**v Workaround for the ItemRemoved that fire before the backpack was updated (Turbine API issue) v**
+	-- Workaround for the ItemRemoved that fire before the backpack was updated (Turbine API issue)
 	BIItemRemovedTimer = Turbine.UI.Control();
 	BIItemRemovedTimer.Update = function( sender, args )
 		BIItemRemovedTimer:SetWantsUpdates( false );
