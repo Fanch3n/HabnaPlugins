@@ -146,7 +146,7 @@ end
 --**^
 --**v Update Wallet on TitanBar v**
 function UpdateWallet()
-	AjustIcon( "WI" );
+	AdjustIcon( "WI" );
 end
 --**^
 --**v Update money on TitanBar v**
@@ -229,7 +229,7 @@ function UpdateMoney()
 		Turbine.PluginData.Save( 
             Turbine.DataScope.Server, "TitanBarPlayerWalletStats", walletStats);
 	
-		AjustIcon( "MI" );
+		AdjustIcon( "MI" );
 	end
 end
 --**^
@@ -241,7 +241,7 @@ function UpdateLOTROPoints()
 		local points = (lpData and tonumber(lpData.points)) or 0
 		LP["Lbl"]:SetText(tostring(points))
 		LP["Lbl"]:SetSize(LP["Lbl"]:GetTextLength() * NM, CTRHeight)
-		AjustIcon("LP")
+		AdjustIcon("LP")
 	end
 	SavePlayerLOTROPoints()
 end
@@ -256,7 +256,7 @@ function UpdateCurrencyDisplay(currencyName)
 			_G.CurrencyData[currencyName].Lbl:SetText(GetCurrency(L["M"..currencyName]))
 		end
 		_G.CurrencyData[currencyName].Lbl:SetSize(_G.CurrencyData[currencyName].Lbl:GetTextLength() * NM, CTRHeight ); 
-		AjustIcon(currencyName);
+		AdjustIcon(currencyName);
 	end
 end
 --**^
@@ -298,7 +298,7 @@ function UpdateBackpackInfos()
 	
 	_G.ControlData.BI.controls[ "Icon" ]:SetBackground( resources.BagIcon[i] );
 
-	AjustIcon( "BI" );
+	AdjustIcon( "BI" );
 end
 --**^
 
@@ -330,7 +330,7 @@ function UpdatePlayersInfos()
 	_G.ControlData.PI.controls["Name"]:SetText(Player:GetName())
 	_G.ControlData.PI.controls["Name"]:SetSize(_G.ControlData.PI.controls["Name"]:GetTextLength() * TM, CTRHeight);
 
-	AjustIcon("PI");
+	AdjustIcon("PI");
 end
 --**^
 
@@ -368,19 +368,19 @@ function UpdateDurabilityInfos()
 	TDPts = string.format( "%.0f", TDPts );
 	_G.ControlData.DI.controls[ "Lbl" ]:SetText( TDPts .. "%" );
 	_G.ControlData.DI.controls[ "Lbl" ]:SetSize( _G.ControlData.DI.controls[ "Lbl" ]:GetTextLength() * NM + 5, CTRHeight ); 
-	AjustIcon( "DI" );
+	AdjustIcon( "DI" );
 end
 --**^
 --**v Update equipment infos on TitanBar v**
 function UpdateEquipsInfos()
     TotalItemsScore = 0;
     for i = 1,20 do TotalItemsScore = TotalItemsScore + itemEquip[i].Score; end
-		AjustIcon("EI")
+		AdjustIcon("EI")
 end
 --**^
 --**v Update Track Items on TitanBar v**
 function UpdateTrackItems()
-	AjustIcon( "TI" );
+	AdjustIcon( "TI" );
 end
 --**^
 --**v Update Infamy points on TitanBar v**
@@ -388,17 +388,17 @@ function UpdateInfamy()
 	--Change Rank icon with infamy points
 	_G.ControlData.IF.controls[ "Icon" ]:SetBackground( InfIcon[tonumber(settings.Infamy.K)] );
 	
-	AjustIcon( "IF" );
+	AdjustIcon( "IF" );
 end
 --**^
 --**v Update Vault on TitanBar v**
 function UpdateVault()
-	AjustIcon( "VT" );
+	AdjustIcon( "VT" );
 end
 --**^
 --**v Update Shared Storage on TitanBar v**
 function UpdateSharedStorage()
-	AjustIcon( "SS" );
+	AdjustIcon( "SS" );
 end
 --**^
 --**v Update Day & Night time on TitanBar v**
@@ -435,12 +435,12 @@ function UpdateDayNight()
         -- Sun in-game icon (0x4101f898 or 0x4101f89b)
 	else DN[ "Icon" ]:SetBackground( resources.Moon ); end -- Moon in-game icon
 
-	AjustIcon( "DN" );
+	AdjustIcon( "DN" );
 end
 --**^
 --**v Update Reputation on TitanBar v**
 function UpdateReputation()
-	AjustIcon( "RP" );
+	AdjustIcon( "RP" );
 end
 --**^
 --**v Update Player Location on TitanBar v**
@@ -630,7 +630,7 @@ function KeepIconControlInBar(controlName)
 	end
 end
 
-function AjustIcon(str)
+function AdjustIcon(str)
 	--if TBHeight > 30 then CTRHeight = 30; end 
     --Stop ajusting icon size if TitanBar height is > 30px
 	--CTRHeight=TBHeight;
@@ -730,7 +730,7 @@ function AjustIcon(str)
 
 			layoutIcon( container["Icon"], container["Ctr"], iconLeft, Y + dy, ctrWidth );
 		elseif _G.ControlData and _G.ControlData[str] then
-			write("AjustIcon: no layout handler for " .. tostring(str));
+			write("AdjustIcon: no layout handler for " .. tostring(str));
 		end
 	end
 

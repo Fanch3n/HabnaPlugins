@@ -57,7 +57,7 @@ function ImportCtr( value )
             function(sender, args)
                 _G.ControlData.PI.controls["Name"]:SetText( Player:GetName() );
                 _G.ControlData.PI.controls["Name"]:SetSize( _G.ControlData.PI.controls["Name"]:GetTextLength() * TM, CTRHeight );
-                AjustIcon("PI");
+                AdjustIcon("PI");
             end);
         XPcb = AddCallback(Turbine.Chat, "Received",
             function(sender, args)
@@ -957,7 +957,7 @@ function SetCurrencyToZero(str)
                 if _G.CurrencyData[currency.name].Where == 1 then
                     _G.CurrencyData[currency.name].Lbl:SetText("0");
                     _G.CurrencyData[currency.name].Lbl:SetSize(_G.CurrencyData[currency.name].Lbl:GetTextLength() * NM, CTRHeight );
-                    AjustIcon(currency.name);
+                    AdjustIcon(currency.name);
                 end
             end
         end
@@ -971,7 +971,7 @@ function SetCurrencyFromZero(str, amount)
                 if _G.CurrencyData[currency.name].Where == 1 then
                     _G.CurrencyData[currency.name].Lbl:SetText(amount);
                     _G.CurrencyData[currency.name].Lbl:SetSize(_G.CurrencyData[currency.name].Lbl:GetTextLength() * NM, CTRHeight );
-                    AjustIcon(currency.name);
+                    AdjustIcon(currency.name);
                 end
             end
         end

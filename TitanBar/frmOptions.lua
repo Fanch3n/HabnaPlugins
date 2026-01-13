@@ -218,7 +218,7 @@ function ResizeControls()
 	
 	for ItemID, ShowItem in pairs( GetWalletControls() ) do
 		if ShowItem.IsVisible then ShowItem.Control:SetHeight( CTRHeight ); end
-		AjustIcon( ItemID );
+		AdjustIcon( ItemID );
 	end 
 
 	if _G.ControlData.PL.show then PL[ "Ctr" ]:SetHeight( CTRHeight ); PL[ "Lbl" ]:SetHeight( CTRHeight ); end
@@ -228,7 +228,7 @@ end
 function ResizeIcon()
 	for ItemID, ShowItem in pairs( GetWalletControls() ) do
 		if ShowItem.IsVisible then
-			AjustIcon(ItemID)
+			AdjustIcon(ItemID)
 		end
 	end
 end
