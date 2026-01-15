@@ -2,8 +2,8 @@ This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Te
 
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
-Version 1.46 (January 13, 2026)
-- Refactored a lot of code. This should not change functionality, but almost every part of the plugin was touched, so it might have unintended effects. Please report and problems.
+Version 1.46 (January 15, 2026)
+- Refactored a lot of code. This should not change functionality, but almost every part of the plugin was touched, so it might have unintended effects. Please report any problems.
 - Add Tattered Shadow currency
 - Add a checkbox to reputation to toggle displaying maxed factions
 - Fix recognizing locations with non-standard characters
