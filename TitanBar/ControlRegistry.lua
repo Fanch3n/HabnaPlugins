@@ -6,18 +6,46 @@
 _G.ControlRegistry = {}
 _G.ControlData = {}
 
--- Initialize control data structure
--- This replaces scattered globals (visibility flags, colors, locations, etc.)
-local function InitControlData(controlId, settingsKey, toggleFunc, hasWhere, defaults)
-	defaults = defaults or {}
+-- Store registration metadata separately from runtime state
+local registry = {}
+
+-- Register a control with its metadata and default values
+function _G.ControlRegistry.Register(config)
+	local id = config.id
+	registry[id] = {
+		settingsKey = config.settingsKey or id,
+		toggleFunc = config.toggleFunc,
+		hasWhere = config.hasWhere or false,
+		defaults = config.defaults or {},
+		initFunc = config.initFunc -- Function to call when TitanBar wants to load this control
+	}
+	
+	-- Initialize the runtime data for this control
+	return _G.ControlRegistry.InitializeControl(id)
+end
+
+-- Initialize control data structure for a specific ID
+function _G.ControlRegistry.InitializeControl(controlId)
+	local config = registry[controlId]
+	if not config then return nil end
+	
+	local defaults = config.defaults or {}
+	
+	-- Apply default x positions based on Constants if not set
+	local defaultX = defaults.x
+	if defaultX == nil then
+		defaultX = _G.ControlRegistry.GetDefaultX(controlId)
+	end
+
 	_G.ControlData[controlId] = {
 		id = controlId,
-		settingsKey = settingsKey,
-		toggleFunc = toggleFunc,
+		settingsKey = config.settingsKey,
+		toggleFunc = config.toggleFunc,
+		initFunc = config.initFunc,
 		
 		-- Display state
 		show = defaults.show or false,
-		where = hasWhere and (defaults.where or 1) or nil,  -- 1=TitanBar, 2=Tooltip, 3=Hidden (for controls with Where option)
+		where = config.hasWhere and (defaults.where or 1) or nil,
 		
 		-- Colors (background)
 		colors = {
@@ -29,29 +57,35 @@ local function InitControlData(controlId, settingsKey, toggleFunc, hasWhere, def
 		
 		-- Location on TitanBar
 		location = {
-			x = defaults.x or 0,
+			x = defaultX or 0,
 			y = defaults.y or 0
 		},
 		
-		-- Window position (for control's settings window)
+		-- Window position
 		window = {
 			left = defaults.winLeft or 100,
 			top = defaults.winTop or 100
 		},
 		
-		-- UI references (set when control is created)
+		-- UI references
 		ui = {
-			control = nil,      -- The main control table (WI, BI, etc.)
-			optCheckbox = nil   -- The options checkbox (opt_WI, opt_BI, etc.)
+			control = nil,
+			optCheckbox = nil
 		}
 	}
 	
 	return _G.ControlData[controlId]
 end
 
--- Registry structure for each control - maps ID to metadata
--- This is configuration, while ControlData holds runtime state
-local registry = {
+-- Initialize all registered control data structures
+function _G.ControlRegistry.InitializeAll()
+	for id, _ in pairs(registry) do
+		_G.ControlRegistry.InitializeControl(id)
+	end
+end
+
+-- Static registry for legacy controls (to be moved to their own files)
+local legacyRegistry = {
 	WI = {
 		settingsKey = "Wallet",
 		toggleFunc = nil,  -- Set after function is defined
@@ -130,12 +164,6 @@ local registry = {
 		hasWhere = false,
 		defaults = { show = false, x = 0, y = 0 }
 	},
-	LP = {
-		settingsKey = "LOTROPoints",
-		toggleFunc = nil,
-		hasWhere = true,
-		defaults = { show = false, where = 3, x = 0, y = 0 }
-	},
 	GT = {
 		settingsKey = "GameTime",
 		toggleFunc = nil,
@@ -145,7 +173,7 @@ local registry = {
 }
 
 -- Helper function to get default X position for a control
-local function GetDefaultX(controlId)
+function _G.ControlRegistry.GetDefaultX(controlId)
 	if not Constants then return 0 end
 	
 	if controlId == "Money" then
@@ -163,22 +191,20 @@ local function GetDefaultX(controlId)
 	end
 end
 
--- Initialize all control data structures
+-- Initialize the system and load any legacy configurations
 function _G.ControlRegistry.InitializeAll()
-	for id, config in pairs(registry) do
-		-- Apply default x positions based on Constants if not set
-		local defaults = config.defaults or {}
-		if defaults.x == nil then
-			defaults.x = GetDefaultX(id)
-		end
-		InitControlData(id, config.settingsKey, config.toggleFunc, config.hasWhere, defaults)
+	-- First, register all legacy controls
+	for id, config in pairs(legacyRegistry) do
+		config.id = id
+		_G.ControlRegistry.Register(config)
 	end
 end
 
 -- Reset all controls to default values
 function _G.ControlRegistry.ResetToDefaults()
-	for id, config in pairs(registry) do
+	for id, _ in pairs(registry) do
 		local data = _G.ControlData[id]
+		local config = registry[id]
 		local defaults = config.defaults or {}
 		
 		-- Reset display state
@@ -196,13 +222,10 @@ function _G.ControlRegistry.ResetToDefaults()
 		-- Reset location
 		local defaultX = defaults.x
 		if defaultX == nil then
-			defaultX = GetDefaultX(id)
+			defaultX = _G.ControlRegistry.GetDefaultX(id)
 		end
 		data.location.x = defaultX
 		data.location.y = defaults.y or 0
-		
-		-- Keep window positions as they are (don't reset)
-		-- Keep ui references as they are
 	end
 end
 
@@ -218,6 +241,11 @@ function _G.ControlRegistry.GetAllIds()
 		table.insert(ids, id)
 	end
 	return ids
+end
+
+-- Get registration metadata
+function _G.ControlRegistry.GetMetadata(controlId)
+	return registry[controlId]
 end
 
 -- Helper function to iterate over all standard controls
