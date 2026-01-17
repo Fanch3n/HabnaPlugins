@@ -155,7 +155,7 @@ function AddVaultPack(n, addCharacterName, vaultpackCount)
 		if not ui.searchText or string.find(string.lower( itemName ), ui.searchText, 1, true) then
 			-- Use CreateItemRow for vault item
 			local data = PlayerVault[n][tostring(i)]
-			local row = CreateItemRow(ui.ListBox, ui.ListBox:GetWidth(), 35, false, data)
+			local row = CreateItemRow(nil, ui.ListBox:GetWidth(), 35, false, data)
 			itemCtl[i] = row.Container
 			if row.ItemQuantity and data and data.N then row.ItemQuantity:SetText( tonumber(data.N) ) end
 			row.ItemLabel:SetText( data.T )
@@ -171,4 +171,6 @@ function AddVaultPack(n, addCharacterName, vaultpackCount)
 	ui.ListBox:SetHeight( ui.ListBoxBorder:GetHeight() - 4 );
 	ui.ListBoxScrollBar:SetHeight( ui.ListBox:GetHeight() );
 	ui.window:SetHeight( 520 );
+    ui.ListBox:SetMaxItemsPerLine(2)
+    ui.ListBox:SetMaxItemsPerLine(1)
 end
