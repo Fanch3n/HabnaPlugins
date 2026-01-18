@@ -228,6 +228,4 @@ function ShowStackableItems()
 	ui.ListBox:SetHeight( ui.ListBoxBorder:GetHeight() - 4 );
 	ui.ListBoxScrollBar:SetHeight( ui.ListBox:GetHeight() );
 	ui.window:SetHeight( 498 );
-    ui.ListBox:SetMaxItemsPerLine(2)
-    ui.ListBox:SetMaxItemsPerLine(1)
 end

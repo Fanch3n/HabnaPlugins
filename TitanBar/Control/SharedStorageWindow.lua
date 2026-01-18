@@ -88,6 +88,4 @@ function SetSharedStoragePack()
 				ui.ListBox:AddItem( itemCtl[i] )
 		end
 	end
-    ui.ListBox:SetMaxItemsPerLine(2)
-    ui.ListBox:SetMaxItemsPerLine(1)
 end

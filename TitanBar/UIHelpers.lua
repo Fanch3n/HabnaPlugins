@@ -324,7 +324,7 @@ end
 --  orientation: (optional) default Horizontal
 --  backColor: (optional) background color
 function ConfigureListBox(listBox, itemsPerLine, orientation, backColor)
-    listBox:SetMaxItemsPerLine(itemsPerLine or 1)
+    listBox:SetMaxColumns(itemsPerLine or 1)
     listBox:SetOrientation(orientation or Turbine.UI.Orientation.Horizontal)
     if backColor then listBox:SetBackColor(backColor) end
 end

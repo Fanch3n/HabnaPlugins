@@ -196,6 +196,4 @@ function AddBagsPack(n, addCharacterName)
 			if addCharacterName then itemLbl:AppendText( " (" .. n .. ")" ) end
 		end
 	end
-    ui.ListBox:SetMaxItemsPerLine(2)
-    ui.ListBox:SetMaxItemsPerLine(1)
 end

@@ -171,6 +171,4 @@ function AddVaultPack(n, addCharacterName, vaultpackCount)
 	ui.ListBox:SetHeight( ui.ListBoxBorder:GetHeight() - 4 );
 	ui.ListBoxScrollBar:SetHeight( ui.ListBox:GetHeight() );
 	ui.window:SetHeight( 520 );
-    ui.ListBox:SetMaxItemsPerLine(2)
-    ui.ListBox:SetMaxItemsPerLine(1)
 end
