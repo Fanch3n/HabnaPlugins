@@ -283,7 +283,13 @@ function ShowHidePlayerLoc()
 		local colors = _G.ControlData.PL.colors
 		_G.ControlData.PL.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
-		RemoveCallback(Turbine.Chat, "Received", PLcb);
+        local plData = _G.ControlData.PL
+        if plData and plData.callbacks then
+            for _, cb in ipairs(plData.callbacks) do
+                if RemoveCallback then RemoveCallback(cb.obj, cb.evt, cb.func) end
+            end
+            plData.callbacks = {}
+        end
 	end
 	_G.ControlData.PL.controls[ "Ctr" ]:SetVisible( controlData.show );
 	opt_PL:SetChecked( controlData.show );

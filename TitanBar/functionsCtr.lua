@@ -38,37 +38,7 @@ function ImportCtr( value )
         _G.ControlData.EI.controls[ "Ctr" ]:SetPosition( _G.ControlData.EI.location.x, _G.ControlData.EI.location.y );
     elseif value == "PL" then --Player Location
         import (AppCtrD.."PlayerLoc");
-        --AddCallback(Player, "LocationChanged", UpdatePlayerLoc(); end);
-        PLcb = AddCallback(Turbine.Chat, "Received",
-            function(sender, args)
-            if args.ChatType == Turbine.ChatType.Standard then
-                plMess = args.Message;
-                if plMess ~= nil then
-                    if GLocale == "en" then
-                        plPattern = "Entered the%s+(.-)%s*%-";
-                    elseif GLocale == "fr" then
-                        plPattern = "Canal%s+(.-)%s*%-";
-                    elseif GLocale == "de" then
-                        plPattern = "Chat%-Kanal%s+'(.-)%s*%-";
-                    end
-
-                    local tmpPL = string.match( plMess, plPattern );
-                    if tmpPL ~= nil then
-                        --write("'".. tmpPL .. "'"); -- debug purpose
-                        _G.ControlData.PL = _G.ControlData.PL or {}
-                        _G.ControlData.PL.text = tmpPL
-                        UpdatePlayerLoc( tmpPL );
-                        settings.PlayerLoc.L = string.format( tmpPL );
-                        SaveSettings( false );
-                    end
-                end
-            end
-        end);
-        local plText = (_G.ControlData.PL and _G.ControlData.PL.text) or (settings.PlayerLoc and settings.PlayerLoc.L) or L["PLMsg"]
-        UpdatePlayerLoc( plText );
-		if _G.ControlData.PL and _G.ControlData.PL.controls then
-			_G.ControlData.PL.controls[ "Ctr" ]:SetPosition( _G.ControlData.PL.location.x, _G.ControlData.PL.location.y );
-		end
+        ImportCtr("PL");
     elseif value == "TI" then --Track Items
         import (AppCtrD.."TrackItems");
         import (AppCtrD.."TrackItemsToolTip");

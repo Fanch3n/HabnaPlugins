@@ -422,7 +422,7 @@ function UpdateReputation()
 	AdjustIcon( "RP" );
 end
 
-function UpdatePlayerLoc( value )
+function UpdatePlayerLoc_LEGACY( value )
 	fontMetric=FontMetric();
     fontMetric:SetFont(_G.TBFont);
 	_G.ControlData.PL.controls[ "Lbl" ]:SetText( value );
