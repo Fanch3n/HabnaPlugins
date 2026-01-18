@@ -144,6 +144,9 @@ function UpdateWallet()
 end
 
 function UpdateMoney()
+    -- Safety check: Ensure controls are initialized before updating UI
+    if not (_G.ControlData and _G.ControlData.Money and _G.ControlData.Money.controls) then return end
+
 	local where = (_G.ControlData and _G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE
 	if where == Constants.Position.TITANBAR then
 		local moneyData = (_G.ControlData and _G.ControlData.Money) or {}

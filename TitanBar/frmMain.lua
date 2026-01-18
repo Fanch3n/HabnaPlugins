@@ -172,14 +172,15 @@ function frmMain()
 		end
 
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
-			if _G.ControlData.WI.show then ImportCtr( "WI" ); end
+			-- if _G.ControlData.WI.show then ImportCtr( "WI" ); end
 			if _G.CurrencyData["Commendation"].Where ~= 3 then ImportCtr("Commendation"); end
 			if ((_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "LP" ); end
 		end
 	end
 
-	if _G.ControlData.WI.show then ImportCtr( "WI" ); end
-	if ((_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "MI" ); end
+	-- Handled by ControlRegistry.ForEach in main.lua
+	-- if _G.ControlData.WI.show then ImportCtr( "WI" ); end
+	-- if ((_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "MI" ); end
 	if _G.ControlData.TI.show then ImportCtr( "TI" ); end --Track Items
 	if _G.ControlData.IF.show then ImportCtr( "IF" ); end --Infamy/Renown
 	if _G.ControlData.VT.show then ImportCtr( "VT" ); end --Vault

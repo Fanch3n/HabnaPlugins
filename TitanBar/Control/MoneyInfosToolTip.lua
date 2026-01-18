@@ -19,6 +19,11 @@ function ShowMIWindow()
 	MIRefreshMITTListBox()
 	MITTListBox:SetHeight(MITTPosY)
 	
+	-- Resize tooltip window to fit content (top margin 20 + content + bottom margin ~20)
+	if _G.ToolTipWin then
+		_G.ToolTipWin:SetHeight(MITTPosY + 45)
+	end
+
 	ApplySkin()
 end
 

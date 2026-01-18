@@ -331,6 +331,7 @@ end
 
 -- Positions a tooltip window near the mouse cursor, accounting for screen edges and TitanBar position
 function PositionToolTipWindow()
+	if not _G.ToolTipWin then return end
 	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
 	local x, y;
 	

@@ -10,11 +10,16 @@ _G.ControlData = {}
 -- This replaces scattered globals (visibility flags, colors, locations, etc.)
 local function InitControlData(controlId, settingsKey, toggleFunc, hasWhere, defaults)
 	defaults = defaults or {}
-	_G.ControlData[controlId] = {
+	
+    -- Preserve existing data if available (loaded from settings or elsewhere)
+    local existing = _G.ControlData[controlId] or {}
+
+	local data = {
 		id = controlId,
 		settingsKey = settingsKey,
 		toggleFunc = toggleFunc,
-		
+		initFunc = defaults.initFunc, -- Store initFunc in data for easy access
+
 		-- Display state
 		show = defaults.show or false,
 		where = hasWhere and (defaults.where or 1) or nil,  -- 1=TitanBar, 2=Tooltip, 3=Hidden (for controls with Where option)
@@ -45,25 +50,43 @@ local function InitControlData(controlId, settingsKey, toggleFunc, hasWhere, def
 			optCheckbox = nil   -- The options checkbox (opt_WI, opt_BI, etc.)
 		}
 	}
+
+    -- Preserve extra fields that might have been added by settings loading (e.g. stm, sss)
+    for k, v in pairs(existing) do
+        if data[k] == nil then
+            data[k] = v
+        end
+    end
 	
-	return _G.ControlData[controlId]
+    -- Sync with global settings if available. This is crucial for self-registering controls
+    -- that register AFTER settings have been loaded.
+    if _G.settings and _G.settings[settingsKey] then
+        local section = _G.settings[settingsKey]
+        -- Load standard properties if they exist in settings
+        if section.V ~= nil then data.show = section.V end
+        if section.X then data.location.x = tonumber(section.X) end
+        if section.Y then data.location.y = tonumber(section.Y) end
+        
+        if section.A then data.colors.alpha = tonumber(section.A) end
+        if section.R then data.colors.red = tonumber(section.R) end
+        if section.G then data.colors.green = tonumber(section.G) end
+        if section.B then data.colors.blue = tonumber(section.B) end
+        
+        if section.L then data.window.left = tonumber(section.L) end
+        if section.T then data.window.top = tonumber(section.T) end
+        
+        if data.where ~= nil and section.W then data.where = tonumber(section.W) end
+    end
+
+	_G.ControlData[controlId] = data
+	return data
 end
 
 -- Registry structure for each control - maps ID to metadata
 -- This is configuration, while ControlData holds runtime state
 local registry = {
-	WI = {
-		settingsKey = "Wallet",
-		toggleFunc = nil,  -- Set after function is defined
-		hasWhere = false,
-		defaults = { show = false, x = 0, y = 0 }
-	},
-	Money = {
-		settingsKey = "Money",
-		toggleFunc = nil,
-		hasWhere = true,
-		defaults = { show = true, where = 1, x = nil, y = 0 }  -- x set in InitializeAll based on Constants
-	},
+	-- WI moved to self-registration in Control/Wallet.lua
+	-- Money moved to self-registration in Control/MoneyInfos.lua
 	BI = {
 		settingsKey = "BagInfos",
 		toggleFunc = nil,
@@ -204,6 +227,29 @@ function _G.ControlRegistry.ResetToDefaults()
 		-- Keep window positions as they are (don't reset)
 		-- Keep ui references as they are
 	end
+end
+
+-- Register a control dynamically
+function _G.ControlRegistry.Register(config)
+	local id = config.id
+	registry[id] = {
+		settingsKey = config.settingsKey or id,
+		toggleFunc = config.toggleFunc,
+		hasWhere = config.hasWhere or false,
+		defaults = config.defaults or {}
+	}
+	-- Also store initFunc in defaults so InitControlData picks it up
+	registry[id].defaults.initFunc = config.initFunc
+	
+	-- Initialize data immediately
+	local defaults = registry[id].defaults
+	if defaults.x == nil then defaults.x = GetDefaultX(id) end
+	InitControlData(id, registry[id].settingsKey, registry[id].toggleFunc, registry[id].hasWhere, defaults)
+end
+
+-- Get registration metadata
+function _G.ControlRegistry.GetMetadata(controlId)
+	return registry[controlId]
 end
 
 -- Public API to get control data

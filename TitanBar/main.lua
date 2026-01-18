@@ -105,6 +105,8 @@ _G.CreateControlLabel = CreateControlLabel;
 import (AppDirD.."functions");
 import (AppCtrD.."CurrencyLogic");
 import (AppDirD.."functionsCtr");
+import (AppCtrD.."Wallet");
+import (AppCtrD.."MoneyInfos");
 import (AppDirD.."functionsMenu");
 import (AppDirD.."functionsMenuControl");
 import (AppDirD.."OptionPanel"); 
@@ -115,6 +117,19 @@ import (AppDirD.."background");
 import (AppDirD.."frmMain");
 import (AppDirD.."FontMetric");
 frmMain();
+
+-- Initialize all registered controls dynamically
+if _G.ControlRegistry and _G.ControlRegistry.ForEach then
+    _G.ControlRegistry.ForEach(function(id, data)
+        -- ImportCtr handles initialization and positioning if initFunc is present
+        if data.initFunc and data.show then
+            local success, err = pcall(function() ImportCtr(id) end)
+            if not success then
+                Turbine.Shell.WriteLine("Error initializing control " .. id .. ": " .. tostring(err))
+            end
+        end
+    end)
+end
 
 if PlayerAlign == 1 then
   MenuItem = {

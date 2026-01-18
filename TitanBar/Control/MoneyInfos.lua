@@ -3,51 +3,89 @@
 
 import(AppDirD .. "UIHelpers")
 import(AppDirD .. "ControlFactory")
+import(AppCtrD .. "MoneyInfosToolTip")
+import(AppCtrD .. "MoneyInfosWindow")
 
--- Use _G.ControlData.Money.controls for all UI controls
-local MI = {}
-_G.ControlData.Money.controls = MI
+function InitializeMoneyInfos()
+    Turbine.Shell.WriteLine("DEBUG: InitializeMoneyInfos Started")
+	-- Use _G.ControlData.Money.controls for all UI controls
+	local MI = {}
+	_G.ControlData.Money.controls = MI
+    Turbine.Shell.WriteLine("DEBUG: ControlData.Money.controls set to " .. tostring(MI))
+    
+    local moneyData = _G.ControlData.Money
+    -- Cleanup existing controls to prevent duplication
+    if moneyData.controls and moneyData.controls["Ctr"] and moneyData.controls["Ctr"] ~= MI["Ctr"] then
+        moneyData.controls["Ctr"]:SetParent(nil)
+    end
+    
+    -- Cleanup existing callbacks
+    if moneyData.callbacks then
+        for _, cb in ipairs(moneyData.callbacks) do
+            if RemoveCallback then
+                RemoveCallback(cb.obj, cb.evt, cb.func)
+            end
+        end
+    end
+    moneyData.callbacks = {}
 
---**v Control of Gold/Silver/Copper currencies v**
-local colors = _G.ControlData.Money.colors
-MI["Ctr"] = CreateTitanBarControl(MI, colors.alpha, colors.red, colors.green, colors.blue)
-_G.ControlData.Money.ui.control = MI["Ctr"]
---**^
---**v Control of Gold currencies v**
-MI["GCtr"] = Turbine.UI.Control();
-MI["GCtr"]:SetParent( MI["Ctr"] );
-MI["GCtr"]:SetMouseVisible( false );
---MI["GCtr"]:SetZOrder( 2 );
---MI["GCtr"]:SetBackColor( Color["blue"] ); -- Debug purpose
---**^
---**v Gold & total amount on TitanBar v**
-MI["GLblT"] = Turbine.UI.Label();
-MI["GLblT"]:SetParent( MI["GCtr"] );
-MI["GLblT"]:SetPosition( 0, 0 );
-MI["GLblT"]:SetFont( _G.TBFont );
---MI["GLblT"]:SetForeColor( Color["white"] );
-MI["GLblT"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
-MI["GLblT"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
---MI["GLblT"]:SetBackColor( Color["white"] ); -- Debug purpose
---**^
---**v Gold amount & icon on TitanBar v**
-MI["GLbl"] = Turbine.UI.Label();
-MI["GLbl"]:SetParent( MI["GCtr"] );
-MI["GLbl"]:SetPosition( 0, 0 );
-MI["GLbl"]:SetFont( _G.TBFont );
---MI["GLbl"]:SetForeColor( Color["white"] );
-MI["GLbl"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
-MI["GLbl"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
---MI["GLbl"]:SetBackColor( Color["white"] ); -- Debug purpose
+	-- Initialize settings from saved data or defaults
+	local moneyData = _G.ControlData.Money
+	if moneyData.stm == nil then moneyData.stm = settings.Money.S end
+	if moneyData.stm == nil then moneyData.stm = false end
 
-MI["GIcon"] = CreateControlIcon(MI["GCtr"], Constants.MONEY_ICON_WIDTH, Constants.MONEY_ICON_HEIGHT, resources.MoneyIcon.Gold)
+	if moneyData.sss == nil then moneyData.sss = settings.Money.SSS end
+	if moneyData.sss == nil then moneyData.sss = true end
 
-MI["GIcon"].MouseMove = function( sender, args )
-	MI["CIcon"].MouseMove( sender, args );
-end
---**^
+	if moneyData.sts == nil then moneyData.sts = settings.Money.STS end
+	if moneyData.sts == nil then moneyData.sts = true end
 
---**v Control of Silver currencies v**
+	if moneyData.scm == nil then moneyData.scm = settings.Money.SCM end
+	if moneyData.scm == nil then moneyData.scm = true end
+
+	if moneyData.scma == nil then moneyData.scma = settings.Money.SCMa end
+	if moneyData.scma == nil then moneyData.scma = true end
+
+	--**v Control of Gold/Silver/Copper currencies v**
+	local colors = _G.ControlData.Money.colors
+	MI["Ctr"] = CreateTitanBarControl(MI, colors.alpha, colors.red, colors.green, colors.blue)
+	_G.ControlData.Money.ui.control = MI["Ctr"]
+	--**^
+	--**v Control of Gold currencies v**
+	MI["GCtr"] = Turbine.UI.Control();
+	MI["GCtr"]:SetParent( MI["Ctr"] );
+	MI["GCtr"]:SetMouseVisible( false );
+	--MI["GCtr"]:SetZOrder( 2 );
+	--MI["GCtr"]:SetBackColor( Color["blue"] ); -- Debug purpose
+	--**^
+	--**v Gold & total amount on TitanBar v**
+	MI["GLblT"] = Turbine.UI.Label();
+	MI["GLblT"]:SetParent( MI["GCtr"] );
+	MI["GLblT"]:SetPosition( 0, 0 );
+	MI["GLblT"]:SetFont( _G.TBFont );
+	--MI["GLblT"]:SetForeColor( Color["white"] );
+	MI["GLblT"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
+	MI["GLblT"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
+	--MI["GLblT"]:SetBackColor( Color["white"] ); -- Debug purpose
+	--**^
+	--**v Gold amount & icon on TitanBar v**
+	MI["GLbl"] = Turbine.UI.Label();
+	MI["GLbl"]:SetParent( MI["GCtr"] );
+	MI["GLbl"]:SetPosition( 0, 0 );
+	MI["GLbl"]:SetFont( _G.TBFont );
+	--MI["GLbl"]:SetForeColor( Color["white"] );
+	MI["GLbl"]:SetFontStyle( Turbine.UI.FontStyle.Outline );
+	MI["GLbl"]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
+	--MI["GLbl"]:SetBackColor( Color["white"] ); -- Debug purpose
+
+	MI["GIcon"] = CreateControlIcon(MI["GCtr"], Constants.MONEY_ICON_WIDTH, Constants.MONEY_ICON_HEIGHT, resources.MoneyIcon.Gold)
+
+	MI["GIcon"].MouseMove = function( sender, args )
+		MI["CIcon"].MouseMove( sender, args );
+	end
+	--**^
+
+	--**v Control of Silver currencies v**
 MI["SCtr"] = Turbine.UI.Control();
 MI["SCtr"]:SetParent( MI["Ctr"] );
 MI["SCtr"]:SetMouseVisible( false );
@@ -129,7 +167,7 @@ MI["CLbl"].MouseMove = function( sender, args )
 	if dragging then
 		MoveMICtr(sender, args);
 	else
-		if not MITT then
+		if not MITT or not _G.ToolTipWin then
 			MITT = true;
 			ShowMIWindow();
 		else
@@ -175,3 +213,33 @@ DelegateMouseEvents(MI["SLbl"], MI["CLbl"]);
 DelegateMouseEvents(MI["SIcon"], MI["CLbl"], {"MouseLeave", "MouseClick", "MouseDown", "MouseUp"});
 DelegateMouseEvents(MI["CLblT"], MI["CLbl"]);
 DelegateMouseEvents(MI["CIcon"], MI["CLbl"], {"MouseLeave", "MouseClick", "MouseDown", "MouseUp"});
+
+-- Register callbacks for dynamic updates
+local where = moneyData.where or Constants.Position.NONE
+if where ~= Constants.Position.NONE then
+    local cb1 = function(sender, args) UpdateMoney(); end
+    if AddCallback then
+        AddCallback(GetPlayerAttributes(), "MoneyChanged", cb1);
+        table.insert(moneyData.callbacks, {obj=GetPlayerAttributes(), evt="MoneyChanged", func=cb1})
+        
+        if sspack and UpdateSharedStorageGold then
+            AddCallback(sspack, "CountChanged", UpdateSharedStorageGold);
+            table.insert(moneyData.callbacks, {obj=sspack, evt="CountChanged", func=UpdateSharedStorageGold})
+        end
+    end
+end
+
+UpdateMoney()
+
+end
+
+-- Self-registration
+if _G.ControlRegistry and _G.ControlRegistry.Register then
+	_G.ControlRegistry.Register({
+		id = "Money",
+		settingsKey = "Money",
+		hasWhere = true,
+		defaults = { show = true, where = 1, x = nil, y = 0 },
+		initFunc = InitializeMoneyInfos
+	})
+end

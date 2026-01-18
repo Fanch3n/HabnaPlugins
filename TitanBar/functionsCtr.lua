@@ -4,6 +4,16 @@
 
 
 function ImportCtr( value )
+    -- Handle dynamically registered controls
+    local data = _G.ControlData[value]
+    if data and data.initFunc then
+        data.initFunc()
+        if data.controls and data.controls["Ctr"] then
+            data.controls["Ctr"]:SetPosition(data.location.x, data.location.y)
+        end
+        return
+    end
+
     if value == "WI" then --Wallet infos
         import (AppCtrD.."Wallet");
         import (AppCtrD.."WalletToolTip");
@@ -11,11 +21,8 @@ function ImportCtr( value )
         _G.ControlData.WI.controls[ "Ctr" ]:SetPosition( _G.ControlData.WI.location.x, _G.ControlData.WI.location.y );
     elseif value == "MI" then --Money Infos
 		local moneyWhere = (_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE
-		if moneyWhere == Constants.Position.TITANBAR then
-            import (AppCtrD.."MoneyInfos");
-            import (AppCtrD.."MoneyInfosToolTip");
-            _G.ControlData.Money.controls[ "Ctr" ]:SetPosition( _G.ControlData.Money.location.x, _G.ControlData.Money.location.y );
-        end
+		-- Logic moved to InitializeMoneyInfos for creation, but listener setup remains here or should be part of init?
+		-- For now, allow re-initialization logic if needed, but the main creation is done via import
 		if moneyWhere ~= Constants.Position.NONE then
             AddCallback(GetPlayerAttributes(), "MoneyChanged",
                 function(sender, args) UpdateMoney(); end
