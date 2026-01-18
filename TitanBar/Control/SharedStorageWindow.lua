@@ -18,7 +18,7 @@ function frmSharedStorage()
 		{
 			onClosing = function(sender, args)
 				RemoveCallback( tsspack, "CountChanged" );
-				_G.ControlData.SS.ui = nil
+				_G.ControlData.SS.ui = { control = nil, optCheckbox = nil }
 			end
 		}
 	)
@@ -81,11 +81,13 @@ function SetSharedStoragePack()
 		if not ui.searchText or string.find(string.lower( itemName ), ui.searchText, 1, true) then
 				-- Use CreateItemRow helper for shared storage item
 				local data = PlayerSharedStorage[tostring(i)]
-				local row = CreateItemRow(ui.ListBox, ui.ListBox:GetWidth(), 35, false, data)
+				local row = CreateItemRow(nil, ui.ListBox:GetWidth(), 35, false, data)
 				itemCtl[i] = row.Container
 				if row.ItemQuantity and data and data.N then row.ItemQuantity:SetText( tonumber(data.N) ) end
 				row.ItemLabel:SetText( data.T )
 				ui.ListBox:AddItem( itemCtl[i] )
 		end
 	end
+    ui.ListBox:SetMaxItemsPerLine(2)
+    ui.ListBox:SetMaxItemsPerLine(1)
 end

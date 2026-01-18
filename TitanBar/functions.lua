@@ -495,7 +495,7 @@ function ChangeColor(tColor)
 		
 		-- Apply to all standard controls via ControlRegistry
 		_G.ControlRegistry.ForEach(function(controlId, data)
-			if data.show and data.ui.control then
+			if data.show and data.ui and data.ui.control then
 				data.ui.control:SetBackColor(tColor)
 			end
 		end)
@@ -512,7 +512,7 @@ function ChangeColor(tColor)
 		else
 			-- Try to get from ControlRegistry first
 			local data = _G.ControlRegistry.Get(sFrom)
-			if data and data.ui.control then
+			if data and data.ui and data.ui.control then
 				data.ui.control:SetBackColor(tColor)
 			elseif _G.CurrencyData[sFrom] then
 				-- Fall back to currency data
@@ -693,7 +693,7 @@ function AdjustIcon(str)
 			end
 
 			layoutIcon( container["Icon"], container["Ctr"], iconLeft, Y + dy, ctrWidth );
-		elseif _G.ControlData and _G.ControlData[str] then
+		elseif _G.ControlData and _G.ControlData[str] and str ~= "PL" and str ~= "GT" then
 			write("AdjustIcon: no layout handler for " .. tostring(str));
 		end
 	end

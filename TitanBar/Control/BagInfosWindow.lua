@@ -23,7 +23,7 @@ function frmBagInfos()
 			onClosing = function(sender, args)
 				RemoveCallback(tbackpack, "ItemAdded")
 				RemoveCallback(tbackpack, "ItemRemoved")
-				_G.ControlData.BI.ui = nil
+				_G.ControlData.BI.ui = { control = nil, optCheckbox = nil }
 			end
 		}
 	)
@@ -179,7 +179,7 @@ function AddBagsPack(n, addCharacterName)
 
 		if not ui.searchText or string.find(string.lower( itemName ), ui.searchText, 1, true) then
 			-- Use CreateItemRow helper to build the item row
-			local row = CreateItemRow(ui.ListBox, ui.ListBox:GetWidth(), 35, (n == PN), (n == PN) and titem or PlayerBags[n][tostring(i)])
+			local row = CreateItemRow(nil, ui.ListBox:GetWidth(), 35, (n == PN), (n == PN) and titem or PlayerBags[n][tostring(i)])
 			itemCtl[i] = row.Container
 			local itemLbl = row.ItemLabel
 			if row.ItemQuantity and not (n == PN) then
@@ -196,4 +196,6 @@ function AddBagsPack(n, addCharacterName)
 			if addCharacterName then itemLbl:AppendText( " (" .. n .. ")" ) end
 		end
 	end
+    ui.ListBox:SetMaxItemsPerLine(2)
+    ui.ListBox:SetMaxItemsPerLine(1)
 end

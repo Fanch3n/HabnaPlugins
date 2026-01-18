@@ -21,7 +21,7 @@ function frmTrackItemsWindow()
 		L["BIIL"], 390, 498,
 		{
 			onClosing = function(sender, args)
-				_G.ControlData.TI.ui = nil
+				_G.ControlData.TI.ui = { control = nil, optCheckbox = nil }
 			end
 		}
 	)
@@ -127,7 +127,7 @@ function ShowStackableItems()
 		if item[i] ~= "zEmpty" and item[i].Stackable then -- Only show stackable item
 			if not ui.searchText or string.find(string.lower( item[i].Name ), ui.searchText, 1, true) then
 				-- Use CreateItemRow for player item
-				local row = CreateItemRow(ui.ListBox, ui.ListBox:GetWidth(), 35, true, item[i])
+				local row = CreateItemRow(nil, ui.ListBox:GetWidth(), 35, true, item[i])
 				itemCtl[i] = row.Container
 				itemLbl[i] = row.ItemLabel
 				itemLbl[i]:SetSize( ui.ListBox:GetWidth() - 48, 33 )
@@ -228,4 +228,6 @@ function ShowStackableItems()
 	ui.ListBox:SetHeight( ui.ListBoxBorder:GetHeight() - 4 );
 	ui.ListBoxScrollBar:SetHeight( ui.ListBox:GetHeight() );
 	ui.window:SetHeight( 498 );
+    ui.ListBox:SetMaxItemsPerLine(2)
+    ui.ListBox:SetMaxItemsPerLine(1)
 end

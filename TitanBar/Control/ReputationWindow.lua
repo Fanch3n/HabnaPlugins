@@ -45,7 +45,7 @@ function frmReputationWindow()
 				if RPDD and RPDD.dropDownWindow then
 					RPDD.dropDownWindow:SetVisible(false)
 				end
-                rpData.ui = nil
+                rpData.ui = { control = nil, optCheckbox = nil }
 			end
 		}
 	)
@@ -256,7 +256,6 @@ function RefreshRPListBox()
     RPListBox:ClearItems();
     for _, faction in ipairs(_G.Factions.list) do
         local RPCtr = Turbine.UI.Control();
-        RPCtr:SetParent(RPListBox);
         RPCtr:SetSize(RPListBox:GetWidth() - 10, 20);
 
         -- Reputation name
@@ -311,5 +310,7 @@ function RefreshRPListBox()
     end
 
 	if ui.RPFilter then ui.RPFilter() end
+    RPListBox:SetMaxItemsPerLine(2)
+    RPListBox:SetMaxItemsPerLine(1)
 end
 
