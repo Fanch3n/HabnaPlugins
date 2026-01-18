@@ -45,7 +45,7 @@ function frmReputationWindow()
 				if RPDD and RPDD.dropDownWindow then
 					RPDD.dropDownWindow:SetVisible(false)
 				end
-                rpData.ui = nil
+                rpData.ui = { control = nil, optCheckbox = nil }
 			end
 		}
 	)

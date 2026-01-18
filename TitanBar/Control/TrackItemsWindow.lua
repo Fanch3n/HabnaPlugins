@@ -21,7 +21,7 @@ function frmTrackItemsWindow()
 		L["BIIL"], 390, 498,
 		{
 			onClosing = function(sender, args)
-				_G.ControlData.TI.ui = nil
+				_G.ControlData.TI.ui = { control = nil, optCheckbox = nil }
 			end
 		}
 	)

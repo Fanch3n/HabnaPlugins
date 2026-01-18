@@ -23,7 +23,7 @@ function frmVault()
 			onClosing = function(sender, args)
 				if VICB and VICB.dropDownWindow then VICB.dropDownWindow:SetVisible(false) end
 				RemoveCallback( tvaultpack, "CountChanged" )
-				_G.ControlData.VT.ui = nil
+				_G.ControlData.VT.ui = { control = nil, optCheckbox = nil }
 			end
 		}
 	)

@@ -18,7 +18,7 @@ function frmSharedStorage()
 		{
 			onClosing = function(sender, args)
 				RemoveCallback( tsspack, "CountChanged" );
-				_G.ControlData.SS.ui = nil
+				_G.ControlData.SS.ui = { control = nil, optCheckbox = nil }
 			end
 		}
 	)

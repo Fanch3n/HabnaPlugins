@@ -687,7 +687,7 @@ function ReplaceCtr()
 					shouldReposition = false
 				end
 				
-				if shouldReposition and data.ui.control then
+				if shouldReposition and data.ui and data.ui.control then
 					data.ui.control:SetPosition(data.location.x, data.location.y)
 				end
 			end

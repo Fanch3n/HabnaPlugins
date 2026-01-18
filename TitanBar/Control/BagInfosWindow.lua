@@ -23,7 +23,7 @@ function frmBagInfos()
 			onClosing = function(sender, args)
 				RemoveCallback(tbackpack, "ItemAdded")
 				RemoveCallback(tbackpack, "ItemRemoved")
-				_G.ControlData.BI.ui = nil
+				_G.ControlData.BI.ui = { control = nil, optCheckbox = nil }
 			end
 		}
 	)

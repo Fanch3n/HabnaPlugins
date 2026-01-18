@@ -21,7 +21,7 @@ function UnloadControl( value )
 					data.toggleFunc()
 				end
 				-- Uncheck option if available
-				if data.ui.optCheckbox then
+				if data.ui and data.ui.optCheckbox then
 					data.ui.optCheckbox:SetChecked(false)
 				end
 			end
@@ -92,7 +92,7 @@ function BGColor( cmd, value )
 			data.colors.red = tR
 			data.colors.green = tG
 			data.colors.blue = tB
-			if data.ui.control then
+			if data.ui and data.ui.control then
 				data.ui.control:SetBackColor(Turbine.UI.Color(tA, tR, tG, tB))
 			end
 		end)
@@ -118,7 +118,7 @@ function BGColor( cmd, value )
 			data.colors.red = tR
 			data.colors.green = tG
 			data.colors.blue = tB
-			if data.ui.control then
+			if data.ui and data.ui.control then
 				data.ui.control:SetBackColor(Turbine.UI.Color(tA, tR, tG, tB))
 			end
 		elseif _G.CurrencyData[_G.sFromCtr] then
