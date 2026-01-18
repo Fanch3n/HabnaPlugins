@@ -107,6 +107,7 @@ import (AppCtrD.."CurrencyLogic");
 import (AppDirD.."functionsCtr");
 import (AppCtrD.."Wallet");
 import (AppCtrD.."MoneyInfos");
+import (AppCtrD.."BagInfos");
 import (AppDirD.."functionsMenu");
 import (AppDirD.."functionsMenuControl");
 import (AppDirD.."OptionPanel"); 

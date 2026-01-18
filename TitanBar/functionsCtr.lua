@@ -24,33 +24,14 @@ function ImportCtr( value )
 		-- Logic moved to InitializeMoneyInfos for creation, but listener setup remains here or should be part of init?
 		-- For now, allow re-initialization logic if needed, but the main creation is done via import
 		if moneyWhere ~= Constants.Position.NONE then
-            AddCallback(GetPlayerAttributes(), "MoneyChanged",
-                function(sender, args) UpdateMoney(); end
-                );
-            AddCallback(sspack, "CountChanged", UpdateSharedStorageGold);
-            -- ^^ Thx Heridian!
+            -- Initial setup handled in InitializeMoneyInfos
             UpdateMoney();
         else
-            RemoveCallback(GetPlayerAttributes(), "MoneyChanged");
-            RemoveCallback(sspack, "CountChanged", UpdateSharedStorageGold);
-            -- ^^ Thx Heridian!
+            -- Cleanup handled in MoneyInfos.lua on re-init or disable
         end
     elseif value == "BI" then --Backpack Infos
         import (AppCtrD.."BagInfos");
-        --import (AppCtrD.."BagInfosToolTip");
-        AddCallback(backpack, "ItemAdded",
-            function(sender, args) UpdateBackpackInfos(); end
-            );
-        AddCallback(backpack, "ItemRemoved",
-            function(sender, args)
-                ItemRemovedTimer:SetWantsUpdates( true );
-            end
-            ); --Workaround
-        --AddCallback(backpack, "ItemRemoved",
-        --    function(sender, args) UpdateBackpackInfos(); end
-        --    ); --Add when workaround is not needed anymore
-        UpdateBackpackInfos();
-        _G.ControlData.BI.controls[ "Ctr" ]:SetPosition( _G.ControlData.BI.location.x, _G.ControlData.BI.location.y );
+        ImportCtr("BI"); -- Recursive call to use registered initFunc
     elseif value == "PI" then --Player Infos
         import (AppCtrD.."PlayerInfos");
         import (AppCtrD.."PlayerInfosToolTip");

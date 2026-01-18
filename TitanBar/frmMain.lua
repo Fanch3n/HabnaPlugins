@@ -198,7 +198,8 @@ function frmMain()
 	end
 	--**
 	
-	if _G.ControlData.BI.show then ImportCtr( "BI" );	end
+	-- BagInfos handled by ControlRegistry.ForEach
+	-- if _G.ControlData.BI.show then ImportCtr( "BI" );	end
 	if _G.ControlData.PI.show then ImportCtr( "PI" ); end
 	if _G.ControlData.PL.show then ImportCtr( "PL" ); end
 	if _G.ControlData.GT.show then ImportCtr( "GT" ); end
