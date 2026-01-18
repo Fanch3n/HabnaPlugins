@@ -310,7 +310,5 @@ function RefreshRPListBox()
     end
 
 	if ui.RPFilter then ui.RPFilter() end
-    RPListBox:SetMaxItemsPerLine(2)
-    RPListBox:SetMaxItemsPerLine(1)
 end
 

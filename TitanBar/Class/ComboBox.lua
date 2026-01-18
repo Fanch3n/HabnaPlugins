@@ -73,7 +73,7 @@ function ComboBox:Constructor()
     self.listBox:SetParent(self.dropDownWindow);
     self.listBox:SetOrientation(Turbine.UI.Orientation.Horizontal);
     self.listBox:SetVerticalScrollBar(self.scrollBar);
-    self.listBox:SetMaxItemsPerLine(1);
+    self.listBox:SetMaxColumns(1);
     self.listBox:SetMouseVisible(false);
     self.listBox:SetPosition(2, 2);
     self.listBox:SetBackColor(ComboBox.BlackColor);

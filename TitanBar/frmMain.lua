@@ -172,14 +172,15 @@ function frmMain()
 		end
 
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
-			if _G.ControlData.WI.show then ImportCtr( "WI" ); end
+			-- if _G.ControlData.WI.show then ImportCtr( "WI" ); end
 			if _G.CurrencyData["Commendation"].Where ~= 3 then ImportCtr("Commendation"); end
 			if ((_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "LP" ); end
 		end
 	end
 
-	if _G.ControlData.WI.show then ImportCtr( "WI" ); end
-	if ((_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "MI" ); end
+	-- Handled by ControlRegistry.ForEach in main.lua
+	-- if _G.ControlData.WI.show then ImportCtr( "WI" ); end
+	-- if ((_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "MI" ); end
 	if _G.ControlData.TI.show then ImportCtr( "TI" ); end --Track Items
 	if _G.ControlData.IF.show then ImportCtr( "IF" ); end --Infamy/Renown
 	if _G.ControlData.VT.show then ImportCtr( "VT" ); end --Vault
@@ -193,12 +194,13 @@ function frmMain()
 	
 	ItemRemovedTimer.Update = function( sender, args )
 		ItemRemovedTimer:SetWantsUpdates( false );
-		UpdateBackpackInfos();
+		if UpdateBackpackInfos then UpdateBackpackInfos(); end
 	end
 	--**
 	
-	if _G.ControlData.BI.show then ImportCtr( "BI" );	end
-	if _G.ControlData.PI.show then ImportCtr( "PI" ); end
+	-- BagInfos handled by ControlRegistry.ForEach
+	-- if _G.ControlData.BI.show then ImportCtr( "BI" );	end
+	-- if _G.ControlData.PI.show then ImportCtr( "PI" ); end
 	if _G.ControlData.PL.show then ImportCtr( "PL" ); end
 	if _G.ControlData.GT.show then ImportCtr( "GT" ); end
 

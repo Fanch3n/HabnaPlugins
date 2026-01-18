@@ -233,7 +233,7 @@ function PopulateDropDown(dropdown, items, includeAll, allLabel, selectedValue)
     for _, entry in ipairs(items) do
         if type(entry) == "string" then
             dropdown:AddItem(entry, idx)
-            if selectedValue and entry == selectedValue then foundValue = selectedValue end
+            if selectedValue and entry == selectedValue then foundValue = idx end
         elseif type(entry) == "table" then
             -- support { label = "...", value = "..." } or { "label", "value" }
             local label = entry.label or entry[1]
@@ -324,13 +324,14 @@ end
 --  orientation: (optional) default Horizontal
 --  backColor: (optional) background color
 function ConfigureListBox(listBox, itemsPerLine, orientation, backColor)
-    listBox:SetMaxItemsPerLine(itemsPerLine or 1)
+    listBox:SetMaxColumns(itemsPerLine or 1)
     listBox:SetOrientation(orientation or Turbine.UI.Orientation.Horizontal)
     if backColor then listBox:SetBackColor(backColor) end
 end
 
 -- Positions a tooltip window near the mouse cursor, accounting for screen edges and TitanBar position
 function PositionToolTipWindow()
+	if not _G.ToolTipWin then return end
 	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
 	local x, y;
 	

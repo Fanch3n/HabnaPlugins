@@ -4,86 +4,28 @@
 
 
 function ImportCtr( value )
+    -- Handle dynamically registered controls
+    local data = _G.ControlData[value]
+    if data and data.initFunc then
+        data.initFunc()
+        if data.controls and data.controls["Ctr"] then
+            data.controls["Ctr"]:SetPosition(data.location.x, data.location.y)
+        end
+        return
+    end
+
     if value == "WI" then --Wallet infos
         import (AppCtrD.."Wallet");
-        import (AppCtrD.."WalletToolTip");
-        UpdateWallet();
-        _G.ControlData.WI.controls[ "Ctr" ]:SetPosition( _G.ControlData.WI.location.x, _G.ControlData.WI.location.y );
+        ImportCtr("WI");
     elseif value == "MI" then --Money Infos
-		local moneyWhere = (_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE
-		if moneyWhere == Constants.Position.TITANBAR then
-            import (AppCtrD.."MoneyInfos");
-            import (AppCtrD.."MoneyInfosToolTip");
-            _G.ControlData.Money.controls[ "Ctr" ]:SetPosition( _G.ControlData.Money.location.x, _G.ControlData.Money.location.y );
-        end
-		if moneyWhere ~= Constants.Position.NONE then
-            AddCallback(GetPlayerAttributes(), "MoneyChanged",
-                function(sender, args) UpdateMoney(); end
-                );
-            AddCallback(sspack, "CountChanged", UpdateSharedStorageGold);
-            -- ^^ Thx Heridian!
-            UpdateMoney();
-        else
-            RemoveCallback(GetPlayerAttributes(), "MoneyChanged");
-            RemoveCallback(sspack, "CountChanged", UpdateSharedStorageGold);
-            -- ^^ Thx Heridian!
-        end
+        import (AppCtrD.."MoneyInfos");
+        ImportCtr("Money");
     elseif value == "BI" then --Backpack Infos
         import (AppCtrD.."BagInfos");
-        --import (AppCtrD.."BagInfosToolTip");
-        AddCallback(backpack, "ItemAdded",
-            function(sender, args) UpdateBackpackInfos(); end
-            );
-        AddCallback(backpack, "ItemRemoved",
-            function(sender, args)
-                ItemRemovedTimer:SetWantsUpdates( true );
-            end
-            ); --Workaround
-        --AddCallback(backpack, "ItemRemoved",
-        --    function(sender, args) UpdateBackpackInfos(); end
-        --    ); --Add when workaround is not needed anymore
-        UpdateBackpackInfos();
-        _G.ControlData.BI.controls[ "Ctr" ]:SetPosition( _G.ControlData.BI.location.x, _G.ControlData.BI.location.y );
+        ImportCtr("BI"); -- Recursive call to use registered initFunc
     elseif value == "PI" then --Player Infos
         import (AppCtrD.."PlayerInfos");
-        import (AppCtrD.."PlayerInfosToolTip");
-        AddCallback(Player, "LevelChanged",
-            function(sender, args)
-                _G.ControlData.PI.controls["Lvl"]:SetText( tostring(Player:GetLevel()) );
-                _G.ControlData.PI.controls["Lvl"]:SetSize( _G.ControlData.PI.controls["Lvl"]:GetTextLength() * NM+1, CTRHeight );
-                _G.ControlData.PI.controls["Name"]:SetPosition( _G.ControlData.PI.controls["Lvl"]:GetLeft() + _G.ControlData.PI.controls["Lvl"]:GetWidth() + 5, 0 );
-            end);
-        AddCallback(Player, "NameChanged",
-            function(sender, args)
-                _G.ControlData.PI.controls["Name"]:SetText( Player:GetName() );
-                _G.ControlData.PI.controls["Name"]:SetSize( _G.ControlData.PI.controls["Name"]:GetTextLength() * TM, CTRHeight );
-                AdjustIcon("PI");
-            end);
-        XPcb = AddCallback(Turbine.Chat, "Received",
-            function(sender, args)
-            if args.ChatType == Turbine.ChatType.Advancement then
-                xpMess = args.Message;
-                if xpMess ~= nil then
-                    local xpPattern;
-                    if GLocale == "en" then
-                        xpPattern = "total of ([%d%p]*) XP";
-                    elseif GLocale == "fr" then
-                        xpPattern = "de ([%d%p]*) points d'exp\195\169rience";
-                    elseif GLocale == "de" then
-                        xpPattern = "\195\188ber ([%d%p]*) EP";
-                    end
-                    local tmpXP = string.match(xpMess,xpPattern);
-                    if tmpXP ~= nil then
-                        _G.ControlData.PI = _G.ControlData.PI or {}
-                        _G.ControlData.PI.xp = tmpXP;
-                        settings.PlayerInfos.XP = tmpXP;
-                        SaveSettings( false );
-                    end
-                end
-            end
-            end);
-        UpdatePlayersInfos();
-        _G.ControlData.PI.controls[ "Ctr" ]:SetPosition( _G.ControlData.PI.location.x, _G.ControlData.PI.location.y );
+        ImportCtr("PI"); -- Recursive call to use registered initFunc
     elseif value == "DI" then --Durability Infos
         import (AppCtrD.."DurabilityInfos");
         import (AppCtrD.."DurabilityInfosToolTip");
@@ -96,37 +38,7 @@ function ImportCtr( value )
         _G.ControlData.EI.controls[ "Ctr" ]:SetPosition( _G.ControlData.EI.location.x, _G.ControlData.EI.location.y );
     elseif value == "PL" then --Player Location
         import (AppCtrD.."PlayerLoc");
-        --AddCallback(Player, "LocationChanged", UpdatePlayerLoc(); end);
-        PLcb = AddCallback(Turbine.Chat, "Received",
-            function(sender, args)
-            if args.ChatType == Turbine.ChatType.Standard then
-                plMess = args.Message;
-                if plMess ~= nil then
-                    if GLocale == "en" then
-                        plPattern = "Entered the%s+(.-)%s*%-";
-                    elseif GLocale == "fr" then
-                        plPattern = "Canal%s+(.-)%s*%-";
-                    elseif GLocale == "de" then
-                        plPattern = "Chat%-Kanal%s+'(.-)%s*%-";
-                    end
-
-                    local tmpPL = string.match( plMess, plPattern );
-                    if tmpPL ~= nil then
-                        --write("'".. tmpPL .. "'"); -- debug purpose
-                        _G.ControlData.PL = _G.ControlData.PL or {}
-                        _G.ControlData.PL.text = tmpPL
-                        UpdatePlayerLoc( tmpPL );
-                        settings.PlayerLoc.L = string.format( tmpPL );
-                        SaveSettings( false );
-                    end
-                end
-            end
-        end);
-        local plText = (_G.ControlData.PL and _G.ControlData.PL.text) or (settings.PlayerLoc and settings.PlayerLoc.L) or L["PLMsg"]
-        UpdatePlayerLoc( plText );
-		if _G.ControlData.PL and _G.ControlData.PL.controls then
-			_G.ControlData.PL.controls[ "Ctr" ]:SetPosition( _G.ControlData.PL.location.x, _G.ControlData.PL.location.y );
-		end
+        ImportCtr("PL");
     elseif value == "TI" then --Track Items
         import (AppCtrD.."TrackItems");
         import (AppCtrD.."TrackItemsToolTip");

@@ -139,92 +139,8 @@ function ShowToolTipWin(ToShow)
 	_G.ToolTipWin:SetVisible(true);
 end
 
-function UpdateWallet()
-	AdjustIcon( "WI" );
-end
 
-function UpdateMoney()
-	local where = (_G.ControlData and _G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE
-	if where == Constants.Position.TITANBAR then
-		local moneyData = (_G.ControlData and _G.ControlData.Money) or {}
-		local showTotal = moneyData.stm == true
-		local money = GetPlayerAttributes():GetMoney();
-	local gold, silver, copper = DecryptMoney(money);
-	
-	_G.ControlData.Money.controls[ "GLbl" ]:SetText( string.format( "%.0f", gold ) );
-	_G.ControlData.Money.controls[ "SLbl" ]:SetText( string.format( "%.0f", silver ) );
-	_G.ControlData.Money.controls[ "CLbl" ]:SetText( string.format( "%.0f", copper ) );	SavePlayerMoney( false );
 
-	_G.ControlData.Money.controls[ "GLbl" ]:SetSize( _G.ControlData.Money.controls[ "GLbl" ]:GetTextLength() * NM, CTRHeight ); 
-        --Auto size with text length
-	_G.ControlData.Money.controls[ "SLbl" ]:SetSize( 4 * NM, CTRHeight ); --Auto size with text length
-	_G.ControlData.Money.controls[ "CLbl" ]:SetSize( 3 * NM, CTRHeight ); --Auto size with text length	_G.ControlData.Money.controls[ "GLblT" ]:SetVisible( showTotal );
-	_G.ControlData.Money.controls[ "GLbl" ]:SetVisible( not showTotal );	_G.ControlData.Money.controls[ "SLblT" ]:SetVisible( showTotal );
-	_G.ControlData.Money.controls[ "SLbl" ]:SetVisible( not showTotal );
-
-	_G.ControlData.Money.controls[ "CLblT" ]:SetVisible( showTotal );
-	_G.ControlData.Money.controls[ "CLbl" ]:SetVisible( not showTotal );	if showTotal then --Add Total Money on TitanBar Money control.
-		local strData = L[ "MIWTotal" ] .. ": ";
-		local strData1 = string.format( "%.0f", GoldTot );
-		local strData2 = L[ "You" ] .. _G.ControlData.Money.controls[ "GLbl" ]:GetText();
-		local TextLen = string.len( strData ) * TM + string.len( strData1 ) * NM;
-		if TBFontT == "TrajanPro25" then TextLen = TextLen + 7; end
-		_G.ControlData.Money.controls[ "GLblT" ]:SetText(strData .. strData1 .. "\n" .. strData2 .. " ");
-		_G.ControlData.Money.controls[ "GLblT" ]:SetSize( TextLen, CTRHeight );		strData1 = string.format( "%.0f", SilverTot );
-		strData2 = _G.ControlData.Money.controls[ "SLbl" ]:GetText();
-		TextLen = 4 * NM + 6;
-		_G.ControlData.Money.controls[ "SLblT" ]:SetText( strData1 .. "\n" .. strData2 .. " " );
-		_G.ControlData.Money.controls[ "SLblT" ]:SetSize( TextLen, CTRHeight );		strData1 = string.format( "%.0f", CopperTot );
-		strData2 = _G.ControlData.Money.controls[ "CLbl" ]:GetText();
-		TextLen = 3 * NM + 6;
-		_G.ControlData.Money.controls[ "CLblT" ]:SetText( strData1 .. "\n" .. strData2 .. " " );
-		_G.ControlData.Money.controls[ "CLblT" ]:SetSize( TextLen, CTRHeight );
-	end		--Statistics section
-		local PN = Player:GetName();
-		local bIncome = true;
-		bSumSSS, bSumSTS = true, true;
-		local hadmoney = walletStats[DOY][PN].Had;
-
-		local diff = money - hadmoney;
-		if diff < 0 then diff = math.abs(diff); bIncome = false; end
-
-		if bIncome then 
-			walletStats[DOY][PN].Earned = 
-                tostring(walletStats[DOY][PN].Earned + diff);
-			walletStats[DOY][PN].TotEarned = 
-                tostring(walletStats[DOY][PN].TotEarned + diff);
-		else
-			walletStats[DOY][PN].Spent = 
-                tostring(walletStats[DOY][PN].Spent + diff);
-			walletStats[DOY][PN].TotSpent = 
-                tostring(walletStats[DOY][PN].TotSpent + diff);
-		end
-
-		walletStats[DOY][PN].Had = tostring(money);
-
-		--Sum of session statistics
-		local SSS = walletStats[DOY][PN].Earned - walletStats[DOY][PN].Spent;
-		if SSS < 0 then SSS = math.abs(SSS); bSumSSS = false; end
-		walletStats[DOY][PN].SumSS = tostring(SSS);
-
-		-- Sum of today satistics
-		--Calculate all character earned & spent
-		totem, totsm = 0,0;
-		for k,v in pairs(walletStats[DOY]) do
-			totem = totem + v.TotEarned;
-			totsm = totsm + v.TotSpent;
-		end
-		
-		local STS = totem - totsm;
-		if STS < 0 then STS = math.abs(STS); bSumSTS = false; end
-		walletStats[DOY][PN].SumTS = tostring(STS);
-
-		Turbine.PluginData.Save( 
-            Turbine.DataScope.Server, "TitanBarPlayerWalletStats", walletStats);
-	
-		AdjustIcon( "MI" );
-	end
-end
 
 function UpdateLOTROPoints()
 	local where = (_G.ControlData and _G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE
@@ -250,75 +166,9 @@ function UpdateCurrencyDisplay(currencyName)
 	end
 end
 
-function UpdateBackpackInfos()
-	local max = backpack:GetSize();
-	local freeslots = 0;
 
-	for i = 1, max do
-		if ( backpack:GetItem( i ) == nil ) then freeslots = freeslots + 1; end
-	end
 
-	local biData = (_G.ControlData and _G.ControlData.BI) or {}
-	local showUsed = (biData.used ~= false) -- default true
-	local showMax = (biData.max ~= false) -- default true
 
-	if showUsed and showMax then 
-        _G.ControlData.BI.controls[ "Lbl" ]:SetText( max - freeslots .. "/" .. max );
-	elseif showUsed and not showMax then 
-        _G.ControlData.BI.controls[ "Lbl" ]:SetText( max - freeslots );
-	elseif (not showUsed) and showMax then 
-        _G.ControlData.BI.controls[ "Lbl" ]:SetText( freeslots .. "/" .. max );
-	elseif (not showUsed) and (not showMax) then 
-        _G.ControlData.BI.controls[ "Lbl" ]:SetText( freeslots ); 
-    end
-	_G.ControlData.BI.controls[ "Lbl" ]:SetSize( _G.ControlData.BI.controls[ "Lbl" ]:GetTextLength() * NM, CTRHeight ); 
-
-	--Change bag icon with capacity
-	local i = nil;
-	local usedslots = max - freeslots;
-	local bi = round((( usedslots / max ) * 100));
-
-	if bi >= 0 and bi <= 15 then i = 1; end-- 0% to 15% Full bag
-	if bi >= 16 and bi <= 30 then i = 2; end-- 16% to 30% Full bag
-	if bi >= 31 and bi <= 75 then i = 3; end-- 31% to 75% Full bag
-	if bi >= 76 and bi <= 99 then i = 4; end-- 75% to 99% Full bag
-	if bi == 100 then i = 5; end-- 100% Full bag
-	--if bi >= 101 then BagIcon = 0x41007ecf; end-- over loaded bag
-	
-	_G.ControlData.BI.controls[ "Icon" ]:SetBackground( resources.BagIcon[i] );
-
-	AdjustIcon( "BI" );
-end
-
-function UpdatePlayersInfos()
-	--Race
-	PlayerRaceIdIs = Player:GetRace();
-	local PlayerRaceIsLkey = "PR"..PlayerRaceIdIs
-	PlayerRaceIs = L[PlayerRaceIsLkey]
-	if not PlayerRaceIs then
-		PlayerRaceIs = PlayerRaceIsLkey -- show the expected localization key if not found
-	end
-
-	--Class
-	PlayerClassIdIs = Player:GetClass()
-	local PlayerClassIsLkey = "PC"..PlayerClassIdIs
-	PlayerClassIs = L[PlayerClassIsLkey]
-	if not PlayerClassIs then
-		PlayerClassIs = PlayerClassIsLkey -- show the expected localization key if not found
-	end
-
-	--Update visuale
-	_G.ControlData.PI.controls[ "Icon" ]:SetBackground(resources.PlayerIconCode[PlayerClassIdIs]) -- if class icon is unknown in the resource then background image is set to nil: nothing visible
-	
-	_G.ControlData.PI.controls["Lvl"]:SetText(tostring(Player:GetLevel()))
-	_G.ControlData.PI.controls["Lvl"]:SetSize(_G.ControlData.PI.controls["Lvl"]:GetTextLength() * NM+1, CTRHeight)
-	_G.ControlData.PI.controls["Name"]:SetPosition(_G.ControlData.PI.controls["Lvl"]:GetLeft() + _G.ControlData.PI.controls["Lvl"]:GetWidth() + 5, 0)
-	--_G.ControlData.PI.controls["Name"]:SetText("OneVeryLongCharacterName") --Debug purpose
-	_G.ControlData.PI.controls["Name"]:SetText(Player:GetName())
-	_G.ControlData.PI.controls["Name"]:SetSize(_G.ControlData.PI.controls["Name"]:GetTextLength() * TM, CTRHeight);
-
-	AdjustIcon("PI");
-end
 
 function ChangeWearState(value)
 	-- Set new wear state in table
@@ -419,15 +269,6 @@ end
 
 function UpdateReputation()
 	AdjustIcon( "RP" );
-end
-
-function UpdatePlayerLoc( value )
-	fontMetric=FontMetric();
-    fontMetric:SetFont(_G.TBFont);
-	_G.ControlData.PL.controls[ "Lbl" ]:SetText( value );
-	_G.ControlData.PL.controls[ "Lbl" ]:SetSize( fontMetric:GetTextWidth(value,fontMetric.FontSize), CTRHeight );
-
-	_G.ControlData.PL.controls[ "Ctr" ]:SetSize( _G.ControlData.PL.controls[ "Lbl" ]:GetWidth(), CTRHeight );
 end
 
 function UpdateGameTime(str)

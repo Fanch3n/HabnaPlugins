@@ -75,8 +75,13 @@ function ShowHideBackpackInfos()
 		local colors = _G.ControlData.BI.colors
 		_G.ControlData.BI.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
-		RemoveCallback(backpack, "ItemAdded");
-		RemoveCallback(backpack, "ItemRemoved");
+        local biData = _G.ControlData.BI
+        if biData and biData.callbacks then
+            for _, cb in ipairs(biData.callbacks) do
+                if RemoveCallback then RemoveCallback(cb.obj, cb.evt, cb.func) end
+            end
+            biData.callbacks = {}
+        end
 		local window = _G.ControlData.BI.ui and _G.ControlData.BI.ui.window; if window then window:Close(); end
 	end
 	_G.ControlData.BI.controls[ "Ctr" ]:SetVisible( controlData.show );
@@ -95,9 +100,13 @@ function ShowHidePlayerInfos()
 		local colors = _G.ControlData.PI.colors
 		_G.ControlData.PI.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
-		RemoveCallback(Player, "LevelChanged");
-		RemoveCallback(Player, "NameChanged");
-		RemoveCallback(Turbine.Chat, "Received", XPcb);
+        local piData = _G.ControlData.PI
+        if piData and piData.callbacks then
+            for _, cb in ipairs(piData.callbacks) do
+                if RemoveCallback then RemoveCallback(cb.obj, cb.evt, cb.func) end
+            end
+            piData.callbacks = {}
+        end
 	end
 	_G.ControlData.PI.controls[ "Ctr" ]:SetVisible( controlData.show );
 	opt_PI:SetChecked( controlData.show );
@@ -274,7 +283,13 @@ function ShowHidePlayerLoc()
 		local colors = _G.ControlData.PL.colors
 		_G.ControlData.PL.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
 	else
-		RemoveCallback(Turbine.Chat, "Received", PLcb);
+        local plData = _G.ControlData.PL
+        if plData and plData.callbacks then
+            for _, cb in ipairs(plData.callbacks) do
+                if RemoveCallback then RemoveCallback(cb.obj, cb.evt, cb.func) end
+            end
+            plData.callbacks = {}
+        end
 	end
 	_G.ControlData.PL.controls[ "Ctr" ]:SetVisible( controlData.show );
 	opt_PL:SetChecked( controlData.show );

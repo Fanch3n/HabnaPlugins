@@ -28,7 +28,9 @@ function frmWalletWindow()
 			dropdown = WIDD,
 			onClosing = function(sender, args)
 				if WIDD and WIDD.dropDownWindow then WIDD.dropDownWindow:SetVisible(false) end
-				wiData.ui = nil
+				if wiData.ui then
+					wiData.ui.window = nil
+				end
 			end,
 			onKeyDown = function(sender, args)
 				if args.Action == Constants.KEY_ENTER then

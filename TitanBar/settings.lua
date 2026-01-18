@@ -203,15 +203,15 @@ function LoadSettings()
 	titanBar.D = titanBar.D == nil and true or titanBar.D -- True ->TitanBar set to Top of the screen
 	titanBar.Z = titanBar.Z or false -- Titanbar was reloaded
 	--if settings.TitanBar.ZT == nil then settings.TitanBar.ZT = "TB"; end -- TitanBar was reloaded (text)
-	bcAlpha = tonumber(titanBar.A)
-	bcRed = tonumber(titanBar.R)
-	bcGreen = tonumber(titanBar.G)
-	bcBlue = tonumber(titanBar.B)
-	TBWidth = tonumber(titanBar.W)
+	bcAlpha = tonumber(titanBar.A) or Constants.DEFAULT_ALPHA
+	bcRed = tonumber(titanBar.R) or Constants.DEFAULT_RED
+	bcGreen = tonumber(titanBar.G) or Constants.DEFAULT_GREEN
+	bcBlue = tonumber(titanBar.B) or Constants.DEFAULT_BLUE
+	TBWidth = tonumber(titanBar.W) or screenWidth
 	TBLocale = titanBar.L
 	import (AppLocaleD..TBLocale)
-	TBHeight = tonumber(titanBar.H)
-	_G.TBFont = tonumber(titanBar.F)
+	TBHeight = tonumber(titanBar.H) or Constants.DEFAULT_TITANBAR_HEIGHT
+	_G.TBFont = tonumber(titanBar.F) or Constants.DEFAULT_TITANBAR_FONT_ID
 	TBFontT = titanBar.T
 	local tStrS = tonumber(string.sub( TBFontT, string.len(TBFontT) - 1, string.len(TBFontT) )); --Get Font Size
 	--write(tStrS);
@@ -453,13 +453,13 @@ function LoadSettingsForCurrency(name)
 	local section = settings[name]
 	
 	data.IsVisible = section.V
-	data.bcAlpha = tonumber(section.A)
-	data.bcRed = tonumber(section.R)
-	data.bcGreen = tonumber(section.G)
-	data.bcBlue = tonumber(section.B)
-	data.LocX = tonumber(section.X)
-	data.LocY = tonumber(section.Y)
-	data.Where = tonumber(section.W)
+	data.bcAlpha = tonumber(section.A) or Constants.DEFAULT_ALPHA
+	data.bcRed = tonumber(section.R) or Constants.DEFAULT_RED
+	data.bcGreen = tonumber(section.G) or Constants.DEFAULT_GREEN
+	data.bcBlue = tonumber(section.B) or Constants.DEFAULT_BLUE
+	data.LocX = tonumber(section.X) or Constants.DEFAULT_X
+	data.LocY = tonumber(section.Y) or Constants.DEFAULT_Y
+	data.Where = tonumber(section.W) or Constants.Position.NONE
 	
 	if data.Where == Constants.Position.NONE and data.IsVisible then
 		data.Where = Constants.Position.TITANBAR
@@ -618,8 +618,7 @@ function ResetSettings()
 	write( L["TBR"] );
 	TBLocale = "en";
 	
-	if GLocale == "en" then tA, tR, tG, tB, tX, tY, tW = 0.3, 0.3, 0.3, 0.3, 0, 0, 3;
-	else tA, tR, tG, tB, tX, tY, tW = "0,3", "0,3", "0,3", "0,3", "0", "0", "3"; end
+	tA, tR, tG, tB, tX, tY, tW = 0.3, 0.3, 0.3, 0.3, 0, 0, 3;
 	tL, tT = 100, 100;
 	
 	TBHeight, _G.TBFont, TBFontT, TBTop, TBAutoHide, TBIconSize, bcAlpha, bcRed, bcGreen, bcBlue = Constants.DEFAULT_TITANBAR_HEIGHT, 1107296268, "TrajanPro14", true, L["OPAHC"], Constants.ICON_SIZE_LARGE, tA, tR, tG, tB;

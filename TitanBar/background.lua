@@ -51,24 +51,24 @@ function frmBackground()
 	
 	-- Set backcolor window setting to currently control color
 	if sFrom == "TitanBar" then
-		curSelAlpha = bcAlpha
-		curSelRed = bcRed
-		curSelGreen = bcGreen
-		curSelBlue = bcBlue
+		curSelAlpha = bcAlpha or 0.3
+		curSelRed = bcRed or 0.3
+		curSelGreen = bcGreen or 0.3
+		curSelBlue = bcBlue or 0.3
 	else
 		-- Try to get from ControlRegistry first
 		local data = _G.ControlRegistry.Get(sFrom)
 		if data then
-			curSelAlpha = data.colors.alpha
-			curSelRed = data.colors.red
-			curSelGreen = data.colors.green
-			curSelBlue = data.colors.blue
+			curSelAlpha = data.colors.alpha or 0.3
+			curSelRed = data.colors.red or 0.3
+			curSelGreen = data.colors.green or 0.3
+			curSelBlue = data.colors.blue or 0.3
 		elseif _G.CurrencyData[sFrom] then
 			-- Fall back to currency data
-			curSelAlpha = _G.CurrencyData[sFrom].bcAlpha
-			curSelRed = _G.CurrencyData[sFrom].bcRed
-			curSelGreen = _G.CurrencyData[sFrom].bcGreen
-			curSelBlue = _G.CurrencyData[sFrom].bcBlue
+			curSelAlpha = _G.CurrencyData[sFrom].bcAlpha or 0.3
+			curSelRed = _G.CurrencyData[sFrom].bcRed or 0.3
+			curSelGreen = _G.CurrencyData[sFrom].bcGreen or 0.3
+			curSelBlue = _G.CurrencyData[sFrom].bcBlue or 0.3
 		end
 	end
 	
@@ -271,7 +271,12 @@ function frmBackground()
 end
 
 function UpdateBCvariable()
-	curSelAlpha = curAlpha;
+	-- Safety check for nil values
+	curSelAlpha = curAlpha or 0.3
+	curSelRed = curSelRed or 0.3
+	curSelGreen = curSelGreen or 0.3
+	curSelBlue = curSelBlue or 0.3
+
 	if BGWToAll then
 		bcAlpha, bcRed, bcGreen, bcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
 		
