@@ -13,7 +13,7 @@ function ShowMIWindow()
 	
 	MITTListBox = tt.listBox
 	MITTListBox:SetWidth(_G.ToolTipWin:GetWidth() - 30)
-	MITTListBox:SetMaxItemsPerLine(1)
+	MITTListBox:SetMaxColumns(1)
 	MITTListBox:SetOrientation(Turbine.UI.Orientation.Horizontal)
 
 	MIRefreshMITTListBox()

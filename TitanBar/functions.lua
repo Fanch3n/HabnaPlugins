@@ -139,11 +139,9 @@ function ShowToolTipWin(ToShow)
 	_G.ToolTipWin:SetVisible(true);
 end
 
-function UpdateWallet()
-	AdjustIcon( "WI" );
-end
 
-function UpdateMoney()
+function UpdateMoney_LEGACY()
+	write("LEGACY")
     -- Safety check: Ensure controls are initialized before updating UI
     if not (_G.ControlData and _G.ControlData.Money and _G.ControlData.Money.controls) then return end
 
@@ -253,7 +251,7 @@ function UpdateCurrencyDisplay(currencyName)
 	end
 end
 
-function UpdateBackpackInfos()
+function UpdateBackpackInfos_LEGACY()
 	local max = backpack:GetSize();
 	local freeslots = 0;
 
@@ -293,7 +291,7 @@ function UpdateBackpackInfos()
 	AdjustIcon( "BI" );
 end
 
-function UpdatePlayersInfos()
+function UpdatePlayersInfos_LEGACY()
 	--Race
 	PlayerRaceIdIs = Player:GetRace();
 	local PlayerRaceIsLkey = "PR"..PlayerRaceIdIs

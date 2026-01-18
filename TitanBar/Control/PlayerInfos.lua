@@ -2,6 +2,37 @@ import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "PlayerInfosToolTip")
 import(AppDirD .. "ControlFactory")
 
+function UpdatePlayersInfos()
+	--Race
+	PlayerRaceIdIs = Player:GetRace();
+	local PlayerRaceIsLkey = "PR"..PlayerRaceIdIs
+	PlayerRaceIs = L[PlayerRaceIsLkey]
+	if not PlayerRaceIs then
+		PlayerRaceIs = PlayerRaceIsLkey -- show the expected localization key if not found
+	end
+
+	--Class
+	PlayerClassIdIs = Player:GetClass()
+	local PlayerClassIsLkey = "PC"..PlayerClassIdIs
+	PlayerClassIs = L[PlayerClassIsLkey]
+	if not PlayerClassIs then
+		PlayerClassIs = PlayerClassIsLkey -- show the expected localization key if not found
+	end
+
+	--Update visuale
+	_G.ControlData.PI.controls[ "Icon" ]:SetBackground(resources.PlayerIconCode[PlayerClassIdIs]) -- if class icon is unknown in the resource then background image is set to nil: nothing visible
+	
+	_G.ControlData.PI.controls["Lvl"]:SetText(tostring(Player:GetLevel()))
+	_G.ControlData.PI.controls["Lvl"]:SetSize(_G.ControlData.PI.controls["Lvl"]:GetTextLength() * NM+1, CTRHeight)
+	_G.ControlData.PI.controls["Name"]:SetPosition(_G.ControlData.PI.controls["Lvl"]:GetLeft() + _G.ControlData.PI.controls["Lvl"]:GetWidth() + 5, 0)
+	--_G.ControlData.PI.controls["Name"]:SetText("OneVeryLongCharacterName") --Debug purpose
+	_G.ControlData.PI.controls["Name"]:SetText(Player:GetName())
+	
+	_G.ControlData.PI.controls["Name"]:SetSize(_G.ControlData.PI.controls["Name"]:GetTextLength() * TM, CTRHeight)
+
+	AdjustIcon( "PI" );
+end
+
 function InitializePlayerInfos()
     -- Cleanup existing controls to prevent duplication
     if _G.ControlData.PI.controls and _G.ControlData.PI.controls["Ctr"] then

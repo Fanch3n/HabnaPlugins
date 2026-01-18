@@ -5,6 +5,10 @@ import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "WalletToolTip")
 import(AppDirD .. "ControlFactory")
 
+function UpdateWallet()
+	AdjustIcon( "WI" );
+end
+
 function InitializeWallet()
 	-- Cleanup existing controls to prevent duplication
 	if _G.ControlData.WI.controls and _G.ControlData.WI.controls["Ctr"] then

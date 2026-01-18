@@ -194,7 +194,7 @@ function frmMain()
 	
 	ItemRemovedTimer.Update = function( sender, args )
 		ItemRemovedTimer:SetWantsUpdates( false );
-		UpdateBackpackInfos();
+		if UpdateBackpackInfos then UpdateBackpackInfos(); end
 	end
 	--**
 	

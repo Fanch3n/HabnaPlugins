@@ -56,7 +56,7 @@ function frmTrackItemsWindow()
 	ui.ListBoxBorder = lb.Border
 	ui.ListBox = lb.ListBox
 	ui.ListBoxScrollBar = lb.ScrollBar
-	ui.ListBox:SetMaxItemsPerLine(1);
+	ui.ListBox:SetMaxColumns(1);
 	ConfigureListBox(ui.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
 
 	CheckForStackableItems();

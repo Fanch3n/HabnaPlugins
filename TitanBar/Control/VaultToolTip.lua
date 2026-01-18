@@ -81,7 +81,7 @@ function RefreshVaultTTListBox()
 	if VaultTTHeight > screenHeight then VaultTTHeight = screenHeight - 70; end
 	
 	VaultTTListBox:SetHeight( VaultTTHeight );
-	VaultTTListBox:SetMaxItemsPerLine( MaxItemsPerLine );
+	VaultTTListBox:SetMaxColumns( MaxItemsPerLine );
 		
 	local w = 40 * MaxItemsPerLine + 40;
 	

@@ -81,7 +81,7 @@ function RefreshSharedTTListBox()
 	if SharedTTHeight > screenHeight then SharedTTHeight = screenHeight - 70; end
 	
 	SharedTTListBox:SetHeight( SharedTTHeight - 35 );
-	SharedTTListBox:SetMaxItemsPerLine( MaxItemsPerLine );
+	SharedTTListBox:SetMaxColumns( MaxItemsPerLine );
 		
 	local w = 40 * MaxItemsPerLine + 40;
 	

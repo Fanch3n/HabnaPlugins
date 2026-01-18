@@ -6,6 +6,94 @@ import(AppDirD .. "ControlFactory")
 import(AppCtrD .. "MoneyInfosToolTip")
 import(AppCtrD .. "MoneyInfosWindow")
 
+
+function UpdateMoney()
+    -- Safety check: Ensure controls are initialized before updating UI
+    if not (_G.ControlData and _G.ControlData.Money and _G.ControlData.Money.controls) then return end
+
+	local where = (_G.ControlData and _G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE
+	if where == Constants.Position.TITANBAR then
+		local moneyData = (_G.ControlData and _G.ControlData.Money) or {}
+		local showTotal = moneyData.stm == true
+		local money = GetPlayerAttributes():GetMoney();
+	local gold, silver, copper = DecryptMoney(money);
+	
+	_G.ControlData.Money.controls[ "GLbl" ]:SetText( string.format( "%.0f", gold ) );
+	_G.ControlData.Money.controls[ "SLbl" ]:SetText( string.format( "%.0f", silver ) );
+	_G.ControlData.Money.controls[ "CLbl" ]:SetText( string.format( "%.0f", copper ) );	SavePlayerMoney( false );
+
+	_G.ControlData.Money.controls[ "GLbl" ]:SetSize( _G.ControlData.Money.controls[ "GLbl" ]:GetTextLength() * NM, CTRHeight ); 
+        --Auto size with text length
+	_G.ControlData.Money.controls[ "SLbl" ]:SetSize( 4 * NM, CTRHeight ); --Auto size with text length
+	_G.ControlData.Money.controls[ "CLbl" ]:SetSize( 3 * NM, CTRHeight ); --Auto size with text length	_G.ControlData.Money.controls[ "GLblT" ]:SetVisible( showTotal );
+	_G.ControlData.Money.controls[ "GLbl" ]:SetVisible( not showTotal );	_G.ControlData.Money.controls[ "SLblT" ]:SetVisible( showTotal );
+	_G.ControlData.Money.controls[ "SLbl" ]:SetVisible( not showTotal );
+
+	_G.ControlData.Money.controls[ "CLblT" ]:SetVisible( showTotal );
+	_G.ControlData.Money.controls[ "CLbl" ]:SetVisible( not showTotal );	if showTotal then --Add Total Money on TitanBar Money control.
+		local strData = L[ "MIWTotal" ] .. ": ";
+		local strData1 = string.format( "%.0f", GoldTot );
+		local strData2 = L[ "You" ] .. _G.ControlData.Money.controls[ "GLbl" ]:GetText();
+		local TextLen = string.len( strData ) * TM + string.len( strData1 ) * NM;
+		if TBFontT == "TrajanPro25" then TextLen = TextLen + 7; end
+		_G.ControlData.Money.controls[ "GLblT" ]:SetText(strData .. strData1 .. "\n" .. strData2 .. " ");
+		_G.ControlData.Money.controls[ "GLblT" ]:SetSize( TextLen, CTRHeight );		strData1 = string.format( "%.0f", SilverTot );
+		strData2 = _G.ControlData.Money.controls[ "SLbl" ]:GetText();
+		TextLen = 4 * NM + 6;
+		_G.ControlData.Money.controls[ "SLblT" ]:SetText( strData1 .. "\n" .. strData2 .. " " );
+		_G.ControlData.Money.controls[ "SLblT" ]:SetSize( TextLen, CTRHeight );		strData1 = string.format( "%.0f", CopperTot );
+		strData2 = _G.ControlData.Money.controls[ "CLbl" ]:GetText();
+		TextLen = 3 * NM + 6;
+		_G.ControlData.Money.controls[ "CLblT" ]:SetText( strData1 .. "\n" .. strData2 .. " " );
+		_G.ControlData.Money.controls[ "CLblT" ]:SetSize( TextLen, CTRHeight );	end
+    
+    --Statistics section
+    local PN = Player:GetName();
+    local bIncome = true;
+    bSumSSS, bSumSTS = true, true;
+    local hadmoney = walletStats[DOY][PN].Had;
+
+    local diff = money - hadmoney;
+    if diff < 0 then diff = math.abs(diff); bIncome = false; end
+
+    if bIncome then 
+        walletStats[DOY][PN].Earned = 
+            tostring(walletStats[DOY][PN].Earned + diff);
+        walletStats[DOY][PN].TotEarned = 
+            tostring(walletStats[DOY][PN].TotEarned + diff);
+    else
+        walletStats[DOY][PN].Spent = 
+            tostring(walletStats[DOY][PN].Spent + diff);
+        walletStats[DOY][PN].TotSpent = 
+            tostring(walletStats[DOY][PN].TotSpent + diff);
+    end
+
+    walletStats[DOY][PN].Had = tostring(money);
+
+    --Sum of session statistics
+    local SSS = walletStats[DOY][PN].Earned - walletStats[DOY][PN].Spent;
+    if SSS < 0 then SSS = math.abs(SSS); bSumSSS = false; end
+    walletStats[DOY][PN].SumSS = tostring(SSS);
+
+    -- Sum of today satistics
+    --Calculate all character earned & spent
+    totem, totsm = 0,0;
+    for k,v in pairs(walletStats[DOY]) do
+        totem = totem + v.TotEarned;
+        totsm = totsm + v.TotSpent;
+    end
+    
+    local STS = totem - totsm;
+    if STS < 0 then STS = math.abs(STS); bSumSTS = false; end
+    walletStats[DOY][PN].SumTS = tostring(STS);
+
+    Turbine.PluginData.Save( 
+        Turbine.DataScope.Server, "TitanBarPlayerWalletStats", walletStats);
+
+	end
+	AdjustIcon( "MI" );
+end
+
 function InitializeMoneyInfos()
     Turbine.Shell.WriteLine("DEBUG: InitializeMoneyInfos Started")
 	-- Use _G.ControlData.Money.controls for all UI controls

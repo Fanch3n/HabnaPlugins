@@ -16,19 +16,10 @@ function ImportCtr( value )
 
     if value == "WI" then --Wallet infos
         import (AppCtrD.."Wallet");
-        import (AppCtrD.."WalletToolTip");
-        UpdateWallet();
-        _G.ControlData.WI.controls[ "Ctr" ]:SetPosition( _G.ControlData.WI.location.x, _G.ControlData.WI.location.y );
+        ImportCtr("WI");
     elseif value == "MI" then --Money Infos
-		local moneyWhere = (_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE
-		-- Logic moved to InitializeMoneyInfos for creation, but listener setup remains here or should be part of init?
-		-- For now, allow re-initialization logic if needed, but the main creation is done via import
-		if moneyWhere ~= Constants.Position.NONE then
-            -- Initial setup handled in InitializeMoneyInfos
-            UpdateMoney();
-        else
-            -- Cleanup handled in MoneyInfos.lua on re-init or disable
-        end
+        import (AppCtrD.."MoneyInfos");
+        ImportCtr("Money");
     elseif value == "BI" then --Backpack Infos
         import (AppCtrD.."BagInfos");
         ImportCtr("BI"); -- Recursive call to use registered initFunc

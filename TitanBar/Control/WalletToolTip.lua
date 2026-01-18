@@ -13,7 +13,7 @@ function ShowWIToolTip()
 	})
 	
 	WITTListBox = tt.listBox
-	WITTListBox:SetMaxItemsPerLine(1)
+	WITTListBox:SetMaxColumns(1)
 	WITTListBox:SetOrientation(Turbine.UI.Orientation.Horizontal)
 
 	RefreshWITTListBox()
