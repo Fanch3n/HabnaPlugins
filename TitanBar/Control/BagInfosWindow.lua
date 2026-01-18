@@ -14,6 +14,13 @@ function frmBagInfos()
 	_G.ControlData.BI.ui = _G.ControlData.BI.ui or {}
 	local ui = _G.ControlData.BI.ui
 
+	-- Define callbacks to store references for removal
+	local cbItemAdded = function(sender, args)
+		if SelCN == PN then SavePlayerBags(); CountBIItems();
+		elseif SelCN == L["VTAll"] then CountBIItems(); end
+	end
+	local cbItemRemoved = function(sender, args) BIItemRemovedTimer:SetWantsUpdates( true ); end
+
 	-- Create window using helper with custom configuration
 	local wBI = CreateControlWindow(
 		"BagInfos", "BI",
@@ -21,13 +28,28 @@ function frmBagInfos()
 		{
 			dropdown = bagInfosDropdown,
 			onClosing = function(sender, args)
-				RemoveCallback(tbackpack, "ItemAdded")
-				RemoveCallback(tbackpack, "ItemRemoved")
-				_G.ControlData.BI.ui = { control = nil, optCheckbox = nil }
+				RemoveCallback(tbackpack, "ItemAdded", cbItemAdded)
+				RemoveCallback(tbackpack, "ItemRemoved", cbItemRemoved)
+				-- Only clear window-related references, preserve control
+				if _G.ControlData.BI.ui then
+					_G.ControlData.BI.ui.window = nil
+					_G.ControlData.BI.ui.ListBox = nil
+					_G.ControlData.BI.ui.ListBoxBorder = nil
+					_G.ControlData.BI.ui.ListBoxScrollBar = nil
+					_G.ControlData.BI.ui.SearchTextBox = nil
+					_G.ControlData.BI.ui.DelIcon = nil
+					_G.ControlData.BI.ui.UsedSlots = nil
+					_G.ControlData.BI.ui.MaxSlots = nil
+					_G.ControlData.BI.ui.ButtonDelete = nil
+				end
 			end
 		}
 	)
 	ui.window = wBI
+
+	-- Register callbacks
+	AddCallback(tbackpack, "ItemAdded", cbItemAdded);
+	AddCallback(tbackpack, "ItemRemoved", cbItemRemoved);
 
 	-- Set up dropdown after window is created
 	bagInfosDropdown:SetParent(wBI)
@@ -119,15 +141,8 @@ function frmBagInfos()
 		CountBIItems();
 	end
 
-	AddCallback(tbackpack, "ItemAdded", 
-		function(sender, args)
-		local ui = _G.ControlData.BI and _G.ControlData.BI.ui
-		if ui then
-			if SelCN == PN then SavePlayerBags(); CountBIItems();
-			elseif SelCN == L["VTAll"] then CountBIItems(); end
-		end
-	end);
-
+	-- Callbacks registered at top of function
+	
 	-- Workaround for the ItemRemoved that fire before the backpack was updated (Turbine API issue)
 	BIItemRemovedTimer = Turbine.UI.Control();
 	BIItemRemovedTimer.Update = function( sender, args )
@@ -139,15 +154,13 @@ function frmBagInfos()
 		end
 	end
 
-	AddCallback(tbackpack, "ItemRemoved", function(sender, args) BIItemRemovedTimer:SetWantsUpdates( true ); end); --Workaround
-
 	CountBIItems();
     
 end
 
 function CountBIItems()
 	local ui = _G.ControlData.BI and _G.ControlData.BI.ui
-	if not ui then return end
+	if not ui or not ui.ListBox then return end
 	backpackCount = 0;
 	ui.ListBox:ClearItems();
 	itemCtl = {};

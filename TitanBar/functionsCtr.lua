@@ -34,44 +34,7 @@ function ImportCtr( value )
         ImportCtr("BI"); -- Recursive call to use registered initFunc
     elseif value == "PI" then --Player Infos
         import (AppCtrD.."PlayerInfos");
-        import (AppCtrD.."PlayerInfosToolTip");
-        AddCallback(Player, "LevelChanged",
-            function(sender, args)
-                _G.ControlData.PI.controls["Lvl"]:SetText( tostring(Player:GetLevel()) );
-                _G.ControlData.PI.controls["Lvl"]:SetSize( _G.ControlData.PI.controls["Lvl"]:GetTextLength() * NM+1, CTRHeight );
-                _G.ControlData.PI.controls["Name"]:SetPosition( _G.ControlData.PI.controls["Lvl"]:GetLeft() + _G.ControlData.PI.controls["Lvl"]:GetWidth() + 5, 0 );
-            end);
-        AddCallback(Player, "NameChanged",
-            function(sender, args)
-                _G.ControlData.PI.controls["Name"]:SetText( Player:GetName() );
-                _G.ControlData.PI.controls["Name"]:SetSize( _G.ControlData.PI.controls["Name"]:GetTextLength() * TM, CTRHeight );
-                AdjustIcon("PI");
-            end);
-        XPcb = AddCallback(Turbine.Chat, "Received",
-            function(sender, args)
-            if args.ChatType == Turbine.ChatType.Advancement then
-                xpMess = args.Message;
-                if xpMess ~= nil then
-                    local xpPattern;
-                    if GLocale == "en" then
-                        xpPattern = "total of ([%d%p]*) XP";
-                    elseif GLocale == "fr" then
-                        xpPattern = "de ([%d%p]*) points d'exp\195\169rience";
-                    elseif GLocale == "de" then
-                        xpPattern = "\195\188ber ([%d%p]*) EP";
-                    end
-                    local tmpXP = string.match(xpMess,xpPattern);
-                    if tmpXP ~= nil then
-                        _G.ControlData.PI = _G.ControlData.PI or {}
-                        _G.ControlData.PI.xp = tmpXP;
-                        settings.PlayerInfos.XP = tmpXP;
-                        SaveSettings( false );
-                    end
-                end
-            end
-            end);
-        UpdatePlayersInfos();
-        _G.ControlData.PI.controls[ "Ctr" ]:SetPosition( _G.ControlData.PI.location.x, _G.ControlData.PI.location.y );
+        ImportCtr("PI"); -- Recursive call to use registered initFunc
     elseif value == "DI" then --Durability Infos
         import (AppCtrD.."DurabilityInfos");
         import (AppCtrD.."DurabilityInfosToolTip");

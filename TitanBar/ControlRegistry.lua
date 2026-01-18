@@ -88,12 +88,7 @@ local registry = {
 	-- WI moved to self-registration in Control/Wallet.lua
 	-- Money moved to self-registration in Control/MoneyInfos.lua
 	-- BI moved to self-registration in Control/BagInfos.lua
-	PI = {
-		settingsKey = "PlayerInfos",
-		toggleFunc = nil,
-		hasWhere = false,
-		defaults = { show = false, x = nil, y = 0 }  -- x set in InitializeAll
-	},
+	-- PI moved to self-registration in Control/PlayerInfos.lua
 	EI = {
 		settingsKey = "EquipInfos",
 		toggleFunc = nil,
