@@ -71,23 +71,22 @@ function RefreshVaultTTListBox()
 		itemQTE:SetBackColorBlendMode( Turbine.UI.BlendMode.Overlay );
 		itemQTE:SetForeColor( Color["nicegold"] );
 		itemQTE:SetText( tonumber(PlayerVault[PN][tostring(i)].N) );
-		
+
 		VaultTTListBox:AddItem( itemCtl );
 	end
-	
+
 	MaxItemsPerLine = 15;
-	
-	VaultTTHeight = 40 * vaultpackCount / MaxItemsPerLine + 45;
+
+	VaultTTHeight = 40 * math.floor(vaultpackCount / MaxItemsPerLine) + 60;
 	if VaultTTHeight > screenHeight then VaultTTHeight = screenHeight - 70; end
-	
-	VaultTTListBox:SetHeight( VaultTTHeight );
-	VaultTTListBox:SetMaxColumns( MaxItemsPerLine );
-		
+
+	VaultTTListBox:SetHeight(VaultTTHeight);
+	VaultTTListBox:SetMaxColumns(MaxItemsPerLine);
+
 	local w = 40 * MaxItemsPerLine + 40;
-	
-	_G.ToolTipWin:SetHeight( VaultTTHeight + 20);
+
+	_G.ToolTipWin:SetHeight(VaultTTHeight + 20);
 	_G.ToolTipWin:SetWidth( w );
 	PositionAndShowTooltip(_G.ToolTipWin)
-
 	VaultTTListBox:SetWidth( _G.ToolTipWin:GetWidth() - 40 );
 end
