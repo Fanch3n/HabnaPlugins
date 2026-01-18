@@ -233,7 +233,7 @@ function PopulateDropDown(dropdown, items, includeAll, allLabel, selectedValue)
     for _, entry in ipairs(items) do
         if type(entry) == "string" then
             dropdown:AddItem(entry, idx)
-            if selectedValue and entry == selectedValue then foundValue = selectedValue end
+            if selectedValue and entry == selectedValue then foundValue = idx end
         elseif type(entry) == "table" then
             -- support { label = "...", value = "..." } or { "label", "value" }
             local label = entry.label or entry[1]
