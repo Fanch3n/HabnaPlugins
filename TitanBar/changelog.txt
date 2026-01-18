@@ -2,6 +2,11 @@ This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Te
 
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
+Version 1.48 (January 18, 2026)
+- Fixed the list layout problem properly
+- Fixed dropdowns not defaulting to the player name
+- Fixed an error when changing background colors
+=================================================
 Version 1.47 (January 17, 2026)
 - Fixed a problem breaking list layout for some users (thanks to everyone who helped testing the fix!)
 =================================================

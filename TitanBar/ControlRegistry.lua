@@ -67,15 +67,18 @@ local function InitControlData(controlId, settingsKey, toggleFunc, hasWhere, def
         if section.X then data.location.x = tonumber(section.X) end
         if section.Y then data.location.y = tonumber(section.Y) end
         
-        if section.A then data.colors.alpha = tonumber(section.A) end
-        if section.R then data.colors.red = tonumber(section.R) end
-        if section.G then data.colors.green = tonumber(section.G) end
-        if section.B then data.colors.blue = tonumber(section.B) end
+        if section.A then data.colors.alpha = tonumber(section.A) or data.colors.alpha end
+        if section.R then data.colors.red = tonumber(section.R) or data.colors.red end
+        if section.G then data.colors.green = tonumber(section.G) or data.colors.green end
+        if section.B then data.colors.blue = tonumber(section.B) or data.colors.blue end
         
-        if section.L then data.window.left = tonumber(section.L) end
-        if section.T then data.window.top = tonumber(section.T) end
+        if section.X then data.location.x = tonumber(section.X) or data.location.x end
+        if section.Y then data.location.y = tonumber(section.Y) or data.location.y end
+
+        if section.L then data.window.left = tonumber(section.L) or data.window.left end
+        if section.T then data.window.top = tonumber(section.T) or data.window.top end
         
-        if data.where ~= nil and section.W then data.where = tonumber(section.W) end
+        if data.where ~= nil and section.W then data.where = tonumber(section.W) or data.where end
     end
 
 	_G.ControlData[controlId] = data

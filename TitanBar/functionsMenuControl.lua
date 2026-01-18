@@ -64,8 +64,7 @@ end
 function BGColor( cmd, value )
 	if _G.Debug then write("BGColor cmd: "..cmd..", value: "..value); end
 	if cmd == "reset" then
-		if GLocale == "en" then tA, tR, tG, tB = 0.3, 0.3, 0.3, 0.3;
-		else tA, tR, tG, tB = tonumber("0,3"), tonumber("0,3"), tonumber("0,3"), tonumber("0,3"); end
+		tA, tR, tG, tB = 0.3, 0.3, 0.3, 0.3;
 	elseif cmd == "match" then
 		tA, tR, tG, tB = bcAlpha, bcRed, bcGreen, bcBlue;
 	elseif cmd == "apply" then
