@@ -71,21 +71,21 @@ function RefreshSharedTTListBox()
 		itemQTE:SetBackColorBlendMode( Turbine.UI.BlendMode.Overlay );
 		itemQTE:SetForeColor( Color["nicegold"] );
 		itemQTE:SetText( tonumber(PlayerSharedStorage[tostring(i)].N) );
-		
+
 		SharedTTListBox:AddItem( itemCtl );
 	end
-	
+
 	MaxItemsPerLine = 15;
-	
-	SharedTTHeight = 40 * sharedpackCount / MaxItemsPerLine + 50;
+
+	SharedTTHeight = 40 * math.floor(sharedpackCount / MaxItemsPerLine) + 60;
 	if SharedTTHeight > screenHeight then SharedTTHeight = screenHeight - 70; end
-	
-	SharedTTListBox:SetHeight( SharedTTHeight - 35 );
-	SharedTTListBox:SetMaxColumns( MaxItemsPerLine );
-		
+
+	SharedTTListBox:SetHeight(SharedTTHeight);
+	SharedTTListBox:SetMaxColumns(MaxItemsPerLine);
+
 	local w = 40 * MaxItemsPerLine + 40;
-	
-	_G.ToolTipWin:SetHeight( SharedTTHeight );
+
+	_G.ToolTipWin:SetHeight(SharedTTHeight + 20);
 	_G.ToolTipWin:SetWidth( w );
 	PositionAndShowTooltip(_G.ToolTipWin)
 	SharedTTListBox:SetWidth( _G.ToolTipWin:GetWidth() - 40 );
