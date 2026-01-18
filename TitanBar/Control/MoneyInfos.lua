@@ -94,6 +94,37 @@ function UpdateMoney()
 	AdjustIcon( "MI" );
 end
 
+
+-- vvv Moved from functionsCtr.lua (Heridan) vvv
+function UpdateSharedStorageGold( sender, args )
+    if not (sspack and wallet and _G.L and UpdateMoney) then return end
+
+    local storagesize = sspack:GetCount()
+    local sharedmoney = 0
+    local i
+    for i = 1, storagesize do
+        local item = sspack:GetItem(i)
+        if item ~= nil then
+            local name = item:GetName()
+            local count = item:GetQuantity()
+            if name == L[ "MGB" ] then -- Gold Bag
+                sharedmoney = sharedmoney + ( count * 1000000 )
+            elseif name == L[ "MSB" ] then -- Silver Bag
+                sharedmoney = sharedmoney + ( count * 100000 )
+            elseif name == L[ "MCB" ] then -- Copper Bag
+                sharedmoney = sharedmoney + ( count * 10000 )
+            end
+        end
+    end
+    wallet[ L[ "MStorage" ] ] =  {
+        [ "Show" ] = true,
+        [ "ShowToAll" ] = true,
+        [ "Money" ] = tostring( sharedmoney )
+    }
+    UpdateMoney()
+end
+-- ^^^ Moved from functionsCtr.lua (Heridan) ^^^
+
 function InitializeMoneyInfos()
 	-- Use _G.ControlData.Money.controls for all UI controls
 	local MI = {}
