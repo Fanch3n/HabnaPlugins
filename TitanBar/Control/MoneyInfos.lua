@@ -95,27 +95,24 @@ function UpdateMoney()
 end
 
 function InitializeMoneyInfos()
-    Turbine.Shell.WriteLine("DEBUG: InitializeMoneyInfos Started")
 	-- Use _G.ControlData.Money.controls for all UI controls
 	local MI = {}
 	_G.ControlData.Money.controls = MI
-    Turbine.Shell.WriteLine("DEBUG: ControlData.Money.controls set to " .. tostring(MI))
-    
-    local moneyData = _G.ControlData.Money
-    -- Cleanup existing controls to prevent duplication
-    if moneyData.controls and moneyData.controls["Ctr"] and moneyData.controls["Ctr"] ~= MI["Ctr"] then
-        moneyData.controls["Ctr"]:SetParent(nil)
-    end
-    
-    -- Cleanup existing callbacks
-    if moneyData.callbacks then
-        for _, cb in ipairs(moneyData.callbacks) do
-            if RemoveCallback then
-                RemoveCallback(cb.obj, cb.evt, cb.func)
-            end
-        end
-    end
-    moneyData.callbacks = {}
+	local moneyData = _G.ControlData.Money
+	-- Cleanup existing controls to prevent duplication
+	if moneyData.controls and moneyData.controls["Ctr"] and moneyData.controls["Ctr"] ~= MI["Ctr"] then
+		moneyData.controls["Ctr"]:SetParent(nil)
+	end
+
+	-- Cleanup existing callbacks
+	if moneyData.callbacks then
+		for _, cb in ipairs(moneyData.callbacks) do
+			if RemoveCallback then
+				RemoveCallback(cb.obj, cb.evt, cb.func)
+			end
+		end
+	end
+	moneyData.callbacks = {}
 
 	-- Initialize settings from saved data or defaults
 	local moneyData = _G.ControlData.Money
