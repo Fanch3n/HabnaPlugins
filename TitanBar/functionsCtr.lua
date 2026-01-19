@@ -4,65 +4,57 @@
 
 
 function ImportCtr( value )
-    -- Handle dynamically registered controls
+    -- Resolve legacy aliases
+    -- MI was historically mapped to 'Money' internally after import
+    if value == "MI" then value = "Money" end
+
+    -- Lazy Loading Map: ID -> Filename (relative to AppCtrD)
+    local controlFiles = {
+        ["WI"]    = "Wallet",
+        ["Money"] = "MoneyInfos",
+        ["BI"]    = "BagInfos",
+        ["PI"]    = "PlayerInfos",
+        ["DI"]    = "DurabilityInfos",
+        ["EI"]    = "EquipInfos",
+        ["PL"]    = "PlayerLoc",
+        ["TI"]    = "TrackItems",
+        ["IF"]    = "Infamy",
+        ["DN"]    = "DayNight",
+        ["LP"]    = "LOTROPoints",
+        ["GT"]    = "GameTime",
+        ["VT"]    = "Vault",
+        ["SS"]    = "SharedStorage",
+        ["RP"]    = "Reputation"
+    }
+
+    -- If control is not initialized, try to import it first
+    if not (_G.ControlData[value] and _G.ControlData[value].initFunc) then
+        local fileName = controlFiles[value]
+        if fileName then
+            import(AppCtrD .. fileName)
+        end
+    end
+
+    -- 1. Standard Controls (via ControlRegistry)
     local data = _G.ControlData[value]
     if data and data.initFunc then
         data.initFunc()
-        if data.controls and data.controls["Ctr"] then
+        -- Ensure position is set if the control was just created
+        if data.controls and data.controls["Ctr"] and data.location then
             data.controls["Ctr"]:SetPosition(data.location.x, data.location.y)
         end
+        KeepIconControlInBar(value);
         return
     end
 
-    if value == "WI" then --Wallet infos
-        import (AppCtrD.."Wallet");
-        ImportCtr("WI");
-    elseif value == "MI" then --Money Infos
-        import (AppCtrD.."MoneyInfos");
-        ImportCtr("Money");
-    elseif value == "BI" then --Backpack Infos
-        import (AppCtrD.."BagInfos");
-        ImportCtr("BI"); -- Recursive call to use registered initFunc
-    elseif value == "PI" then --Player Infos
-        import (AppCtrD.."PlayerInfos");
-        ImportCtr("PI"); -- Recursive call to use registered initFunc
-    elseif value == "DI" then --Durability Infos
-        import (AppCtrD.."DurabilityInfos");
-        ImportCtr("DI");
-    elseif value == "EI" then --Equipment Infos
-        import (AppCtrD.."EquipInfos");
-        ImportCtr("EI");
-    elseif value == "PL" then --Player Location
-        import (AppCtrD.."PlayerLoc");
-        ImportCtr("PL");
-    elseif value == "TI" then --Track Items
-        import (AppCtrD.."TrackItems");
-        ImportCtr("TI");
-    elseif value == "IF" then --Infamy
-        import (AppCtrD.."Infamy");
-        ImportCtr("IF");
-    elseif value == "DN" then --Day & Night Time
-        import (AppCtrD.."DayNight");
-        ImportCtr("DN");
-    elseif value == "LP" then --LOTRO points
-        import (AppCtrD.."LOTROPoints");
-        ImportCtr("LP");
-    elseif value == "GT" then --Game Time
-        import (AppCtrD.."GameTime");
-        ImportCtr("GT");
-    elseif value == "VT" then --Vault
-        import (AppCtrD.."Vault");
-        ImportCtr("VT"); -- Recursive call to use registered initFunc
-    elseif value == "SS" then --Shared Storage
-        import (AppCtrD.."SharedStorage");
-        ImportCtr("SS"); -- Recursive call to use registered initFunc
-	elseif value == "RP" then --Reputation Points
-        import (AppCtrD.."Reputation");
-        ImportCtr("RP");
-    else
+    -- 2. Currencies (Legacy system)
+    if _G.CurrencyData and _G.CurrencyData[value] then
         if _G.CurrencyData[value].Where == 1 then
             createCurrencyTable(value)
-            _G.CurrencyData[value].Ctr:SetPosition(_G.CurrencyData[value].LocX, _G.CurrencyData[value].LocY)
+            local ctr = _G.CurrencyData[value].Ctr
+            if ctr then
+                ctr:SetPosition(_G.CurrencyData[value].LocX, _G.CurrencyData[value].LocY)
+            end
         end
         if _G.CurrencyData[value].Where ~= 3 then
             if value == "DestinyPoints" then
@@ -74,9 +66,10 @@ function ImportCtr( value )
         elseif value == "DestinyPoints" then
             RemoveCallback(GetPlayerAttributes(), "DestinyPointsChanged")
         end
+        
+        KeepIconControlInBar(value);
     end
 
-    KeepIconControlInBar(value);
 
 end
 

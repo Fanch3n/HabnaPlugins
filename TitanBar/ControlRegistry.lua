@@ -1,13 +1,10 @@
 -- ControlRegistry.lua
 -- Centralized control data management for TitanBar
--- Instead of scattered global variables, each control has a structured data object in _G.ControlData
--- This eliminates dozens of scattered globals (visibility flags, colors, locations, etc.)
 
 _G.ControlRegistry = {}
 _G.ControlData = {}
 
 -- Initialize control data structure
--- This replaces scattered globals (visibility flags, colors, locations, etc.)
 local function InitControlData(controlId, settingsKey, toggleFunc, hasWhere, defaults)
 	defaults = defaults or {}
 	
@@ -18,11 +15,11 @@ local function InitControlData(controlId, settingsKey, toggleFunc, hasWhere, def
 		id = controlId,
 		settingsKey = settingsKey,
 		toggleFunc = toggleFunc,
-		initFunc = defaults.initFunc, -- Store initFunc in data for easy access
+		initFunc = defaults.initFunc,
 
 		-- Display state
 		show = defaults.show or false,
-		where = hasWhere and (defaults.where or 1) or nil,  -- 1=TitanBar, 2=Tooltip, 3=Hidden (for controls with Where option)
+		where = hasWhere and (defaults.where or 1) or nil,  -- 1=TitanBar, 2=Tooltip, 3=Hidden
 		
 		-- Colors (background)
 		colors = {
@@ -44,28 +41,24 @@ local function InitControlData(controlId, settingsKey, toggleFunc, hasWhere, def
 			top = defaults.winTop or 100
 		},
 		
-		-- UI references (set when control is created)
 		ui = {
-			control = nil,      -- The main control table (WI, BI, etc.)
-			optCheckbox = nil   -- The options checkbox (opt_WI, opt_BI, etc.)
+			control = nil,      -- The main control table
+			optCheckbox = nil   -- The options checkbox
 		}
 	}
 
-    -- Preserve extra fields that might have been added by settings loading (e.g. stm, sss)
+    -- Preserve extra fields that might have been added by settings loading
     for k, v in pairs(existing) do
         if data[k] == nil then
             data[k] = v
         end
     end
 	
-    -- Sync with global settings if available. This is crucial for self-registering controls
-    -- that register AFTER settings have been loaded.
+    -- Sync with global settings if available.
     if _G.settings and _G.settings[settingsKey] then
         local section = _G.settings[settingsKey]
-        -- Load standard properties if they exist in settings
+        
         if section.V ~= nil then data.show = section.V end
-        if section.X then data.location.x = tonumber(section.X) end
-        if section.Y then data.location.y = tonumber(section.Y) end
         
         if section.A then data.colors.alpha = tonumber(section.A) or data.colors.alpha end
         if section.R then data.colors.red = tonumber(section.R) or data.colors.red end
@@ -86,22 +79,7 @@ local function InitControlData(controlId, settingsKey, toggleFunc, hasWhere, def
 end
 
 -- Registry structure for each control - maps ID to metadata
--- This is configuration, while ControlData holds runtime state
-local registry = {
-	-- WI moved to self-registration in Control/Wallet.lua
-	-- Money moved to self-registration in Control/MoneyInfos.lua
-	-- BI moved to self-registration in Control/BagInfos.lua
-	-- PI moved to self-registration in Control/PlayerInfos.lua
-	-- PL moved to self-registration in Control/PlayerLoc.lua
-	-- EI moved to self-registration in Control/EquipInfos.lua
-	-- DI moved to self-registration in Control/DurabilityInfos.lua
-	-- TI moved to self-registration in Control/TrackItems.lua
-	-- IF moved to self-registration in Control/Infamy.lua
-	-- DN moved to self-registration in Control/DayNight.lua
-	-- RP moved to self-registration in Control/Reputation.lua
-	-- LP moved to self-registration in Control/LOTROPoints.lua
-	-- GT moved to self-registration in Control/GameTime.lua
-}
+local registry = {}
 
 -- Helper function to get default X position for a control
 local function GetDefaultX(controlId)
@@ -138,30 +116,22 @@ end
 function _G.ControlRegistry.ResetToDefaults()
 	for id, config in pairs(registry) do
 		local data = _G.ControlData[id]
-		local defaults = config.defaults or {}
-		
-		-- Reset display state
-		data.show = defaults.show or false
-		if config.hasWhere then
-			data.where = defaults.where or 1
+		if data then
+			local defaults = config.defaults or {}
+			
+			data.show = defaults.show or false
+			if config.hasWhere then
+				data.where = defaults.where or 1
+			end
+			
+			data.colors.alpha = defaults.alpha or 0.3
+			data.colors.red = defaults.red or 0.3
+			data.colors.green = defaults.green or 0.3
+			data.colors.blue = defaults.blue or 0.3
+			
+			data.location.x = defaults.x or GetDefaultX(id)
+			data.location.y = defaults.y or 0
 		end
-		
-		-- Reset colors to default
-		data.colors.alpha = defaults.alpha or 0.3
-		data.colors.red = defaults.red or 0.3
-		data.colors.green = defaults.green or 0.3
-		data.colors.blue = defaults.blue or 0.3
-		
-		-- Reset location
-		local defaultX = defaults.x
-		if defaultX == nil then
-			defaultX = GetDefaultX(id)
-		end
-		data.location.x = defaultX
-		data.location.y = defaults.y or 0
-		
-		-- Keep window positions as they are (don't reset)
-		-- Keep ui references as they are
 	end
 end
 
