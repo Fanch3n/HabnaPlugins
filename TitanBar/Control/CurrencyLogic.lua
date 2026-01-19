@@ -45,7 +45,7 @@ _G.createCurrencyTable = function(currencyName)
 
 	-- Set up move handler and icon event handlers after label is created
 	local MoveCurrencyCtr = CreateMoveHandler(currencyData.Ctr, currencyData.Lbl)
-	
+
 	currencyData.Icon.MouseMove = function(sender, args)
 		currencyData.Lbl.MouseLeave(sender, args)
 		TB.win.MouseMove()
@@ -87,10 +87,11 @@ _G.createCurrencyTable = function(currencyName)
 		_G.WasDrag = false
 	end
 
-	local dragHandlers = CreateDragHandlers(currencyData.Ctr, settings[currencyName], currencyName .. "LocX", currencyName .. "LocY")
+	local dragHandlers = CreateDragHandlers(currencyData.Ctr, settings[currencyName], currencyName .. "LocX",
+		currencyName .. "LocY")
 	currencyData.Lbl.MouseDown = dragHandlers.MouseDown
 	currencyData.Lbl.MouseUp = dragHandlers.MouseUp
-	
+
 	-- Delegate Icon events to Lbl (except MouseMove which has custom logic)
-	DelegateMouseEvents(currencyData.Icon, currencyData.Lbl, {"MouseClick", "MouseDown", "MouseUp"})
+	DelegateMouseEvents(currencyData.Icon, currencyData.Lbl, { "MouseClick", "MouseDown", "MouseUp" })
 end

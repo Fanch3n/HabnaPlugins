@@ -32,7 +32,7 @@ Constants.ICON_SIZE_SMALL = 16
 Constants.ICON_SIZE_MEDIUM = 24
 Constants.ICON_SIZE_MEDIUM_LARGE = 30
 Constants.ICON_SIZE_LARGE = 32
-Constants.ITEM_CONTROL_SIZE = 34  -- Turbine ItemControl size
+Constants.ITEM_CONTROL_SIZE = 34 -- Turbine ItemControl size
 Constants.ICON_SIZE_XLARGE = 40  -- Item slot size
 Constants.ICON_SIZE_XXLARGE = 44 -- Equipment slot size
 Constants.DEFAULT_ICON_SIZE = Constants.ICON_SIZE_LARGE
@@ -49,8 +49,8 @@ Constants.LOTRO_POINTS_ICON_HEIGHT = 43
 Constants.DROPDOWN_WIDTH = 159
 Constants.DROPDOWN_HEIGHT = 19
 Constants.DELETE_ICON_SIZE = 16
-Constants.LISTBOX_HEIGHT_LARGE = 392  -- BagInfos ListBox
-Constants.LISTBOX_HEIGHT_MEDIUM = 370 -- SharedStorage ListBox
+Constants.LISTBOX_HEIGHT_LARGE = 392    -- BagInfos ListBox
+Constants.LISTBOX_HEIGHT_MEDIUM = 370   -- SharedStorage ListBox
 Constants.LISTBOX_HEIGHT_STANDARD = 365 -- TrackItems, Vault ListBox
 Constants.PROGRESS_BAR_WIDTH = 183
 Constants.PROGRESS_BAR_HEIGHT = 9
@@ -74,7 +74,7 @@ Constants.DEFAULT_MONEY_X = 400
 Constants.DEFAULT_PLAYER_INFO_X = 210
 Constants.DEFAULT_EQUIP_INFO_X = 75
 Constants.DEFAULT_DURABILITY_INFO_X = 145
-Constants.DEFAULT_PLAYER_LOC_WIDTH = 205  -- Width reserved for player location
+Constants.DEFAULT_PLAYER_LOC_WIDTH = 205 -- Width reserved for player location
 
 -- Z-Order
 Constants.ZORDER_TOOLTIP = 1
@@ -87,8 +87,8 @@ Constants.ZORDER_CONTROL = 2
 -- Special key codes for window management
 Constants.KEY_ESCAPE = Turbine.UI.Lotro.Action.Escape
 Constants.KEY_ENTER = 162
-Constants.KEY_TOGGLE_UI = 268435635  -- F12 key
-Constants.KEY_TOGGLE_LAYOUT_MODE = 268435579  -- Ctrl + \ key
+Constants.KEY_TOGGLE_UI = 268435635          -- F12 key
+Constants.KEY_TOGGLE_LAYOUT_MODE = 268435579 -- Ctrl + \ key
 
 -- ============================================================================
 -- POSITION DISPLAY MODES
@@ -116,26 +116,26 @@ Constants.DAWN_TIME_OFFSET = 0
 
 -- Durability slot background IDs
 Constants.DURABILITY_SLOTS_BG = {
-    0x41007eed,  -- Head
-    0x41007ef6,  -- Chest
-    0x41007ef7,  -- Legs
-    0x41007eef,  -- Hands
-    0x41007eee,  -- Feet
-    0x41007ee9,  -- Shoulders
-    0x41007ef0,  -- Back
-    0x41007ef9,  -- Bracelet 1
-    0x41007ef8,  -- Bracelet 2
-    0x41007ef4,  -- Necklace
-    0x41007ef3,  -- Ring 1
-    0x41007ef2,  -- Ring 2
-    0x41007ef1,  -- Earring 1
-    0x41007ef5,  -- Earring 2
-    0x41007efa,  -- Pocket
-    0x41007eea,  -- Main Hand
-    0x41007eeb,  -- Off Hand
-    0x41007eec,  -- Ranged
-    0x41007efb,  -- Tool
-    0x410e8680,  -- Class Item
+    0x41007eed, -- Head
+    0x41007ef6, -- Chest
+    0x41007ef7, -- Legs
+    0x41007eef, -- Hands
+    0x41007eee, -- Feet
+    0x41007ee9, -- Shoulders
+    0x41007ef0, -- Back
+    0x41007ef9, -- Bracelet 1
+    0x41007ef8, -- Bracelet 2
+    0x41007ef4, -- Necklace
+    0x41007ef3, -- Ring 1
+    0x41007ef2, -- Ring 2
+    0x41007ef1, -- Earring 1
+    0x41007ef5, -- Earring 2
+    0x41007efa, -- Pocket
+    0x41007eea, -- Main Hand
+    0x41007eeb, -- Off Hand
+    0x41007eec, -- Ranged
+    0x41007efb, -- Tool
+    0x410e8680, -- Class Item
 }
 
 -- ============================================================================
@@ -194,12 +194,12 @@ Constants.SCROLLBAR_WIDTH = 10
 -- TOOLTIP DIMENSIONS
 -- ============================================================================
 
-Constants.TOOLTIP_WIDTH_SMALL = 100      -- Wallet tooltip minimum
-Constants.TOOLTIP_WIDTH_DEFAULT = 300    -- Money, Track Items tooltips
-Constants.TOOLTIP_WIDTH_MEDIUM = 325     -- Money tooltips with content
+Constants.TOOLTIP_WIDTH_SMALL = 100       -- Wallet tooltip minimum
+Constants.TOOLTIP_WIDTH_DEFAULT = 300     -- Money, Track Items tooltips
+Constants.TOOLTIP_WIDTH_MEDIUM = 325      -- Money tooltips with content
 Constants.TOOLTIP_WIDTH_REP_CONTENT = 345 -- Reputation tooltip listbox
-Constants.TOOLTIP_WIDTH_REPUTATION = 380 -- Reputation tooltip window
-Constants.TOOLTIP_WIDTH_VAULT = 400      -- Vault/Shared Storage tooltips
+Constants.TOOLTIP_WIDTH_REPUTATION = 380  -- Reputation tooltip window
+Constants.TOOLTIP_WIDTH_VAULT = 400       -- Vault/Shared Storage tooltips
 Constants.TOOLTIP_HEIGHT_MIN = 37
 Constants.TOOLTIP_HEIGHT_OFFSET = 30
 Constants.TOOLTIP_HEIGHT_VAULT_MAX_OFFSET = 70
@@ -209,7 +209,7 @@ Constants.TOOLTIP_HEIGHT_VAULT_MAX_OFFSET = 70
 -- ============================================================================
 
 -- Small UI elements
-Constants.ARROW_SIZE = 16               -- ComboBox arrow
+Constants.ARROW_SIZE = 16 -- ComboBox arrow
 Constants.HELP_BUTTON_WIDTH = 10
 Constants.HELP_BUTTON_HEIGHT = 20
 Constants.GMT_FIELD_WIDTH = 30
@@ -300,16 +300,16 @@ Constants.BlendMode = {
 -- Stored as references since they're from Turbine API
 -- These will be set at runtime
 Constants.Alignment = {
-    LEFT = nil,   -- Will be set to Turbine.UI.ContentAlignment.MiddleLeft
-    RIGHT = nil,  -- Will be set to Turbine.UI.ContentAlignment.MiddleRight
-    CENTER = nil  -- Will be set to Turbine.UI.ContentAlignment.MiddleCenter
+    LEFT = nil,  -- Will be set to Turbine.UI.ContentAlignment.MiddleLeft
+    RIGHT = nil, -- Will be set to Turbine.UI.ContentAlignment.MiddleRight
+    CENTER = nil -- Will be set to Turbine.UI.ContentAlignment.MiddleCenter
 }
 
 -- ============================================================================
 -- DATA SCOPE (will be initialized after Turbine is loaded)
 -- ============================================================================
 
-Constants.SETTINGS_SCOPE = nil  -- Will be set to Turbine.DataScope.Character in InitializeConstants
+Constants.SETTINGS_SCOPE = nil -- Will be set to Turbine.DataScope.Character in InitializeConstants
 Constants.SETTINGS_NAME_DE = "TitanBarSettingsDE"
 Constants.SETTINGS_NAME_EN = "TitanBarSettingsEN"
 Constants.SETTINGS_NAME_FR = "TitanBarSettingsFR"

@@ -1,5 +1,4 @@
 -- Vault.lua
--- Written by Habna
 
 import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "VaultToolTip")
@@ -7,7 +6,7 @@ import(AppDirD .. "ControlFactory")
 
 -- Moved from functions.lua
 function UpdateVault()
-    AdjustIcon( "VT" );
+    AdjustIcon("VT");
 end
 
 function LoadPlayerVault()
@@ -16,10 +15,11 @@ function LoadPlayerVault()
     if _G.PlayerVault == nil then _G.PlayerVault = {}; end
     if _G.PlayerVault[PN] == nil then _G.PlayerVault[PN] = {}; end
 end
+
 _G.LoadPlayerVault = LoadPlayerVault
 
 function SavePlayerVault()
-    if string.sub( PN, 1, 1 ) == "~" then return end; --Ignore session play
+    if string.sub(PN, 1, 1) == "~" then return end; --Ignore session play
 
     local vaultpackSize = vaultpack:GetCapacity();
     local vaultpackCount = vaultpack:GetCount();
@@ -50,15 +50,15 @@ end
 function InitializeVault()
     _G.ControlData.VT.controls = _G.ControlData.VT.controls or {}
     local VT = _G.ControlData.VT.controls
-    
+
     local colors = _G.ControlData.VT.colors
-    --**v Vault Control v**
+
     if not VT["Ctr"] then
         CreateTitanBarControl(VT, colors.alpha, colors.red, colors.green, colors.blue)
         _G.ControlData.VT.ui.control = VT["Ctr"]
-        
-        --**v Vault icon on TitanBar v**
-        VT["Icon"] = CreateControlIcon(VT["Ctr"], Constants.ICON_SIZE_MEDIUM_LARGE, Constants.ICON_SIZE_MEDIUM_LARGE, resources.Storage.Vault, 4)
+
+        VT["Icon"] = CreateControlIcon(VT["Ctr"], Constants.ICON_SIZE_MEDIUM_LARGE, Constants.ICON_SIZE_MEDIUM_LARGE,
+            resources.Storage.Vault, 4)
 
         SetupControlInteraction({
             icon = VT["Icon"],
@@ -72,23 +72,22 @@ function InitializeVault()
 
         -- Load data
         LoadPlayerVault()
-        
+
         -- Register callbacks
         AddCallback(vaultpack, "CountChanged",
             function(sender, args) SavePlayerVault(); end
         );
     end
-    --**^
     UpdateVault()
 end
 
 -- Self-registration
 if _G.ControlRegistry and _G.ControlRegistry.Register then
-	_G.ControlRegistry.Register({
-		id = "VT",
-		settingsKey = "Vault",
-		hasWhere = false,
-		defaults = { show = false, x = 0, y = 0 },
-		initFunc = InitializeVault
-	})
+    _G.ControlRegistry.Register({
+        id = "VT",
+        settingsKey = "Vault",
+        hasWhere = false,
+        defaults = { show = false, x = 0, y = 0 },
+        initFunc = InitializeVault
+    })
 end

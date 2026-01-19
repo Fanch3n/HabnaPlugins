@@ -2,18 +2,16 @@ import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "EquipInfosToolTip")
 import(AppDirD .. "ControlFactory")
 
--- Moved from functions.lua
 function UpdateEquipsInfos()
-    -- Ensure dependencies are met
     if not (itemEquip and AdjustIcon) then
         if GetEquipmentInfos then GetEquipmentInfos() end
     end
     if not itemEquip then return end -- Still failed?
 
     _G.TotalItemsScore = 0;
-    for i = 1,20 do 
+    for i = 1, 20 do
         if itemEquip[i] then
-            _G.TotalItemsScore = _G.TotalItemsScore + (itemEquip[i].Score or 0); 
+            _G.TotalItemsScore = _G.TotalItemsScore + (itemEquip[i].Score or 0);
         end
     end
     if AdjustIcon then AdjustIcon("EI") end
@@ -22,7 +20,7 @@ end
 function InitializeEquipInfos()
     _G.ControlData.EI.controls = _G.ControlData.EI.controls or {}
     local EI = _G.ControlData.EI.controls
-    
+
     local colors = _G.ControlData.EI.colors
     if not EI["Ctr"] then -- Only create if not exists
         CreateTitanBarControl(EI, colors.alpha, colors.red, colors.green, colors.blue)
@@ -43,19 +41,17 @@ function InitializeEquipInfos()
 
         DelegateMouseEvents(EI["Icon"], EI["Lbl"])
     end
-    
+
     UpdateEquipsInfos()
-    -- Position is handled by ImportCtr generic logic if used there, or ControlRegistry logic
 end
 
 -- Self-registration
 if _G.ControlRegistry and _G.ControlRegistry.Register then
-	_G.ControlRegistry.Register({
-		id = "EI",
-		settingsKey = "EquipInfos",
-		hasWhere = false,
-		defaults = { show = true, x = nil, y = 0 },
-		initFunc = InitializeEquipInfos
-	})
+    _G.ControlRegistry.Register({
+        id = "EI",
+        settingsKey = "EquipInfos",
+        hasWhere = false,
+        defaults = { show = true, x = nil, y = 0 },
+        initFunc = InitializeEquipInfos
+    })
 end
-

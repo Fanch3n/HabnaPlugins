@@ -7,9 +7,9 @@ _G.ControlData = {}
 -- Initialize control data structure
 local function InitControlData(controlId, settingsKey, toggleFunc, hasWhere, defaults)
 	defaults = defaults or {}
-	
-    -- Preserve existing data if available (loaded from settings or elsewhere)
-    local existing = _G.ControlData[controlId] or {}
+
+	-- Preserve existing data if available (loaded from settings or elsewhere)
+	local existing = _G.ControlData[controlId] or {}
 
 	local data = {
 		id = controlId,
@@ -19,8 +19,8 @@ local function InitControlData(controlId, settingsKey, toggleFunc, hasWhere, def
 
 		-- Display state
 		show = defaults.show or false,
-		where = hasWhere and (defaults.where or 1) or nil,  -- 1=TitanBar, 2=Tooltip, 3=Hidden
-		
+		where = hasWhere and (defaults.where or 1) or nil, -- 1=TitanBar, 2=Tooltip, 3=Hidden
+
 		-- Colors (background)
 		colors = {
 			alpha = defaults.alpha or 0.3,
@@ -28,51 +28,51 @@ local function InitControlData(controlId, settingsKey, toggleFunc, hasWhere, def
 			green = defaults.green or 0.3,
 			blue = defaults.blue or 0.3
 		},
-		
+
 		-- Location on TitanBar
 		location = {
 			x = defaults.x or 0,
 			y = defaults.y or 0
 		},
-		
+
 		-- Window position (for control's settings window)
 		window = {
 			left = defaults.winLeft or 100,
 			top = defaults.winTop or 100
 		},
-		
+
 		ui = {
-			control = nil,      -- The main control table
-			optCheckbox = nil   -- The options checkbox
+			control = nil, -- The main control table
+			optCheckbox = nil -- The options checkbox
 		}
 	}
 
-    -- Preserve extra fields that might have been added by settings loading
-    for k, v in pairs(existing) do
-        if data[k] == nil then
-            data[k] = v
-        end
-    end
-	
-    -- Sync with global settings if available.
-    if _G.settings and _G.settings[settingsKey] then
-        local section = _G.settings[settingsKey]
-        
-        if section.V ~= nil then data.show = section.V end
-        
-        if section.A then data.colors.alpha = tonumber(section.A) or data.colors.alpha end
-        if section.R then data.colors.red = tonumber(section.R) or data.colors.red end
-        if section.G then data.colors.green = tonumber(section.G) or data.colors.green end
-        if section.B then data.colors.blue = tonumber(section.B) or data.colors.blue end
-        
-        if section.X then data.location.x = tonumber(section.X) or data.location.x end
-        if section.Y then data.location.y = tonumber(section.Y) or data.location.y end
+	-- Preserve extra fields that might have been added by settings loading
+	for k, v in pairs(existing) do
+		if data[k] == nil then
+			data[k] = v
+		end
+	end
 
-        if section.L then data.window.left = tonumber(section.L) or data.window.left end
-        if section.T then data.window.top = tonumber(section.T) or data.window.top end
-        
-        if data.where ~= nil and section.W then data.where = tonumber(section.W) or data.where end
-    end
+	-- Sync with global settings if available.
+	if _G.settings and _G.settings[settingsKey] then
+		local section = _G.settings[settingsKey]
+
+		if section.V ~= nil then data.show = section.V end
+
+		if section.A then data.colors.alpha = tonumber(section.A) or data.colors.alpha end
+		if section.R then data.colors.red = tonumber(section.R) or data.colors.red end
+		if section.G then data.colors.green = tonumber(section.G) or data.colors.green end
+		if section.B then data.colors.blue = tonumber(section.B) or data.colors.blue end
+
+		if section.X then data.location.x = tonumber(section.X) or data.location.x end
+		if section.Y then data.location.y = tonumber(section.Y) or data.location.y end
+
+		if section.L then data.window.left = tonumber(section.L) or data.window.left end
+		if section.T then data.window.top = tonumber(section.T) or data.window.top end
+
+		if data.where ~= nil and section.W then data.where = tonumber(section.W) or data.where end
+	end
 
 	_G.ControlData[controlId] = data
 	return data
@@ -84,7 +84,7 @@ local registry = {}
 -- Helper function to get default X position for a control
 local function GetDefaultX(controlId)
 	if not Constants then return 0 end
-	
+
 	if controlId == "Money" then
 		return Constants.DEFAULT_MONEY_X
 	elseif controlId == "PI" then
@@ -118,17 +118,17 @@ function _G.ControlRegistry.ResetToDefaults()
 		local data = _G.ControlData[id]
 		if data then
 			local defaults = config.defaults or {}
-			
+
 			data.show = defaults.show or false
 			if config.hasWhere then
 				data.where = defaults.where or 1
 			end
-			
+
 			data.colors.alpha = defaults.alpha or 0.3
 			data.colors.red = defaults.red or 0.3
 			data.colors.green = defaults.green or 0.3
 			data.colors.blue = defaults.blue or 0.3
-			
+
 			data.location.x = defaults.x or GetDefaultX(id)
 			data.location.y = defaults.y or 0
 		end
@@ -146,7 +146,7 @@ function _G.ControlRegistry.Register(config)
 	}
 	-- Also store initFunc in defaults so InitControlData picks it up
 	registry[id].defaults.initFunc = config.initFunc
-	
+
 	-- Initialize data immediately
 	local defaults = registry[id].defaults
 	if defaults.x == nil then defaults.x = GetDefaultX(id) end

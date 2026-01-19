@@ -1,5 +1,4 @@
 -- GameTime.lua
--- Written by Habna
 
 import(AppDirD .. "UIHelpers")
 import(AppDirD .. "ControlFactory")
@@ -18,15 +17,20 @@ function UpdateGameTime(str)
 	TheTime = nil;
 	TextLen = nil;
 
-    local GT = _G.ControlData.GT.controls
-    if not GT or not GT["Lbl"] then return end
+	local GT = _G.ControlData.GT.controls
+	if not GT or not GT["Lbl"] then return end
 
 	local function formatTime(hour, minute)
 		local suffix = "";
 		if not clock24h then
-			if hour == 12 then suffix = "pm";
-			elseif hour >= 13 then hour = hour - 12; suffix = "pm";
-			else if hour == 0 then hour = 12; end suffix = "am"; end
+			if hour == 12 then
+				suffix = "pm";
+			elseif hour >= 13 then
+				hour = hour - 12; suffix = "pm";
+			else
+				if hour == 0 then hour = 12; end
+				suffix = "am";
+			end
 		end
 
 		return hour .. ":" .. string.format("%02d", minute) .. suffix;
@@ -55,49 +59,53 @@ function UpdateGameTime(str)
 		UpdateGameTime("gt");
 		TheTime = L["GTWST"] .. gtData.stime; -- default value to calculate length
 		TextLen = string.len(TheTime) * NM;
-		TheTime = 
-            L["GTWST"] .. gtData.stime .. "\n" .. L["GTWRT"] .. gtData.gtime .. " ";
+		TheTime =
+				L["GTWST"] .. gtData.stime .. "\n" .. L["GTWRT"] .. gtData.gtime .. " ";
 	end
-	
-	GT[ "Lbl" ]:SetText( TheTime );
-	GT[ "Lbl" ]:SetSize( TextLen, CTRHeight ); --Auto size with text length
-	GT[ "Ctr" ]:SetSize( GT[ "Lbl" ]:GetWidth(), CTRHeight );
+
+	GT["Lbl"]:SetText(TheTime);
+	GT["Lbl"]:SetSize(TextLen, CTRHeight);    --Auto size with text length
+	GT["Ctr"]:SetSize(GT["Lbl"]:GetWidth(), CTRHeight);
 end
 
 function InitializeGameTime()
-    _G.ControlData.GT.controls = _G.ControlData.GT.controls or {}
-    local GT = _G.ControlData.GT.controls
-    
-    local colors = _G.ControlData.GT.colors
-    
-    if not GT["Ctr"] then
-        CreateTitanBarControl(GT, colors.alpha, colors.red, colors.green, colors.blue)
-        _G.ControlData.GT.ui.control = GT["Ctr"]
+	_G.ControlData.GT.controls = _G.ControlData.GT.controls or {}
+	local GT = _G.ControlData.GT.controls
 
-        GT["Lbl"] = CreateControlLabel(GT["Ctr"], _G.TBFont, Turbine.UI.ContentAlignment.MiddleRight)
+	local colors = _G.ControlData.GT.colors
 
-        SetupControlInteraction({
-            icon = GT["Lbl"],
-            controlTable = GT,
-            settingsSection = settings.GameTime,
-            windowImportPath = AppCtrD .. "GameTimeWindow",
-            windowFunction = "frmGameTimeWindow",
-            tooltipKey = "GT",
-            leaveControl = GT["Lbl"]
-        })
-    end
+	if not GT["Ctr"] then
+		CreateTitanBarControl(GT, colors.alpha, colors.red, colors.green, colors.blue)
+		_G.ControlData.GT.ui.control = GT["Ctr"]
 
-    if _G.ControlData.GT.showBT then UpdateGameTime("bt");
-    elseif _G.ControlData.GT.showST then UpdateGameTime("st");
-    else UpdateGameTime("gt") end
+		GT["Lbl"] = CreateControlLabel(GT["Ctr"], _G.TBFont, Turbine.UI.ContentAlignment.MiddleRight)
 
-    if GT["Ctr"] and _G.ControlData.GT.location.x + GT["Ctr"]:GetWidth() > screenWidth then
-        _G.ControlData.GT.location.x = screenWidth - GT["Ctr"]:GetWidth();
-    end --Replace if out of screen
-    
-    if GT["Ctr"] then
-        GT["Ctr"]:SetPosition(_G.ControlData.GT.location.x, _G.ControlData.GT.location.y)
-    end
+		SetupControlInteraction({
+			icon = GT["Lbl"],
+			controlTable = GT,
+			settingsSection = settings.GameTime,
+			windowImportPath = AppCtrD .. "GameTimeWindow",
+			windowFunction = "frmGameTimeWindow",
+			tooltipKey = "GT",
+			leaveControl = GT["Lbl"]
+		})
+	end
+
+	if _G.ControlData.GT.showBT then
+		UpdateGameTime("bt");
+	elseif _G.ControlData.GT.showST then
+		UpdateGameTime("st");
+	else
+		UpdateGameTime("gt")
+	end
+
+	if GT["Ctr"] and _G.ControlData.GT.location.x + GT["Ctr"]:GetWidth() > screenWidth then
+		_G.ControlData.GT.location.x = screenWidth - GT["Ctr"]:GetWidth();
+	end   --Replace if out of screen
+
+	if GT["Ctr"] then
+		GT["Ctr"]:SetPosition(_G.ControlData.GT.location.x, _G.ControlData.GT.location.y)
+	end
 end
 
 -- Self-registration
