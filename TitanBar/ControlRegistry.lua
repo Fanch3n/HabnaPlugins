@@ -95,18 +95,8 @@ local registry = {
 	-- PL moved to self-registration in Control/PlayerLoc.lua
 	-- EI moved to self-registration in Control/EquipInfos.lua
 	-- DI moved to self-registration in Control/DurabilityInfos.lua
-	TI = {
-		settingsKey = "TrackItems",
-		toggleFunc = nil,
-		hasWhere = false,
-		defaults = { show = false, x = 0, y = 0 }
-	},
-	IF = {
-		settingsKey = "Infamy",
-		toggleFunc = nil,
-		hasWhere = false,
-		defaults = { show = false, x = 0, y = 0 }
-	},
+	-- TI moved to self-registration in Control/TrackItems.lua
+	-- IF moved to self-registration in Control/Infamy.lua
 	VT = {
 		settingsKey = "Vault",
 		toggleFunc = nil,

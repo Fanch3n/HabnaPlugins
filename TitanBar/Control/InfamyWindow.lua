@@ -77,8 +77,9 @@ function frmInfamyWindow()
 		local newPoints = tonumber(parsed_text) or 0
 		_G.ControlData.IF.points = newPoints
 		
+		local infamyRanks = _G.InfamyRanks or Constants.INFAMY_RANKS
 		for i = 0, 14 do
-			if newPoints >= _G.InfamyRanks[i] and newPoints < _G.InfamyRanks[i+1] then
+			if newPoints >= infamyRanks[i] and newPoints < infamyRanks[i+1] then
 				_G.ControlData.IF.rank = i
 				break
 			end

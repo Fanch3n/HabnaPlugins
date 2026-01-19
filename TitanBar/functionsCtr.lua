@@ -37,75 +37,10 @@ function ImportCtr( value )
         ImportCtr("PL");
     elseif value == "TI" then --Track Items
         import (AppCtrD.."TrackItems");
-        import (AppCtrD.."TrackItemsToolTip");
-        UpdateTrackItems();
-        _G.ControlData.TI.controls[ "Ctr" ]:SetPosition( _G.ControlData.TI.location.x, _G.ControlData.TI.location.y );
+        ImportCtr("TI");
     elseif value == "IF" then --Infamy
-        -- Use Infamy/Renown ranks from Constants
-        _G.InfamyRanks = Constants.INFAMY_RANKS;
-
-        if PlayerAlign == 1 then
-            --Free people rank icon 0 to 15
-            InfIcon = resources.FreePeoples
-        else
-            --Monster play rank icon 0 to 15
-            InfIcon = resources.Monster
-        end
         import (AppCtrD.."Infamy");
-        import (AppCtrD.."InfamyToolTip");
-        ---InfamyCount = Turbine.
-        --AddCallback(InfamyCount, "QuantityChanged",
-        --    function(sender, args) UpdateInfamy(); end
-        --    );
-        IFcb = AddCallback(Turbine.Chat, "Received",
-            function(sender, args)
-            if args.ChatType == Turbine.ChatType.Advancement then
-                ifMess = args.Message;
-                if ifMess ~= nil then
-                    if PlayerAlign == 1 then
-                        if GLocale == "en" then
-                            ifPattern = "earned ([%d%p]*) renown points";
-                        elseif GLocale == "fr" then
-                            ifPattern = "gagn\195\169 ([%d%p]*) points " ..
-                                "renomm\195\169e";
-                        elseif GLocale == "de" then
-                            ifPattern = "habt ([%d%p]*) Ansehenspunkte";
-                        end
-                    else
-                        if GLocale == "en" then
-                            ifPattern = "earned ([%d%p]*) infamy points";
-                        elseif GLocale == "fr" then
-                            ifPattern = "gagn\195\169 ([%d%p]*) points " ..
-                                "d'infamie";
-                        elseif GLocale == "de" then
-                            ifPattern = "habt ([%d%p]*) Verrufenheitspunkte";
-                        end
-                    end
-
-                    local tmpIF = string.match(ifMess,ifPattern);
-                    if tmpIF ~= nil then
-                        _G.ControlData.IF = _G.ControlData.IF or {}
-                        local currentPoints = tonumber(_G.ControlData.IF.points) or 0
-                        local delta = tonumber((string.gsub(tmpIF, "%p+", ""))) or 0
-                        _G.ControlData.IF.points = currentPoints + delta
-
-                        for i=0, 14 do
-                            if (_G.ControlData.IF.points >= _G.InfamyRanks[i]) and
-                                (_G.ControlData.IF.points < _G.InfamyRanks[i+1]) then
-                                _G.ControlData.IF.rank = i
-                                break
-                            end
-                        end
-                        settings.Infamy.P = string.format("%.0f", _G.ControlData.IF.points);
-                        settings.Infamy.K = string.format("%.0f", _G.ControlData.IF.rank or 0);
-                        SaveSettings( false );
-                        UpdateInfamy();
-                    end
-                end
-            end
-            end);
-        UpdateInfamy();
-        _G.ControlData.IF.controls[ "Ctr" ]:SetPosition( _G.ControlData.IF.location.x, _G.ControlData.IF.location.y );
+        ImportCtr("IF");
     elseif value == "DN" then --Day & Night Time
         import (AppCtrD.."DayNight");
         UpdateDayNight();

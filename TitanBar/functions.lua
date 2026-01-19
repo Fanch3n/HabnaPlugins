@@ -127,6 +127,9 @@ function ShowToolTipWin(ToShow)
 	elseif ToShow == "DP" or ToShow == "PL" or _G.currencies.byName[ToShow] then
 		h = 65;
 		TTW = createToolTipWin(x, y, w, h, bblTo, L[ToShow .. "h"], L["EIt2"], L["EIt3"])
+	elseif ToShow == "IF" then
+		h = 65;
+		TTW = createToolTipWin(x, y, w, h, bblTo, L["Infamyh"], L["EIt2"], L["EIt3"])
 	else
 		write(ToShow .. " not recognized for Tooltip creation, add in functions.lua")
 		return
@@ -183,17 +186,6 @@ function ChangeWearState(value)
     end
 
 	UpdateDurabilityInfos();
-end
-
-function UpdateTrackItems()
-	AdjustIcon( "TI" );
-end
-
-function UpdateInfamy()
-	--Change Rank icon with infamy points
-	_G.ControlData.IF.controls[ "Icon" ]:SetBackground( InfIcon[tonumber(settings.Infamy.K)] );
-	
-	AdjustIcon( "IF" );
 end
 
 function UpdateVault()

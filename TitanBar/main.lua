@@ -112,6 +112,8 @@ import (AppCtrD.."PlayerInfos");
 import (AppCtrD.."PlayerLoc");
 import (AppCtrD.."EquipInfos");
 import (AppCtrD.."DurabilityInfos");
+import (AppCtrD.."TrackItems");
+import (AppCtrD.."Infamy");
 import (AppDirD.."functionsMenu");
 import (AppDirD.."functionsMenuControl");
 import (AppDirD.."OptionPanel"); 
