@@ -118,6 +118,8 @@ import (AppCtrD.."Vault");
 import (AppCtrD.."SharedStorage");
 import (AppCtrD.."DayNight");
 import (AppCtrD.."Reputation");
+import (AppCtrD.."LOTROPoints");
+import (AppCtrD.."GameTime");
 import (AppDirD.."functionsMenu");
 import (AppDirD.."functionsMenuControl");
 import (AppDirD.."OptionPanel"); 

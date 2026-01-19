@@ -145,18 +145,6 @@ end
 
 
 
-function UpdateLOTROPoints()
-	local where = (_G.ControlData and _G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE
-	if where == Constants.Position.TITANBAR then
-		local lpData = _G.ControlData and _G.ControlData.LP
-		local points = (lpData and tonumber(lpData.points)) or 0
-		_G.ControlData.LP.controls["Lbl"]:SetText(tostring(points))
-		_G.ControlData.LP.controls["Lbl"]:SetSize(_G.ControlData.LP.controls["Lbl"]:GetTextLength() * NM, CTRHeight)
-		AdjustIcon("LP")
-	end
-	SavePlayerLOTROPoints()
-end
-
 function UpdateCurrencyDisplay(currencyName)
 	if _G.CurrencyData[currencyName].Where == 1 then
 		if currencyName == "DestinyPoints" then
@@ -188,65 +176,6 @@ function ChangeWearState(value)
 	UpdateDurabilityInfos();
 end
 
-
-function UpdateGameTime(str)
-	local gtData = _G.ControlData and _G.ControlData.GT
-	local clock24h = gtData and gtData.clock24h == true
-	local showST = gtData and gtData.showST == true
-	local showBT = gtData and gtData.showBT == true
-	local userGMT = (gtData and tonumber(gtData.userGMT)) or 0
-
-	local cdate = Turbine.Engine.GetDate();
-	local chour = cdate.Hour;
-	local cminute = cdate.Minute;
-	local ampm = "";
-	TheTime = nil;
-	TextLen = nil;
-
-	local function formatTime(hour, minute)
-		local suffix = "";
-		if not clock24h then
-			if hour == 12 then suffix = "pm";
-			elseif hour >= 13 then hour = hour - 12; suffix = "pm";
-			else if hour == 0 then hour = 12; end suffix = "am"; end
-		end
-
-		return hour .. ":" .. string.format("%02d", minute) .. suffix;
-	end
-
-	if str == "st" then
-		if showST then
-			chour = chour + userGMT;
-			if chour < 0 then
-				chour = 24 + chour;
-				if chour == 0 then chour = 24; end
-			elseif chour == 24 then
-				chour = 24 - chour;
-			end
-		end
-
-		gtData.stime = formatTime(chour, cminute);
-		TheTime = gtData.stime;
-		TextLen = string.len(TheTime) * NM;
-	elseif str == "gt" then
-		--write("Game Time");
-		gtData.gtime = formatTime(chour, cminute);
-		TheTime = gtData.gtime;
-		TextLen = string.len(TheTime) * TM;
-	elseif str == "bt" then
-		--write("Both Time");
-		UpdateGameTime("st");
-		UpdateGameTime("gt");
-		TheTime = L["GTWST"] .. gtData.stime;
-		TextLen = string.len(TheTime) * NM;
-		TheTime = 
-            L["GTWST"] .. gtData.stime .. "\n" .. L["GTWRT"] .. gtData.gtime .. " ";
-	end
-	
-	_G.ControlData.GT.controls[ "Lbl" ]:SetText( TheTime );
-	_G.ControlData.GT.controls[ "Lbl" ]:SetSize( TextLen, CTRHeight ); --Auto size with text length
-	_G.ControlData.GT.controls[ "Ctr" ]:SetSize( _G.ControlData.GT.controls[ "Lbl" ]:GetWidth(), CTRHeight );
-end
 
 function ChangeColor(tColor)
 	if BGWToAll then

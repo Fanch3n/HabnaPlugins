@@ -45,60 +45,11 @@ function ImportCtr( value )
         import (AppCtrD.."DayNight");
         ImportCtr("DN");
     elseif value == "LP" then --LOTRO points
-		local lpWhere = (_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE
-		if lpWhere == Constants.Position.TITANBAR then
-            import (AppCtrD.."LOTROPoints");
-			if _G.ControlData.LP and _G.ControlData.LP.controls then
-				_G.ControlData.LP.controls[ "Ctr" ]:SetPosition( _G.ControlData.LP.location.x, _G.ControlData.LP.location.y );
-			end
-            UpdateLOTROPoints();
-        end
-		if lpWhere ~= Constants.Position.NONE then
-            --PlayerLP = Player:GetLOTROPoints();
-            --AddCallback(PlayerLP, "LOTROPointsChanged",
-            --    function(sender, args) UpdateLOTROPoints(); end
-            --);
-            LPcb = AddCallback(Turbine.Chat, "Received",
-                function(sender, args)
-                if args.ChatType == Turbine.ChatType.Advancement then
-                    local tpMess = args.Message;
-                    if tpMess ~= nil then
-                        local tpPattern;
-                        if GLocale == "en" then
-                            tpPattern = "earned ([%d%p]*) LOTRO Points";
-                        elseif GLocale == "fr" then
-                            tpPattern = "gagn\195\169 ([%d%p]*) points LOTRO";
-                        elseif GLocale == "de" then
-                            tpPattern = "habt ([%d%p]*) Punkte erhalten";
-                        end
-                        local tmpLP = string.match(tpMess,tpPattern);
-                        if tmpLP ~= nil then
-                            LPTS = tmpLP;
-                            _G.ControlData.LP = _G.ControlData.LP or {}
-                            local currentPoints = tonumber(_G.ControlData.LP.points) or 0
-                            _G.ControlData.LP.points = tostring(currentPoints + tonumber(LPTS));
-                            UpdateLOTROPoints()
-                        end
-                    end
-                end
-                end);
-        else
-            RemoveCallback(Turbine.Chat, "Received", LPcb);
-        end
+        import (AppCtrD.."LOTROPoints");
+        ImportCtr("LP");
     elseif value == "GT" then --Game Time
         import (AppCtrD.."GameTime");
-        --import (AppCtrD.."GameTimeToolTip");
-        --PlayerTime = Turbine.Engine.GetDate();
-        --AddCallback(PlayerTime, "MinuteChanged",
-        --    function(sender, args) UpdateGameTime(); end
-        --);
-        if _G.ControlData.GT.showBT then UpdateGameTime("bt");
-        elseif _G.ControlData.GT.showST then UpdateGameTime("st");
-        else UpdateGameTime("gt") end
-        if _G.ControlData.GT.location.x + _G.ControlData.GT.controls[ "Ctr" ]:GetWidth() > screenWidth then
-            _G.ControlData.GT.location.x = screenWidth - _G.ControlData.GT.controls[ "Ctr" ]:GetWidth();
-        end --Replace if out of screen
-        _G.ControlData.GT.controls[ "Ctr" ]:SetPosition( _G.ControlData.GT.location.x, _G.ControlData.GT.location.y );
+        ImportCtr("GT");
     elseif value == "VT" then --Vault
         import (AppCtrD.."Vault");
         ImportCtr("VT"); -- Recursive call to use registered initFunc
@@ -437,20 +388,7 @@ end
 
 
 
-function LoadPlayerLOTROPoints()
-    PlayerLOTROPoints = Turbine.PluginData.Load(Turbine.DataScope.Account, "TitanBarLOTROPoints") or {}
-    PlayerLOTROPoints["PTS"] = PlayerLOTROPoints.PTS or "0"
-    _G.ControlData.LP = _G.ControlData.LP or {}
-    _G.ControlData.LP.points = PlayerLOTROPoints.PTS;
-    SavePlayerLOTROPoints()
-end
 
-function SavePlayerLOTROPoints()
-    local lpData = _G.ControlData and _G.ControlData.LP
-    local points = (lpData and tonumber(lpData.points)) or 0
-    PlayerLOTROPoints["PTS"] = string.format("%.0f", points);
-    Turbine.PluginData.Save(Turbine.DataScope.Account, "TitanBarLOTROPoints", PlayerLOTROPoints);
-end
 
 function UpdateCurrency(currency_display)
     if _G.Debug then write("UpdateCurrency:" ..currency_display); end

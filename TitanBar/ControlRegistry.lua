@@ -99,18 +99,8 @@ local registry = {
 	-- IF moved to self-registration in Control/Infamy.lua
 	-- DN moved to self-registration in Control/DayNight.lua
 	-- RP moved to self-registration in Control/Reputation.lua
-	LP = {
-		settingsKey = "LOTROPoints",
-		toggleFunc = nil,
-		hasWhere = true,
-		defaults = { show = false, where = 3, x = 0, y = 0 }
-	},
-	GT = {
-		settingsKey = "GameTime",
-		toggleFunc = nil,
-		hasWhere = false,
-		defaults = { show = false, x = 0, y = 0 }
-	}
+	-- LP moved to self-registration in Control/LOTROPoints.lua
+	-- GT moved to self-registration in Control/GameTime.lua
 }
 
 -- Helper function to get default X position for a control
