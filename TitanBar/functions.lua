@@ -185,33 +185,6 @@ function ChangeWearState(value)
 	UpdateDurabilityInfos();
 end
 
-function UpdateDurabilityInfos()
-	local TDPts = 0;
-	for i = 1, 20 do
-        TDPts = TDPts + itemEquip[i].WearStatePts;
-    end
-    if numItems == 0 then TDPts = 100;
-    else TDPts = TDPts / numItems; end
-
-	--Change durability icon with %
-	local DurIcon = nil;
-	if TDPts >= 0 and TDPts <= 33 then DurIcon = 1; end--0x41007e29
-	if TDPts >= 34 and TDPts <= 66 then DurIcon = 2; end--0x41007e29
-	if TDPts >= 67 and TDPts <= 100 then DurIcon = 3; end--0x41007e28
-	_G.ControlData.DI.controls[ "Icon" ]:SetBackground( resources.Durability[DurIcon] );
-
-	TDPts = string.format( "%.0f", TDPts );
-	_G.ControlData.DI.controls[ "Lbl" ]:SetText( TDPts .. "%" );
-	_G.ControlData.DI.controls[ "Lbl" ]:SetSize( _G.ControlData.DI.controls[ "Lbl" ]:GetTextLength() * NM + 5, CTRHeight ); 
-	AdjustIcon( "DI" );
-end
-
-function UpdateEquipsInfos()
-    TotalItemsScore = 0;
-    for i = 1,20 do TotalItemsScore = TotalItemsScore + itemEquip[i].Score; end
-		AdjustIcon("EI")
-end
-
 function UpdateTrackItems()
 	AdjustIcon( "TI" );
 end

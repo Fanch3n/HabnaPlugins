@@ -110,6 +110,8 @@ import (AppCtrD.."MoneyInfos");
 import (AppCtrD.."BagInfos");
 import (AppCtrD.."PlayerInfos");
 import (AppCtrD.."PlayerLoc");
+import (AppCtrD.."EquipInfos");
+import (AppCtrD.."DurabilityInfos");
 import (AppDirD.."functionsMenu");
 import (AppDirD.."functionsMenuControl");
 import (AppDirD.."OptionPanel"); 

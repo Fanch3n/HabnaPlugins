@@ -93,18 +93,8 @@ local registry = {
 	-- BI moved to self-registration in Control/BagInfos.lua
 	-- PI moved to self-registration in Control/PlayerInfos.lua
 	-- PL moved to self-registration in Control/PlayerLoc.lua
-	EI = {
-		settingsKey = "EquipInfos",
-		toggleFunc = nil,
-		hasWhere = false,
-		defaults = { show = true, x = nil, y = 0 }  -- x set in InitializeAll
-	},
-	DI = {
-		settingsKey = "DurabilityInfos",
-		toggleFunc = nil,
-		hasWhere = false,
-		defaults = { show = true, x = nil, y = 0 }  -- x set in InitializeAll
-	},
+	-- EI moved to self-registration in Control/EquipInfos.lua
+	-- DI moved to self-registration in Control/DurabilityInfos.lua
 	TI = {
 		settingsKey = "TrackItems",
 		toggleFunc = nil,

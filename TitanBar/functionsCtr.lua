@@ -28,14 +28,10 @@ function ImportCtr( value )
         ImportCtr("PI"); -- Recursive call to use registered initFunc
     elseif value == "DI" then --Durability Infos
         import (AppCtrD.."DurabilityInfos");
-        import (AppCtrD.."DurabilityInfosToolTip");
-        UpdateDurabilityInfos();
-        _G.ControlData.DI.controls[ "Ctr" ]:SetPosition( _G.ControlData.DI.location.x, _G.ControlData.DI.location.y );
+        ImportCtr("DI");
     elseif value == "EI" then --Equipment Infos
         import (AppCtrD.."EquipInfos");
-        import (AppCtrD.."EquipInfosToolTip");
-        UpdateEquipsInfos();
-        _G.ControlData.EI.controls[ "Ctr" ]:SetPosition( _G.ControlData.EI.location.x, _G.ControlData.EI.location.y );
+        ImportCtr("EI");
     elseif value == "PL" then --Player Location
         import (AppCtrD.."PlayerLoc");
         ImportCtr("PL");

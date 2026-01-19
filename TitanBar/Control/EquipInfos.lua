@@ -2,25 +2,60 @@ import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "EquipInfosToolTip")
 import(AppDirD .. "ControlFactory")
 
--- Use _G.ControlData.EI.controls for all UI controls
-local EI = {}
-_G.ControlData.EI.controls = EI
+-- Moved from functions.lua
+function UpdateEquipsInfos()
+    -- Ensure dependencies are met
+    if not (itemEquip and AdjustIcon) then
+        if GetEquipmentInfos then GetEquipmentInfos() end
+    end
+    if not itemEquip then return end -- Still failed?
 
-local colors = _G.ControlData.EI.colors
-CreateTitanBarControl(EI, colors.alpha, colors.red, colors.green, colors.blue)
-_G.ControlData.EI.ui.control = EI["Ctr"]
+    _G.TotalItemsScore = 0;
+    for i = 1,20 do 
+        if itemEquip[i] then
+            _G.TotalItemsScore = _G.TotalItemsScore + (itemEquip[i].Score or 0); 
+        end
+    end
+    if AdjustIcon then AdjustIcon("EI") end
+end
 
-EI["Icon"] = CreateControlIcon(EI["Ctr"], Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
-EI["Icon"]:SetBackground(0x410f2ea5)
+function InitializeEquipInfos()
+    _G.ControlData.EI.controls = _G.ControlData.EI.controls or {}
+    local EI = _G.ControlData.EI.controls
+    
+    local colors = _G.ControlData.EI.colors
+    if not EI["Ctr"] then -- Only create if not exists
+        CreateTitanBarControl(EI, colors.alpha, colors.red, colors.green, colors.blue)
+        _G.ControlData.EI.ui.control = EI["Ctr"]
 
-EI["Lbl"] = CreateControlLabel(EI["Ctr"], _G.TBFont, Turbine.UI.ContentAlignment.MiddleCenter)
+        EI["Icon"] = CreateControlIcon(EI["Ctr"], Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
+        EI["Icon"]:SetBackground(0x410f2ea5)
 
-SetupControlInteraction({
-	icon = EI["Lbl"],
-	controlTable = EI,
-	settingsSection = settings.EquipInfos,
-	onLeftClick = function() end,
-	customTooltipHandler = ShowEIWindow
-})
+        EI["Lbl"] = CreateControlLabel(EI["Ctr"], _G.TBFont, Turbine.UI.ContentAlignment.MiddleCenter)
 
-DelegateMouseEvents(EI["Icon"], EI["Lbl"])
+        SetupControlInteraction({
+            icon = EI["Lbl"],
+            controlTable = EI,
+            settingsSection = settings.EquipInfos,
+            onLeftClick = function() end,
+            customTooltipHandler = ShowEIWindow
+        })
+
+        DelegateMouseEvents(EI["Icon"], EI["Lbl"])
+    end
+    
+    UpdateEquipsInfos()
+    -- Position is handled by ImportCtr generic logic if used there, or ControlRegistry logic
+end
+
+-- Self-registration
+if _G.ControlRegistry and _G.ControlRegistry.Register then
+	_G.ControlRegistry.Register({
+		id = "EI",
+		settingsKey = "EquipInfos",
+		hasWhere = false,
+		defaults = { show = true, x = nil, y = 0 },
+		initFunc = InitializeEquipInfos
+	})
+end
+
