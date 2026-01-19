@@ -188,14 +188,6 @@ function ChangeWearState(value)
 	UpdateDurabilityInfos();
 end
 
-function UpdateVault()
-	AdjustIcon( "VT" );
-end
-
-function UpdateSharedStorage()
-	AdjustIcon( "SS" );
-end
-
 function UpdateDayNight()
 	local cdate = Turbine.Engine.GetDate();
 	local chour = cdate.Hour;

@@ -97,18 +97,6 @@ local registry = {
 	-- DI moved to self-registration in Control/DurabilityInfos.lua
 	-- TI moved to self-registration in Control/TrackItems.lua
 	-- IF moved to self-registration in Control/Infamy.lua
-	VT = {
-		settingsKey = "Vault",
-		toggleFunc = nil,
-		hasWhere = false,
-		defaults = { show = false, x = 0, y = 0 }
-	},
-	SS = {
-		settingsKey = "SharedStorage",
-		toggleFunc = nil,
-		hasWhere = false,
-		defaults = { show = false, x = 0, y = 0 }
-	},
 	DN = {
 		settingsKey = "DayNight",
 		toggleFunc = nil,

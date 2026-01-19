@@ -104,20 +104,10 @@ function ImportCtr( value )
         _G.ControlData.GT.controls[ "Ctr" ]:SetPosition( _G.ControlData.GT.location.x, _G.ControlData.GT.location.y );
     elseif value == "VT" then --Vault
         import (AppCtrD.."Vault");
-        import (AppCtrD.."VaultToolTip");
-        AddCallback(vaultpack, "CountChanged",
-            function(sender, args) SavePlayerVault(); end
-            );
-        UpdateVault();
-        _G.ControlData.VT.controls[ "Ctr" ]:SetPosition( _G.ControlData.VT.location.x, _G.ControlData.VT.location.y );
+        ImportCtr("VT"); -- Recursive call to use registered initFunc
     elseif value == "SS" then --Shared Storage
         import (AppCtrD.."SharedStorage");
-        import (AppCtrD.."SharedStorageToolTip");
-        AddCallback(sspack, "CountChanged",
-            function(sender, args) SavePlayerSharedStorage(); end
-            );
-        UpdateSharedStorage();
-        _G.ControlData.SS.controls[ "Ctr" ]:SetPosition( _G.ControlData.SS.location.x, _G.ControlData.SS.location.y );
+        ImportCtr("SS"); -- Recursive call to use registered initFunc
 	elseif value == "RP" then --Reputation Points
         import (AppCtrD.."Reputation");
         import (AppCtrD.."ReputationToolTip");
@@ -470,77 +460,7 @@ function LoadPlayerWallet()
     end
 end
 
-function LoadPlayerVault()
-    PlayerVault = Turbine.PluginData.Load(
-        Turbine.DataScope.Server, "TitanBarVault");
-    if PlayerVault == nil then PlayerVault = {}; end
-    if PlayerVault[PN] == nil then PlayerVault[PN] = {}; end
-end
 
-function SavePlayerVault()
-    if string.sub( PN, 1, 1 ) == "~" then return end; --Ignore session play
-
-    local vaultpackSize = vaultpack:GetCapacity();
-    local vaultpackCount = vaultpack:GetCount();
-
-    PlayerVault[PN] = {};
-
-    for ii = 1, vaultpackCount do
-        local ind = tostring(ii);
-        PlayerVault[PN][ind] = vaultpack:GetItem(ii);
-        local iteminfo = PlayerVault[PN][ind]:GetItemInfo();
-
-        PlayerVault[PN][ind].Q = tostring(iteminfo:GetQualityImageID());
-        PlayerVault[PN][ind].B = tostring(iteminfo:GetBackgroundImageID());
-        PlayerVault[PN][ind].U = tostring(iteminfo:GetUnderlayImageID());
-        PlayerVault[PN][ind].S = tostring(iteminfo:GetShadowImageID());
-        PlayerVault[PN][ind].I = tostring(iteminfo:GetIconImageID());
-        PlayerVault[PN][ind].T = tostring(iteminfo:GetName());
-        local tq = tostring(PlayerVault[PN][ind]:GetQuantity());
-        if tq == "1" then tq = ""; end
-        PlayerVault[PN][ind].N = tq;
-        PlayerVault[PN][ind].Z = tostring(vaultpackSize);
-    end
-
-    Turbine.PluginData.Save(
-        Turbine.DataScope.Server, "TitanBarVault", PlayerVault);
-end
-
-function LoadPlayerSharedStorage()
-    PlayerSharedStorage = Turbine.PluginData.Load(Turbine.DataScope.Server,
-        "TitanBarSharedStorage");
-    if PlayerSharedStorage == nil then PlayerSharedStorage = {}; end
-end
-
-function SavePlayerSharedStorage()
-    if string.sub( PN, 1, 1 ) == "~" then return end; --Ignore session play
-
-    sspackSize = sspack:GetCapacity();
-    sspackCount = sspack:GetCount();
-
-    PlayerSharedStorage = {};
-
-    for ii = 1, sspackCount do
-        local ind = tostring(ii);
-        PlayerSharedStorage[ind] = sspack:GetItem( ii );
-        local iteminfo = PlayerSharedStorage[ind]:GetItemInfo();
-
-        PlayerSharedStorage[ind].Q = tostring(iteminfo:GetQualityImageID());
-        PlayerSharedStorage[ind].B = tostring(iteminfo:GetBackgroundImageID());
-        PlayerSharedStorage[ind].U = tostring(iteminfo:GetUnderlayImageID());
-        PlayerSharedStorage[ind].S = tostring(iteminfo:GetShadowImageID());
-        PlayerSharedStorage[ind].I = tostring(iteminfo:GetIconImageID());
-        PlayerSharedStorage[ind].T = tostring(iteminfo:GetName());
-        local tq = tostring(PlayerSharedStorage[ind]:GetQuantity());
-        if tq == "1" then tq = ""; end
-        PlayerSharedStorage[ind].N = tq;
-        PlayerSharedStorage[ind].Z = tostring(sspackSize);
-    end
-
-    Turbine.PluginData.Save(
-        Turbine.DataScope.Server, "TitanBarSharedStorage", PlayerSharedStorage
-        );
-end
 
 
 

@@ -114,6 +114,8 @@ import (AppCtrD.."EquipInfos");
 import (AppCtrD.."DurabilityInfos");
 import (AppCtrD.."TrackItems");
 import (AppCtrD.."Infamy");
+import (AppCtrD.."Vault");
+import (AppCtrD.."SharedStorage");
 import (AppDirD.."functionsMenu");
 import (AppDirD.."functionsMenuControl");
 import (AppDirD.."OptionPanel"); 
