@@ -116,6 +116,8 @@ import (AppCtrD.."TrackItems");
 import (AppCtrD.."Infamy");
 import (AppCtrD.."Vault");
 import (AppCtrD.."SharedStorage");
+import (AppCtrD.."DayNight");
+import (AppCtrD.."Reputation");
 import (AppDirD.."functionsMenu");
 import (AppDirD.."functionsMenuControl");
 import (AppDirD.."OptionPanel"); 

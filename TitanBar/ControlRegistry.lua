@@ -97,18 +97,8 @@ local registry = {
 	-- DI moved to self-registration in Control/DurabilityInfos.lua
 	-- TI moved to self-registration in Control/TrackItems.lua
 	-- IF moved to self-registration in Control/Infamy.lua
-	DN = {
-		settingsKey = "DayNight",
-		toggleFunc = nil,
-		hasWhere = false,
-		defaults = { show = false, x = 0, y = 0 }
-	},
-	RP = {
-		settingsKey = "Reputation",
-		toggleFunc = nil,
-		hasWhere = false,
-		defaults = { show = false, x = 0, y = 0 }
-	},
+	-- DN moved to self-registration in Control/DayNight.lua
+	-- RP moved to self-registration in Control/Reputation.lua
 	LP = {
 		settingsKey = "LOTROPoints",
 		toggleFunc = nil,
