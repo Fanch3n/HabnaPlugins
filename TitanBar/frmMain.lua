@@ -187,7 +187,7 @@ function frmMain()
 	if _G.ControlData.SS.show then ImportCtr( "SS" ); end --SharedStorage
 	if _G.ControlData.DN.show then ImportCtr( "DN" ); end --Day & Night time
 	if _G.ControlData.RP.show then ImportCtr( "RP" ); end --Reputation Points
-	if ((_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "LP" ); end --LOTRO Points
+	-- if ((_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "LP" ); end --LOTRO Points
 
 	--**v Workaround for the ItemRemoved that fires before the backpack was updated (Turbine API issue) v**
 	ItemRemovedTimer = Turbine.UI.Control();
@@ -202,7 +202,7 @@ function frmMain()
 	-- if _G.ControlData.BI.show then ImportCtr( "BI" );	end
 	-- if _G.ControlData.PI.show then ImportCtr( "PI" ); end
 	if _G.ControlData.PL.show then ImportCtr( "PL" ); end
-	if _G.ControlData.GT.show then ImportCtr( "GT" ); end
+	-- if _G.ControlData.GT.show then ImportCtr( "GT" ); end
 
 	if _G.ControlData.DI.show or _G.ControlData.EI.show then
 		GetEquipmentInfos();

@@ -265,7 +265,10 @@ L["MBlightedRelic"] = "Blighted Relic";
 L["BlightedRelich"] = "Your Blighted Relics";
 -- Tattered Shadows
 L["MTatteredShadow"] = "Tattered Shadow";
-L["atteredShadowh"] = "Your Tattered Shadows";
+L["TatteredShadowh"] = "Your Tattered Shadows";
+-- Fangorn Leaf
+L["MFangornLeaf"] = "Fangorn Leaf";
+L["FangornLeafh"] = "Your Fangorn Leaves";
 
 -- Control Menu
 L[ "MCU" ] = "Unload ...";

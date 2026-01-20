@@ -265,7 +265,10 @@ L["MBlightedRelic"] = "Verderbtes Relikt";
 L["BlightedRelich"] = "Eure Verderbten Relikte";
 -- Tattered Shadows
 L["MTatteredShadow"] = "Zerfledderter Schatten";
-L["atteredShadowh"] = "Eure Zerfledderten Schatten";
+L["TatteredShadowh"] = "Eure Zerfledderten Schatten";
+-- Fangorn Leaf
+L["MFangornLeaf"] = "Fangornblatt";
+L["FangornLeafh"] = "Eure Fangornblätter";
 
 -- Control Menu
 L[ "MCU" ] = "entfernen ...";

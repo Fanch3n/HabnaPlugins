@@ -169,7 +169,7 @@ if PlayerAlign == 1 then
 		L["MIronSignetOfTheAxe"],	L["MIronSignetOfTheBlackMoon"],	L["MIronSignetOfTheNecromancer"],	L["MIronSignetOfTheTwinFlame"],
     L["MPhialCrimsonExtract"], L["MPhialUmberExtract"], L["MPhialVerdantExtract"], L["MPhialGoldenExtract"], L["MPhialVioletExtract"], L["MPhialAmberExtract"],
 		L["MPhialSapphireExtract"], L["MShaganiGhin"], L["MHamatiUrgul"], L["MMurGhalaSarz"], L["MSilverSerpent"], L["MHuntersGuildMark"], L["MBlightedRelic"],
-		L["MTatteredShadow"],
+		L["MTatteredShadow"], L["MFangornLeaf"],
 	}
 else
 	MenuItem = { L["MCommendation"], L["MLotroPoints"] }
@@ -253,6 +253,7 @@ _G.CurrencyLangMap = { -- reverse lookup table necessary to get the internal ite
 	[L["MHuntersGuildMark"]] = "HuntersGuildMark",
 	[L["MBlightedRelic"]] = "BlightedRelic",
 	[L["MTatteredShadow"]] = "TatteredShadow",
+	[L["MFangornLeaf"]] = "FangornLeaf",
 }
 
 function CheckForReputationImport()
