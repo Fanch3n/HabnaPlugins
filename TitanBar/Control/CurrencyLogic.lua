@@ -52,7 +52,7 @@ _G.createCurrencyTable = function(currencyName)
 		if dragging then
 			MoveCurrencyCtr(sender, args)
 		else
-			ShowToolTipWin(currencyName)
+			TooltipManager.ShowStandard(currencyName)
 		end
 	end
 
@@ -67,12 +67,12 @@ _G.createCurrencyTable = function(currencyName)
 		if dragging then
 			MoveCurrencyCtr(sender, args)
 		else
-			ShowToolTipWin(currencyName)
+			TooltipManager.ShowStandard(currencyName)
 		end
 	end
 
 	currencyData.Lbl.MouseLeave = function(sender, args)
-		ResetToolTipWin()
+		TooltipManager.HideStandard()
 	end
 
 	currencyData.Lbl.MouseClick = function(sender, args)

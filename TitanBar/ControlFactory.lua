@@ -125,7 +125,7 @@ function SetupControlInteraction(config)
 			tooltipShowFn = customTooltipHandler
 		else
 			tooltipShowFn = function()
-				ShowToolTipWin(tooltipName)
+				TooltipManager.ShowStandard(tooltipName)
 			end
 		end
 

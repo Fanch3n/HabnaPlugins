@@ -35,111 +35,19 @@ function round(num)
     return math.floor(num + 0.5)
 end
 
-function ApplySkin() --Tooltip skin
-	local ToolTipWin = _G.ToolTipWin
-	local Box = resources.Box
-
-	-- Create and position tooltip corners and edges
-	local function createTooltipPart(name, x, y, width, height, background)
-		local part = CreateControl(Turbine.UI.Control, ToolTipWin, x, y, width, height)
-		part:SetBackground(background)
-	end
-
-	createTooltipPart("topLeftCorner", 0, 0, 36, 36, Box.TopLeft)
-	createTooltipPart("TopBar", 36, 0, ToolTipWin:GetWidth() - 36, 37, Box.Top)
-	createTooltipPart("topRightCorner", ToolTipWin:GetWidth() - 36, 0, 36, 36, Box.TopRight)
-	createTooltipPart("midLeft", 0, 36, 36, ToolTipWin:GetHeight() - 36, Box.MidLeft)
-	createTooltipPart("MidMid", 36, 36, ToolTipWin:GetWidth() - 36, ToolTipWin:GetHeight() - 36, Box.Middle)
-	createTooltipPart("midRight", ToolTipWin:GetWidth() - 36, 36, 36, ToolTipWin:GetHeight() - 36, Box.MidRight)
-	createTooltipPart("botLeftCorner", 0, ToolTipWin:GetHeight() - 36, 36, 36, Box.BottomLeft)
-	createTooltipPart("BotBar", 36, ToolTipWin:GetHeight() - 36, ToolTipWin:GetWidth() - 36, 36, Box.Bottom)
-	createTooltipPart("botRightCorner", ToolTipWin:GetWidth() - 36, ToolTipWin:GetHeight() - 36, 36, 36, Box.BottomRight)
+function ApplySkin()
+    if _G.ToolTipWin then
+        TooltipManager.ApplySkin(_G.ToolTipWin)
+    end
 end
 
-function createToolTipWin( xOffset, yOffset, xSize, ySize, side, header, text1,
-        text2, text3 )
-	local txt = {text1, text2, text3};
-	_G.ToolTipWin = Turbine.UI.Window();
-	_G.ToolTipWin:SetSize( xSize, ySize );
-	--_G.ToolTipWin:SetMouseVisible( false );
-	_G.ToolTipWin:SetZOrder( Constants.ZORDER_TOOLTIP );
-	_G.ToolTipWin.xOffset = xOffset;
-	_G.ToolTipWin.yOffset = yOffset;
-	--_G.ToolTipWin:SetBackColor( Color["black"] ); --Debug purpose
-
-	ApplySkin();
-
-	local lblheader = CreateControl(Turbine.UI.Label, _G.ToolTipWin, 40, 7, xSize, ySize);
-	lblheader:SetForeColor( Color["green"] );
-	lblheader:SetFont(Turbine.UI.Lotro.Font.Verdana16);
-	lblheader:SetText( header );
-	
-	local YPos = 25;
-
-	for i = 1, #txt do
-		local lbltext = CreateControl(Turbine.UI.Label, _G.ToolTipWin, 40, YPos, xSize, 15);
-		lbltext:SetForeColor( Color["white"] );
-		lbltext:SetFont(Turbine.UI.Lotro.Font.Verdana14);
-		lbltext:SetText( txt[i] );
-		YPos = YPos + 15;
-	end
-	
-	return _G.ToolTipWin;
+function createToolTipWin(xOffset, yOffset, xSize, ySize, side, header, text1, text2, text3)
+    local texts = {text1, text2, text3}
+    return TooltipManager.CreateStandardWindow(xOffset, yOffset, xSize, ySize, header, texts)
 end
 
--- Legend
--- ( offsetX, offsetY, width, height, bubble side, header text, text1, text2, text3, text4 )
 function ShowToolTipWin(ToShow)
-	local w = 350
-	local bblTo, x, y= "left", -5, -15
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-	local h = 80
-	local TTW = nil
-
-	local headerKeys = {
-		BI = "MBI",
-		GT = "GTh",
-		VT = "MVault",
-		SS = "MStorage",
-		DN = "MDayNight",
-		LP = "LotroPointsh",
-	}
-
-	-- TODO if DI (DurIcon) is replaced this needs to change
-	if TBLocale == "fr" then w = 315;
-	elseif TBLocale == "de" then
-		if ToShow == "DI" then w = 225; 
-		else w = 305; end
-	end
-
-	if w + mouseX > screenWidth then
-		bblTo = "right"
-		x = w - 10
-	end
-
-	if not TBTop then
-		y = h
-	end
-
-	local headerKey = headerKeys[ToShow]
-	if headerKey then
-		TTW = createToolTipWin(x, y, w, h, bblTo, L[headerKey], L["EIt1"], L["EIt2"], L["EIt3"])
-	elseif ToShow == "DP" or ToShow == "PL" or _G.currencies.byName[ToShow] then
-		h = 65;
-		TTW = createToolTipWin(x, y, w, h, bblTo, L[ToShow .. "h"], L["EIt2"], L["EIt3"])
-	elseif ToShow == "IF" then
-		h = 65;
-		TTW = createToolTipWin(x, y, w, h, bblTo, L["Infamyh"], L["EIt2"], L["EIt3"])
-	else
-		write(ToShow .. " not recognized for Tooltip creation, add in functions.lua")
-		return
-	end
-
-	_G.ToolTipWin:SetPosition(
-		mouseX - _G.ToolTipWin.xOffset,
-		mouseY - _G.ToolTipWin.yOffset
-	)
-	_G.ToolTipWin:SetVisible(true);
+    TooltipManager.ShowStandard(ToShow)
 end
 
 
@@ -211,10 +119,7 @@ function ChangeColor(tColor)
 end
 
 function ResetToolTipWin()
-	if _G.ToolTipWin ~= nil then
-		_G.ToolTipWin:SetVisible( false );
-		_G.ToolTipWin = nil;
-	end
+    TooltipManager.HideStandard()
 end
 
 function Player:InCombatChanged(sender, args)

@@ -93,6 +93,7 @@ LoadSettings();
 -- Ensure settings is globally accessible for dynamically loaded controls
 _G.settings = settings;
 
+import (AppDirD.."TooltipManager");
 import (AppDirD.."UIHelpers");
 import (AppDirD.."ControlFactory");
 
