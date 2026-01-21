@@ -21,8 +21,8 @@ function UnloadControl( value )
 					data.toggleFunc()
 				end
 				-- Uncheck option if available
-				if data.ui and data.ui.optCheckbox then
-					data.ui.optCheckbox:SetChecked(false)
+				if data.ui and data.ui.menuItem then
+					data.ui.menuItem:SetChecked(false)
 				end
 			end
 		end)
@@ -46,8 +46,8 @@ function UnloadControl( value )
 			if data.toggleFunc then
 				data.toggleFunc()
 			end
-			if data.ui.optCheckbox then
-				data.ui.optCheckbox:SetChecked(false)
+			if data.ui.menuItem then
+				data.ui.menuItem:SetChecked(false)
 			end
 		elseif _G.CurrencyData[_G.sFromCtr] then
 			-- Currency control

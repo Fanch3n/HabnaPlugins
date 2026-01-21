@@ -71,9 +71,12 @@ function InitializeSharedStorage()
         -- Load data and register callbacks
         LoadPlayerSharedStorage()
 
-        AddCallback(sspack, "CountChanged",
+        local ssData = _G.ControlData.SS
+        ssData.callbacks = ssData.callbacks or {}
+        local cb = AddCallback(sspack, "CountChanged",
             function(sender, args) SavePlayerSharedStorage(); end
         );
+        table.insert(ssData.callbacks, { obj = sspack, evt = "CountChanged", func = cb })
     end
 
     UpdateSharedStorage()

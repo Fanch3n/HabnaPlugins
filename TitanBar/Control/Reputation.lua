@@ -257,9 +257,13 @@ function InitializeReputation()
 		-- Load data and setup callback
 		LoadPlayerReputation()
 
-		-- Copying the complex callback logic from functionsCtr.lua
-		if not RP.callback then
-			RP.callback = AddCallback(Turbine.Chat, "Received",
+		-- Register chat callback
+		local rpData = _G.ControlData.RP
+		rpData.callbacks = rpData.callbacks or {}
+		
+		-- Only add if not already present (though initialize should only run once)
+		if #rpData.callbacks == 0 then
+			local cb = AddCallback(Turbine.Chat, "Received",
 				function(sender, args)
 					if (args.ChatType ~= Turbine.ChatType.Advancement) then return; end
 
@@ -334,6 +338,7 @@ function InitializeReputation()
 					end
 				end
 			);
+			table.insert(rpData.callbacks, { obj = Turbine.Chat, evt = "Received", func = cb })
 		end
 	end
 

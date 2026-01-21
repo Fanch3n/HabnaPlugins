@@ -47,57 +47,30 @@ end
 local opt_line = Turbine.UI.MenuItem("---------------------------------------------", false);
 local opt_empty = Turbine.UI.MenuItem("", false);
 
-opt_WI = Turbine.UI.MenuItem(L["MBag"]);
-opt_WI:SetChecked( _G.ControlData.WI.show );
-opt_WI.Click = function( sender, args ) ToggleMenuVisibility(ShowHideWallet) end
+local function CreateControlMenuItem(id, label, toggleFunc)
+	local item = Turbine.UI.MenuItem(label)
+	if _G.ControlData[id] then
+		item:SetChecked(_G.ControlData[id].show)
+		_G.ControlData[id].ui = _G.ControlData[id].ui or {}
+		_G.ControlData[id].ui.menuItem = item
+	end
+	item.Click = function(sender, args) ToggleMenuVisibility(toggleFunc) end
+	return item
+end
 
-opt_BI = Turbine.UI.MenuItem(L["MBI"]);
-opt_BI:SetChecked( _G.ControlData.BI.show );
-opt_BI.Click = function( sender, args ) ToggleMenuVisibility(ShowHideBackpackInfos) end
-
-opt_PI = Turbine.UI.MenuItem(L["MPI"]);
-opt_PI:SetChecked( _G.ControlData.PI.show );
-opt_PI.Click = function( sender, args ) ToggleMenuVisibility(ShowHidePlayerInfos) end
-
-opt_EI = Turbine.UI.MenuItem(L["MEI"]);
-opt_EI:SetChecked( _G.ControlData.EI.show );
-opt_EI.Click = function( sender, args )	ToggleMenuVisibility(ShowHideEquipInfos) end
-
-opt_DI = Turbine.UI.MenuItem(L["MDI"]);
-opt_DI:SetChecked( _G.ControlData.DI.show );
-opt_DI.Click = function( sender, args )	ToggleMenuVisibility(ShowHideDurabilityInfos) end
-
-opt_PL = Turbine.UI.MenuItem(L["MPL"]);
-opt_PL:SetChecked( _G.ControlData.PL.show );
-opt_PL.Click = function( sender, args ) ToggleMenuVisibility(ShowHidePlayerLoc) end
-
-opt_TI = Turbine.UI.MenuItem(L["MTI"]);
-opt_TI:SetChecked( _G.ControlData.TI.show );
-opt_TI.Click = function( sender, args ) ToggleMenuVisibility(ShowHideTrackItems) end
-
-opt_IF = Turbine.UI.MenuItem(L["IFWTitle"]);
-opt_IF:SetChecked( _G.ControlData.IF.show );
-opt_IF.Click = function( sender, args ) ToggleMenuVisibility(ShowHideInfamy) end
-
-opt_GT = Turbine.UI.MenuItem(L["MGT"]);
-opt_GT:SetChecked( _G.ControlData.GT.show );
-opt_GT.Click = function( sender, args ) ToggleMenuVisibility(ShowHideGameTime) end
-
-opt_VT = Turbine.UI.MenuItem( L["MVault"] );
-opt_VT:SetChecked( _G.ControlData.VT.show );
-opt_VT.Click = function( sender, args ) ToggleMenuVisibility(ShowHideVault) end
-
-opt_SS = Turbine.UI.MenuItem( L["MStorage"] );
-opt_SS:SetChecked( _G.ControlData.SS.show );
-opt_SS.Click = function( sender, args ) ToggleMenuVisibility(ShowHideSharedStorage) end
-
-opt_DN = Turbine.UI.MenuItem( L["MDayNight"] );
-opt_DN:SetChecked( _G.ControlData.DN.show );
-opt_DN.Click = function( sender, args ) ToggleMenuVisibility(ShowHideDayNight) end
-
-opt_RP = Turbine.UI.MenuItem( L["MReputation"] );
-opt_RP:SetChecked( _G.ControlData.RP.show );
-opt_RP.Click = function( sender, args ) ToggleMenuVisibility(ShowHideReputation) end
+local opt_WI = CreateControlMenuItem("WI", L["MBag"], ShowHideWallet)
+local opt_BI = CreateControlMenuItem("BI", L["MBI"], ShowHideBackpackInfos)
+local opt_PI = CreateControlMenuItem("PI", L["MPI"], ShowHidePlayerInfos)
+local opt_EI = CreateControlMenuItem("EI", L["MEI"], ShowHideEquipInfos)
+local opt_DI = CreateControlMenuItem("DI", L["MDI"], ShowHideDurabilityInfos)
+local opt_PL = CreateControlMenuItem("PL", L["MPL"], ShowHidePlayerLoc)
+local opt_TI = CreateControlMenuItem("TI", L["MTI"], ShowHideTrackItems)
+local opt_IF = CreateControlMenuItem("IF", L["IFWTitle"], ShowHideInfamy)
+local opt_GT = CreateControlMenuItem("GT", L["MGT"], ShowHideGameTime)
+local opt_VT = CreateControlMenuItem("VT", L["MVault"], ShowHideVault)
+local opt_SS = CreateControlMenuItem("SS", L["MStorage"], ShowHideSharedStorage)
+local opt_DN = CreateControlMenuItem("DN", L["MDayNight"], ShowHideDayNight)
+local opt_RP = CreateControlMenuItem("RP", L["MReputation"], ShowHideReputation)
 
 opt_options = Turbine.UI.MenuItem(L["MOP"]);
 opt_options.Click = function( sender, args ) import (AppDirD.."frmOptions"); frmOptions(); opt_options:SetEnabled( false ); end

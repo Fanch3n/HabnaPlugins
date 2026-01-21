@@ -104,8 +104,12 @@ function InitializeInfamy()
     end
 
     -- Register chat callback
-    if not IF.callback then
-        IF.callback = AddCallback(Turbine.Chat, "Received", HandleInfamyChat);
+    local ifData = _G.ControlData.IF
+    ifData.callbacks = ifData.callbacks or {}
+
+    if #ifData.callbacks == 0 then
+        local cb = AddCallback(Turbine.Chat, "Received", HandleInfamyChat);
+        table.insert(ifData.callbacks, { obj = Turbine.Chat, evt = "Received", func = cb })
     end
 
     UpdateInfamy()

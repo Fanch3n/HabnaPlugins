@@ -74,9 +74,12 @@ function InitializeVault()
         LoadPlayerVault()
 
         -- Register callbacks
-        AddCallback(vaultpack, "CountChanged",
+        local vtData = _G.ControlData.VT
+        vtData.callbacks = vtData.callbacks or {}
+        local cb = AddCallback(vaultpack, "CountChanged",
             function(sender, args) SavePlayerVault(); end
         );
+        table.insert(vtData.callbacks, { obj = vaultpack, evt = "CountChanged", func = cb })
     end
     UpdateVault()
 end
