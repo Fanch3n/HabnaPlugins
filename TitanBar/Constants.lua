@@ -117,19 +117,19 @@ Constants.DAWN_TIME_OFFSET = 0
 -- Durability slot background IDs
 Constants.DURABILITY_SLOTS_BG = {
     0x41007eed, -- Head
-    0x41007ef6, -- Chest
-    0x41007ef7, -- Legs
-    0x41007eef, -- Hands
-    0x41007eee, -- Feet
-    0x41007ee9, -- Shoulders
-    0x41007ef0, -- Back
-    0x41007ef9, -- Bracelet 1
-    0x41007ef8, -- Bracelet 2
-    0x41007ef4, -- Necklace
+    0x41007ef0, -- Chest
+    0x41007ef1, -- Legs
+    0x41007ef2, -- Hands
+    0x41007ef5, -- Feet
+    0x41007eee, -- Shoulders
+    0x41007ee9, -- Back
+    0x41007ef8, -- Bracelet 1
+    0x41007ef9, -- Bracelet 2
+    0x41007eef, -- Necklace
     0x41007ef3, -- Ring 1
-    0x41007ef2, -- Ring 2
-    0x41007ef1, -- Earring 1
-    0x41007ef5, -- Earring 2
+    0x41007ef4, -- Ring 2
+    0x41007ef6, -- Earring 1
+    0x41007ef7, -- Earring 2
     0x41007efa, -- Pocket
     0x41007eea, -- Main Hand
     0x41007eeb, -- Off Hand
