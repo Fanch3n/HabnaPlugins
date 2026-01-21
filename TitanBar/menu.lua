@@ -54,23 +54,28 @@ local function CreateControlMenuItem(id, label, toggleFunc)
 		_G.ControlData[id].ui = _G.ControlData[id].ui or {}
 		_G.ControlData[id].ui.menuItem = item
 	end
-	item.Click = function(sender, args) ToggleMenuVisibility(toggleFunc) end
+	
+	-- Use provided toggle function or default to generic ToggleControl
+	local clickAction = toggleFunc or function() ToggleControl(id) end
+	
+	item.Click = function(sender, args) ToggleMenuVisibility(clickAction) end
 	return item
 end
 
-local opt_WI = CreateControlMenuItem("WI", L["MBag"], ShowHideWallet)
-local opt_BI = CreateControlMenuItem("BI", L["MBI"], ShowHideBackpackInfos)
-local opt_PI = CreateControlMenuItem("PI", L["MPI"], ShowHidePlayerInfos)
+-- Menu Items
+local opt_WI = CreateControlMenuItem("WI", L["MBag"])
+local opt_BI = CreateControlMenuItem("BI", L["MBI"])
+local opt_PI = CreateControlMenuItem("PI", L["MPI"])
 local opt_EI = CreateControlMenuItem("EI", L["MEI"], ShowHideEquipInfos)
 local opt_DI = CreateControlMenuItem("DI", L["MDI"], ShowHideDurabilityInfos)
-local opt_PL = CreateControlMenuItem("PL", L["MPL"], ShowHidePlayerLoc)
-local opt_TI = CreateControlMenuItem("TI", L["MTI"], ShowHideTrackItems)
-local opt_IF = CreateControlMenuItem("IF", L["IFWTitle"], ShowHideInfamy)
-local opt_GT = CreateControlMenuItem("GT", L["MGT"], ShowHideGameTime)
-local opt_VT = CreateControlMenuItem("VT", L["MVault"], ShowHideVault)
-local opt_SS = CreateControlMenuItem("SS", L["MStorage"], ShowHideSharedStorage)
-local opt_DN = CreateControlMenuItem("DN", L["MDayNight"], ShowHideDayNight)
-local opt_RP = CreateControlMenuItem("RP", L["MReputation"], ShowHideReputation)
+local opt_PL = CreateControlMenuItem("PL", L["MPL"])
+local opt_TI = CreateControlMenuItem("TI", L["MTI"])
+local opt_IF = CreateControlMenuItem("IF", L["IFWTitle"])
+local opt_GT = CreateControlMenuItem("GT", L["MGT"])
+local opt_VT = CreateControlMenuItem("VT", L["MVault"])
+local opt_SS = CreateControlMenuItem("SS", L["MStorage"])
+local opt_DN = CreateControlMenuItem("DN", L["MDayNight"])
+local opt_RP = CreateControlMenuItem("RP", L["MReputation"])
 
 opt_options = Turbine.UI.MenuItem(L["MOP"]);
 opt_options.Click = function( sender, args ) import (AppDirD.."frmOptions"); frmOptions(); opt_options:SetEnabled( false ); end

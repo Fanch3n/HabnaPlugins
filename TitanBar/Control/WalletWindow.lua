@@ -193,19 +193,19 @@ function frmWalletWindow()
 			_G.ControlData.Money = _G.ControlData.Money or {}
 			_G.ControlData.Money.where = SelIndex
 			settings.Money.W = string.format("%.0f", SelIndex);
-			if SelIndex == Constants.Position.TITANBAR then if not _G.ControlData.Money.show then ShowHideMoney(); end
-			else if _G.ControlData.Money.show then ShowHideMoney(); end end
+			if SelIndex == Constants.Position.TITANBAR then if not _G.ControlData.Money.show then ToggleControl("Money"); end
+			else if _G.ControlData.Money.show then ToggleControl("Money"); end end
 		elseif wcur == L["MLotroPoints"] then
 			_G.ControlData.LP = _G.ControlData.LP or {}
 			_G.ControlData.LP.where = SelIndex
 			settings.LOTROPoints.W = string.format("%.0f", SelIndex);
 			if SelIndex == Constants.Position.TITANBAR then
 				if not _G.ControlData.LP.show then
-					ShowHideLOTROPoints()
+					ToggleControl("LP")
 				end
 			else
 				if _G.ControlData.LP.show then
-					ShowHideLOTROPoints()
+					ToggleControl("LP")
 				end
 			end
 

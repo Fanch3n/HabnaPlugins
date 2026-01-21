@@ -64,31 +64,6 @@ function ToggleControl(id)
         menuItem:SetChecked(controlData.show)
     end
 end
-
--- **v Show/Hide Wallet v**
-function ShowHideWallet()
-	ToggleControl("WI")
-end
--- **^
--- **v Show/Hide Money v**
-function ShowHideMoney()
-	ToggleControl("Money")
-end
--- **^
--- **v Show/Hide LOTRO Points v**
-function ShowHideLOTROPoints()
-	ToggleControl("LP")
-end
--- **^
--- **v Show/Hide backpack Infos v**
-function ShowHideBackpackInfos()
-	ToggleControl("BI")
-end
---**^
--- **v Show/Hide backpack Infos v**
-function ShowHidePlayerInfos()
-	ToggleControl("PI")
-end
 --**^
 -- **v Show/Hide equipment Infos v**
 function ShowHideEquipInfos()
@@ -205,47 +180,6 @@ function ShowHideDurabilityInfos()
 	if controlData.ui and controlData.ui.menuItem then
 		controlData.ui.menuItem:SetChecked(controlData.show)
 	end
-end
---**^
--- **v Show/Hide Tracked Items Infos v**
-function ShowHideTrackItems()
-	ToggleControl("TI")
-end
---**^
--- **v Show/Hide Infamy v**
-function ShowHideInfamy()
-	ToggleControl("IF")
-end
--- **^
--- **v Show/Hide Vault v**
-function ShowHideVault()
-	ToggleControl("VT")
-end
--- **^
--- **v Show/Hide SharedStorage v**
-function ShowHideSharedStorage()
-	ToggleControl("SS")
-end
--- **^
--- **v Show/Hide Day & Night time v**
-function ShowHideDayNight()
-	ToggleControl("DN")
-end
--- **^
--- **v Show/Hide Reputation v**
-function ShowHideReputation()
-	ToggleControl("RP")
-end
--- **^
-
--- **v Show/Hide Player Location v**
-function ShowHidePlayerLoc()
-	ToggleControl("PL")
-end
---**^
--- **v Show/Hide Time v**
-function ShowHideGameTime()
-	ToggleControl("GT")
 end
 --**^
 -- **v Profile load/Save v**
