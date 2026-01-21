@@ -33,6 +33,9 @@ function ToggleControl(id)
 			controlData.controls["Ctr"]:SetVisible(true)
 		end
 
+		-- Custom OnShow Hook
+		if controlData.onShow then controlData.onShow() end
+		
 		-- Special case for Equipment callbacks (removed from legacy functions but logic was complex)
 		-- Since Equipment Infos logic is quite specific (callbacks added in Toggle), we might need to handle EI/DI separately or move logic to Initialize
 	else
@@ -43,7 +46,10 @@ function ToggleControl(id)
 			end
 			controlData.callbacks = {}
 		end
-
+		
+		-- Custom OnHide Hook
+		if controlData.onHide then controlData.onHide() end
+		
 		-- Close Window
 		local window = controlData.ui and controlData.ui.window
 		if window then window:Close() end
@@ -62,122 +68,6 @@ function ToggleControl(id)
 	end
 end
 
-function ShowHideEquipInfos()
-	local controlData = _G.ControlData.EI
-	controlData.show = not controlData.show
-	if not settings.EquipInfos then settings.EquipInfos = {} end
-	settings.EquipInfos.V = controlData.show
-	SaveSettings(false);
-
-	if controlData.show then
-		GetEquipmentInfos();
-
-		-- Use standardized callback management
-		controlData.callbacks = controlData.callbacks or {}
-
-		-- Helper to add and track callback
-		local function AddAndTrack(obj, evt, func)
-			local cb = AddCallback(obj, evt, func)
-			table.insert(controlData.callbacks, { obj = obj, evt = evt, func = cb })
-		end
-
-		-- Callback 1: ItemEquipped
-		AddAndTrack(PlayerEquipment, "ItemEquipped", function(sender, args)
-			-- We call GetEquipmentInfos anyway to refresh data
-			GetEquipmentInfos();
-			if _G.ControlData.EI.show then UpdateEquipsInfos(); end
-		end);
-
-		-- Callback 2: ItemUnequipped
-		AddAndTrack(PlayerEquipment, "ItemUnequipped", function(sender, args)
-			ItemUnEquippedTimer:SetWantsUpdates(true);
-		end);
-
-		ImportCtr("EI");
-		local colors = _G.ControlData.EI.colors
-		if _G.ControlData.EI.controls and _G.ControlData.EI.controls["Ctr"] then
-			_G.ControlData.EI.controls["Ctr"]:SetBackColor(Turbine.UI.Color(colors.alpha, colors.red, colors.green, colors
-			.blue));
-			_G.ControlData.EI.controls["Ctr"]:SetVisible(true)
-		end
-	else
-		-- Remove callbacks
-		if controlData.callbacks then
-			for _, cb in ipairs(controlData.callbacks) do
-				if RemoveCallback then RemoveCallback(cb.obj, cb.evt, cb.func) end
-			end
-			controlData.callbacks = {}
-		end
-		local window = _G.ControlData.EI.ui and _G.ControlData.EI.ui.window; if window then window:Close(); end
-
-		if _G.ControlData.EI.controls and _G.ControlData.EI.controls["Ctr"] then
-			_G.ControlData.EI.controls["Ctr"]:SetVisible(false)
-		end
-	end
-
-	-- Update Menu Item
-	if controlData.ui and controlData.ui.menuItem then
-		controlData.ui.menuItem:SetChecked(controlData.show)
-	end
-end
-
-function ShowHideDurabilityInfos()
-	local controlData = _G.ControlData.DI
-	controlData.show = not controlData.show
-	if not settings.DurabilityInfos then settings.DurabilityInfos = {} end
-	settings.DurabilityInfos.V = controlData.show
-	SaveSettings(false);
-
-	if controlData.show then
-		GetEquipmentInfos();
-
-		-- Use standardized callback management
-		controlData.callbacks = controlData.callbacks or {}
-
-		-- Helper to add and track callback
-		local function AddAndTrack(obj, evt, func)
-			local cb = AddCallback(obj, evt, func)
-			table.insert(controlData.callbacks, { obj = obj, evt = evt, func = cb })
-		end
-
-		-- Callback 1: ItemEquipped
-		AddAndTrack(PlayerEquipment, "ItemEquipped", function(sender, args)
-			GetEquipmentInfos();
-			if _G.ControlData.DI.show then UpdateDurabilityInfos(); end
-		end);
-
-		-- Callback 2: ItemUnequipped
-		AddAndTrack(PlayerEquipment, "ItemUnequipped", function(sender, args)
-			ItemUnEquippedTimer:SetWantsUpdates(true);
-		end);
-
-		ImportCtr("DI");
-		local colors = _G.ControlData.DI.colors
-		if _G.ControlData.DI.controls and _G.ControlData.DI.controls["Ctr"] then
-			_G.ControlData.DI.controls["Ctr"]:SetBackColor(Turbine.UI.Color(colors.alpha, colors.red, colors.green, colors
-			.blue));
-			_G.ControlData.DI.controls["Ctr"]:SetVisible(true)
-		end
-	else
-		-- Remove callbacks
-		if controlData.callbacks then
-			for _, cb in ipairs(controlData.callbacks) do
-				if RemoveCallback then RemoveCallback(cb.obj, cb.evt, cb.func) end
-			end
-			controlData.callbacks = {}
-		end
-
-		local window = _G.ControlData.DI.ui and _G.ControlData.DI.ui.window; if window then window:Close(); end
-		if _G.ControlData.DI.controls and _G.ControlData.DI.controls["Ctr"] then
-			_G.ControlData.DI.controls["Ctr"]:SetVisible(false)
-		end
-	end
-
-	-- Update Menu Item
-	if controlData.ui and controlData.ui.menuItem then
-		controlData.ui.menuItem:SetChecked(controlData.show)
-	end
-end
 
 function LoadPlayerProfile()
 	PProfile = Turbine.PluginData.Load(Turbine.DataScope.Account, "TitanBarPlayerProfile");

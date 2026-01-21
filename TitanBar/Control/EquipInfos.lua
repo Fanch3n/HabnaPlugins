@@ -45,6 +45,31 @@ function InitializeEquipInfos()
     UpdateEquipsInfos()
 end
 
+local function OnShowEquipInfos()
+    local controlData = _G.ControlData.EI
+    controlData.callbacks = controlData.callbacks or {}
+
+    -- Use GetEquipmentInfos to refresh data
+    if GetEquipmentInfos then GetEquipmentInfos() end
+
+    -- Helper to add and track callback
+    local function AddAndTrack(obj, evt, func)
+        local cb = AddCallback(obj, evt, func)
+        table.insert(controlData.callbacks, { obj = obj, evt = evt, func = cb })
+    end
+
+    -- Callback 1: ItemEquipped
+    AddAndTrack(PlayerEquipment, "ItemEquipped", function(sender, args)
+        if GetEquipmentInfos then GetEquipmentInfos() end
+        if _G.ControlData.EI.show then UpdateEquipsInfos() end
+    end)
+
+    -- Callback 2: ItemUnequipped
+    AddAndTrack(PlayerEquipment, "ItemUnequipped", function(sender, args)
+        if ItemUnEquippedTimer then ItemUnEquippedTimer:SetWantsUpdates(true) end
+    end)
+end
+
 -- Self-registration
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
@@ -52,6 +77,7 @@ if _G.ControlRegistry and _G.ControlRegistry.Register then
         settingsKey = "EquipInfos",
         hasWhere = false,
         defaults = { show = true, x = nil, y = 0 },
-        initFunc = InitializeEquipInfos
+        initFunc = InitializeEquipInfos,
+        onShow = OnShowEquipInfos
     })
 end

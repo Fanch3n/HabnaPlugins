@@ -24,8 +24,8 @@ function UpdateDurabilityInfos()
 
     --Change durability icon with %
     local DurIcon = nil;
-    if TDPts >= 0 and TDPts <= 33 then DurIcon = 1; end --0x41007e29
-    if TDPts >= 34 and TDPts <= 66 then DurIcon = 2; end --0x41007e29
+    if TDPts >= 0 and TDPts <= 33 then DurIcon = 1; end   --0x41007e29
+    if TDPts >= 34 and TDPts <= 66 then DurIcon = 2; end  --0x41007e29
     if TDPts >= 67 and TDPts <= 100 then DurIcon = 3; end --0x41007e28
 
     if _G.ControlData.DI and _G.ControlData.DI.controls and _G.ControlData.DI.controls["Icon"] then
@@ -68,6 +68,31 @@ function InitializeDurabilityInfos()
     UpdateDurabilityInfos()
 end
 
+local function OnShowDurabilityInfos()
+    local controlData = _G.ControlData.DI
+    controlData.callbacks = controlData.callbacks or {}
+
+    -- Use GetEquipmentInfos to refresh data
+    if GetEquipmentInfos then GetEquipmentInfos() end
+
+    -- Helper to add and track callback
+    local function AddAndTrack(obj, evt, func)
+        local cb = AddCallback(obj, evt, func)
+        table.insert(controlData.callbacks, { obj = obj, evt = evt, func = cb })
+    end
+
+    -- Callback 1: ItemEquipped
+    AddAndTrack(PlayerEquipment, "ItemEquipped", function(sender, args)
+        if GetEquipmentInfos then GetEquipmentInfos() end
+        if _G.ControlData.DI.show then UpdateDurabilityInfos() end
+    end)
+
+    -- Callback 2: ItemUnequipped
+    AddAndTrack(PlayerEquipment, "ItemUnequipped", function(sender, args)
+        if ItemUnEquippedTimer then ItemUnEquippedTimer:SetWantsUpdates(true) end
+    end)
+end
+
 -- Self-registration
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
@@ -75,6 +100,7 @@ if _G.ControlRegistry and _G.ControlRegistry.Register then
         settingsKey = "DurabilityInfos",
         hasWhere = false,
         defaults = { show = true, x = nil, y = 0 },
-        initFunc = InitializeDurabilityInfos
+        initFunc = InitializeDurabilityInfos,
+        onShow = OnShowDurabilityInfos
     })
 end

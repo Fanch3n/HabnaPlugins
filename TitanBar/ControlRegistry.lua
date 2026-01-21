@@ -5,7 +5,7 @@ _G.ControlRegistry = {}
 _G.ControlData = {}
 
 -- Initialize control data structure
-local function InitControlData(controlId, settingsKey, toggleFunc, hasWhere, defaults)
+local function InitControlData(controlId, settingsKey, toggleFunc, hasWhere, defaults, onShow, onHide)
 	defaults = defaults or {}
 
 	-- Preserve existing data if available (loaded from settings or elsewhere)
@@ -16,6 +16,8 @@ local function InitControlData(controlId, settingsKey, toggleFunc, hasWhere, def
 		settingsKey = settingsKey,
 		toggleFunc = toggleFunc,
 		initFunc = defaults.initFunc,
+		onShow = onShow,
+		onHide = onHide,
 
 		-- Display state
 		show = defaults.show or false,
@@ -142,7 +144,9 @@ function _G.ControlRegistry.Register(config)
 		settingsKey = config.settingsKey or id,
 		toggleFunc = config.toggleFunc,
 		hasWhere = config.hasWhere or false,
-		defaults = config.defaults or {}
+		defaults = config.defaults or {},
+		onShow = config.onShow,
+		onHide = config.onHide
 	}
 	-- Also store initFunc in defaults so InitControlData picks it up
 	registry[id].defaults.initFunc = config.initFunc
@@ -150,7 +154,7 @@ function _G.ControlRegistry.Register(config)
 	-- Initialize data immediately
 	local defaults = registry[id].defaults
 	if defaults.x == nil then defaults.x = GetDefaultX(id) end
-	InitControlData(id, registry[id].settingsKey, registry[id].toggleFunc, registry[id].hasWhere, defaults)
+	InitControlData(id, registry[id].settingsKey, registry[id].toggleFunc, registry[id].hasWhere, defaults, config.onShow, config.onHide)
 end
 
 -- Get registration metadata
