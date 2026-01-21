@@ -16,6 +16,7 @@ function UpdateEquipsInfos()
     end
     if AdjustIcon then AdjustIcon("EI") end
 end
+_G.UpdateEquipsInfos = UpdateEquipsInfos
 
 function InitializeEquipInfos()
     _G.ControlData.EI.controls = _G.ControlData.EI.controls or {}

@@ -228,15 +228,14 @@ function frmMain()
 		end
 	)
 	
-	--**v Workaround for the ItemUnequipped that fires before the equipment was updated (Turbine API issue) v**
+	-- Workaround for the ItemUnequipped that fires before the equipment was updated (Turbine API issue)
 	ItemUnEquippedTimer = Turbine.UI.Control();
 
-	ItemUnEquippedTimer.Update = function( sender, args )
+	ItemUnEquippedTimer.Update = function(sender, args)
 		if _G.ControlData.EI.show then GetEquipmentInfos(); UpdateEquipsInfos(); end
 		if _G.ControlData.DI.show then GetEquipmentInfos(); UpdateDurabilityInfos(); end
-		ItemUnEquippedTimer:SetWantsUpdates( false );
+		ItemUnEquippedTimer:SetWantsUpdates(false);
 	end
-	--**
 	
 	if _G.ControlData.EI.show then ImportCtr( "EI" ); end
 	if _G.ControlData.DI.show then ImportCtr( "DI" ); end

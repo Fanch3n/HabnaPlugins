@@ -39,6 +39,7 @@ function UpdateDurabilityInfos()
     end
     AdjustIcon("DI");
 end
+_G.UpdateDurabilityInfos = UpdateDurabilityInfos
 
 function InitializeDurabilityInfos()
     _G.ControlData.DI.controls = _G.ControlData.DI.controls or {}
