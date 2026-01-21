@@ -41,15 +41,6 @@ function ApplySkin()
     end
 end
 
-function createToolTipWin(xOffset, yOffset, xSize, ySize, side, header, text1, text2, text3)
-    local texts = {text1, text2, text3}
-    return TooltipManager.CreateStandardWindow(xOffset, yOffset, xSize, ySize, header, texts)
-end
-
-function ShowToolTipWin(ToShow)
-    TooltipManager.ShowStandard(ToShow)
-end
-
 
 
 
@@ -105,9 +96,6 @@ function ChangeColor(tColor)
 	end
 end
 
-function ResetToolTipWin()
-    TooltipManager.HideStandard()
-end
 
 function Player:InCombatChanged(sender, args)
 	if TBAutoHide == L["OPAHC"] then AutoHideCtr:SetWantsUpdates( true ); end
@@ -279,11 +267,6 @@ function ShowTableContent( table )
 	end
 end
 
-function GetTotalItems( MyTable )
-	local counter = 0;
-	for k, v in pairs( MyTable ) do counter = counter + 1; end
-	return counter;
-end
 
 PlayerAtt = nil;
 ---Central function to handle calling Player:GetAttributes().

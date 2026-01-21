@@ -44,8 +44,8 @@ local function defaultReposition()
 end
 
 local function defaultHide()
-	if type(ResetToolTipWin) == "function" then
-		ResetToolTipWin()
+	if TooltipManager.HideStandard then
+		TooltipManager.HideStandard()
 	end
 end
 

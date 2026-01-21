@@ -299,7 +299,9 @@ function InitializeMoneyInfos()
 	end
 
 	MI["CLbl"].MouseLeave = function(sender, args)
-		ResetToolTipWin();
+		if TooltipManager and TooltipManager.HideStandard then
+			TooltipManager.HideStandard();
+		end
 		MITT = false;
 	end
 
