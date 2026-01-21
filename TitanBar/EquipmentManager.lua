@@ -29,7 +29,7 @@ end
 
 function EquipmentManager.ChangeWearState(index)
     if not itemEquip[index] or not PlayerEquipment then return end
-    
+
     local equipItem = PlayerEquipment:GetItem(Constants.EquipmentSlots[index])
     if not equipItem then return end
 
@@ -49,7 +49,7 @@ function EquipmentManager.Refresh()
     if PlayerEquipment == nil then return end
 
     numItems = 0
-    
+
     for i, slotID in ipairs(Constants.EquipmentSlots) do
         -- Cleanup old handler to prevent leaks
         if itemEquip[i] and itemEquip[i].wsHandler and itemEquip[i].sourceItem then
@@ -57,7 +57,7 @@ function EquipmentManager.Refresh()
         end
 
         local PlayerEquipItem = PlayerEquipment:GetItem(slotID)
-        
+
         -- We must recreate the ItemControl because it binds to a specific item instance
         itemEquip[i] = Turbine.UI.Lotro.ItemControl(PlayerEquipItem)
         -- Store the item wrapper reference so we can remove callbacks later
@@ -99,14 +99,13 @@ function EquipmentManager.Refresh()
 
             -- Callbacks
             if AddCallback then
-                 itemEquip[i].wsHandler = AddCallback(
+                itemEquip[i].wsHandler = AddCallback(
                     PlayerEquipItem, "WearStateChanged",
-                    function(sender, args) 
-                        EquipmentManager.ChangeWearState(i) 
+                    function(sender, args)
+                        EquipmentManager.ChangeWearState(i)
                     end
                 )
             end
-
         else
             itemEquip[i].Item = false
             itemEquip[i].Name = "zEmpty"
@@ -119,4 +118,3 @@ end
 
 -- Initialize data immediately on load
 EquipmentManager.Refresh()
-
