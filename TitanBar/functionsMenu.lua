@@ -1,17 +1,14 @@
 -- functionsMenu.lua
--- Written By Habna
-
-
---**v Functions for the menu v**
+-- Functions for the context menu
 
 -- Generic Toggle Function to replace individual handlers
 function ToggleControl(id)
 	local controlData = _G.ControlData[id]
 	if not controlData then return end
-	
+
 	-- Toggle state
 	controlData.show = not controlData.show
-	
+
 	-- Update Settings
 	local regData = _G.ControlRegistry.Get(id)
 	if regData and regData.settingsKey then
@@ -22,20 +19,20 @@ function ToggleControl(id)
 			settings[regData.settingsKey].W = string.format("%.0f", controlData.where or Constants.Position.NONE)
 		end
 	end
-	
+
 	SaveSettings(false)
-	
+
 	-- Handle UI Update
 	if controlData.show then
 		ImportCtr(id)
-		
+
 		-- Set Background Color if control exists
 		if controlData.controls and controlData.controls["Ctr"] and controlData.colors then
 			local colors = controlData.colors
-			controlData.controls["Ctr"]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) )
+			controlData.controls["Ctr"]:SetBackColor(Turbine.UI.Color(colors.alpha, colors.red, colors.green, colors.blue))
 			controlData.controls["Ctr"]:SetVisible(true)
 		end
-		
+
 		-- Special case for Equipment callbacks (removed from legacy functions but logic was complex)
 		-- Since Equipment Infos logic is quite specific (callbacks added in Toggle), we might need to handle EI/DI separately or move logic to Initialize
 	else
@@ -46,62 +43,62 @@ function ToggleControl(id)
 			end
 			controlData.callbacks = {}
 		end
-		
+
 		-- Close Window
 		local window = controlData.ui and controlData.ui.window
 		if window then window:Close() end
-		
+
 		-- Hide Control
 		if controlData.controls and controlData.controls["Ctr"] then
 			controlData.controls["Ctr"]:SetVisible(false)
 		end
 	end
-	
+
 	-- Update Option Panel Checkbox
 	-- Access the specific menu item stored in the control data
-    local menuItem = controlData.ui and controlData.ui.menuItem
-    if menuItem and menuItem.SetChecked then
-        menuItem:SetChecked(controlData.show)
-    end
+	local menuItem = controlData.ui and controlData.ui.menuItem
+	if menuItem and menuItem.SetChecked then
+		menuItem:SetChecked(controlData.show)
+	end
 end
---**^
--- **v Show/Hide equipment Infos v**
+
 function ShowHideEquipInfos()
 	local controlData = _G.ControlData.EI
 	controlData.show = not controlData.show
 	if not settings.EquipInfos then settings.EquipInfos = {} end
 	settings.EquipInfos.V = controlData.show
-	SaveSettings( false );
-	
+	SaveSettings(false);
+
 	if controlData.show then
 		GetEquipmentInfos();
-		
+
 		-- Use standardized callback management
 		controlData.callbacks = controlData.callbacks or {}
-		
+
 		-- Helper to add and track callback
 		local function AddAndTrack(obj, evt, func)
 			local cb = AddCallback(obj, evt, func)
 			table.insert(controlData.callbacks, { obj = obj, evt = evt, func = cb })
 		end
-		
+
 		-- Callback 1: ItemEquipped
-		AddAndTrack(PlayerEquipment, "ItemEquipped", function(sender, args) 
+		AddAndTrack(PlayerEquipment, "ItemEquipped", function(sender, args)
 			-- We call GetEquipmentInfos anyway to refresh data
-			GetEquipmentInfos(); 
-			if _G.ControlData.EI.show then UpdateEquipsInfos(); end 
-		end);
-		
-		-- Callback 2: ItemUnequipped
-		AddAndTrack(PlayerEquipment, "ItemUnequipped", function(sender, args) 
-			ItemUnEquippedTimer:SetWantsUpdates( true ); 
+			GetEquipmentInfos();
+			if _G.ControlData.EI.show then UpdateEquipsInfos(); end
 		end);
 
-		ImportCtr( "EI" );
+		-- Callback 2: ItemUnequipped
+		AddAndTrack(PlayerEquipment, "ItemUnequipped", function(sender, args)
+			ItemUnEquippedTimer:SetWantsUpdates(true);
+		end);
+
+		ImportCtr("EI");
 		local colors = _G.ControlData.EI.colors
 		if _G.ControlData.EI.controls and _G.ControlData.EI.controls["Ctr"] then
-			_G.ControlData.EI.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-			_G.ControlData.EI.controls[ "Ctr" ]:SetVisible(true)
+			_G.ControlData.EI.controls["Ctr"]:SetBackColor(Turbine.UI.Color(colors.alpha, colors.red, colors.green, colors
+			.blue));
+			_G.ControlData.EI.controls["Ctr"]:SetVisible(true)
 		end
 	else
 		-- Remove callbacks
@@ -112,32 +109,31 @@ function ShowHideEquipInfos()
 			controlData.callbacks = {}
 		end
 		local window = _G.ControlData.EI.ui and _G.ControlData.EI.ui.window; if window then window:Close(); end
-		
+
 		if _G.ControlData.EI.controls and _G.ControlData.EI.controls["Ctr"] then
-			_G.ControlData.EI.controls[ "Ctr" ]:SetVisible(false)
+			_G.ControlData.EI.controls["Ctr"]:SetVisible(false)
 		end
 	end
-	
+
 	-- Update Menu Item
 	if controlData.ui and controlData.ui.menuItem then
 		controlData.ui.menuItem:SetChecked(controlData.show)
 	end
 end
---**^
--- **v Show/Hide durability Infos v**
+
 function ShowHideDurabilityInfos()
 	local controlData = _G.ControlData.DI
 	controlData.show = not controlData.show
 	if not settings.DurabilityInfos then settings.DurabilityInfos = {} end
 	settings.DurabilityInfos.V = controlData.show
-	SaveSettings( false );
-	
+	SaveSettings(false);
+
 	if controlData.show then
 		GetEquipmentInfos();
-		
+
 		-- Use standardized callback management
 		controlData.callbacks = controlData.callbacks or {}
-		
+
 		-- Helper to add and track callback
 		local function AddAndTrack(obj, evt, func)
 			local cb = AddCallback(obj, evt, func)
@@ -145,21 +141,22 @@ function ShowHideDurabilityInfos()
 		end
 
 		-- Callback 1: ItemEquipped
-		AddAndTrack(PlayerEquipment, "ItemEquipped", function(sender, args) 
-			GetEquipmentInfos(); 
-			if _G.ControlData.DI.show then UpdateDurabilityInfos(); end 
-		end);
-		
-		-- Callback 2: ItemUnequipped
-		AddAndTrack(PlayerEquipment, "ItemUnequipped", function(sender, args) 
-			ItemUnEquippedTimer:SetWantsUpdates( true ); 
+		AddAndTrack(PlayerEquipment, "ItemEquipped", function(sender, args)
+			GetEquipmentInfos();
+			if _G.ControlData.DI.show then UpdateDurabilityInfos(); end
 		end);
 
-		ImportCtr( "DI" );
+		-- Callback 2: ItemUnequipped
+		AddAndTrack(PlayerEquipment, "ItemUnequipped", function(sender, args)
+			ItemUnEquippedTimer:SetWantsUpdates(true);
+		end);
+
+		ImportCtr("DI");
 		local colors = _G.ControlData.DI.colors
 		if _G.ControlData.DI.controls and _G.ControlData.DI.controls["Ctr"] then
-			_G.ControlData.DI.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-			_G.ControlData.DI.controls[ "Ctr" ]:SetVisible(true)
+			_G.ControlData.DI.controls["Ctr"]:SetBackColor(Turbine.UI.Color(colors.alpha, colors.red, colors.green, colors
+			.blue));
+			_G.ControlData.DI.controls["Ctr"]:SetVisible(true)
 		end
 	else
 		-- Remove callbacks
@@ -169,22 +166,21 @@ function ShowHideDurabilityInfos()
 			end
 			controlData.callbacks = {}
 		end
-		
+
 		local window = _G.ControlData.DI.ui and _G.ControlData.DI.ui.window; if window then window:Close(); end
 		if _G.ControlData.DI.controls and _G.ControlData.DI.controls["Ctr"] then
-			_G.ControlData.DI.controls[ "Ctr" ]:SetVisible(false)
+			_G.ControlData.DI.controls["Ctr"]:SetVisible(false)
 		end
 	end
-	
+
 	-- Update Menu Item
 	if controlData.ui and controlData.ui.menuItem then
 		controlData.ui.menuItem:SetChecked(controlData.show)
 	end
 end
---**^
--- **v Profile load/Save v**
+
 function LoadPlayerProfile()
-	PProfile = Turbine.PluginData.Load( Turbine.DataScope.Account, "TitanBarPlayerProfile" );
+	PProfile = Turbine.PluginData.Load(Turbine.DataScope.Account, "TitanBarPlayerProfile");
 	if PProfile == nil then PProfile = {}; end
 end
 
@@ -201,47 +197,42 @@ function SavePlayerProfile()
 	for i, v in pairs(PProfile) do newt[tostring(i)] = v; end
 	PProfile = newt;
 
-	Turbine.PluginData.Save( Turbine.DataScope.Account, "TitanBarPlayerProfile", PProfile );
+	Turbine.PluginData.Save(Turbine.DataScope.Account, "TitanBarPlayerProfile", PProfile);
 end
---**^
--- **v Show Shell Command window v**
+
 function HelpInfo()
 	if frmSC then
 		wShellCmd:Close();
 	else
-		import(AppDirD.."shellcmd"); -- LUA shell command file
+		import(AppDirD .. "shellcmd"); -- LUA shell command file
 		frmShellCmd();
 	end
 end
--- **^
---**v Unload TitanBar v**
+
 function UnloadTitanBar()
-	Turbine.PluginManager.LoadPlugin( 'TitanBar Unloader' ); --workaround
+	Turbine.PluginManager.LoadPlugin('TitanBar Unloader');  --workaround
 end
---**^
---**v Reload TitanBar v**
+
 function ReloadTitanBar()
 	settings.TitanBar.Z = true;
-	SaveSettings( false );
-	Turbine.PluginManager.LoadPlugin( 'TitanBar Reloader' ); --workaround
+	SaveSettings(false);
+	Turbine.PluginManager.LoadPlugin('TitanBar Reloader');  --workaround
 end
---**^
---**v About TitanBar v**
+
 function AboutTitanBar()
 	--write( "TitanBar: About!" );
 	--Turbine.PluginManager.ShowAbouts(Plugins.TitanBar); -- Add this when About is available
 	--Turbine.PluginManager.ShowOptions(Plugins.TitanBar); --This will open plugin manager and show TitanBar options (THIS IS AN EXAMLPE)
 end
---**^
 
 function ShowHideCurrency(currency)
 	_G.CurrencyData[currency].IsVisible = not _G.CurrencyData[currency].IsVisible
 	settings[currency].V = _G.CurrencyData[currency].IsVisible
-	settings[currency].W = string.format( "%.0f", _G.CurrencyData[currency].Where);
-	SaveSettings( false );
+	settings[currency].W = string.format("%.0f", _G.CurrencyData[currency].Where);
+	SaveSettings(false);
 	ImportCtr(currency);
-	
-	if _G.Debug then write("ShowHideCurrency:"..currency); end
+
+	if _G.Debug then write("ShowHideCurrency:" .. currency); end
 	if _G.CurrencyData[currency].IsVisible then
 		_G.CurrencyData[currency].Ctr:SetBackColor(Turbine.UI.Color(
 			_G.CurrencyData[currency].bcAlpha,
