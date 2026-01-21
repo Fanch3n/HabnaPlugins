@@ -3,10 +3,11 @@ import(AppCtrD .. "EquipInfosToolTip")
 import(AppDirD .. "ControlFactory")
 
 function UpdateEquipsInfos()
-    if not (itemEquip and AdjustIcon) then
-        if GetEquipmentInfos then GetEquipmentInfos() end
+    local itemEquip = nil
+    if EquipmentManager then
+        itemEquip = EquipmentManager.GetItems() 
     end
-    if not itemEquip then return end -- Still failed?
+    if not itemEquip then return end
 
     _G.TotalItemsScore = 0;
     for i = 1, 20 do
@@ -50,8 +51,16 @@ local function OnShowEquipInfos()
     local controlData = _G.ControlData.EI
     controlData.callbacks = controlData.callbacks or {}
 
-    -- Use GetEquipmentInfos to refresh data
-    if GetEquipmentInfos then GetEquipmentInfos() end
+    -- Clear existing callbacks to prevent duplicates
+    for _, cb in ipairs(controlData.callbacks) do
+        if cb.obj and cb.evt and cb.func then
+            RemoveCallback(cb.obj, cb.evt, cb.func)
+        end
+    end
+    controlData.callbacks = {}
+
+    -- Refresh data via EquipmentManager
+    if EquipmentManager then EquipmentManager.Refresh() end
 
     -- Helper to add and track callback
     local function AddAndTrack(obj, evt, func)
@@ -61,7 +70,7 @@ local function OnShowEquipInfos()
 
     -- Callback 1: ItemEquipped
     AddAndTrack(PlayerEquipment, "ItemEquipped", function(sender, args)
-        if GetEquipmentInfos then GetEquipmentInfos() end
+        if EquipmentManager then EquipmentManager.Refresh() end
         if _G.ControlData.EI.show then UpdateEquipsInfos() end
     end)
 

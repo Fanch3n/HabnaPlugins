@@ -69,20 +69,7 @@ end
 
 
 
-function ChangeWearState(value)
-	-- Set new wear state in table
-	local WearState = PlayerEquipment:GetItem(Constants.EquipmentSlots[value]):GetWearState();
-	itemEquip[value].WearState = WearState;
 
-	if WearState == 0 then itemEquip[value].WearStatePts = 0; -- undefined
-	elseif WearState == 3 then itemEquip[value].WearStatePts = 0; -- Broken
-	elseif WearState == 1 then itemEquip[value].WearStatePts = 20; -- Damaged
-	elseif WearState == 4 then itemEquip[value].WearStatePts = 99; -- Worn
-	elseif WearState == 2 then itemEquip[value].WearStatePts = 100; -- Pristine
-    end
-
-	UpdateDurabilityInfos();
-end
 
 
 function ChangeColor(tColor)

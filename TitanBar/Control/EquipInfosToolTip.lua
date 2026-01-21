@@ -11,6 +11,10 @@ import(AppDirD .. "UIHelpers")
 function ShowEIWindow()
 	local w, h = 592, 495
 	
+    -- Use EquipmentManager
+    local itemEquipRef = EquipmentManager and EquipmentManager.GetItems()
+    if not itemEquipRef then return end
+
 	local tt = CreateTooltipWindow({
 		width = w,
 		height = h
@@ -56,6 +60,9 @@ function ShowEIWindow()
 end
 
 function EIRefreshListBox()
+    local itemEquipRef = EquipmentManager and EquipmentManager.GetItems()
+    if not itemEquipRef then return end
+
 	local EIitemCtl = {};
 	local EIitemLbl = {};
 	local EIitemLblScore = {};
@@ -70,29 +77,29 @@ function EIRefreshListBox()
 		EIitemCtl[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
 		-- Item Background/Underlay/Shadow/Item
-		if (itemEquip[i].BImgID and itemEquip[i].BImgID > 0) then
+		if (itemEquipRef[i].BImgID and itemEquipRef[i].BImgID > 0) then
 			EIitemBG[i] = CreateControl(Turbine.UI.Control, EIitemCtl[i], 6, 6, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
-			EIitemBG[i]:SetBackground(itemEquip[i].BImgID);
+			EIitemBG[i]:SetBackground(itemEquipRef[i].BImgID);
 			EIitemBG[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		end
 
-		if (itemEquip[i].UImgID and itemEquip[i].UImgID > 0) then
+		if (itemEquipRef[i].UImgID and itemEquipRef[i].UImgID > 0) then
 			EIitemU[i] = CreateControl(Turbine.UI.Control, EIitemCtl[i], 6, 6, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
-			EIitemU[i]:SetBackground(itemEquip[i].UImgID);
+			EIitemU[i]:SetBackground(itemEquipRef[i].UImgID);
 			EIitemU[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		end
 
 		-- Added if statements because some items
 		-- (e.g. Mended Dwarf-make Leather Tunic, minstrel L.I. Book)
 		-- were getting 0 for their SImgID which messed up the final composite.
-		if (itemEquip[i].SImgID and itemEquip[i].SImgID > 0) then
+		if (itemEquipRef[i].SImgID and itemEquipRef[i].SImgID > 0) then
 			EIitemS[i] = CreateControl(Turbine.UI.Control, EIitemCtl[i], 6, 6, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
-			EIitemS[i]:SetBackground(itemEquip[i].SImgID);
+			EIitemS[i]:SetBackground(itemEquipRef[i].SImgID);
 			EIitemS[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		end
 
 		EIitem[i] = CreateControl(Turbine.UI.Control, EIitemCtl[i], 6, 6, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
-		EIitem[i]:SetBackground(itemEquip[i].IImgID);
+		EIitem[i]:SetBackground(itemEquipRef[i].IImgID);
 		EIitem[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 		
 		-- Item name
@@ -102,16 +109,16 @@ function EIRefreshListBox()
 		EIitemLbl[i]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 		--EIitemLbl[i]:SetForeColor( Color["white"] );
 		
-		if itemEquip[i].Item == false then 
+		if itemEquipRef[i].Item == false then 
 			EIitemLbl[i]:SetForeColor( Color["red"] );
 			EIitemLbl[i]:SetText( SlotsText[i] .. ":\n" .. L["EWItemNP"] );
 		else
-			EIitemLbl[i]:SetText( SlotsText[i] .. ":\n" .. itemEquip[i].Name );
+			EIitemLbl[i]:SetText( SlotsText[i] .. ":\n" .. itemEquipRef[i].Name );
 		end
 
 		-- Item Score
 		EIitemLblScore[i] = Turbine.UI.Label();
-		EIitemLblScore[i]:SetText( itemEquip[i].Score );
+		EIitemLblScore[i]:SetText( itemEquipRef[i].Score );
 		EIitemLblScore[i]:SetSize( 30, EIitemCtl[i]:GetHeight() );
 		EIitemLblScore[i]:SetFont( Turbine.UI.Lotro.Font.TrajanPro12 );
 		EIitemLblScore[i]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );

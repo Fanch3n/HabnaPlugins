@@ -204,13 +204,6 @@ function frmMain()
 	if _G.ControlData.PL.show then ImportCtr( "PL" ); end
 	-- if _G.ControlData.GT.show then ImportCtr( "GT" ); end
 
-	if _G.ControlData.DI.show or _G.ControlData.EI.show then
-		GetEquipmentInfos();
-		AddCallback(PlayerEquipment, "ItemEquipped", function(sender, args) if _G.ControlData.EI.show then GetEquipmentInfos(); UpdateEquipsInfos(); end if _G.ControlData.DI.show then GetEquipmentInfos(); UpdateDurabilityInfos(); end end);
-		AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) ItemUnEquippedTimer:SetWantsUpdates( true ); end); --Workaround
-		--AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) if _G.ControlData.EI.show then GetEquipmentInfos(); UpdateEquipsInfos(); end if _G.ControlData.DI.show then GetEquipmentInfos(); UpdateDurabilityInfos(); end end);
-	end
-
 	AddCallback(
 		PlayerWallet,
 		"ItemAdded",
@@ -232,8 +225,9 @@ function frmMain()
 	ItemUnEquippedTimer = Turbine.UI.Control();
 
 	ItemUnEquippedTimer.Update = function(sender, args)
-		if _G.ControlData.EI.show then GetEquipmentInfos(); UpdateEquipsInfos(); end
-		if _G.ControlData.DI.show then GetEquipmentInfos(); UpdateDurabilityInfos(); end
+		if EquipmentManager then EquipmentManager.Refresh(); end
+		if _G.ControlData.EI.show then UpdateEquipsInfos(); end
+		if _G.ControlData.DI.show then UpdateDurabilityInfos(); end
 		ItemUnEquippedTimer:SetWantsUpdates(false);
 	end
 	
@@ -267,7 +261,8 @@ function frmMain()
 		if NumSec < max then -- Run for 24 secs. -- TODO why?
 			if (oldsecond ~= currentsecond) then
 				if Interval == 0 then
-					if _G.ControlData.EI.show or _G.ControlData.DI.show then GetEquipmentInfos();
+					if _G.ControlData.EI.show or _G.ControlData.DI.show then 
+						if EquipmentManager then EquipmentManager.Refresh(); end
 						if PlayerEquipment ~= nil then
 							if _G.ControlData.EI.show then ImportCtr( "EI" ); end
 							if _G.ControlData.DI.show then ImportCtr( "DI" ); end

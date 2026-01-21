@@ -39,6 +39,12 @@ function ImportCtr( value )
     local data = _G.ControlData[value]
     if data and data.initFunc then
         data.initFunc()
+
+        -- Trigger onShow event/handler if present (for event registration etc)
+        if data.onShow then
+            data.onShow()
+        end
+
         -- Ensure position is set if the control was just created
         if data.controls and data.controls["Ctr"] and data.location then
             data.controls["Ctr"]:SetPosition(data.location.x, data.location.y)
@@ -71,93 +77,6 @@ function ImportCtr( value )
     end
 
 
-end
-
-
-function GetEquipmentInfos()
-    PlayerEquipment = Player:GetEquipment();
-    if PlayerEquipment == nil then
-        write("<rgb=#FF3333>No equipment, returning.</rgb>");
-        return
-    end
-    --Remove when Player Equipment info are available before plugin is loaded
-
-    itemEquip = {};
-    itemScore, numItems = 0, 0;
-    Wq = 4; -- weight Quality
-    Wd = 1; -- weight Durability
-
-    for i, v in ipairs( Constants.EquipmentSlots ) do
-        local PlayerEquipItem = PlayerEquipment:GetItem( v );
-        itemEquip[i] = Turbine.UI.Lotro.ItemControl( PlayerEquipItem );
-
-        -- Item Name, WearState, Quality & Durability
-        if PlayerEquipItem ~= nil then
-            itemEquip[i].Item = true;
-            itemEquip[i].Name = PlayerEquipItem:GetName();
-            itemEquip[i].Slot = Constants.EquipmentSlotNames[i];--Debug
-
-            local Quality = 10*((6-PlayerEquipItem:GetQuality())%6);
-
-            local Durability = PlayerEquipItem:GetDurability();
-            if Durability ~= 0 then
-                Durability = 10*((Durability%7)+1);
-            end
-
-            itemEquip[i].Score =
-                round((Wq*Quality*7 + Wd*Durability*5)/(3.5*(Wq + Wd)));
-
-            itemEquip[i].WearState = PlayerEquipItem:GetWearState();
-            if itemEquip[i].WearState == 0 then
-                itemEquip[i].WearStatePts = 0; -- undefined
-            elseif itemEquip[i].WearState == 3 then
-                itemEquip[i].WearStatePts = 0; -- Broken / cass�
-            elseif itemEquip[i].WearState == 1 then
-                itemEquip[i].WearStatePts = 20; -- Damaged / endommag�
-            elseif itemEquip[i].WearState == 4 then
-                itemEquip[i].WearStatePts = 99; -- Worn / us�
-            elseif itemEquip[i].WearState == 2 then
-                itemEquip[i].WearStatePts = 100;
-            end -- Pristine / parfait
-            if itemEquip[i].WearState ~= 0 then
-                -- undefined items shouldn't be counted
-                numItems = numItems + 1;
-            end
-
-            itemEquip[i].BImgID = PlayerEquipItem:GetBackgroundImageID();
-            itemEquip[i].QImgID = PlayerEquipItem:GetQualityImageID();
-            itemEquip[i].UImgID = PlayerEquipItem:GetUnderlayImageID();
-            itemEquip[i].SImgID = PlayerEquipItem:GetShadowImageID();
-            itemEquip[i].IImgID = PlayerEquipItem:GetIconImageID();
-
-            itemEquip[i].wsHandler = AddCallback(
-                PlayerEquipItem, "WearStateChanged",
-                function(sender, args) ChangeWearState(i); end
-                );
-
-            if _G.Debug then
-                write("<rgb=#00FF00>"..numItems.."</rgb> / <rgb=#FF0000>"..i..
-                    "</rgb>: <rgb=#6969FF>"..itemEquip[i].Slot..
-                    ":</rgb> \"<rgb=#CECECE>"..itemEquip[i].Name..
-                    "</rgb>\" is of "..Quality.." quality and "..Durability..
-                    " durability with a wear state of "
-                    ..itemEquip[i].WearState.." ("..itemEquip[i].WearStatePts..
-                    "%) for an overall score of: "..itemEquip[i].Score );
-                    --Summary debug line for all stuff in here
-            end
-        else
-            itemEquip[i].Item = false;
-            itemEquip[i].Name = "zEmpty";
-            itemEquip[i].Score = 0;
-            itemEquip[i].WearState = 0;
-            itemEquip[i].WearStatePts = 0;
-
-            if _G.Debug then
-                write("<rgb=#FF0000>"..i.."</rgb>: <rgb=#6969FF>"..Constants.EquipmentSlotNames[i]..
-                    ":</rgb> <rgb=#FF3333>NO ITEM</rgb>");
-            end
-        end
-    end
 end
 
 function LoadPlayerItemTrackingList()

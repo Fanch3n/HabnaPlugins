@@ -94,6 +94,7 @@ LoadSettings();
 _G.settings = settings;
 
 import (AppDirD.."TooltipManager");
+import (AppDirD.."EquipmentManager");
 import (AppDirD.."UIHelpers");
 import (AppDirD.."ControlFactory");
 

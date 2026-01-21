@@ -39,10 +39,14 @@ function DIRefreshListBox()
 	if (not showIcon) and (not showText) then nint=true; end
 
 	iFound = 0;
+	
+    -- Use EquipmentManager
+    local itemEquipRef = EquipmentManager and EquipmentManager.GetItems()
+    if not itemEquipRef then return end
 
-	for i = 1, #itemEquip do
-		for k,v in pairs(itemEquip[i]) do
-			if itemEquip[i].WearStatePts ~= 100 and itemEquip[i].WearState ~= 0 then
+	for i = 1, #itemEquipRef do
+		for k,v in pairs(itemEquipRef[i]) do
+			if itemEquipRef[i].WearStatePts ~= 100 and itemEquipRef[i].WearState ~= 0 then
 				iFound = iFound + 1; -- Count damaged item
 				break
 			end
@@ -74,13 +78,13 @@ function DIRefreshListBox()
 		DITTPosY = DITTPosY + 36;
 	else
 		for i = 1, 20 do
-			if itemEquip[i].WearStatePts ~= 100 and itemEquip[i].WearState ~= 0 then
+			if itemEquipRef[i] and itemEquipRef[i].WearStatePts ~= 100 and itemEquipRef[i].WearState ~= 0 then
 				cw=32;
 				iFound = iFound + 1;
 
 				TheColor = Color["SSGYellow"];
-				if itemEquip[i].WearStatePts == "20" then TheColor = Color["orange"];
-				elseif itemEquip[i].WearStatePts == "0" then TheColor = Color["red"]; end
+				if itemEquipRef[i].WearStatePts == "20" then TheColor = Color["orange"];
+				elseif itemEquipRef[i].WearStatePts == "0" then TheColor = Color["red"]; end
 
 				-- Item control
 				DIitemCtl[i] = Turbine.UI.Control();
@@ -93,24 +97,24 @@ function DIRefreshListBox()
 				if showIcon then
 					-- Item Background/Underlay/Shadow/Item
 				DIitemBG[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
-				DIitemBG[i]:SetBackground(itemEquip[i].BImgID);
+				DIitemBG[i]:SetBackground(itemEquipRef[i].BImgID);
 				DIitemBG[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 	
 				DIitemU[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
-				DIitemU[i]:SetBackground(itemEquip[i].UImgID);
+				DIitemU[i]:SetBackground(itemEquipRef[i].UImgID);
 				DIitemU[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
 				DIitemS[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
-				DIitemS[i]:SetBackground(itemEquip[i].SImgID);
+				DIitemS[i]:SetBackground(itemEquipRef[i].SImgID);
 				DIitemS[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
 				DIitem[i] = CreateControl(Turbine.UI.Control, DIitemCtl[i], 0, 2, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE)
-				DIitem[i]:SetBackground(itemEquip[i].IImgID);
+				DIitem[i]:SetBackground(itemEquipRef[i].IImgID);
 				DIitem[i]:SetBlendMode( Turbine.UI.BlendMode.Overlay );
 
 				-- Item Durability (over the icon)
 				DIitemLblScore[i] = CreateControl(Turbine.UI.Label, DIitemCtl[i], 0, 26, 30, 15)
-				DIitemLblScore[i]:SetText( itemEquip[i].WearStatePts .. "%" );
+				DIitemLblScore[i]:SetText( itemEquipRef[i].WearStatePts .. "%" );
 				DIitemLblScore[i]:SetForeColor( TheColor );
 				DIitemLblScore[i]:SetFont( Turbine.UI.Lotro.Font.Verdana10 );
 				DIitemLblScore[i]:SetFontStyle( Turbine.UI.FontStyle.Outline );
@@ -130,11 +134,11 @@ function DIRefreshListBox()
 					--DIitemLbl[i]:SetForeColor( Color["white"] );
 					--DIitemLbl[i]:SetBackColor( Color["blue"] ); -- debug purpose
 		
-					if itemEquip[i].Item == false then 
+					if itemEquipRef[i].Item == false then 
 						DIitemLbl[i]:SetForeColor( Color["red"] );
 						DIitemLbl[i]:SetText( SlotsText[i] .. ":\n" .. L["EWItemNP"] );
 					else
-						DIitemLbl[i]:SetText( SlotsText[i] .. ":\n" .. itemEquip[i].Name );
+						DIitemLbl[i]:SetText( SlotsText[i] .. ":\n" .. itemEquipRef[i].Name );
 					end
 					DIitemLbl[i]:SetForeColor( TheColor );
 
@@ -143,7 +147,7 @@ function DIRefreshListBox()
 						DIitemLblScore[i] = Turbine.UI.Label();
 						DIitemLblScore[i]:SetParent( DIitemCtl[i] );
 						DIitemLblScore[i]:SetPosition( 250-mis, 0 );
-						DIitemLblScore[i]:SetText( itemEquip[i].WearStatePts .. "%" );
+						DIitemLblScore[i]:SetText( itemEquipRef[i].WearStatePts .. "%" );
 						DIitemLblScore[i]:SetForeColor( TheColor );
 						DIitemLblScore[i]:SetSize( 30, DIitemCtl[i]:GetHeight() );
 						DIitemLblScore[i]:SetFont( Turbine.UI.Lotro.Font.TrajanPro12 );
