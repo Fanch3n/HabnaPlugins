@@ -138,6 +138,40 @@ Constants.DURABILITY_SLOTS_BG = {
     0x410e8680, -- Class Item
 }
 
+
+-- Equipment Slots Enum
+Constants.EquipmentSlots = {
+    Turbine.Gameplay.Equipment.Head,
+    Turbine.Gameplay.Equipment.Chest,
+    Turbine.Gameplay.Equipment.Legs,
+    Turbine.Gameplay.Equipment.Gloves,
+    Turbine.Gameplay.Equipment.Boots,
+    Turbine.Gameplay.Equipment.Shoulder,
+    Turbine.Gameplay.Equipment.Back,
+    Turbine.Gameplay.Equipment.Bracelet1,
+    Turbine.Gameplay.Equipment.Bracelet2,
+    Turbine.Gameplay.Equipment.Necklace,
+    Turbine.Gameplay.Equipment.Ring1,
+    Turbine.Gameplay.Equipment.Ring2,
+    Turbine.Gameplay.Equipment.Earring1,
+    Turbine.Gameplay.Equipment.Earring2,
+    Turbine.Gameplay.Equipment.Pocket,
+    Turbine.Gameplay.Equipment.PrimaryWeapon,
+    Turbine.Gameplay.Equipment.SecondaryWeapon,
+    Turbine.Gameplay.Equipment.RangedWeapon,
+    Turbine.Gameplay.Equipment.CraftTool,
+    Turbine.Gameplay.Equipment.Class
+}
+
+-- Equipment Slot Names (Debug/Display)
+Constants.EquipmentSlotNames = {
+    "Head", "Chest", "Legs", "Gloves", "Boots", "Shoulder", "Back", 
+    "Left Bracelet", "Right Bracelet", "Necklace", "Left Ring", 
+    "Right Ring", "Left Earring", "Right Earring", "Pocket", 
+    "Primary Weapon", "Secondary Weapon", "Ranged Weapon", "Craft Tool", 
+    "Class"
+}
+
 -- ============================================================================
 -- WINDOW DIMENSIONS
 -- ============================================================================

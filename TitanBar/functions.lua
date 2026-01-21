@@ -163,7 +163,7 @@ end
 
 function ChangeWearState(value)
 	-- Set new wear state in table
-	local WearState = PlayerEquipment:GetItem(EquipSlots[value]):GetWearState();
+	local WearState = PlayerEquipment:GetItem(Constants.EquipmentSlots[value]):GetWearState();
 	itemEquip[value].WearState = WearState;
 
 	if WearState == 0 then itemEquip[value].WearStatePts = 0; -- undefined
@@ -208,37 +208,6 @@ function ChangeColor(tColor)
 			end
 		end
 	end
-end
-
-function LoadEquipmentTable()
-	Slots = {
-        "Head", "Chest", "Legs", "Gloves", "Boots", "Shoulder", "Back", 
-        "Left Bracelet", "Right Bracelet", "Necklace", "Left Ring", 
-        "Right Ring", "Left Earring", "Right Earring", "Pocket", 
-        "Primary Weapon", "Secondary Weapon", "Ranged Weapon", "Craft Tool", 
-        "Class"};
-	EquipSlots = {
-		Turbine.Gameplay.Equipment.Head,--						# 1
-		Turbine.Gameplay.Equipment.Chest,--						# 2
-		Turbine.Gameplay.Equipment.Legs,--						# 3
-		Turbine.Gameplay.Equipment.Gloves,--					# 4
-		Turbine.Gameplay.Equipment.Boots,--						# 5
-		Turbine.Gameplay.Equipment.Shoulder,--				# 6
-		Turbine.Gameplay.Equipment.Back,--						# 7
-		Turbine.Gameplay.Equipment.Bracelet1,--				# 8
-		Turbine.Gameplay.Equipment.Bracelet2,--				# 9
-		Turbine.Gameplay.Equipment.Necklace,--				#10
-		Turbine.Gameplay.Equipment.Ring1,--						#11
-		Turbine.Gameplay.Equipment.Ring2,--						#12
-		Turbine.Gameplay.Equipment.Earring1,--				#13
-		Turbine.Gameplay.Equipment.Earring2,--				#14
-		Turbine.Gameplay.Equipment.Pocket,--					#15
-		Turbine.Gameplay.Equipment.PrimaryWeapon,--		#16
-		Turbine.Gameplay.Equipment.SecondaryWeapon,--	#17
-		Turbine.Gameplay.Equipment.RangedWeapon,--		#18
-		Turbine.Gameplay.Equipment.CraftTool,--				#19
-		Turbine.Gameplay.Equipment.Class,--						#20
-	};
 end
 
 function ResetToolTipWin()

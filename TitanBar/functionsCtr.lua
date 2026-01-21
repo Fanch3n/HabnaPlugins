@@ -75,7 +75,6 @@ end
 
 
 function GetEquipmentInfos()
-    LoadEquipmentTable();
     PlayerEquipment = Player:GetEquipment();
     if PlayerEquipment == nil then
         write("<rgb=#FF3333>No equipment, returning.</rgb>");
@@ -88,7 +87,7 @@ function GetEquipmentInfos()
     Wq = 4; -- weight Quality
     Wd = 1; -- weight Durability
 
-    for i, v in ipairs( EquipSlots ) do
+    for i, v in ipairs( Constants.EquipmentSlots ) do
         local PlayerEquipItem = PlayerEquipment:GetItem( v );
         itemEquip[i] = Turbine.UI.Lotro.ItemControl( PlayerEquipItem );
 
@@ -96,7 +95,7 @@ function GetEquipmentInfos()
         if PlayerEquipItem ~= nil then
             itemEquip[i].Item = true;
             itemEquip[i].Name = PlayerEquipItem:GetName();
-            itemEquip[i].Slot = Slots[i];--Debug
+            itemEquip[i].Slot = Constants.EquipmentSlotNames[i];--Debug
 
             local Quality = 10*((6-PlayerEquipItem:GetQuality())%6);
 
@@ -154,7 +153,7 @@ function GetEquipmentInfos()
             itemEquip[i].WearStatePts = 0;
 
             if _G.Debug then
-                write("<rgb=#FF0000>"..i.."</rgb>: <rgb=#6969FF>"..Slots[i]..
+                write("<rgb=#FF0000>"..i.."</rgb>: <rgb=#6969FF>"..Constants.EquipmentSlotNames[i]..
                     ":</rgb> <rgb=#FF3333>NO ITEM</rgb>");
             end
         end
