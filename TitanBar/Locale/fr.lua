@@ -265,7 +265,10 @@ L["MBlightedRelic"] = "Relique infectée";
 L["BlightedRelich"] = "Ce sont vos Reliques infectées";
 -- Tattered Shadows
 L["MTatteredShadow"] = "Ombre en lambeaux";
-L["atteredShadowh"] = "Ombres en lambeaux";
+L["TatteredShadowh"] = "Ce sont vos Ombres en lambeaux";
+-- Fangorn Leaf
+L["MFangornLeaf"] = "Feuille de Fangorn";
+L["FangornLeafh"] = "Ce sont vos Feuilles de Fangorn";
 
 -- Control Menu
 L[ "MCU" ] = "D\195\169charger ...";

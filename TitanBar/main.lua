@@ -93,6 +93,8 @@ LoadSettings();
 -- Ensure settings is globally accessible for dynamically loaded controls
 _G.settings = settings;
 
+import (AppDirD.."TooltipManager");
+import (AppDirD.."EquipmentManager");
 import (AppDirD.."UIHelpers");
 import (AppDirD.."ControlFactory");
 
@@ -110,6 +112,16 @@ import (AppCtrD.."MoneyInfos");
 import (AppCtrD.."BagInfos");
 import (AppCtrD.."PlayerInfos");
 import (AppCtrD.."PlayerLoc");
+import (AppCtrD.."EquipInfos");
+import (AppCtrD.."DurabilityInfos");
+import (AppCtrD.."TrackItems");
+import (AppCtrD.."Infamy");
+import (AppCtrD.."Vault");
+import (AppCtrD.."SharedStorage");
+import (AppCtrD.."DayNight");
+import (AppCtrD.."Reputation");
+import (AppCtrD.."LOTROPoints");
+import (AppCtrD.."GameTime");
 import (AppDirD.."functionsMenu");
 import (AppDirD.."functionsMenuControl");
 import (AppDirD.."OptionPanel"); 
@@ -159,7 +171,7 @@ if PlayerAlign == 1 then
 		L["MIronSignetOfTheAxe"],	L["MIronSignetOfTheBlackMoon"],	L["MIronSignetOfTheNecromancer"],	L["MIronSignetOfTheTwinFlame"],
     L["MPhialCrimsonExtract"], L["MPhialUmberExtract"], L["MPhialVerdantExtract"], L["MPhialGoldenExtract"], L["MPhialVioletExtract"], L["MPhialAmberExtract"],
 		L["MPhialSapphireExtract"], L["MShaganiGhin"], L["MHamatiUrgul"], L["MMurGhalaSarz"], L["MSilverSerpent"], L["MHuntersGuildMark"], L["MBlightedRelic"],
-		L["MTatteredShadow"],
+		L["MTatteredShadow"], L["MFangornLeaf"],
 	}
 else
 	MenuItem = { L["MCommendation"], L["MLotroPoints"] }
@@ -243,6 +255,7 @@ _G.CurrencyLangMap = { -- reverse lookup table necessary to get the internal ite
 	[L["MHuntersGuildMark"]] = "HuntersGuildMark",
 	[L["MBlightedRelic"]] = "BlightedRelic",
 	[L["MTatteredShadow"]] = "TatteredShadow",
+	[L["MFangornLeaf"]] = "FangornLeaf",
 }
 
 function CheckForReputationImport()

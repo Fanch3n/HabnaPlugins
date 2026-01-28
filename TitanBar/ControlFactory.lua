@@ -18,7 +18,7 @@ function CreateTitanBarControl(controlTable, alpha, red, green, blue)
 	control:SetZOrder(2)
 	control:SetBlendMode(Turbine.UI.BlendMode.AlphaBlend)
 	control:SetBackColor(Turbine.UI.Color(alpha, red, green, blue))
-	
+
 	controlTable["Ctr"] = control
 	return control
 end
@@ -42,7 +42,7 @@ function CreateControlIcon(parent, width, height, background, blendMode, stretch
 	local icon = Turbine.UI.Control()
 	icon:SetParent(parent)
 	icon:SetBlendMode(blendMode or Turbine.UI.BlendMode.AlphaBlend)
-	
+
 	-- Handle StretchMode 1 correctly: set original size first, then stretch mode, then final size
 	if stretchMode == 1 then
 		if not originalWidth or not originalHeight then
@@ -63,7 +63,7 @@ function CreateControlIcon(parent, width, height, background, blendMode, stretch
 			icon:SetStretchMode(stretchMode)
 		end
 	end
-	
+
 	return icon
 end
 
@@ -85,7 +85,7 @@ function SetupControlInteraction(config)
 	local icon = config.icon
 	local controlTable = config.controlTable
 	local settingsSection = config.settingsSection
-	
+
 	-- Derive controlId from controlTable by finding which ControlData entry references it
 	local controlId = config.controlId
 	if not controlId and controlTable then
@@ -96,12 +96,12 @@ function SetupControlInteraction(config)
 			end
 		end
 	end
-	
+
 	-- Use controlId for all derived values
 	local tooltipName = config.tooltipName or controlId
 	local windowImportPath = config.windowImportPath or (AppCtrD .. controlId .. "Window")
 	local windowFunction = config.windowFunction or ("frm" .. controlId .. "Window")
-	local hasTooltip = config.hasTooltip ~= false -- default true
+	local hasTooltip = config.hasTooltip ~= false           -- default true
 	local customTooltipHandler = config.customTooltipHandler -- optional custom tooltip show function
 	local tooltipKey = config.tooltipKey or controlId
 	local tooltipReposition = config.tooltipReposition
@@ -125,7 +125,7 @@ function SetupControlInteraction(config)
 			tooltipShowFn = customTooltipHandler
 		else
 			tooltipShowFn = function()
-				ShowToolTipWin(tooltipName)
+				TooltipManager.ShowStandard(tooltipName)
 			end
 		end
 
@@ -138,10 +138,10 @@ function SetupControlInteraction(config)
 			captureWindow = tooltipCaptureWindow
 		}
 	end
-	
+
 	-- Create move handler
 	local moveCtr = CreateMoveHandler(controlTable["Ctr"], icon)
-	
+
 	-- Mouse move handler
 	icon.MouseMove = function(sender, args)
 		if leaveControl and leaveControl.MouseLeave then
@@ -154,14 +154,14 @@ function SetupControlInteraction(config)
 			TooltipManager.Show(tooltipOptions)
 		end
 	end
-	
+
 	-- Mouse leave handler
 	if tooltipOptions then
 		icon.MouseLeave = function(sender, args)
 			TooltipManager.Hide(tooltipOptions)
 		end
 	end
-	
+
 	local function logError(prefix, err)
 		Turbine.Shell.WriteLine(string.format("TitanBar: %s (%s)", prefix, err))
 	end
@@ -177,8 +177,8 @@ function SetupControlInteraction(config)
 			return nil
 		end
 		return tryNamespace(HabnaPlugins and HabnaPlugins.TitanBar and HabnaPlugins.TitanBar.Control)
-			or tryNamespace(HabnaPlugins and HabnaPlugins.TitanBar)
-			or tryNamespace(HabnaPlugins)
+				or tryNamespace(HabnaPlugins and HabnaPlugins.TitanBar)
+				or tryNamespace(HabnaPlugins)
 	end
 
 	local function toggleWindowDefault()
@@ -231,15 +231,16 @@ function SetupControlInteraction(config)
 			end
 		elseif args.Button == Turbine.UI.MouseButton.Right then
 			handleRightClick()
+		end
+		_G.WasDrag = false
 	end
-	_G.WasDrag = false
-end
 
--- Drag handlers
-local dragHandlers = CreateDragHandlers(controlTable["Ctr"], settingsSection, controlId)
-icon.MouseDown = dragHandlers.MouseDown
-icon.MouseUp = dragHandlers.MouseUp
-end-- ============================================================================
+	-- Drag handlers
+	local dragHandlers = CreateDragHandlers(controlTable["Ctr"], settingsSection, controlId)
+	icon.MouseDown = dragHandlers.MouseDown
+	icon.MouseUp = dragHandlers.MouseUp
+end -- ============================================================================
+
 -- LABEL CREATION
 -- ============================================================================
 

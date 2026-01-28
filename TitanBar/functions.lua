@@ -35,124 +35,14 @@ function round(num)
     return math.floor(num + 0.5)
 end
 
-function ApplySkin() --Tooltip skin
-	local ToolTipWin = _G.ToolTipWin
-	local Box = resources.Box
-
-	-- Create and position tooltip corners and edges
-	local function createTooltipPart(name, x, y, width, height, background)
-		local part = CreateControl(Turbine.UI.Control, ToolTipWin, x, y, width, height)
-		part:SetBackground(background)
-	end
-
-	createTooltipPart("topLeftCorner", 0, 0, 36, 36, Box.TopLeft)
-	createTooltipPart("TopBar", 36, 0, ToolTipWin:GetWidth() - 36, 37, Box.Top)
-	createTooltipPart("topRightCorner", ToolTipWin:GetWidth() - 36, 0, 36, 36, Box.TopRight)
-	createTooltipPart("midLeft", 0, 36, 36, ToolTipWin:GetHeight() - 36, Box.MidLeft)
-	createTooltipPart("MidMid", 36, 36, ToolTipWin:GetWidth() - 36, ToolTipWin:GetHeight() - 36, Box.Middle)
-	createTooltipPart("midRight", ToolTipWin:GetWidth() - 36, 36, 36, ToolTipWin:GetHeight() - 36, Box.MidRight)
-	createTooltipPart("botLeftCorner", 0, ToolTipWin:GetHeight() - 36, 36, 36, Box.BottomLeft)
-	createTooltipPart("BotBar", 36, ToolTipWin:GetHeight() - 36, ToolTipWin:GetWidth() - 36, 36, Box.Bottom)
-	createTooltipPart("botRightCorner", ToolTipWin:GetWidth() - 36, ToolTipWin:GetHeight() - 36, 36, 36, Box.BottomRight)
-end
-
-function createToolTipWin( xOffset, yOffset, xSize, ySize, side, header, text1,
-        text2, text3 )
-	local txt = {text1, text2, text3};
-	_G.ToolTipWin = Turbine.UI.Window();
-	_G.ToolTipWin:SetSize( xSize, ySize );
-	--_G.ToolTipWin:SetMouseVisible( false );
-	_G.ToolTipWin:SetZOrder( Constants.ZORDER_TOOLTIP );
-	_G.ToolTipWin.xOffset = xOffset;
-	_G.ToolTipWin.yOffset = yOffset;
-	--_G.ToolTipWin:SetBackColor( Color["black"] ); --Debug purpose
-
-	ApplySkin();
-
-	local lblheader = CreateControl(Turbine.UI.Label, _G.ToolTipWin, 40, 7, xSize, ySize);
-	lblheader:SetForeColor( Color["green"] );
-	lblheader:SetFont(Turbine.UI.Lotro.Font.Verdana16);
-	lblheader:SetText( header );
-	
-	local YPos = 25;
-
-	for i = 1, #txt do
-		local lbltext = CreateControl(Turbine.UI.Label, _G.ToolTipWin, 40, YPos, xSize, 15);
-		lbltext:SetForeColor( Color["white"] );
-		lbltext:SetFont(Turbine.UI.Lotro.Font.Verdana14);
-		lbltext:SetText( txt[i] );
-		YPos = YPos + 15;
-	end
-	
-	return _G.ToolTipWin;
-end
-
--- Legend
--- ( offsetX, offsetY, width, height, bubble side, header text, text1, text2, text3, text4 )
-function ShowToolTipWin(ToShow)
-	local w = 350
-	local bblTo, x, y= "left", -5, -15
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
-	local h = 80
-	local TTW = nil
-
-	local headerKeys = {
-		BI = "MBI",
-		GT = "GTh",
-		VT = "MVault",
-		SS = "MStorage",
-		DN = "MDayNight",
-		LP = "LotroPointsh",
-	}
-
-	-- TODO if DI (DurIcon) is replaced this needs to change
-	if TBLocale == "fr" then w = 315;
-	elseif TBLocale == "de" then
-		if ToShow == "DI" then w = 225; 
-		else w = 305; end
-	end
-
-	if w + mouseX > screenWidth then
-		bblTo = "right"
-		x = w - 10
-	end
-
-	if not TBTop then
-		y = h
-	end
-
-	local headerKey = headerKeys[ToShow]
-	if headerKey then
-		TTW = createToolTipWin(x, y, w, h, bblTo, L[headerKey], L["EIt1"], L["EIt2"], L["EIt3"])
-	elseif ToShow == "DP" or ToShow == "PL" or _G.currencies.byName[ToShow] then
-		h = 65;
-		TTW = createToolTipWin(x, y, w, h, bblTo, L[ToShow .. "h"], L["EIt2"], L["EIt3"])
-	else
-		write(ToShow .. " not recognized for Tooltip creation, add in functions.lua")
-		return
-	end
-
-	_G.ToolTipWin:SetPosition(
-		mouseX - _G.ToolTipWin.xOffset,
-		mouseY - _G.ToolTipWin.yOffset
-	)
-	_G.ToolTipWin:SetVisible(true);
+function ApplySkin()
+    if _G.ToolTipWin then
+        TooltipManager.ApplySkin(_G.ToolTipWin)
+    end
 end
 
 
 
-
-function UpdateLOTROPoints()
-	local where = (_G.ControlData and _G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE
-	if where == Constants.Position.TITANBAR then
-		local lpData = _G.ControlData and _G.ControlData.LP
-		local points = (lpData and tonumber(lpData.points)) or 0
-		_G.ControlData.LP.controls["Lbl"]:SetText(tostring(points))
-		_G.ControlData.LP.controls["Lbl"]:SetSize(_G.ControlData.LP.controls["Lbl"]:GetTextLength() * NM, CTRHeight)
-		AdjustIcon("LP")
-	end
-	SavePlayerLOTROPoints()
-end
 
 function UpdateCurrencyDisplay(currencyName)
 	if _G.CurrencyData[currencyName].Where == 1 then
@@ -170,165 +60,8 @@ end
 
 
 
-function ChangeWearState(value)
-	-- Set new wear state in table
-	local WearState = PlayerEquipment:GetItem(EquipSlots[value]):GetWearState();
-	itemEquip[value].WearState = WearState;
 
-	if WearState == 0 then itemEquip[value].WearStatePts = 0; -- undefined
-	elseif WearState == 3 then itemEquip[value].WearStatePts = 0; -- Broken
-	elseif WearState == 1 then itemEquip[value].WearStatePts = 20; -- Damaged
-	elseif WearState == 4 then itemEquip[value].WearStatePts = 99; -- Worn
-	elseif WearState == 2 then itemEquip[value].WearStatePts = 100; -- Pristine
-    end
 
-	UpdateDurabilityInfos();
-end
-
-function UpdateDurabilityInfos()
-	local TDPts = 0;
-	for i = 1, 20 do
-        TDPts = TDPts + itemEquip[i].WearStatePts;
-    end
-    if numItems == 0 then TDPts = 100;
-    else TDPts = TDPts / numItems; end
-
-	--Change durability icon with %
-	local DurIcon = nil;
-	if TDPts >= 0 and TDPts <= 33 then DurIcon = 1; end--0x41007e29
-	if TDPts >= 34 and TDPts <= 66 then DurIcon = 2; end--0x41007e29
-	if TDPts >= 67 and TDPts <= 100 then DurIcon = 3; end--0x41007e28
-	_G.ControlData.DI.controls[ "Icon" ]:SetBackground( resources.Durability[DurIcon] );
-
-	TDPts = string.format( "%.0f", TDPts );
-	_G.ControlData.DI.controls[ "Lbl" ]:SetText( TDPts .. "%" );
-	_G.ControlData.DI.controls[ "Lbl" ]:SetSize( _G.ControlData.DI.controls[ "Lbl" ]:GetTextLength() * NM + 5, CTRHeight ); 
-	AdjustIcon( "DI" );
-end
-
-function UpdateEquipsInfos()
-    TotalItemsScore = 0;
-    for i = 1,20 do TotalItemsScore = TotalItemsScore + itemEquip[i].Score; end
-		AdjustIcon("EI")
-end
-
-function UpdateTrackItems()
-	AdjustIcon( "TI" );
-end
-
-function UpdateInfamy()
-	--Change Rank icon with infamy points
-	_G.ControlData.IF.controls[ "Icon" ]:SetBackground( InfIcon[tonumber(settings.Infamy.K)] );
-	
-	AdjustIcon( "IF" );
-end
-
-function UpdateVault()
-	AdjustIcon( "VT" );
-end
-
-function UpdateSharedStorage()
-	AdjustIcon( "SS" );
-end
-
-function UpdateDayNight()
-	local cdate = Turbine.Engine.GetDate();
-	local chour = cdate.Hour;
-	local cminute = cdate.Minute;
-	local ampm = "";
-	timer, sDay = nil, nil;
-
-	GetInGameTime();
-	local DNLen = 0;
-	local DNTime = timer;
-	DNLen1 = string.len(DNTime) * TM;
-	DNLen = DNLen1;
-	
-	local dnData = (_G.ControlData and _G.ControlData.DN) or {}
-	if dnData.next ~= false then --Show next day & night time
-		if totalseconds >= 60 then NDNTime = cdminutes .. " min: " .. ntimer;
-		else NDNTime = totalseconds .. " sec: " .. ntimer; end
-
-		local DNLen2 = string.len(NDNTime) * TM;
-		if DNLen2 > DNLen1 then DNLen = DNLen2; end
-
-		_G.ControlData.DN.controls[ "Lbl" ]:SetText( DNTime .. "\n" .. NDNTime );
-	else
-		_G.ControlData.DN.controls[ "Lbl" ]:SetText( DNTime );
-	end
-
-	_G.ControlData.DN.controls[ "Lbl" ]:SetSize( DNLen, CTRHeight ); --Auto size with text length
-	--DN[ "Lbl" ]:SetBackColor( Color["white"] ); -- Debug purpose
-
-	if sDay == "day" then _G.ControlData.DN.controls[ "Icon" ]:SetBackground( resources.Sun );
-        -- Sun in-game icon (0x4101f898 or 0x4101f89b)
-	else _G.ControlData.DN.controls[ "Icon" ]:SetBackground( resources.Moon ); end -- Moon in-game icon
-
-	AdjustIcon( "DN" );
-end
-
-function UpdateReputation()
-	AdjustIcon( "RP" );
-end
-
-function UpdateGameTime(str)
-	local gtData = _G.ControlData and _G.ControlData.GT
-	local clock24h = gtData and gtData.clock24h == true
-	local showST = gtData and gtData.showST == true
-	local showBT = gtData and gtData.showBT == true
-	local userGMT = (gtData and tonumber(gtData.userGMT)) or 0
-
-	local cdate = Turbine.Engine.GetDate();
-	local chour = cdate.Hour;
-	local cminute = cdate.Minute;
-	local ampm = "";
-	TheTime = nil;
-	TextLen = nil;
-
-	local function formatTime(hour, minute)
-		local suffix = "";
-		if not clock24h then
-			if hour == 12 then suffix = "pm";
-			elseif hour >= 13 then hour = hour - 12; suffix = "pm";
-			else if hour == 0 then hour = 12; end suffix = "am"; end
-		end
-
-		return hour .. ":" .. string.format("%02d", minute) .. suffix;
-	end
-
-	if str == "st" then
-		if showST then
-			chour = chour + userGMT;
-			if chour < 0 then
-				chour = 24 + chour;
-				if chour == 0 then chour = 24; end
-			elseif chour == 24 then
-				chour = 24 - chour;
-			end
-		end
-
-		gtData.stime = formatTime(chour, cminute);
-		TheTime = gtData.stime;
-		TextLen = string.len(TheTime) * NM;
-	elseif str == "gt" then
-		--write("Game Time");
-		gtData.gtime = formatTime(chour, cminute);
-		TheTime = gtData.gtime;
-		TextLen = string.len(TheTime) * TM;
-	elseif str == "bt" then
-		--write("Both Time");
-		UpdateGameTime("st");
-		UpdateGameTime("gt");
-		TheTime = L["GTWST"] .. gtData.stime;
-		TextLen = string.len(TheTime) * NM;
-		TheTime = 
-            L["GTWST"] .. gtData.stime .. "\n" .. L["GTWRT"] .. gtData.gtime .. " ";
-	end
-	
-	_G.ControlData.GT.controls[ "Lbl" ]:SetText( TheTime );
-	_G.ControlData.GT.controls[ "Lbl" ]:SetSize( TextLen, CTRHeight ); --Auto size with text length
-	_G.ControlData.GT.controls[ "Ctr" ]:SetSize( _G.ControlData.GT.controls[ "Lbl" ]:GetWidth(), CTRHeight );
-end
 
 function ChangeColor(tColor)
 	if BGWToAll then
@@ -363,43 +96,6 @@ function ChangeColor(tColor)
 	end
 end
 
-function LoadEquipmentTable()
-	Slots = {
-        "Head", "Chest", "Legs", "Gloves", "Boots", "Shoulder", "Back", 
-        "Left Bracelet", "Right Bracelet", "Necklace", "Left Ring", 
-        "Right Ring", "Left Earring", "Right Earring", "Pocket", 
-        "Primary Weapon", "Secondary Weapon", "Ranged Weapon", "Craft Tool", 
-        "Class"};
-	EquipSlots = {
-		Turbine.Gameplay.Equipment.Head,--						# 1
-		Turbine.Gameplay.Equipment.Chest,--						# 2
-		Turbine.Gameplay.Equipment.Legs,--						# 3
-		Turbine.Gameplay.Equipment.Gloves,--					# 4
-		Turbine.Gameplay.Equipment.Boots,--						# 5
-		Turbine.Gameplay.Equipment.Shoulder,--				# 6
-		Turbine.Gameplay.Equipment.Back,--						# 7
-		Turbine.Gameplay.Equipment.Bracelet1,--				# 8
-		Turbine.Gameplay.Equipment.Bracelet2,--				# 9
-		Turbine.Gameplay.Equipment.Necklace,--				#10
-		Turbine.Gameplay.Equipment.Ring1,--						#11
-		Turbine.Gameplay.Equipment.Ring2,--						#12
-		Turbine.Gameplay.Equipment.Earring1,--				#13
-		Turbine.Gameplay.Equipment.Earring2,--				#14
-		Turbine.Gameplay.Equipment.Pocket,--					#15
-		Turbine.Gameplay.Equipment.PrimaryWeapon,--		#16
-		Turbine.Gameplay.Equipment.SecondaryWeapon,--	#17
-		Turbine.Gameplay.Equipment.RangedWeapon,--		#18
-		Turbine.Gameplay.Equipment.CraftTool,--				#19
-		Turbine.Gameplay.Equipment.Class,--						#20
-	};
-end
-
-function ResetToolTipWin()
-	if _G.ToolTipWin ~= nil then
-		_G.ToolTipWin:SetVisible( false );
-		_G.ToolTipWin = nil;
-	end
-end
 
 function Player:InCombatChanged(sender, args)
 	if TBAutoHide == L["OPAHC"] then AutoHideCtr:SetWantsUpdates( true ); end
@@ -555,49 +251,6 @@ function DecryptMoney( v )
 end
 
 
-function GetInGameTime()
-	local nowtime = Turbine.Engine.GetLocalTime();
-	local gametime = Turbine.Engine.GetGameTime();
-	local ts = (_G.ControlData and _G.ControlData.DN and tonumber(_G.ControlData.DN.ts)) or 0
-	local InitDawn =  nowtime - gametime + ts;
-	local adjust = (nowtime - (nowtime - gametime + ts)) % Constants.GAME_TIME_CYCLE;
-  local darray = {572, 1722, 1067, 1678, 1101, 570, 1679, 539, 1141, 1091};
-	local dtarray = {
-        L["Dawn"], L["Morning"], L["Noon"], L["Afternoon"], L["Dusk"], 
-        L["Gloaming"], L["Evening"], L["Midnight"], L["LateWatches"],
-        L["Foredawn"], L["Dawn"]}; 
-    if (adjust <= 6140) then sDay = "day" else sDay = "night" end;
-    local dapos = 1;
-    if (adjust <= 572) then dapos = 1;
-	elseif (adjust <= 2294) then dapos = 2;
-	elseif (adjust <= 3361) then dapos = 3;
-	elseif (adjust <= 5039) then dapos = 4;
-	elseif (adjust <= 6140) then dapos = 5;
-	elseif (adjust <= 6710) then dapos = 6;
-	elseif (adjust <= 8389) then dapos = 7;
-	elseif (adjust <= 8928) then dapos = 8;
-	elseif (adjust <= 10069) then dapos = 9;
-	elseif (adjust <= 11160) then dapos = 10;
-	end
-    timer = dtarray[dapos];
-    ntimer = dtarray[dapos+1];
-    local timesincedawn = (nowtime - InitDawn) % 11160;
-	
-	local tempIGduration = 0;
-	for m = 1, dapos do
-		tempIGduration = tempIGduration + darray[m]; 
-        -- duration from dawn through next IG time
-	end
-	
-	totalseconds = math.floor( tempIGduration - timesincedawn );  
-    -- duration left for current IG time is equal to (time from dawn to next 
-    -- IG time) minus (time from now since last dawn)
-	
-	local cdhours = math.floor( totalseconds / 3600 );
-	cdminutes = math.floor( 60*( (totalseconds / 3600) - cdhours) );
-	local cdseconds = math.floor( 60*(60*( (totalseconds/3600) - cdhours ) 
-        - cdminutes) + 0.5 );
-end
 -- For debug purpose
 function ShowTableContent( table )
 	if table == nil then write( "Table " .. table .. " is empty!" ); return end
@@ -614,11 +267,6 @@ function ShowTableContent( table )
 	end
 end
 
-function GetTotalItems( MyTable )
-	local counter = 0;
-	for k, v in pairs( MyTable ) do counter = counter + 1; end
-	return counter;
-end
 
 PlayerAtt = nil;
 ---Central function to handle calling Player:GetAttributes().

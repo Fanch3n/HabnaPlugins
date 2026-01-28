@@ -1,321 +1,76 @@
 -- functionsMenu.lua
--- Written By Habna
+-- Functions for the context menu
+
+-- Generic Toggle Function to replace individual handlers
+function ToggleControl(id)
+	local controlData = _G.ControlData[id]
+	if not controlData then return end
+
+	-- Toggle state
+	controlData.show = not controlData.show
+
+	-- Update Settings
+	local regData = _G.ControlRegistry.Get(id)
+	if regData and regData.settingsKey then
+		if not settings[regData.settingsKey] then settings[regData.settingsKey] = {} end
+		settings[regData.settingsKey].V = controlData.show
+		-- Preserving 'Where' if it exists (some existing functions do this)
+		if controlData.where ~= nil then
+			settings[regData.settingsKey].W = string.format("%.0f", controlData.where or Constants.Position.NONE)
+		end
+	end
+
+	SaveSettings(false)
+
+	-- Handle UI Update
+	if controlData.show then
+		ImportCtr(id)
+
+		-- Set Background Color if control exists
+		if controlData.controls and controlData.controls["Ctr"] and controlData.colors then
+			local colors = controlData.colors
+			controlData.controls["Ctr"]:SetBackColor(Turbine.UI.Color(colors.alpha, colors.red, colors.green, colors.blue))
+			controlData.controls["Ctr"]:SetVisible(true)
+		end
+
+		-- Custom OnShow Hook
+		if controlData.onShow then controlData.onShow() end
+		
+		-- Special case for Equipment callbacks (removed from legacy functions but logic was complex)
+		-- Since Equipment Infos logic is quite specific (callbacks added in Toggle), we might need to handle EI/DI separately or move logic to Initialize
+	else
+		-- Cleanup Callbacks
+		if controlData.callbacks then
+			for _, cb in ipairs(controlData.callbacks) do
+				if RemoveCallback then RemoveCallback(cb.obj, cb.evt, cb.func) end
+			end
+			controlData.callbacks = {}
+		end
+		
+		-- Custom OnHide Hook
+		if controlData.onHide then controlData.onHide() end
+		
+		-- Close Window
+		local window = controlData.ui and controlData.ui.window
+		if window then window:Close() end
+
+		-- Hide Control
+		if controlData.controls and controlData.controls["Ctr"] then
+			controlData.controls["Ctr"]:SetVisible(false)
+		end
+	end
+
+	-- Update Option Panel Checkbox
+	-- Access the specific menu item stored in the control data
+	local menuItem = controlData.ui and controlData.ui.menuItem
+	if menuItem and menuItem.SetChecked then
+		menuItem:SetChecked(controlData.show)
+	end
+end
 
 
---**v Functions for the menu v**
-
--- **v Show/Hide Wallet v**
-function ShowHideWallet()
-	local controlData = _G.ControlData.WI
-	controlData.show = not controlData.show
-	if not settings.Wallet then settings.Wallet = {} end
-	settings.Wallet.V = controlData.show
-	SaveSettings( false );
-	if controlData.show then
-		--write( "TitanBar: Showing wallet control");
-		ImportCtr( "WI" );
-		local colors = _G.ControlData.WI.colors
-		_G.ControlData.WI.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-	else
-		--write( "TitanBar: Hiding wallet control");
-		local window = _G.ControlData.WI.ui and _G.ControlData.WI.ui.window; if window then window:Close(); end
-	end
-	_G.ControlData.WI.controls[ "Ctr" ]:SetVisible( controlData.show );
-	opt_WI:SetChecked( controlData.show );
-end
--- **^
--- **v Show/Hide Money v**
-function ShowHideMoney()
-	local controlData = _G.ControlData.Money
-	controlData.show = not controlData.show
-	if not settings.Money then settings.Money = {} end
-	settings.Money.V = controlData.show
-	settings.Money.W = string.format("%.0f", controlData.where or Constants.Position.NONE);
-	SaveSettings( false );
-	ImportCtr( "MI" );
-	if controlData.show then
-		--write( "TitanBar: Showing money");
-		--ImportCtr( "MI" );
-		local colors = _G.ControlData.Money.colors
-		_G.ControlData.Money.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-	else
-		--write( "TitanBar: Hiding money");
-		local window = _G.ControlData.Money.ui and _G.ControlData.Money.ui.window; if window then window:Close(); end
-	end
-	_G.ControlData.Money.controls[ "Ctr" ]:SetVisible( controlData.show );
-end
--- **^
--- **v Show/Hide LOTRO Points v**
-function ShowHideLOTROPoints()
-	local controlData = _G.ControlData.LP
-	controlData.show = not controlData.show
-	if not settings.LOTROPoints then settings.LOTROPoints = {} end
-	settings.LOTROPoints.V = controlData.show
-	settings.LOTROPoints.W = string.format("%.0f", controlData.where or Constants.Position.NONE);
-	SaveSettings( false );
-	ImportCtr( "LP" );
-	if controlData.show then
-		local colors = _G.ControlData.LP.colors
-		_G.ControlData.LP.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-	else
-		local window = _G.ControlData.LP.ui and _G.ControlData.LP.ui.window; if window then window:Close(); end
-	end
-	_G.ControlData.LP.controls[ "Ctr" ]:SetVisible( controlData.show );
-end
--- **^
--- **v Show/Hide backpack Infos v**
-function ShowHideBackpackInfos()
-	local controlData = _G.ControlData.BI
-	controlData.show = not controlData.show
-	if not settings.BagInfos then settings.BagInfos = {} end
-	settings.BagInfos.V = controlData.show
-	SaveSettings( false );
-	if controlData.show then
-		ImportCtr( "BI" );
-		local colors = _G.ControlData.BI.colors
-		_G.ControlData.BI.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-	else
-        local biData = _G.ControlData.BI
-        if biData and biData.callbacks then
-            for _, cb in ipairs(biData.callbacks) do
-                if RemoveCallback then RemoveCallback(cb.obj, cb.evt, cb.func) end
-            end
-            biData.callbacks = {}
-        end
-		local window = _G.ControlData.BI.ui and _G.ControlData.BI.ui.window; if window then window:Close(); end
-	end
-	_G.ControlData.BI.controls[ "Ctr" ]:SetVisible( controlData.show );
-	opt_BI:SetChecked( controlData.show );
-end
---**^
--- **v Show/Hide backpack Infos v**
-function ShowHidePlayerInfos()
-	local controlData = _G.ControlData.PI
-	controlData.show = not controlData.show
-	if not settings.PlayerInfos then settings.PlayerInfos = {} end
-	settings.PlayerInfos.V = controlData.show
-	SaveSettings( false );
-	if controlData.show then
-		ImportCtr( "PI" );
-		local colors = _G.ControlData.PI.colors
-		_G.ControlData.PI.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-	else
-        local piData = _G.ControlData.PI
-        if piData and piData.callbacks then
-            for _, cb in ipairs(piData.callbacks) do
-                if RemoveCallback then RemoveCallback(cb.obj, cb.evt, cb.func) end
-            end
-            piData.callbacks = {}
-        end
-	end
-	_G.ControlData.PI.controls[ "Ctr" ]:SetVisible( controlData.show );
-	opt_PI:SetChecked( controlData.show );
-end
---**^
--- **v Show/Hide equipment Infos v**
-function ShowHideEquipInfos()
-	local controlData = _G.ControlData.EI
-	controlData.show = not controlData.show
-	if not settings.EquipInfos then settings.EquipInfos = {} end
-	settings.EquipInfos.V = controlData.show
-	SaveSettings( false );
-	if controlData.show then
-		GetEquipmentInfos();
-		AddCallback(PlayerEquipment, "ItemEquipped", function(sender, args) if _G.ControlData.EI.show then GetEquipmentInfos(); UpdateEquipsInfos(); end end);
-		AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) ItemUnEquippedTimer:SetWantsUpdates( true ); end); --Workaround
-		ImportCtr( "EI" );
-		local colors = _G.ControlData.EI.colors
-		_G.ControlData.EI.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-	else
-		RemoveCallback(PlayerEquipment, "ItemEquipped");
-		RemoveCallback(PlayerEquipment, "ItemUnequipped");
-		local window = _G.ControlData.EI.ui and _G.ControlData.EI.ui.window; if window then window:Close(); end
-	end
-	_G.ControlData.EI.controls[ "Ctr" ]:SetVisible( controlData.show );
-	opt_EI:SetChecked( controlData.show );
-end
---**^
--- **v Show/Hide durability Infos v**
-function ShowHideDurabilityInfos()
-	local controlData = _G.ControlData.DI
-	controlData.show = not controlData.show
-	if not settings.DurabilityInfos then settings.DurabilityInfos = {} end
-	settings.DurabilityInfos.V = controlData.show
-	SaveSettings( false );
-	if controlData.show then
-		GetEquipmentInfos();
-		AddCallback(PlayerEquipment, "ItemEquipped", function(sender, args) if _G.ControlData.EI.show then GetEquipmentInfos(); UpdateEquipsInfos(); end if _G.ControlData.DI.show then GetEquipmentInfos(); UpdateDurabilityInfos(); end end);
-		AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) ItemUnEquippedTimer:SetWantsUpdates( true ); end); --Workaround
-		ImportCtr( "DI" );
-		local colors = _G.ControlData.DI.colors
-		_G.ControlData.DI.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-	else
-		RemoveCallback(PlayerEquipment, "ItemEquipped");
-		RemoveCallback(PlayerEquipment, "ItemUnequipped");
-		local window = _G.ControlData.DI.ui and _G.ControlData.DI.ui.window; if window then window:Close(); end
-	end
-	_G.ControlData.DI.controls[ "Ctr" ]:SetVisible( controlData.show );
-	opt_DI:SetChecked( controlData.show );
-end
---**^
--- **v Show/Hide Tracked Items Infos v**
-function ShowHideTrackItems()
-	local controlData = _G.ControlData.TI
-	controlData.show = not controlData.show
-	if not settings.TrackItems then settings.TrackItems = {} end
-	settings.TrackItems.V = controlData.show
-	SaveSettings( false );
-	if controlData.show then
-		ImportCtr( "TI" );
-		local colors = _G.ControlData.TI.colors
-		_G.ControlData.TI.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-	else
-		local window = _G.ControlData.TI.ui and _G.ControlData.TI.ui.window; if window then window:Close(); end
-	end
-	_G.ControlData.TI.controls[ "Ctr" ]:SetVisible( controlData.show );
-	opt_TI:SetChecked( controlData.show );
-end
---**^
--- **v Show/Hide Infamy v**
-function ShowHideInfamy()
-	local controlData = _G.ControlData.IF
-	controlData.show = not controlData.show
-	if not settings.Infamy then settings.Infamy = {} end
-	settings.Infamy.V = controlData.show
-	SaveSettings( false );
-	if controlData.show then
-		ImportCtr( "IF" );
-		local colors = _G.ControlData.IF.colors
-		_G.ControlData.IF.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-	else
-		RemoveCallback(Turbine.Chat, "Received", IFcb);
-		local window = _G.ControlData.IF.ui and _G.ControlData.IF.ui.window; if window then window:Close(); end
-	end
-	_G.ControlData.IF.controls[ "Ctr" ]:SetVisible( controlData.show );
-	opt_IF:SetChecked( controlData.show );
-end
--- **^
--- **v Show/Hide Vault v**
-function ShowHideVault()
-	local controlData = _G.ControlData.VT
-	controlData.show = not controlData.show
-	if not settings.Vault then settings.Vault = {} end
-	settings.Vault.V = controlData.show
-	SaveSettings( false );
-	if controlData.show then
-		ImportCtr( "VT" );
-		local colors = _G.ControlData.VT.colors
-		_G.ControlData.VT.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-	else
-		RemoveCallback(vaultpack, "CountChanged");
-		local window = _G.ControlData.VT.ui and _G.ControlData.VT.ui.window; if window then window:Close(); end
-	end
-	_G.ControlData.VT.controls[ "Ctr" ]:SetVisible( controlData.show );
-	opt_VT:SetChecked( controlData.show );
-end
--- **^
--- **v Show/Hide SharedStorage v**
-function ShowHideSharedStorage()
-	local controlData = _G.ControlData.SS
-	controlData.show = not controlData.show
-	if not settings.SharedStorage then settings.SharedStorage = {} end
-	settings.SharedStorage.V = controlData.show
-	SaveSettings( false );
-	if controlData.show then
-		ImportCtr( "SS" );
-		local colors = _G.ControlData.SS.colors
-		_G.ControlData.SS.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-	else
-		RemoveCallback(sspack, "CountChanged");
-		local window = _G.ControlData.SS.ui and _G.ControlData.SS.ui.window; if window then window:Close(); end
-	end
-	_G.ControlData.SS.controls[ "Ctr" ]:SetVisible( controlData.show );
-	opt_SS:SetChecked( controlData.show );
-end
--- **^
--- **v Show/Hide Day & Night time v**
-function ShowHideDayNight()
-	local controlData = _G.ControlData.DN
-	controlData.show = not controlData.show
-	if not settings.DayNight then settings.DayNight = {} end
-	settings.DayNight.V = controlData.show
-	SaveSettings( false );
-	if controlData.show then
-		ImportCtr( "DN" );
-		local colors = _G.ControlData.DN.colors
-		_G.ControlData.DN.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-	else
-		local window = _G.ControlData.DN.ui and _G.ControlData.DN.ui.window; if window then window:Close(); end
-	end
-	_G.ControlData.DN.controls[ "Ctr" ]:SetVisible( controlData.show );
-	opt_DN:SetChecked( controlData.show );
-end
--- **^
--- **v Show/Hide Reputation v**
-function ShowHideReputation()
-	local controlData = _G.ControlData.RP
-	controlData.show = not controlData.show
-	if not settings.Reputation then settings.Reputation = {} end
-	settings.Reputation.V = controlData.show
-	SaveSettings( false );
-	if controlData.show then
-		ImportCtr( "RP" );
-		local colors = _G.ControlData.RP.colors
-		_G.ControlData.RP.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-	else
-		RemoveCallback(Turbine.Chat, "Received", ReputationCallback);
-		local window = _G.ControlData.RP.ui and _G.ControlData.RP.ui.window; if window then window:Close(); end
-	end
-	_G.ControlData.RP.controls[ "Ctr" ]:SetVisible( controlData.show );
-	opt_RP:SetChecked( controlData.show );
-end
--- **^
-
--- **v Show/Hide Player Location v**
-function ShowHidePlayerLoc()
-	local controlData = _G.ControlData.PL
-	controlData.show = not controlData.show
-	if not settings.PlayerLoc then settings.PlayerLoc = {} end
-	settings.PlayerLoc.V = controlData.show
-	SaveSettings( false );
-	if controlData.show then
-		ImportCtr( "PL" );
-		local colors = _G.ControlData.PL.colors
-		_G.ControlData.PL.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-	else
-        local plData = _G.ControlData.PL
-        if plData and plData.callbacks then
-            for _, cb in ipairs(plData.callbacks) do
-                if RemoveCallback then RemoveCallback(cb.obj, cb.evt, cb.func) end
-            end
-            plData.callbacks = {}
-        end
-	end
-	_G.ControlData.PL.controls[ "Ctr" ]:SetVisible( controlData.show );
-	opt_PL:SetChecked( controlData.show );
-end
---**^
--- **v Show/Hide Time v**
-function ShowHideGameTime()
-	local controlData = _G.ControlData.GT
-	controlData.show = not controlData.show
-	if not settings.GameTime then settings.GameTime = {} end
-	settings.GameTime.V = controlData.show
-	SaveSettings( false );
-	if controlData.show then
-		ImportCtr( "GT" );
-		local colors = _G.ControlData.GT.colors
-		_G.ControlData.GT.controls[ "Ctr" ]:SetBackColor( Turbine.UI.Color( colors.alpha, colors.red, colors.green, colors.blue ) );
-	else
-		local window = _G.ControlData.GT.ui and _G.ControlData.GT.ui.window; if window then window:Close(); end
-	end
-	_G.ControlData.GT.controls[ "Ctr" ]:SetVisible( controlData.show );
-	opt_GT:SetChecked( controlData.show );
-end
---**^
--- **v Profile load/Save v**
 function LoadPlayerProfile()
-	PProfile = Turbine.PluginData.Load( Turbine.DataScope.Account, "TitanBarPlayerProfile" );
+	PProfile = Turbine.PluginData.Load(Turbine.DataScope.Account, "TitanBarPlayerProfile");
 	if PProfile == nil then PProfile = {}; end
 end
 
@@ -332,47 +87,42 @@ function SavePlayerProfile()
 	for i, v in pairs(PProfile) do newt[tostring(i)] = v; end
 	PProfile = newt;
 
-	Turbine.PluginData.Save( Turbine.DataScope.Account, "TitanBarPlayerProfile", PProfile );
+	Turbine.PluginData.Save(Turbine.DataScope.Account, "TitanBarPlayerProfile", PProfile);
 end
---**^
--- **v Show Shell Command window v**
+
 function HelpInfo()
 	if frmSC then
 		wShellCmd:Close();
 	else
-		import(AppDirD.."shellcmd"); -- LUA shell command file
+		import(AppDirD .. "shellcmd"); -- LUA shell command file
 		frmShellCmd();
 	end
 end
--- **^
---**v Unload TitanBar v**
+
 function UnloadTitanBar()
-	Turbine.PluginManager.LoadPlugin( 'TitanBar Unloader' ); --workaround
+	Turbine.PluginManager.LoadPlugin('TitanBar Unloader');  --workaround
 end
---**^
---**v Reload TitanBar v**
+
 function ReloadTitanBar()
 	settings.TitanBar.Z = true;
-	SaveSettings( false );
-	Turbine.PluginManager.LoadPlugin( 'TitanBar Reloader' ); --workaround
+	SaveSettings(false);
+	Turbine.PluginManager.LoadPlugin('TitanBar Reloader');  --workaround
 end
---**^
---**v About TitanBar v**
+
 function AboutTitanBar()
 	--write( "TitanBar: About!" );
 	--Turbine.PluginManager.ShowAbouts(Plugins.TitanBar); -- Add this when About is available
 	--Turbine.PluginManager.ShowOptions(Plugins.TitanBar); --This will open plugin manager and show TitanBar options (THIS IS AN EXAMLPE)
 end
---**^
 
 function ShowHideCurrency(currency)
 	_G.CurrencyData[currency].IsVisible = not _G.CurrencyData[currency].IsVisible
 	settings[currency].V = _G.CurrencyData[currency].IsVisible
-	settings[currency].W = string.format( "%.0f", _G.CurrencyData[currency].Where);
-	SaveSettings( false );
+	settings[currency].W = string.format("%.0f", _G.CurrencyData[currency].Where);
+	SaveSettings(false);
 	ImportCtr(currency);
-	
-	if _G.Debug then write("ShowHideCurrency:"..currency); end
+
+	if _G.Debug then write("ShowHideCurrency:" .. currency); end
 	if _G.CurrencyData[currency].IsVisible then
 		_G.CurrencyData[currency].Ctr:SetBackColor(Turbine.UI.Color(
 			_G.CurrencyData[currency].bcAlpha,

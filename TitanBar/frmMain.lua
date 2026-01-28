@@ -187,7 +187,7 @@ function frmMain()
 	if _G.ControlData.SS.show then ImportCtr( "SS" ); end --SharedStorage
 	if _G.ControlData.DN.show then ImportCtr( "DN" ); end --Day & Night time
 	if _G.ControlData.RP.show then ImportCtr( "RP" ); end --Reputation Points
-	if ((_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "LP" ); end --LOTRO Points
+	-- if ((_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "LP" ); end --LOTRO Points
 
 	--**v Workaround for the ItemRemoved that fires before the backpack was updated (Turbine API issue) v**
 	ItemRemovedTimer = Turbine.UI.Control();
@@ -202,14 +202,7 @@ function frmMain()
 	-- if _G.ControlData.BI.show then ImportCtr( "BI" );	end
 	-- if _G.ControlData.PI.show then ImportCtr( "PI" ); end
 	if _G.ControlData.PL.show then ImportCtr( "PL" ); end
-	if _G.ControlData.GT.show then ImportCtr( "GT" ); end
-
-	if _G.ControlData.DI.show or _G.ControlData.EI.show then
-		GetEquipmentInfos();
-		AddCallback(PlayerEquipment, "ItemEquipped", function(sender, args) if _G.ControlData.EI.show then GetEquipmentInfos(); UpdateEquipsInfos(); end if _G.ControlData.DI.show then GetEquipmentInfos(); UpdateDurabilityInfos(); end end);
-		AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) ItemUnEquippedTimer:SetWantsUpdates( true ); end); --Workaround
-		--AddCallback(PlayerEquipment, "ItemUnequipped", function(sender, args) if _G.ControlData.EI.show then GetEquipmentInfos(); UpdateEquipsInfos(); end if _G.ControlData.DI.show then GetEquipmentInfos(); UpdateDurabilityInfos(); end end);
-	end
+	-- if _G.ControlData.GT.show then ImportCtr( "GT" ); end
 
 	AddCallback(
 		PlayerWallet,
@@ -228,15 +221,15 @@ function frmMain()
 		end
 	)
 	
-	--**v Workaround for the ItemUnequipped that fires before the equipment was updated (Turbine API issue) v**
+	-- Workaround for the ItemUnequipped that fires before the equipment was updated (Turbine API issue)
 	ItemUnEquippedTimer = Turbine.UI.Control();
 
-	ItemUnEquippedTimer.Update = function( sender, args )
-		if _G.ControlData.EI.show then GetEquipmentInfos(); UpdateEquipsInfos(); end
-		if _G.ControlData.DI.show then GetEquipmentInfos(); UpdateDurabilityInfos(); end
-		ItemUnEquippedTimer:SetWantsUpdates( false );
+	ItemUnEquippedTimer.Update = function(sender, args)
+		if EquipmentManager then EquipmentManager.Refresh(); end
+		if _G.ControlData.EI.show then UpdateEquipsInfos(); end
+		if _G.ControlData.DI.show then UpdateDurabilityInfos(); end
+		ItemUnEquippedTimer:SetWantsUpdates(false);
 	end
-	--**
 	
 	if _G.ControlData.EI.show then ImportCtr( "EI" ); end
 	if _G.ControlData.DI.show then ImportCtr( "DI" ); end
@@ -268,7 +261,8 @@ function frmMain()
 		if NumSec < max then -- Run for 24 secs. -- TODO why?
 			if (oldsecond ~= currentsecond) then
 				if Interval == 0 then
-					if _G.ControlData.EI.show or _G.ControlData.DI.show then GetEquipmentInfos();
+					if _G.ControlData.EI.show or _G.ControlData.DI.show then 
+						if EquipmentManager then EquipmentManager.Refresh(); end
 						if PlayerEquipment ~= nil then
 							if _G.ControlData.EI.show then ImportCtr( "EI" ); end
 							if _G.ControlData.DI.show then ImportCtr( "DI" ); end

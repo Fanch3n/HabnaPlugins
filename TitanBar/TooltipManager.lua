@@ -44,8 +44,8 @@ local function defaultReposition()
 end
 
 local function defaultHide()
-	if type(ResetToolTipWin) == "function" then
-		ResetToolTipWin()
+	if TooltipManager.HideStandard then
+		TooltipManager.HideStandard()
 	end
 end
 
@@ -140,4 +140,141 @@ function TooltipManager.Reset(key)
 			state.window = nil
 		end
 	end
+end
+
+-- ============================================================================
+-- Standard Tooltip Implementation (Console/Legacy Style)
+-- ============================================================================
+
+function TooltipManager.ApplySkin(window)
+	if not window then return end
+	local Box = _G.resources.Box
+
+	local function createPart(name, x, y, width, height, background)
+		local part = Turbine.UI.Control()
+		part:SetParent(window)
+		part:SetPosition(x, y)
+		part:SetSize(width, height)
+		part:SetBackground(background)
+		part:SetMouseVisible(false)
+	end
+
+	local w, h = window:GetSize()
+	
+	createPart("topLeftCorner", 0, 0, 36, 36, Box.TopLeft)
+	createPart("TopBar", 36, 0, w - 36, 37, Box.Top)
+	createPart("topRightCorner", w - 36, 0, 36, 36, Box.TopRight)
+	createPart("midLeft", 0, 36, 36, h - 36, Box.MidLeft)
+	createPart("MidMid", 36, 36, w - 36, h - 36, Box.Middle)
+	createPart("midRight", w - 36, 36, 36, h - 36, Box.MidRight)
+	createPart("botLeftCorner", 0, h - 36, 36, 36, Box.BottomLeft)
+	createPart("BotBar", 36, h - 36, w - 36, 36, Box.Bottom)
+	createPart("botRightCorner", w - 36, h - 36, 36, 36, Box.BottomRight)
+end
+
+function TooltipManager.CreateStandardWindow(xOffset, yOffset, w, h, header, texts)
+	-- Remove old global window if it exists to prevent overlap
+	if _G.ToolTipWin then
+		_G.ToolTipWin:SetVisible(false)
+		_G.ToolTipWin = nil
+	end
+
+	local win = Turbine.UI.Window()
+	_G.ToolTipWin = win -- legacy global reference
+	win:SetSize(w, h)
+	win:SetZOrder(Constants.ZORDER_TOOLTIP)
+	win.xOffset = xOffset -- stored for positioning calculation
+	win.yOffset = yOffset
+
+	TooltipManager.ApplySkin(win)
+
+	local lblheader = Turbine.UI.Label()
+	lblheader:SetParent(win)
+	lblheader:SetPosition(40, 7)
+	lblheader:SetSize(w, h)
+	lblheader:SetForeColor(Color["green"])
+	lblheader:SetFont(Turbine.UI.Lotro.Font.Verdana16)
+	lblheader:SetText(header)
+	
+	local YPos = 25
+	if texts then
+		for _, txt in ipairs(texts) do
+			if txt then
+				local lbltext = Turbine.UI.Label()
+				lbltext:SetParent(win)
+				lbltext:SetPosition(40, YPos)
+				lbltext:SetSize(w, 15)
+				lbltext:SetForeColor(Color["white"])
+				lbltext:SetFont(Turbine.UI.Lotro.Font.Verdana14)
+				lbltext:SetText(txt)
+				YPos = YPos + 15
+			end
+		end
+	end
+	
+	return win
+end
+
+function TooltipManager.HideStandard()
+	if _G.ToolTipWin then
+		_G.ToolTipWin:SetVisible(false)
+		_G.ToolTipWin = nil
+	end
+end
+
+function TooltipManager.ShowStandard(key)
+	local w = 350
+	local x, y = -5, -15
+	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition()
+	local h = 80
+	
+	if TBLocale == "fr" then w = 315
+	elseif TBLocale == "de" then
+		if key == "DI" then w = 225 
+		else w = 305 end
+	end
+
+	if w + mouseX > screenWidth then
+		x = w - 10
+	end
+
+	if not TBTop then
+		y = h
+	end
+
+	local header
+	local texts = {}
+
+	local headerKeys = {
+		BI = "MBI",
+		GT = "GTh",
+		VT = "MVault",
+		SS = "MStorage",
+		DN = "MDayNight",
+		LP = "LotroPointsh",
+	}
+
+	if headerKeys[key] then
+		header = L[headerKeys[key]]
+		table.insert(texts, L["EIt1"]) -- Left click to move
+		table.insert(texts, L["EIt2"]) -- Right click options
+		table.insert(texts, L["EIt3"]) -- Ctrl + Left click
+	elseif key == "DP" or key == "PL" or (_G.currencies and _G.currencies.byName[key]) then
+		h = 65
+		header = L[key .. "h"]
+		table.insert(texts, L["EIt2"])
+		table.insert(texts, L["EIt3"])
+	elseif key == "IF" then
+		h = 65
+		header = L["Infamyh"]
+		table.insert(texts, L["EIt2"])
+		table.insert(texts, L["EIt3"])
+	else
+		Turbine.Shell.WriteLine("TitanBar: Unknown tooltip key " .. tostring(key))
+		return
+	end
+
+	local win = TooltipManager.CreateStandardWindow(x, y, w, h, header, texts)
+	win:SetPosition(mouseX - win.xOffset, mouseY - win.yOffset)
+	win:SetVisible(true)
 end

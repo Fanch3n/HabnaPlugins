@@ -57,9 +57,10 @@ function RefreshIFToolTip()
 	labelInfamy:SetZOrder( 2 );
 	--labelInfamy:SetBackColor( Color["red"] ); -- debug purpose
 
+	local infamyRanks = _G.InfamyRanks or Constants.INFAMY_RANKS
 	local lblInfamy = Turbine.UI.Label();
 	lblInfamy:SetParent( _G.ToolTipWin );
-	lblInfamy:SetText( settings.Infamy.P .. "/" .. InfamyRanks[tonumber(settings.Infamy.K)+1]);
+	lblInfamy:SetText( settings.Infamy.P .. "/" .. infamyRanks[tonumber(settings.Infamy.K)+1]);
 	lblInfamy:SetPosition( labelInfamy:GetLeft()+labelInfamy:GetWidth()+5, labelInfamy:GetTop() );
 	lblInfamy:SetSize( lblInfamy:GetTextLength() * 7.5, 15 ); --Auto size with text lenght
 	lblInfamy:SetForeColor( Color["green"] );
@@ -74,7 +75,7 @@ function RefreshIFToolTip()
 	
 	local lblNextRank = Turbine.UI.Label();
 	lblNextRank:SetParent( NextRankCtr );
-	lblNextRank:SetText( InfamyRanks[tonumber(settings.Infamy.K)+1] - settings.Infamy.P);
+	lblNextRank:SetText( infamyRanks[tonumber(settings.Infamy.K)+1] - settings.Infamy.P);
 	lblNextRank:SetPosition( 0, 0 );
 	lblNextRank:SetSize( lblNextRank:GetTextLength() * 7.5, 15 ); --Auto size with text lenght
 	lblNextRank:SetForeColor( Color["green"] );
@@ -92,7 +93,7 @@ function RefreshIFToolTip()
 
 	NextRankCtr:SetSize( lblNextRank:GetWidth()+labelTN:GetWidth()+10, 15 );
 
-	local percentage_done = string.format("%.1f", tonumber(settings.Infamy.P) / InfamyRanks[tonumber(settings.Infamy.K)+1]*100);
+	local percentage_done = string.format("%.1f", tonumber(settings.Infamy.P) / infamyRanks[tonumber(settings.Infamy.K)+1]*100);
 	--percentage_done = string.format("%.1f", percentage_done);
 	--percentage_done = 1; --debug purpose
 

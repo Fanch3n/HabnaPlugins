@@ -396,6 +396,11 @@ _G.currencies = {
       visibleInMonsterPlay = false,
       icon = 0x41251BDA,
     },
+    {
+      name = "FangornLeaf",
+      visibleInMonsterPlay = false,
+      icon = 0x41155107,
+    },
   },
   byName = {}
 }

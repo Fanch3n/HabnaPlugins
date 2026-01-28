@@ -1,12 +1,11 @@
 -- Wallet.lua
--- Written by Habna
 
 import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "WalletToolTip")
 import(AppDirD .. "ControlFactory")
 
 function UpdateWallet()
-	AdjustIcon( "WI" );
+	AdjustIcon("WI");
 end
 
 function InitializeWallet()
@@ -19,16 +18,15 @@ function InitializeWallet()
 	local WI = {}
 	_G.ControlData.WI.controls = WI
 
-	--**v Wallet Control v**
 	local colors = _G.ControlData.WI.colors
 	CreateTitanBarControl(WI, colors.alpha, colors.red, colors.green, colors.blue)
-	
+
 	-- Ensure ui table exists
 	_G.ControlData.WI.ui = _G.ControlData.WI.ui or {}
 	_G.ControlData.WI.ui.control = WI["Ctr"]
-	--**^
-	--**v Wallet icon on TitanBar v**
-	WI["Icon"] = CreateControlIcon(WI["Ctr"], Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE, resources.Wallet, Turbine.UI.BlendMode.AlphaBlend)
+
+	WI["Icon"] = CreateControlIcon(WI["Ctr"], Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE, resources.Wallet,
+		Turbine.UI.BlendMode.AlphaBlend)
 
 	SetupControlInteraction({
 		icon = WI["Icon"],
@@ -39,8 +37,7 @@ function InitializeWallet()
 		hasTooltip = true,
 		customTooltipHandler = ShowWIToolTip
 	})
-	--**^
-	
+
 	UpdateWallet()
 end
 
