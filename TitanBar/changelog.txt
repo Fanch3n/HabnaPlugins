@@ -2,6 +2,10 @@ This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Te
 
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
+Version 1.50 (January 28, 2026)
+- Added Fangorn Leaf currency
+- More internal refactoring/cleanup
+=================================================
 Version 1.49 (January 19, 2026)
 - Fixed icon clipping in Shared Storage tooltip
 - Fixed error when accessing Shared Storage
