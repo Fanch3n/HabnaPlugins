@@ -3,6 +3,13 @@
 import(AppDirD .. "UIHelpers")
 import(AppDirD .. "ControlFactory")
 
+-- Internal timer to handle delayed updates specific to BagInfos
+local bagUpdateTimer = Turbine.UI.Control()
+bagUpdateTimer.Update = function(sender, args)
+	sender:SetWantsUpdates(false)
+	UpdateBackpackInfos()
+end
+
 function UpdateBackpackInfos()
 	-- Safety check: Ensure controls are initialized
 	if not (_G.ControlData.BI and _G.ControlData.BI.controls and _G.ControlData.BI.controls["Lbl"]) then return end
@@ -96,7 +103,7 @@ function InitializeBagInfos()
 		table.insert(biData.callbacks, { obj = backpack, evt = "ItemAdded", func = cbAdded })
 
 		local cbRemoved = function(sender, args)
-			if ItemRemovedTimer then ItemRemovedTimer:SetWantsUpdates(true); end
+			bagUpdateTimer:SetWantsUpdates(true)
 		end
 		AddCallback(backpack, "ItemRemoved", cbRemoved);
 		table.insert(biData.callbacks, { obj = backpack, evt = "ItemRemoved", func = cbRemoved })
