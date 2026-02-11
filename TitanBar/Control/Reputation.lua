@@ -204,6 +204,17 @@ function UpdateReputationSaveFileFormat(reputation)
 	end
 end
 
+local function GetDefaultReputation(faction)
+	if faction.initialRank and faction.ranks then
+		for _, rank in ipairs(faction.ranks) do
+			if rank.name == faction.initialRank then
+				return rank.requiredReputation
+			end
+		end
+	end
+	return "0"
+end
+
 function SavePlayerReputation()
 	if string.sub(PN, 1, 1) == "~" then return end;     --Ignore session play
 
@@ -219,7 +230,7 @@ function LoadPlayerReputation()
 
 	for _, faction in ipairs(_G.Factions.list) do
 		_G.PlayerReputation[PN][faction.name] = _G.PlayerReputation[PN][faction.name] or {}
-		_G.PlayerReputation[PN][faction.name].Total = _G.PlayerReputation[PN][faction.name].Total or "0"
+		_G.PlayerReputation[PN][faction.name].Total = _G.PlayerReputation[PN][faction.name].Total or GetDefaultReputation(faction)
 		_G.PlayerReputation[PN][faction.name].V = _G.PlayerReputation[PN][faction.name].V or false
 	end
 	SavePlayerReputation();
