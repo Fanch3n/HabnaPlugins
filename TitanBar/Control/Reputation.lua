@@ -176,7 +176,7 @@ function UpdateReputationSaveFileFormat(reputation)
 					stepsType = factionAbbreviation;
 				end
 				local factionReputationSteps = reputationSteps[stepsType]
-				local totalReputation = playerRep[factionAbbreviation].P
+				local totalReputation = playerRep[factionAbbreviation].P or 0
 				totalReputation = totalReputation + baseReputation[i]
 				for j = 1, math.min(#factionReputationSteps, reputationRank) - 1 do
 					totalReputation = totalReputation + factionReputationSteps[j]
@@ -204,6 +204,24 @@ function UpdateReputationSaveFileFormat(reputation)
 	end
 end
 
+local function GetDefaultReputation(faction)
+	if faction.initialRank and faction.ranks then
+		for _, rank in ipairs(faction.ranks) do
+			if rank.name == faction.initialRank then
+				return rank.requiredReputation
+			end
+		end
+	end
+	return "0"
+end
+
+function SavePlayerReputation()
+	if string.sub(PN, 1, 1) == "~" then return end;     --Ignore session play
+
+	Turbine.PluginData.Save(
+		Turbine.DataScope.Server, "TitanBarReputation", _G.PlayerReputation);
+end
+
 function LoadPlayerReputation()
 	_G.PlayerReputation = Turbine.PluginData.Load(Turbine.DataScope.Server, "TitanBarReputation")
 	if _G.PlayerReputation == nil then _G.PlayerReputation = {}; end
@@ -212,7 +230,7 @@ function LoadPlayerReputation()
 
 	for _, faction in ipairs(_G.Factions.list) do
 		_G.PlayerReputation[PN][faction.name] = _G.PlayerReputation[PN][faction.name] or {}
-		_G.PlayerReputation[PN][faction.name].Total = _G.PlayerReputation[PN][faction.name].Total or "0"
+		_G.PlayerReputation[PN][faction.name].Total = _G.PlayerReputation[PN][faction.name].Total or GetDefaultReputation(faction)
 		_G.PlayerReputation[PN][faction.name].V = _G.PlayerReputation[PN][faction.name].V or false
 	end
 	SavePlayerReputation();
@@ -220,12 +238,8 @@ end
 
 _G.LoadPlayerReputation = LoadPlayerReputation
 
-function SavePlayerReputation()
-	if string.sub(PN, 1, 1) == "~" then return end;     --Ignore session play
-
-	Turbine.PluginData.Save(
-		Turbine.DataScope.Server, "TitanBarReputation", _G.PlayerReputation);
-end
+-- Load data immediately on plugin initialization to avoid synchronous load errors later
+LoadPlayerReputation()
 
 function UpdateReputation()
 	AdjustIcon("RP");
@@ -253,9 +267,6 @@ function InitializeReputation()
 			tooltipKey = "RP",
 			customTooltipHandler = ShowRPWindow
 		})
-
-		-- Load data and setup callback
-		LoadPlayerReputation()
 
 		-- Register chat callback
 		local rpData = _G.ControlData.RP
