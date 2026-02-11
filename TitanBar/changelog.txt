@@ -2,6 +2,14 @@ This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Te
 
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
+Version 1.51 (February 12, 2026)
+- Reputation starts with the correct initial rank now instead of the lowest
+- Fixed bag item count not decreasing
+- Fixed error when opening the vault
+- Fixed error when enabling the reputation control
+- Fixed error when importing an old reputation file
+- Fixed vault and shared storage tooltip being one line too high sometimes
+=================================================
 Version 1.50 (January 28, 2026)
 - Added Fangorn Leaf currency
 - More internal refactoring/cleanup
