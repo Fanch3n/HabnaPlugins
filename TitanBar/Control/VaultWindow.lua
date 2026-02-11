@@ -43,8 +43,6 @@ function frmVault()
 		CountVIItems();
 	end
 
-	CreateVIComboBox();
-
 	ui.searchLabel = CreateTitleLabel(wVT, L["VTSe"], 15, 60, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
 
 	local searchLeft = ui.searchLabel:GetLeft() + ui.searchLabel:GetWidth()
@@ -81,6 +79,8 @@ function frmVault()
 		CreateVIComboBox();
 		CountVIItems();
 	end
+
+	CreateVIComboBox();
 
 	AddCallback(tvaultpack, "CountChanged", 
 		function(sender, args)

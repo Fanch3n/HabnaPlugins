@@ -77,7 +77,7 @@ function RefreshSharedTTListBox()
 
 	MaxItemsPerLine = 15;
 
-	SharedTTHeight = 40 * math.floor(sharedpackCount / MaxItemsPerLine) + 60;
+	SharedTTHeight = 40 * (math.ceil(sharedpackCount / MaxItemsPerLine) - 1) + 60;
 	if SharedTTHeight > screenHeight then SharedTTHeight = screenHeight - 70; end
 
 	SharedTTListBox:SetHeight(SharedTTHeight);
