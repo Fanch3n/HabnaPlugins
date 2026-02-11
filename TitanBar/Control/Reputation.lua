@@ -204,6 +204,13 @@ function UpdateReputationSaveFileFormat(reputation)
 	end
 end
 
+function SavePlayerReputation()
+	if string.sub(PN, 1, 1) == "~" then return end;     --Ignore session play
+
+	Turbine.PluginData.Save(
+		Turbine.DataScope.Server, "TitanBarReputation", _G.PlayerReputation);
+end
+
 function LoadPlayerReputation()
 	_G.PlayerReputation = Turbine.PluginData.Load(Turbine.DataScope.Server, "TitanBarReputation")
 	if _G.PlayerReputation == nil then _G.PlayerReputation = {}; end
@@ -220,12 +227,8 @@ end
 
 _G.LoadPlayerReputation = LoadPlayerReputation
 
-function SavePlayerReputation()
-	if string.sub(PN, 1, 1) == "~" then return end;     --Ignore session play
-
-	Turbine.PluginData.Save(
-		Turbine.DataScope.Server, "TitanBarReputation", _G.PlayerReputation);
-end
+-- Load data immediately on plugin initialization to avoid synchronous load errors later
+LoadPlayerReputation()
 
 function UpdateReputation()
 	AdjustIcon("RP");
@@ -253,9 +256,6 @@ function InitializeReputation()
 			tooltipKey = "RP",
 			customTooltipHandler = ShowRPWindow
 		})
-
-		-- Load data and setup callback
-		LoadPlayerReputation()
 
 		-- Register chat callback
 		local rpData = _G.ControlData.RP
