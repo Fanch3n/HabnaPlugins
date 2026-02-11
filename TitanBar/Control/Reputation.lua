@@ -176,7 +176,7 @@ function UpdateReputationSaveFileFormat(reputation)
 					stepsType = factionAbbreviation;
 				end
 				local factionReputationSteps = reputationSteps[stepsType]
-				local totalReputation = playerRep[factionAbbreviation].P
+				local totalReputation = playerRep[factionAbbreviation].P or 0
 				totalReputation = totalReputation + baseReputation[i]
 				for j = 1, math.min(#factionReputationSteps, reputationRank) - 1 do
 					totalReputation = totalReputation + factionReputationSteps[j]
