@@ -2,6 +2,10 @@ This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Te
 
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
+Version 1.52 (October 05, 2026)
+- Scaling works now when the Use Global Scaling checkbox is set. When it's unset, TitanBar is unaffected by global scaling.
+- Fixed an error when opening Vault or Shared Storage
+=================================================
 Version 1.51 (February 12, 2026)
 - Reputation starts with the correct initial rank now instead of the lowest
 - Fixed bag item count not decreasing
