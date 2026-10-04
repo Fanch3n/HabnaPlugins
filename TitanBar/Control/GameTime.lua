@@ -99,9 +99,9 @@ function InitializeGameTime()
 		UpdateGameTime("gt")
 	end
 
-	if GT["Ctr"] and _G.ControlData.GT.location.x + GT["Ctr"]:GetWidth() > screenWidth then
-		_G.ControlData.GT.location.x = screenWidth - GT["Ctr"]:GetWidth();
-	end   --Replace if out of screen
+	if GT["Ctr"] and _G.ControlData.GT.location.x + GT["Ctr"]:GetWidth() > TBWidth then
+		_G.ControlData.GT.location.x = TBWidth - GT["Ctr"]:GetWidth();
+	end   --Replace if out of the bar
 
 	if GT["Ctr"] then
 		GT["Ctr"]:SetPosition(_G.ControlData.GT.location.x, _G.ControlData.GT.location.y)

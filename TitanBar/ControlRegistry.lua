@@ -96,7 +96,7 @@ local function GetDefaultX(controlId)
 	elseif controlId == "DI" then
 		return Constants.DEFAULT_DURABILITY_INFO_X
 	elseif controlId == "PL" then
-		return screenWidth - Constants.DEFAULT_PLAYER_LOC_WIDTH
+		return TBWidth - Constants.DEFAULT_PLAYER_LOC_WIDTH
 	else
 		return 0
 	end

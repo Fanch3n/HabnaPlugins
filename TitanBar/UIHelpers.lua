@@ -85,23 +85,74 @@ function PositionAndShowTooltip(window, xOffset, yOffset, useHeight)
 	local x = xOffset or -5
 	local y = yOffset or -15
 	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition()
-	
+	local width, height = GetScaledSize(window)
+
 	-- Adjust x if tooltip would go off screen
-	if window:GetWidth() + mouseX + 5 > screenWidth then
-		x = window:GetWidth() - 10
+	if width + mouseX + 5 > screenWidth then
+		x = width - 10
 	end
-	
+
 	-- Adjust y based on TitanBar position
 	if not TBTop then
-		if useHeight then
-			y = window:GetHeight()
-		else
-			y = window:GetHeight()
-		end
+		y = height
 	end
 	
 	window:SetPosition(mouseX - x, mouseY - y)
 	window:SetVisible(true)
+end
+
+-- ============================================================================
+-- UI SCALING (Update 49.6)
+-- ============================================================================
+
+-- Attaches the edges of a stretch-mode control that has a fixed size inside its parent:
+-- it keeps its position and size when the parent is resized, e.g. by UI scaling.
+-- Call before stretching the control.
+function AttachScalingEdges(control)
+	local Same, Opposite = Turbine.UI.EdgeAttachmentType.Same, Turbine.UI.EdgeAttachmentType.Opposite
+	control:AttachEdges(Same, Same, Opposite, Opposite)
+end
+
+-- Stretches a control's whole background image to the given size, whatever the image's
+-- native size: stretch mode 2 first sizes the control to the image, mode 1 then stretches
+-- it from there. Resetting the mode first makes this safe to repeat.
+function StretchBackground(control, width, height)
+	control:SetStretchMode(nil)
+	control:SetStretchMode(2)
+	control:SetStretchMode(1)
+	control:SetSize(width, height)
+end
+
+-- Returns the on-screen size of a window (its size times its total scale).
+function GetScaledSize(window)
+	local width, height = window:GetSize()
+	local scale = window:GetScale()
+	return width * scale, height * scale
+end
+
+-- Width of TitanBar in its own (unscaled) units, so that it spans the whole screen.
+-- Rounded up so the bar never stops short of the right screen edge.
+function GetBarWidth()
+	return math.ceil(screenWidth / TB["win"]:GetScale())
+end
+
+-- Height TitanBar takes up on screen.
+function GetBarScreenHeight()
+	return math.ceil(TBHeight * TB["win"]:GetScale())
+end
+
+-- Sizes TitanBar to the screen width and moves it to the top or bottom edge.
+function LayoutBar()
+	TB["win"]:SetSize( GetBarWidth(), TBHeight );
+	if TBTop then TB["win"]:SetTop( 0 );
+	else TB["win"]:SetTop( screenHeight - GetBarScreenHeight() ); end
+	if MouseHoverCtr then CenterMouseHover(); end
+end
+
+-- Centers the auto-hide hover strip horizontally on the screen.
+function CenterMouseHover()
+	local hoverWidth = GetScaledSize( MouseHoverCtr );
+	MouseHoverCtr:SetLeft( (screenWidth - hoverWidth) / 2 );
 end
 
 -- Create a search control: a TextBox with a delete icon to clear it.
@@ -333,18 +384,19 @@ end
 function PositionToolTipWindow()
 	if not _G.ToolTipWin then return end
 	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition();
+	local width, height = GetScaledSize(_G.ToolTipWin);
 	local x, y;
-	
-	if _G.ToolTipWin:GetWidth() + mouseX + Constants.TOOLTIP_MARGIN > screenWidth then 
-		x = _G.ToolTipWin:GetWidth() - Constants.TOOLTIP_OFFSET_X;
-	else 
-		x = -Constants.TOOLTIP_MARGIN; 
+
+	if width + mouseX + Constants.TOOLTIP_MARGIN > screenWidth then
+		x = width - Constants.TOOLTIP_OFFSET_X;
+	else
+		x = -Constants.TOOLTIP_MARGIN;
 	end
-	
-	if TBTop then 
+
+	if TBTop then
 		y = -15;
-	else 
-		y = _G.ToolTipWin:GetHeight();
+	else
+		y = height;
 	end
 
 	_G.ToolTipWin:SetPosition(mouseX - x, mouseY - y);
@@ -471,11 +523,11 @@ end
 -- Parameters:
 --  control: the control to move
 --  args: the mouse event args containing X and Y
---  maxWidth: maximum X boundary (default: screenWidth)
+--  maxWidth: maximum X boundary (default: TB["win"]:GetWidth())
 --  maxHeight: maximum Y boundary (default: TB["win"]:GetHeight())
 -- Usage: MoveControlConstrained(myControl, args)
 function MoveControlConstrained(control, args, maxWidth, maxHeight)
-	local maxW = maxWidth or screenWidth
+	local maxW = maxWidth or TB["win"]:GetWidth()
 	local maxH = maxHeight or TB["win"]:GetHeight()
 	
 	local CtrLocX = control:GetLeft()

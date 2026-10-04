@@ -99,9 +99,9 @@ function frmOptions()
 
 	wScrollBar.ValueChanged = function( sender, args )
 		local tValue = wScrollBar:GetValue();
-		TB[ "win" ]:SetHeight( tValue );
 		lblHeightV:SetText( tValue );
 		TBHeight = tValue;
+		LayoutBar();
 		settings.TitanBar.H = string.format( "%.0f", tValue );
 
 		--Size Control if height is less 30px & stop at 30px if more 30px
@@ -191,8 +191,7 @@ function frmOptions()
 		TBTop = TBTopCB:IsChecked();
 		settings.TitanBar.D = TBTop;
 		SaveSettings( false );
-		if TBTop then TB[ "win" ]:SetTop( 0 );
-		else TB[ "win" ]:SetTop( screenHeight - TBHeight ); end
+		LayoutBar();
 		if TBAutoHide == L[ "OPAHE" ] then windowOpen = true; AutoHideCtr:SetWantsUpdates( true );
 		elseif TBAutoHide == L[ "OPAHD" ] or TBAutoHide == L[ "OPAHC" ] then windowOpen = false; AutoHideCtr:SetWantsUpdates( true ); end
 	end

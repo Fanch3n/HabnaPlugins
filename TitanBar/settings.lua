@@ -487,7 +487,7 @@ function SaveSettings(str)
 		-- TitanBar
 		settings.TitanBar = {}
 		SaveColors(settings.TitanBar, bcAlpha, bcRed, bcGreen, bcBlue)
-		settings.TitanBar.W = Constants.FormatInt(screenWidth)
+		settings.TitanBar.W = Constants.FormatInt(TBWidth)
 		settings.TitanBar.L = TBLocale
 		settings.TitanBar.H = Constants.FormatInt(TBHeight)
 		settings.TitanBar.F = Constants.FormatInt(_G.TBFont)
@@ -657,20 +657,21 @@ function ResetSettings()
 end
 -- **^
 
--- Called when screen size has changed to reposition controls
+-- Called when screen size or UI scale has changed to reposition controls
 function ReplaceCtr()
 	write( L["TBSSCS"] );
-	TB["win"]:SetSize( screenWidth, TBHeight );
-	local oldScreenWidth = settings.TitanBar.W;
-	TBWidth = screenWidth;
-	settings.TitanBar.W = string.format("%.0f", screenWidth);
+	LayoutBar();
+	RelayoutIcons();
+	local oldBarWidth = settings.TitanBar.W;
+	TBWidth = GetBarWidth();
+	settings.TitanBar.W = string.format("%.0f", TBWidth);
 	
 	-- Update all standard controls
 	_G.ControlRegistry.ForEach(function(controlId, data)
 		local settingsKey = data.settingsKey
 		if settings[settingsKey] and settings[settingsKey].X then
-			local oldLocX = settings[settingsKey].X / oldScreenWidth
-			local newLocX = oldLocX * screenWidth
+			local oldLocX = settings[settingsKey].X / oldBarWidth
+			local newLocX = oldLocX * TBWidth
 			
 			-- Update ControlData
 			data.location.x = newLocX
@@ -696,8 +697,8 @@ function ReplaceCtr()
 	-- Update currency controls
 	for k,v in pairs(_G.currencies.list) do
 		if settings[v.name] and settings[v.name].X then
-			local oldLocX = settings[v.name].X / oldScreenWidth
-			_G.CurrencyData[v.name].LocX = oldLocX * screenWidth
+			local oldLocX = settings[v.name].X / oldBarWidth
+			_G.CurrencyData[v.name].LocX = oldLocX * TBWidth
 			settings[v.name].X = string.format("%.0f", _G.CurrencyData[v.name].LocX)
 			if _G.CurrencyData[v.name].IsVisible and _G.CurrencyData[v.name].Where == Constants.Position.TITANBAR then
 				_G.CurrencyData[v.name].Ctr:SetPosition(_G.CurrencyData[v.name].LocX, _G.CurrencyData[v.name].LocY)
