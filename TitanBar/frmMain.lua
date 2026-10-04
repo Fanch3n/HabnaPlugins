@@ -23,9 +23,8 @@ function frmMain()
 	--**^
 	
 	TB["win"] = Turbine.UI.Window();
-	if TBTop then TB["win"]:SetPosition( 0, 0 );
-	else TB["win"]:SetPosition( 0, screenHeight - TBHeight ); end
-	TB["win"]:SetSize( screenWidth, TBHeight );
+	TB["win"]:SetLeft( 0 );
+	LayoutBar();
 	--TB["win"]:SetBackground( resources.TitanBar.Background );
 	TB["win"]:SetBackColor( Turbine.UI.Color( bcAlpha, bcRed, bcGreen, bcBlue ) );
 	--TB["win"]:SetMouseVisible( false ); -- If set to false, menu will not work.
@@ -80,8 +79,9 @@ function frmMain()
 	--**
 
 	MouseHoverCtr = Turbine.UI.Window();
-	MouseHoverCtr:SetPosition( (TB["win"]:GetWidth() / 2) - 125 , TB["win"]:GetHeight() );
 	MouseHoverCtr:SetSize( 250, 15 );
+	MouseHoverCtr:SetTop( GetBarScreenHeight() );
+	CenterMouseHover();
 	--MouseHoverCtr:SetZOrder( 1 );
 	--MouseHoverCtr:SetBackColor( Color["red"] ); --debug purpose
 	MouseHoverCtr:SetBackground( resources.frmMain ); 
@@ -93,23 +93,29 @@ function frmMain()
 	AutoHideCtr = Turbine.UI.Control();
 	--AutoHideCtr:SetWantsUpdates( true ); --debug purpose
 	AutoHideCtr.Update = function( sender, args )
+		-- Compare against the bar's on-screen height, which depends on the UI scale.
+		-- Use <= / >= because a scaled height may not be reached in exact 1px steps.
+		local barHeight = GetBarScreenHeight();
 		if windowOpen then
 			MouseHoverCtr:SetVisible( false );
 			if TBTop then --TitanBar is at top
-				if ( TB["win"]:GetTop() + TB["win"]:GetHeight() == 0 ) then
+				if ( TB["win"]:GetTop() + barHeight <= 0 ) then
+					TB["win"]:SetTop( -barHeight );
 					AutoHideCtr:SetWantsUpdates( false );
 					windowOpen = false;
 					MouseHoverCtr:SetVisible( true );
-					MouseHoverCtr:SetTop( TB["win"]:GetTop() + TB["win"]:GetHeight() );
+					MouseHoverCtr:SetTop( 0 );
 				else
 					TB["win"]:SetTop( TB["win"]:GetTop() - 1 );
 				end
 			else  --TitanBar is at bottom
-				if ( TB["win"]:GetTop() == screenHeight ) then
+				if ( TB["win"]:GetTop() >= screenHeight ) then
+					TB["win"]:SetTop( screenHeight );
 					AutoHideCtr:SetWantsUpdates( false );
 					windowOpen = false;
 					MouseHoverCtr:SetVisible( true );
-					MouseHoverCtr:SetTop( TB["win"]:GetTop() - MouseHoverCtr:GetHeight() );
+					local _, hoverHeight = GetScaledSize( MouseHoverCtr );
+					MouseHoverCtr:SetTop( screenHeight - hoverHeight );
 				else
 					TB["win"]:SetTop( TB["win"]:GetTop() + 1 );
 				end
@@ -117,14 +123,16 @@ function frmMain()
 		else
 			MouseHoverCtr:SetVisible( false );
 			if TBTop then --TitanBar is at top
-				if ( TB["win"]:GetTop() == 0 ) then
+				if ( TB["win"]:GetTop() >= 0 ) then
+					TB["win"]:SetTop( 0 );
 					AutoHideCtr:SetWantsUpdates( false );
 					windowOpen = true;
 				else
 					TB["win"]:SetTop( TB["win"]:GetTop() + 1 );
 				end
 			else --TitanBar is at bottom
-				if ( TB["win"]:GetTop() + TB["win"]:GetHeight() == screenHeight ) then
+				if ( TB["win"]:GetTop() + barHeight <= screenHeight ) then
+					TB["win"]:SetTop( screenHeight - barHeight );
 					AutoHideCtr:SetWantsUpdates( false );
 					windowOpen = true;
 				else
@@ -307,7 +315,7 @@ function frmMain()
 		
 		if (oldsecond ~= currentsecond) then
 			screenWidth, screenHeight = Turbine.UI.Display.GetSize();
-			if TBWidth ~= screenWidth then ReplaceCtr(); end --Replace control if screen width has changed
+			if TBWidth ~= GetBarWidth() then ReplaceCtr(); end --Replace control if screen width or UI scale has changed
 
 			if _G.ControlData.DN.show then UpdateDayNight(); end
 		end

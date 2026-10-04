@@ -227,19 +227,11 @@ function TooltipManager.ShowStandard(key)
 	local x, y = -5, -15
 	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition()
 	local h = 80
-	
+
 	if TBLocale == "fr" then w = 315
 	elseif TBLocale == "de" then
-		if key == "DI" then w = 225 
+		if key == "DI" then w = 225
 		else w = 305 end
-	end
-
-	if w + mouseX > screenWidth then
-		x = w - 10
-	end
-
-	if not TBTop then
-		y = h
 	end
 
 	local header
@@ -275,6 +267,15 @@ function TooltipManager.ShowStandard(key)
 	end
 
 	local win = TooltipManager.CreateStandardWindow(x, y, w, h, header, texts)
+
+	-- Screen-edge offsets use the size the tooltip has on screen.
+	local scaledW, scaledH = GetScaledSize(win)
+	if scaledW + mouseX > screenWidth then
+		win.xOffset = scaledW - 10
+	end
+	if not TBTop then
+		win.yOffset = scaledH
+	end
 	win:SetPosition(mouseX - win.xOffset, mouseY - win.yOffset)
 	win:SetVisible(true)
 end
