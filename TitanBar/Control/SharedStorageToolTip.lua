@@ -78,7 +78,8 @@ function RefreshSharedTTListBox()
 	MaxItemsPerLine = 15;
 
 	SharedTTHeight = 40 * (math.ceil(sharedpackCount / MaxItemsPerLine) - 1) + 60;
-	if SharedTTHeight > screenHeight then SharedTTHeight = screenHeight - 70; end
+	local maxHeight = screenHeight / _G.ToolTipWin:GetScale();
+	if SharedTTHeight > maxHeight then SharedTTHeight = maxHeight - 70; end
 
 	SharedTTListBox:SetHeight(SharedTTHeight);
 	SharedTTListBox:SetMaxColumns(MaxItemsPerLine);

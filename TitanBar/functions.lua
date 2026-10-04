@@ -143,10 +143,11 @@ function AdjustIcon(str)
 	local Y = -1 - ((TBIconSize - CTRHeight) / 2);
 
 	local function layoutIcon(icon, ctr, iconLeft, iconTop, ctrWidth)
-		icon:SetStretchMode( 1 );
-		icon:SetPosition( iconLeft, iconTop );
+		-- Stretched icons need edge attachments to scale with the bar.
+		AttachScalingEdges( icon );
 		ctr:SetSize( ctrWidth, CTRHeight );
-		icon:SetSize( TBIconSize, TBIconSize );
+		icon:SetPosition( iconLeft, iconTop );
+		StretchBackground( icon, TBIconSize, TBIconSize );
 		icon:SetStretchMode( 3 );
 	end
 
@@ -160,11 +161,8 @@ function AdjustIcon(str)
 				local index = p[i] .. "Lbl" .. t;
 				_G.ControlData.Money.controls[p[i] .. "Ctr"]:SetLeft(setleft);
 				local getright = _G.ControlData.Money.controls[index]:GetLeft() + _G.ControlData.Money.controls[index]:GetWidth();
-				_G.ControlData.Money.controls[p[i] .. "Icon"]:SetStretchMode(1);
-				_G.ControlData.Money.controls[p[i] .. "Icon"]:SetPosition(getright - 4, Y + 1 );
-				_G.ControlData.Money.controls[p[i] .. "Ctr"]:SetSize(getright + TBIconSize, CTRHeight);
-				_G.ControlData.Money.controls[p[i] .. "Icon"]:SetSize( TBIconSize, TBIconSize );
-				_G.ControlData.Money.controls[p[i] .. "Icon"]:SetStretchMode( 3 );
+				layoutIcon( _G.ControlData.Money.controls[p[i] .. "Icon"], _G.ControlData.Money.controls[p[i] .. "Ctr"],
+					getright - 4, Y + 1, getright + TBIconSize );
 				setleft = _G.ControlData.Money.controls[p[i].."Ctr"]:GetLeft() + _G.ControlData.Money.controls[p[i].."Ctr"]:GetWidth();
 			end
 			_G.ControlData.Money.controls[ "Ctr" ]:SetSize(_G.ControlData.Money.controls["GCtr"]:GetWidth() + _G.ControlData.Money.controls["SCtr"]:GetWidth() + 
@@ -237,6 +235,27 @@ function AdjustIcon(str)
 
 	KeepIconControlInBar(str);
 
+end
+
+-- Lays out every icon on TitanBar again, e.g. after the screen size or UI scale changed.
+function RelayoutIcons()
+	_G.ControlRegistry.ForEach(function(controlId, data)
+		local onBar = data.show and (data.where == nil or data.where == Constants.Position.TITANBAR)
+		if onBar and data.controls then
+			if controlId == "Money" then
+				AdjustIcon("MI");
+			elseif data.controls["Icon"] then
+				AdjustIcon(controlId);
+			end
+		end
+	end)
+
+	for _, currency in pairs(_G.currencies.list) do
+		local currencyData = _G.CurrencyData[currency.name]
+		if currencyData and currencyData.Icon and currencyData.IsVisible and currencyData.Where == Constants.Position.TITANBAR then
+			AdjustIcon(currency.name);
+		end
+	end
 end
 
 function DecryptMoney( v )

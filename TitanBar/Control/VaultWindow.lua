@@ -22,8 +22,9 @@ function frmVault()
 			dropdown = VICB,
 			onClosing = function(sender, args)
 				if VICB and VICB.dropDownWindow then VICB.dropDownWindow:SetVisible(false) end
-				RemoveCallback( tvaultpack, "CountChanged" )
-				_G.ControlData.VT.ui = { control = nil, optCheckbox = nil }
+				RemoveCallback( tvaultpack, "CountChanged", ui.countChangedCallback )
+				-- Keep the references to the TitanBar control, drop everything of the window
+				_G.ControlData.VT.ui = { control = ui.control, optCheckbox = ui.optCheckbox }
 			end
 		}
 	)
@@ -82,12 +83,9 @@ function frmVault()
 
 	CreateVIComboBox();
 
-	AddCallback(tvaultpack, "CountChanged", 
+	ui.countChangedCallback = AddCallback(tvaultpack, "CountChanged",
 		function(sender, args)
-		local ui = _G.ControlData.VT and _G.ControlData.VT.ui
-		if ui then
-			if SelCN == PN or SelCN == L["VTAll"] then CountVIItems(); end
-		end
+		if SelCN == PN or SelCN == L["VTAll"] then CountVIItems(); end
 	end);
 
 	CountVIItems();
@@ -105,7 +103,7 @@ end
 
 function CountVIItems()
 	local ui = _G.ControlData.VT and _G.ControlData.VT.ui
-	if not ui then return end
+	if not (ui and ui.window) then return end
 	local vaultpackCount = 0;
 	ui.ListBox:ClearItems();
 	itemCtl = {};

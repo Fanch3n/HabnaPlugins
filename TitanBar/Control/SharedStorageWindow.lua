@@ -17,8 +17,9 @@ function frmSharedStorage()
 		L["MStorage"], 390, 475,
 		{
 			onClosing = function(sender, args)
-				RemoveCallback( tsspack, "CountChanged" );
-				_G.ControlData.SS.ui = { control = nil, optCheckbox = nil }
+				RemoveCallback( tsspack, "CountChanged", ui.countChangedCallback );
+				-- Keep the references to the TitanBar control, drop everything of the window
+				_G.ControlData.SS.ui = { control = ui.control, optCheckbox = ui.optCheckbox }
 			end
 		}
 	)
@@ -67,12 +68,12 @@ function frmSharedStorage()
 		SetSharedStoragePack();
 	end
 
-	AddCallback(tsspack, "CountChanged", function(sender, args) local ui = _G.ControlData.SS and _G.ControlData.SS.ui; if ui then sspackCount = tsspack:GetCount(); SetSharedStoragePack(); end end);
+	ui.countChangedCallback = AddCallback(tsspack, "CountChanged", function(sender, args) sspackCount = tsspack:GetCount(); SetSharedStoragePack(); end);
 end
 
 function SetSharedStoragePack()
 	local ui = _G.ControlData.SS and _G.ControlData.SS.ui
-	if not ui then return end
+	if not (ui and ui.window) then return end
 	ui.ListBox:ClearItems();
 	itemCtl = {};
 

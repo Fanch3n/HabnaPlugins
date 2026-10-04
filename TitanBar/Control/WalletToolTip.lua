@@ -11,7 +11,7 @@ function ShowWIToolTip()
 		hasListBox = true,
 		listBoxPosition = {x = 20, y = 17}
 	})
-	
+
 	WITTListBox = tt.listBox
 	WITTListBox:SetMaxColumns(1)
 	WITTListBox:SetOrientation(Turbine.UI.Orientation.Horizontal)
@@ -122,16 +122,9 @@ function RefreshWITTListBox()
 				_G.ToolTipWin:SetWidth( totWidth+40 );
 				--**
 				--** Resize Destiny points & LOTRO points icon since it's not in 32x32 **--
-				if wttcur == L["MDestinyPoints"] then
-				ttIcon:SetSize( Constants.DESTINY_POINTS_ICON_WIDTH, Constants.DESTINY_POINTS_ICON_HEIGHT );
-				ttIcon:SetStretchMode( 1 );
-				ttIcon:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE );
-					ttIcon:SetStretchMode( 3 );
-				elseif wttcur == L["MLotroPoints"] then
-				ttIcon:SetSize( 30, Constants.ICON_SIZE_LARGE )
-				ttIcon:SetStretchMode( 1 );
-				ttIcon:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE );
-					ttIcon:SetStretchMode( 2 );
+				if wttcur == L["MDestinyPoints"] or wttcur == L["MLotroPoints"] then
+					AttachScalingEdges( ttIcon );
+					StretchBackground( ttIcon, Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE );
 				else ttIcon:SetSize( Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE ); end
 				--**
 			end

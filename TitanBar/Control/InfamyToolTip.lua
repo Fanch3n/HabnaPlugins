@@ -7,17 +7,18 @@ function ShowIFWindow()
 	RefreshIFToolTip()
 
 	ApplySkin()
-	
+
 	-- Position with custom logic for infamy
 	local x, y = -5, -15
 	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition()
-	
-	if _G.ToolTipWin:GetWidth() + mouseX > screenWidth then 
-		x = _G.ToolTipWin:GetWidth() - 10
+	local width, height = GetScaledSize(_G.ToolTipWin)
+
+	if width + mouseX > screenWidth then
+		x = width - 10
 	end
-	
-	if not TBTop then 
-		y = _G.ToolTipWin:GetHeight()
+
+	if not TBTop then
+		y = height
 	end
 	
 	_G.ToolTipWin:SetPosition(mouseX - x, mouseY - y)

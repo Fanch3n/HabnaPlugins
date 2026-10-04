@@ -40,8 +40,7 @@ function InitializeLOTROPoints()
 		_G.ControlData.LP.ui.control = LP["Ctr"]
 
 		LP["Icon"] = CreateControlIcon(LP["Ctr"], Constants.ICON_SIZE_LARGE, Constants.ICON_SIZE_LARGE,
-			_G.resources.LOTROPoints, Turbine.UI.BlendMode.AlphaBlend, 1, Constants.LOTRO_POINTS_ICON_WIDTH,
-			Constants.LOTRO_POINTS_ICON_HEIGHT)
+			_G.resources.LOTROPoints, Turbine.UI.BlendMode.AlphaBlend)
 
 		LP["Lbl"] = CreateControlLabel(LP["Ctr"], _G.TBFont, Turbine.UI.ContentAlignment.MiddleCenter)
 
