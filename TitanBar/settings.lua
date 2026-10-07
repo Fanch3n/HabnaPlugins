@@ -40,7 +40,7 @@ end
 -- Save ControlData to settings structure  
 local function SaveControlSettings(controlId, settingsSection)
 	local data = _G.ControlData[controlId]
-	if not data then return end
+	if not (data and data.colors) then return end
 	
 	settingsSection.V = data.show
 	settingsSection.A = Constants.FormatFloat(data.colors.alpha)
@@ -113,26 +113,6 @@ local function InitControlDefaults(sectionName, colorDefaults, posDefaults, wind
 	return section
 end
 
--- Load color values from a settings section into global variables
-local function LoadColors(section, alphaVar, redVar, greenVar, blueVar)
-	_G[alphaVar] = tonumber(section.A)
-	_G[redVar] = tonumber(section.R)
-	_G[greenVar] = tonumber(section.G)
-	_G[blueVar] = tonumber(section.B)
-end
-
--- Load position values from a settings section into global variables
-local function LoadPosition(section, xVar, yVar)
-	_G[xVar] = tonumber(section.X)
-	_G[yVar] = tonumber(section.Y)
-end
-
--- Load window position values from a settings section into global variables
-local function LoadWindowPosition(section, leftVar, topVar)
-	_G[leftVar] = tonumber(section.L)
-	_G[topVar] = tonumber(section.T)
-end
-
 -- ============================================================================
 -- HELPER FUNCTIONS FOR SAVING SETTINGS
 -- ============================================================================
@@ -157,24 +137,6 @@ local function SaveWindowPosition(section, left, top)
 	section.T = string.format("%.0f", top)
 end
 
--- Save standard control settings (visibility, colors, position, window position) - OLD VERSION
-local function SaveControlSettingsOld(sectionName, visible, alpha, red, green, blue, x, y, left, top)
-	settings[sectionName] = {}
-	settings[sectionName].V = visible
-	SaveColors(settings[sectionName], alpha, red, green, blue)
-	SavePosition(settings[sectionName], x, y)
-	if left and top then
-		SaveWindowPosition(settings[sectionName], left, top)
-	end
-end
-
--- Create a new settings section and save window position
-local function SaveSectionWithWindowPos(sectionName, left, top)
-	settings[sectionName] = {}
-	SaveWindowPosition(settings[sectionName], left, top)
-	return settings[sectionName]
-end
-
 -- ============================================================================
 -- SETTINGS LOADING
 -- ============================================================================
@@ -194,6 +156,7 @@ function LoadSettings()
 	tA, tR, tG, tB, tX, tY, tW = Constants.DEFAULT_ALPHA, Constants.DEFAULT_RED, Constants.DEFAULT_GREEN, Constants.DEFAULT_BLUE, Constants.DEFAULT_X, Constants.DEFAULT_Y, Constants.Position.NONE;
 	tL, tT = Constants.DEFAULT_WINDOW_LEFT, Constants.DEFAULT_WINDOW_TOP;
 
+	---@type table<string, table>
 	settings = settings or {}
 
 	local titanBar = EnsureSettingsSection("TitanBar")
@@ -438,7 +401,7 @@ function LoadSettings()
 		LoadSettingsForCurrency(v.name)
 	end
 
-	SaveSettings( false );
+	WriteSettings();
 	
 	--if settings.TitanBar.W ~= screenWidth then ReplaceCtr(); end --Replace control if screen width as changed
 end
@@ -484,138 +447,141 @@ end
 
 
 -- **v Save settings v**
-function SaveSettings(str)
-	if str then --True: get all variable and save settings
-		settings = {}
-		
-		-- TitanBar
-		settings.TitanBar = {}
-		SaveColors(settings.TitanBar, bcAlpha, bcRed, bcGreen, bcBlue)
-		settings.TitanBar.W = Constants.FormatInt(TBWidth)
-		settings.TitanBar.L = TBLocale
-		settings.TitanBar.H = Constants.FormatInt(TBHeight)
-		settings.TitanBar.F = Constants.FormatInt(_G.TBFont)
-		settings.TitanBar.T = TBFontT
-		settings.TitanBar.D = TBTop
-		settings.TitanBar.Z = TBReloaded
-		settings.TitanBar.ZT = TBReloadedText
-		
-		-- Options
-		settings.Options = {}
-		SaveWindowPosition(settings.Options, OPWLeft, OPWTop)
-		settings.Options.H = TBAutoHide
-		settings.Options.I = Constants.FormatInt(TBIconSize)
-
-		-- Profile, Shell, Background
-		SaveSectionWithWindowPos("Profile", PPWLeft, PPWTop)
-		SaveSectionWithWindowPos("Shell", SCWLeft, SCWTop)
-		settings.Background = {}
-		SaveWindowPosition(settings.Background, BGWLeft, BGWTop)
-		settings.Background.A = BGWToAll
-
-		-- Wallet
-		if not settings.Wallet then settings.Wallet = {} end
-		SaveControlSettings("WI", settings.Wallet)
-
-		-- Money
-		if not settings.Money then settings.Money = {} end
-		SaveControlSettings("Money", settings.Money)
-		settings.Money.S = _G.ControlData.Money.stm
-		settings.Money.SS = _G.ControlData.Money.sss
-		settings.Money.TS = _G.ControlData.Money.sts
-
-		-- LOTROPoints
-		if not settings.LOTROPoints then settings.LOTROPoints = {} end
-		SaveControlSettings("LP", settings.LOTROPoints)
-		
-		-- BagInfos
-		if not settings.BagInfos then settings.BagInfos = {} end
-		SaveControlSettings("BI", settings.BagInfos)
-		settings.BagInfos.U = _G.ControlData.BI.used
-		settings.BagInfos.M = _G.ControlData.BI.max
-
-		SaveSectionWithWindowPos("BagInfosList", BLWLeft, BLWTop)
-
-		-- PlayerInfos
-		if not settings.PlayerInfos then settings.PlayerInfos = {} end
-		SaveControlSettings("PI", settings.PlayerInfos)
-		settings.PlayerInfos.XP = (_G.ControlData.PI and _G.ControlData.PI.xp) or Constants.FormatInt(0)
-		settings.PlayerInfos.Layout = (_G.ControlData.PI and _G.ControlData.PI.layout) or false
-
-		-- EquipInfos
-		if not settings.EquipInfos then settings.EquipInfos = {} end
-		SaveControlSettings("EI", settings.EquipInfos)
-		
-		-- DurabilityInfos
-		if not settings.DurabilityInfos then settings.DurabilityInfos = {} end
-		SaveControlSettings("DI", settings.DurabilityInfos)
-		settings.DurabilityInfos.I = _G.ControlData.DI.icon
-		settings.DurabilityInfos.N = _G.ControlData.DI.text
+-- Copies the runtime state into the settings table and writes it to disk.
+-- The sections are updated in place, so references to them (e.g. in drag handlers) stay valid.
+function SaveSettings()
+	-- TitanBar
+	local titanBar = EnsureSettingsSection("TitanBar")
+	SaveColors(titanBar, bcAlpha, bcRed, bcGreen, bcBlue)
+	titanBar.W = Constants.FormatInt(TBWidth)
+	titanBar.L = TBLocale
+	titanBar.H = Constants.FormatInt(TBHeight)
+	titanBar.F = Constants.FormatInt(_G.TBFont)
+	titanBar.T = TBFontT
+	titanBar.D = TBTop
+	titanBar.Z = TBReloaded
+	titanBar.ZT = TBReloadedText
 	
-		-- PlayerLoc
-		if not settings.PlayerLoc then settings.PlayerLoc = {} end
-		SaveControlSettings("PL", settings.PlayerLoc)
-		settings.PlayerLoc.L = string.format(((_G.ControlData.PL and _G.ControlData.PL.text) or L["PLMsg"]))
+	-- Options
+	local options = EnsureSettingsSection("Options")
+	SaveWindowPosition(options, OPWLeft, OPWTop)
+	options.H = TBAutoHide
+	options.I = Constants.FormatInt(TBIconSize)
 
-		-- TrackItems
-		if not settings.TrackItems then settings.TrackItems = {} end
-		SaveControlSettings("TI", settings.TrackItems)
+	-- Profile, Shell, Background
+	SaveWindowPosition(EnsureSettingsSection("Profile"), PPWLeft, PPWTop)
+	SaveWindowPosition(EnsureSettingsSection("Shell"), SCWLeft, SCWTop)
+	local background = EnsureSettingsSection("Background")
+	SaveWindowPosition(background, BGWLeft, BGWTop)
+	background.A = BGWToAll
 
-		-- Infamy
-		if not settings.Infamy then settings.Infamy = {} end
-		SaveControlSettings("IF", settings.Infamy)
-		settings.Infamy.F = (_G.ControlData.IF and _G.ControlData.IF.set) ~= false
-		settings.Infamy.P = Constants.FormatInt((_G.ControlData.IF and _G.ControlData.IF.points) or 0)
-		settings.Infamy.K = Constants.FormatInt((_G.ControlData.IF and _G.ControlData.IF.rank) or 0)
+	-- Wallet
+	local wallet = EnsureSettingsSection("Wallet")
+	SaveControlSettings("WI", wallet)
 
-		-- Vault
-		if not settings.Vault then settings.Vault = {} end
-		SaveControlSettings("VT", settings.Vault)
-		
-		-- SharedStorage
-		if not settings.SharedStorage then settings.SharedStorage = {} end
-		SaveControlSettings("SS", settings.SharedStorage)
-		
-		-- DayNight
-		if not settings.DayNight then settings.DayNight = {} end
-		SaveControlSettings("DN", settings.DayNight)
-		settings.DayNight.N = ((_G.ControlData.DN and _G.ControlData.DN.next) ~= false)
-		settings.DayNight.S = Constants.FormatInt(((_G.ControlData.DN and _G.ControlData.DN.ts) or 0))
-		
-		-- Reputation
-		if not settings.Reputation then settings.Reputation = {} end
-		SaveControlSettings("RP", settings.Reputation)
-		-- Persist legacy key as hideMax for backward compatibility.
-		settings.Reputation.H = ((_G.ControlData.RP and _G.ControlData.RP.showMax) ~= true)
+	-- Money
+	local money = EnsureSettingsSection("Money")
+	SaveControlSettings("Money", money)
+	money.S = _G.ControlData.Money.stm
+	money.SS = _G.ControlData.Money.sss
+	money.TS = _G.ControlData.Money.sts
 
-		-- GameTime
-		if not settings.GameTime then settings.GameTime = {} end
-		SaveControlSettings("GT", settings.GameTime)
-		settings.GameTime.H = (_G.ControlData.GT and _G.ControlData.GT.clock24h) == true
-		settings.GameTime.S = (_G.ControlData.GT and _G.ControlData.GT.showST) == true
-		settings.GameTime.O = (_G.ControlData.GT and _G.ControlData.GT.showBT) == true
-		settings.GameTime.M = Constants.FormatInt(((_G.ControlData.GT and tonumber(_G.ControlData.GT.userGMT)) or 0))
-				
-		for k,v in pairs(_G.currencies.list) do
-			SetSettings(v.name)
-		end
+	-- LOTROPoints
+	local lotroPoints = EnsureSettingsSection("LOTROPoints")
+	SaveControlSettings("LP", lotroPoints)
+	
+	-- BagInfos
+	local bagInfos = EnsureSettingsSection("BagInfos")
+	SaveControlSettings("BI", bagInfos)
+	bagInfos.U = _G.ControlData.BI.used
+	bagInfos.M = _G.ControlData.BI.max
 
+	SaveWindowPosition(EnsureSettingsSection("BagInfosList"), BLWLeft, BLWTop)
+
+	-- PlayerInfos
+	local playerInfos = EnsureSettingsSection("PlayerInfos")
+	SaveControlSettings("PI", playerInfos)
+	playerInfos.XP = (_G.ControlData.PI and _G.ControlData.PI.xp) or Constants.FormatInt(0)
+	playerInfos.Layout = (_G.ControlData.PI and _G.ControlData.PI.layout) or false
+
+	-- EquipInfos
+	local equipInfos = EnsureSettingsSection("EquipInfos")
+	SaveControlSettings("EI", equipInfos)
+	
+	-- DurabilityInfos
+	local durabilityInfos = EnsureSettingsSection("DurabilityInfos")
+	SaveControlSettings("DI", durabilityInfos)
+	durabilityInfos.I = _G.ControlData.DI.icon
+	durabilityInfos.N = _G.ControlData.DI.text
+
+	-- PlayerLoc
+	local playerLoc = EnsureSettingsSection("PlayerLoc")
+	SaveControlSettings("PL", playerLoc)
+	playerLoc.L = string.format(((_G.ControlData.PL and _G.ControlData.PL.text) or L["PLMsg"]))
+
+	-- TrackItems
+	local trackItems = EnsureSettingsSection("TrackItems")
+	SaveControlSettings("TI", trackItems)
+
+	-- Infamy
+	local infamy = EnsureSettingsSection("Infamy")
+	SaveControlSettings("IF", infamy)
+	infamy.F = (_G.ControlData.IF and _G.ControlData.IF.set) ~= false
+	infamy.P = Constants.FormatInt((_G.ControlData.IF and _G.ControlData.IF.points) or 0)
+	infamy.K = Constants.FormatInt((_G.ControlData.IF and _G.ControlData.IF.rank) or 0)
+
+	-- Vault
+	local vault = EnsureSettingsSection("Vault")
+	SaveControlSettings("VT", vault)
+	
+	-- SharedStorage
+	local sharedStorage = EnsureSettingsSection("SharedStorage")
+	SaveControlSettings("SS", sharedStorage)
+	
+	-- DayNight
+	local dayNight = EnsureSettingsSection("DayNight")
+	SaveControlSettings("DN", dayNight)
+	dayNight.N = ((_G.ControlData.DN and _G.ControlData.DN.next) ~= false)
+	dayNight.S = Constants.FormatInt(((_G.ControlData.DN and _G.ControlData.DN.ts) or 0))
+	
+	-- Reputation
+	local reputation = EnsureSettingsSection("Reputation")
+	SaveControlSettings("RP", reputation)
+	-- Persist legacy key as hideMax for backward compatibility.
+	reputation.H = ((_G.ControlData.RP and _G.ControlData.RP.showMax) ~= true)
+
+	-- GameTime
+	local gameTime = EnsureSettingsSection("GameTime")
+	SaveControlSettings("GT", gameTime)
+	gameTime.H = (_G.ControlData.GT and _G.ControlData.GT.clock24h) == true
+	gameTime.S = (_G.ControlData.GT and _G.ControlData.GT.showST) == true
+	gameTime.O = (_G.ControlData.GT and _G.ControlData.GT.showBT) == true
+	gameTime.M = Constants.FormatInt(((_G.ControlData.GT and tonumber(_G.ControlData.GT.userGMT)) or 0))
+
+	for k,v in pairs(_G.currencies.list) do
+		SetSettings(v.name)
+		-- The section under the name of old TitanBar versions was taken over when loading
+		if v.legacyTitanbarName then settings[v.legacyTitanbarName] = nil end
 	end
-	
-	if GLocale == "de" then Turbine.PluginData.Save( Turbine.DataScope.Character, "TitanBarSettingsDE", settings ); end
-	if GLocale == "en" then Turbine.PluginData.Save( Turbine.DataScope.Character, "TitanBarSettingsEN", settings ); end
-	if GLocale == "fr" then Turbine.PluginData.Save( Turbine.DataScope.Character, "TitanBarSettingsFR", settings ); end
+
+	WriteSettings()
+end
+
+-- Writes the settings table to disk as it is, without taking over the runtime state
+-- (used while loading, and when a profile replaced the settings table)
+function WriteSettings()
+	Turbine.PluginData.Save( Constants.SETTINGS_SCOPE, Constants.GetSettingsName( GLocale ), settings );
 end
 -- **^
 
 -- Currencies keep their own settings layout (no window position)
 function SetSettings(currencyName)
 	local data = _G.ControlData[currencyName]
-	settings[currencyName] = {}
-	settings[currencyName].V = data.show
-	SaveColors(settings[currencyName], data.colors.alpha, data.colors.red, data.colors.green, data.colors.blue)
-	SavePosition(settings[currencyName], data.location.x, data.location.y)
-	settings[currencyName].W = Constants.FormatInt(data.where)
+	local section = EnsureSettingsSection(currencyName)
+	section.V = data.show
+	SaveColors(section, data.colors.alpha, data.colors.red, data.colors.green, data.colors.blue)
+	SavePosition(section, data.location.x, data.location.y)
+	section.W = Constants.FormatInt(data.where)
 end
 
 -- **v Reset All Settings v**
@@ -645,7 +611,7 @@ function ResetSettings()
 	_G.ControlData.DN = _G.ControlData.DN or {}
 	_G.ControlData.DN.next = true
 		
-	SaveSettings( true ); --True: Get & save all settings table to file. / False: only save settings table to file.
+	SaveSettings();
 	ReloadTitanBar();
 end
 -- **^
@@ -687,6 +653,6 @@ function ReplaceCtr()
 		end
 	end)
 
-	SaveSettings( false );
+	SaveSettings();
 	write( L["TBSSCD"] );
 end

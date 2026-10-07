@@ -448,7 +448,7 @@ function SaveControlPosition(control, settingsTable, controlId)
 	-- Update settings file
 	settingsTable.X = string.format("%.0f", x)
 	settingsTable.Y = string.format("%.0f", y)
-	SaveSettings(false)
+	SaveSettings()
 end
 
 -- Initialize drag operation on MouseDown

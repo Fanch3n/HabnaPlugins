@@ -105,7 +105,7 @@ function frmReputationWindow()
         -- Persist legacy key as hideMax for backward compatibility.
         settings.Reputation.H = (_G.ControlData.RP.showMax ~= true)
 
-        SaveSettings(false)
+        SaveSettings()
 
         if type(RPRefreshListBox) == "function" and _G.ToolTipWin ~= nil and (_G.ToolTipWin.IsVisible == nil or _G.ToolTipWin:IsVisible()) then
             RPRefreshListBox()

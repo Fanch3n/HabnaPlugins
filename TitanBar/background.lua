@@ -38,7 +38,7 @@ function frmBackground()
 		BGWToAll = SetToAllCtr:IsChecked();
 		--if BGWToAll then ChangeColor(mColor); end
 		settings.Background.A = BGWToAll;
-		SaveSettings( false );
+		SaveSettings();
 	end
 	-- **^
 
@@ -80,7 +80,7 @@ function frmBackground()
 		UpdateBCvariable();
 		
 		ChangeColor(curSelColor:GetBackColor());
-		SaveSettings( true );
+		SaveSettings();
 	end
 	-- **^
 	-- Create alpha label and slider.
@@ -250,7 +250,7 @@ function frmBackground()
 		settings.Background.L = string.format("%.0f", wBackground:GetLeft());
 		settings.Background.T = string.format("%.0f", wBackground:GetTop());
 		BGWLeft, BGWTop = wBackground:GetPosition();
-		SaveSettings( false );
+		SaveSettings();
 	end
 
 	wBackground.Closing = function( sender, args )

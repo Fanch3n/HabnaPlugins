@@ -44,7 +44,7 @@ function frmMoneyInfosWindow()
 	allCharCB.CheckedChanged = function( sender, args )
 		moneyData.stm = allCharCB:IsChecked();
 		settings.Money.S = moneyData.stm;
-		SaveSettings( false );
+		SaveSettings();
 		UpdateMoney();
 	end
 
@@ -72,7 +72,7 @@ function frmMoneyInfosWindow()
 	sssCB.CheckedChanged = function(sender, args)
 		moneyData.sss = sssCB:IsChecked();
 		settings.Money.SS = moneyData.sss;
-		SaveSettings(false);
+		SaveSettings();
 	end
 
 	local stsCB = CreateAutoSizedCheckBox(window, L["MIWSTS"], 0, 0, moneyData.sts)
@@ -81,7 +81,7 @@ function frmMoneyInfosWindow()
 	stsCB.CheckedChanged = function( sender, args )
 		moneyData.sts = stsCB:IsChecked();
 		settings.Money.TS = moneyData.sts;
-		SaveSettings( false );
+		SaveSettings();
 	end
 
 	RefreshMIListBox();

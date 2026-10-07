@@ -117,7 +117,7 @@ function InitializePlayerInfos()
                         _G.ControlData.PI = _G.ControlData.PI or {}
                         _G.ControlData.PI.xp = tmpXP;
                         settings.PlayerInfos.XP = tmpXP;
-                        SaveSettings(false);
+                        SaveSettings();
                     end
                 end
             end

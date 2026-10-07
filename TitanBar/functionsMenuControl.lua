@@ -94,6 +94,6 @@ function BGColor( cmd, value )
 		TB["win"]:SetBackColor( Turbine.UI.Color( tA, tR, tG, tB ) );
 	end
 
-	SaveSettings( true );
+	SaveSettings();
 	TB["win"].MouseLeave();
 end

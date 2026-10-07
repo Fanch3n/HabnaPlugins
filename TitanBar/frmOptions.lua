@@ -105,7 +105,7 @@ function frmOptions()
 
 		--Size Control if height is less 30px & stop at 30px if more 30px
 		ResizeControls();
-		SaveSettings(true);
+		SaveSettings();
 	end
 	-- **^
 	-- **v TitanBar Height Value - label v**
@@ -159,7 +159,7 @@ function frmOptions()
 		settings.Options.H = TBAutoHide;
 		if TBAutoHide == L[ "OPAHE" ] then windowOpen = true; AutoHideCtr:SetWantsUpdates( true );
 		elseif TBAutoHide == L[ "OPAHD" ] or TBAutoHide == L[ "OPAHC" ] then windowOpen = false; AutoHideCtr:SetWantsUpdates( true ); end
-		SaveSettings( false );
+		SaveSettings();
 	end
 	-- **^
 	-- **v TitanBar Icon Size - label & DropDown box v**
@@ -176,7 +176,7 @@ function frmOptions()
 		lblIconSizeV:SetText( itValue );
 		TBIconSize = itValue;
 		settings.Options.I = string.format( "%.0f", itValue );
-		SaveSettings( false );
+		SaveSettings();
 		ResizeIcon();
 	end
 	-- **^
@@ -189,7 +189,7 @@ function frmOptions()
 	TBTopCB.CheckedChanged = function( sender, args )
 		TBTop = TBTopCB:IsChecked();
 		settings.TitanBar.D = TBTop;
-		SaveSettings( false );
+		SaveSettings();
 		LayoutBar();
 		if TBAutoHide == L[ "OPAHE" ] then windowOpen = true; AutoHideCtr:SetWantsUpdates( true );
 		elseif TBAutoHide == L[ "OPAHD" ] or TBAutoHide == L[ "OPAHC" ] then windowOpen = false; AutoHideCtr:SetWantsUpdates( true ); end
@@ -203,7 +203,7 @@ function frmOptions()
 		_G.ControlData.PI = _G.ControlData.PI or {}
 		_G.ControlData.PI.layout = PILayoutCB:IsChecked();
 		settings.PlayerInfos.Layout = _G.ControlData.PI.layout;
-		SaveSettings( false );
+		SaveSettings();
 		ReloadTitanBar();
 	end
 end

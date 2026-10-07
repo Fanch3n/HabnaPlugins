@@ -72,7 +72,7 @@ function InitializePlayerLoc()
                         _G.ControlData.PL.text = tmpPL
                         UpdatePlayerLoc(tmpPL);
                         settings.PlayerLoc.L = string.format(tmpPL);
-                        SaveSettings(false);
+                        SaveSettings();
                     end
                 end
             end

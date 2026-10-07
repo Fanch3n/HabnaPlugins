@@ -259,7 +259,7 @@ function frmMain()
 		TBReloaded, TBReloadedText = false, "TB"
 		settings.TitanBar.Z = TBReloaded
 		settings.TitanBar.ZT = TBReloadedText
-		SaveSettings( false )
+		SaveSettings()
 	end --TitanBar was reloaded
 
 	local oldsecond, oldminute

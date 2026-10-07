@@ -242,7 +242,7 @@ function frmWalletWindow()
 			end
 		end
 
-		SaveSettings( false );
+		SaveSettings();
 	end
 
 	RefreshWIListBox();

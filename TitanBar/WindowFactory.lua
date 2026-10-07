@@ -73,7 +73,7 @@ function CreateWindow(windowSettings)
             if config.onPositionChanged then
                 config.onPositionChanged(left, top)
             end
-            SaveSettings(false)
+            SaveSettings()
         end
         
         if config.onMouseUp then config.onMouseUp(sender, args) end

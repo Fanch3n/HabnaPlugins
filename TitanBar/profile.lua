@@ -104,7 +104,7 @@ function frmProfile()
 		write( "TitanBar: "..L["PWNew"].." `"..strProfileName.."` "..L["PWCreated"] );
 		
 		SavePlayerProfile();
-		SaveSettings( false );
+		SaveSettings();
 		local plText = (_G.ControlData and _G.ControlData.PL and _G.ControlData.PL.text) or (settings.PlayerLoc and settings.PlayerLoc.L) or L["PLMsg"]
 		settings.PlayerLoc.L = plText;
 		ReloadTitanBar("Profile"); -- Need to reload, because if create more then 1 profile, previous profile will be lost!

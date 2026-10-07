@@ -20,7 +20,7 @@ function ToggleControl(id)
 		end
 	end
 
-	SaveSettings(false)
+	SaveSettings()
 
 	-- Handle UI Update
 	if controlData.show then
@@ -109,7 +109,7 @@ function ReloadTitanBar(reason)
 	TBReloadedText = reason or "TB";
 	settings.TitanBar.Z = TBReloaded;
 	settings.TitanBar.ZT = TBReloadedText;
-	SaveSettings(false);
+	WriteSettings();
 	Turbine.PluginManager.LoadPlugin('TitanBar Reloader');  --workaround
 end
 
@@ -124,7 +124,7 @@ function ShowHideCurrency(currency)
 	data.show = not data.show
 	settings[currency].V = data.show
 	settings[currency].W = string.format("%.0f", data.where);
-	SaveSettings(false);
+	SaveSettings();
 	ImportCtr(currency);
 
 	if _G.Debug then write("ShowHideCurrency:" .. currency); end

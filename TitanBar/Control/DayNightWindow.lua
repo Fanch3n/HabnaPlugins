@@ -21,7 +21,7 @@ function frmDayNightWindow()
 				local ts = tonumber(_G.ControlData.DN.ts) or 0
 				if ts == 0 then _G.ControlData.DN.ts = tonumber(prevTS) or 0 end
 				settings.DayNight.S = string.format("%.0f", tonumber(_G.ControlData.DN.ts) or 0)
-				SaveSettings(false)
+				SaveSettings()
 				UpdateDayNight()
 				_G.ControlData.DN.ui = nil
 			end
@@ -34,7 +34,7 @@ function frmDayNightWindow()
 	NextTimeCB.CheckedChanged = function( sender, args )
 		_G.ControlData.DN.next = NextTimeCB:IsChecked();
 		settings.DayNight.N = _G.ControlData.DN.next;
-		SaveSettings( false );
+		SaveSettings();
 		UpdateDayNight();
 	end
 
@@ -63,7 +63,7 @@ function frmDayNightWindow()
 
 		_G.ControlData.DN.ts = tonumber(parsed_text) or 0
 		settings.DayNight.S = string.format("%.0f", tonumber(_G.ControlData.DN.ts) or 0);
-		SaveSettings( false );
+		SaveSettings();
 		UpdateDayNight();
 	end
 
