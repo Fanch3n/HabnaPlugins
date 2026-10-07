@@ -70,8 +70,8 @@ function frmOptions()
 			onPositionChanged = function(left, top)
 				OPWLeft, OPWTop = left, top
 			end,
-			onMouseMove = function(sender, args)
-				-- Close dropdowns when window is being dragged
+			onMouseDown = function(sender, args)
+				-- Close dropdowns when the window is clicked or starts being dragged
 				if FontDD and FontDD.dropped then FontDD:CloseDropDown(); end
 				if AutoDD and AutoDD.dropped then AutoDD:CloseDropDown(); end
 			end,

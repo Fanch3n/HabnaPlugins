@@ -5,6 +5,7 @@ If you notice an error, please send me a pm or post it on the boards.
 Version 1.53 (October 05, 2026)
 - Simplified adding currencies: Just add them to Currencies.lua and language files, no code changes
 - Fixed changing colour of all controls not applying to hidden controls
+- Fixed dropdowns in options menu closing unintentionally
 - Fixed rare case where changed positions are not saved
 =================================================
 Version 1.52 (October 05, 2026)
