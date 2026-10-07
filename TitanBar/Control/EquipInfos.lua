@@ -85,7 +85,6 @@ if _G.ControlRegistry and _G.ControlRegistry.Register then
         id = "EI",
         settingsKey = "EquipInfos",
         hasWhere = false,
-        defaults = { show = true, x = nil, y = 0 },
         initFunc = InitializeEquipInfos,
         onShow = OnShowEquipInfos
     })

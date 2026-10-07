@@ -133,7 +133,6 @@ if _G.ControlRegistry and _G.ControlRegistry.Register then
         id = "PI",
         settingsKey = "PlayerInfos",
         hasWhere = false,
-        defaults = { show = false, x = nil, y = 0 },
         initFunc = InitializePlayerInfos
     })
 end

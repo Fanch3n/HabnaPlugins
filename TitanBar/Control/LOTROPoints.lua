@@ -106,7 +106,6 @@ if _G.ControlRegistry and _G.ControlRegistry.Register then
 		id = "LP",
 		settingsKey = "LOTROPoints",
 		hasWhere = true,
-		defaults = { show = false, where = 3, x = 0, y = 0 },
 		initFunc = InitializeLOTROPoints
 	})
 end

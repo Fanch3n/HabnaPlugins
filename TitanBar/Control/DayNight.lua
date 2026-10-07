@@ -138,7 +138,6 @@ if _G.ControlRegistry and _G.ControlRegistry.Register then
 		id = "DN",
 		settingsKey = "DayNight",
 		hasWhere = false,
-		defaults = { show = false, x = 0, y = 0 },
 		initFunc = InitializeDayNight
 	})
 end

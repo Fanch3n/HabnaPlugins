@@ -46,7 +46,6 @@ if _G.ControlRegistry and _G.ControlRegistry.Register then
 		id = "WI",
 		settingsKey = "Wallet",
 		hasWhere = false,
-		defaults = { show = false, x = 0, y = 0 },
 		initFunc = InitializeWallet
 	})
 end

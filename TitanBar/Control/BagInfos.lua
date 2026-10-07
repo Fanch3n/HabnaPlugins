@@ -117,7 +117,6 @@ if _G.ControlRegistry and _G.ControlRegistry.Register then
 		id = "BI",
 		settingsKey = "BagInfos",
 		hasWhere = false,
-		defaults = { show = true, x = 0, y = 0 },
 		initFunc = InitializeBagInfos
 	})
 end

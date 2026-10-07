@@ -361,7 +361,6 @@ if _G.ControlRegistry and _G.ControlRegistry.Register then
 		id = "RP",
 		settingsKey = "Reputation",
 		hasWhere = false,
-		defaults = { show = false, x = 0, y = 0 },
 		initFunc = InitializeReputation
 	})
 end

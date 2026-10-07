@@ -89,7 +89,6 @@ if _G.ControlRegistry and _G.ControlRegistry.Register then
         id = "PL",
         settingsKey = "PlayerLoc",
         hasWhere = false,
-        defaults = { show = false, x = 0, y = 0 },
         initFunc = InitializePlayerLoc
     })
 end

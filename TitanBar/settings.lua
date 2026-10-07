@@ -2,40 +2,12 @@
 -- Written by Habna
 -- Rewritten by many
 
--- Defaults for new settings, set in LoadSettings() and ResetSettings()
-local tX, tY, tW, tL, tT
+-- Defaults for new settings, set in LoadSettings()
+local tX, tY, tL, tT
 
 -- ============================================================================
 -- HELPER FUNCTIONS FOR LOADING SETTINGS
 -- ============================================================================
-
--- Load settings from file into ControlData structure
-local function LoadControlSettings(controlId, settingsSection)
-	local data = _G.ControlData[controlId]
-	if not data then return end
-	
-	-- Load visibility
-	data.show = settingsSection.V or false
-	
-	-- Load colors
-	data.colors.alpha = tonumber(settingsSection.A) or Constants.DEFAULT_ALPHA
-	data.colors.red = tonumber(settingsSection.R) or Constants.DEFAULT_RED
-	data.colors.green = tonumber(settingsSection.G) or Constants.DEFAULT_GREEN
-	data.colors.blue = tonumber(settingsSection.B) or Constants.DEFAULT_BLUE
-	
-	-- Load location
-	data.location.x = tonumber(settingsSection.X) or Constants.DEFAULT_X
-	data.location.y = tonumber(settingsSection.Y) or Constants.DEFAULT_Y
-	
-	-- Load window position
-	data.window.left = tonumber(settingsSection.L) or Constants.DEFAULT_WINDOW_LEFT
-	data.window.top = tonumber(settingsSection.T) or Constants.DEFAULT_WINDOW_TOP
-	
-	-- Load where (if applicable)
-	if data.where ~= nil and settingsSection.W then
-		data.where = tonumber(settingsSection.W)
-	end
-end
 
 -- Save ControlData to settings structure  
 local function SaveControlSettings(controlId, settingsSection)
@@ -138,6 +110,110 @@ local function SaveWindowPosition(section, left, top)
 end
 
 -- ============================================================================
+-- SETTINGS OF THE CONTROLS
+-- ============================================================================
+-- One entry per control. Loading, saving and "Reset all settings" all work from this table.
+--   id: the ControlData / ControlRegistry id; section: the section in the settings file
+--   show, where, x: defaults of the standard fields (x can be a function for positions that depend on the bar width)
+--   noWindow: the control has no window, so no window position is stored (PlayerLoc uses L for its text)
+--   fields: the control's own settings, saved as section[key] and kept in ControlData[id][field]
+--     type: "bool" (the default), "int" (saved as a whole number) or "string"
+--     default: value of the field for new characters and after a reset (can be a function)
+--     invert: the saved value is the opposite of the field
+--     keepOnReset: "Reset all settings" keeps the current value
+local CONTROL_SETTINGS = {
+	{ id = "WI", section = "Wallet" },
+	{ id = "Money", section = "Money", show = true, where = Constants.Position.TITANBAR, x = Constants.DEFAULT_MONEY_X,
+		fields = {
+			{ key = "S", field = "stm", default = false }, -- Show total money of all characters on the control
+			{ key = "SS", field = "sss", default = true }, -- Show statistics of the session
+			{ key = "TS", field = "sts", default = true }, -- Show statistics of today
+		} },
+	{ id = "LP", section = "LOTROPoints", where = Constants.Position.NONE },
+	{ id = "BI", section = "BagInfos", show = true,
+		fields = {
+			{ key = "U", field = "used", default = true },
+			{ key = "M", field = "max", default = true },
+		} },
+	{ id = "PI", section = "PlayerInfos", x = Constants.DEFAULT_PLAYER_INFO_X, noWindow = true,
+		fields = {
+			{ key = "XP", field = "xp", type = "string", default = "0", keepOnReset = true },
+			{ key = "Layout", field = "layout", default = false, keepOnReset = true },
+		} },
+	{ id = "EI", section = "EquipInfos", show = true, x = Constants.DEFAULT_EQUIP_INFO_X, noWindow = true },
+	{ id = "DI", section = "DurabilityInfos", show = true, x = Constants.DEFAULT_DURABILITY_INFO_X,
+		fields = {
+			{ key = "I", field = "icon", default = true },
+			{ key = "N", field = "text", default = true },
+		} },
+	{ id = "PL", section = "PlayerLoc", show = true, x = function() return TBWidth - Constants.DEFAULT_PLAYER_LOC_WIDTH end, noWindow = true,
+		fields = {
+			{ key = "L", field = "text", type = "string", default = function() return L["PLMsg"] end, keepOnReset = true },
+		} },
+	{ id = "TI", section = "TrackItems" },
+	{ id = "IF", section = "Infamy",
+		fields = {
+			{ key = "F", field = "set", default = true, keepOnReset = true },
+			{ key = "P", field = "points", type = "int", default = 0, keepOnReset = true },
+			{ key = "K", field = "rank", type = "int", default = 0, keepOnReset = true },
+		} },
+	{ id = "VT", section = "Vault" },
+	{ id = "SS", section = "SharedStorage" },
+	{ id = "DN", section = "DayNight",
+		fields = {
+			{ key = "N", field = "next", default = true },
+			{ key = "S", field = "ts", type = "int", default = 10350, keepOnReset = true },
+		} },
+	{ id = "RP", section = "Reputation",
+		fields = {
+			{ key = "H", field = "showMax", default = false, invert = true }, -- saved as "hide max"
+		} },
+	{ id = "GT", section = "GameTime", show = true, x = function() return TBWidth - Constants.GAME_TIME_DEFAULT_OFFSET end,
+		fields = {
+			{ key = "H", field = "clock24h", default = false },
+			{ key = "S", field = "showST", default = false }, -- Show server time
+			{ key = "O", field = "showBT", default = false }, -- Show both server and real time
+			{ key = "M", field = "userGMT", type = "int", default = 0 },
+		} },
+}
+
+local function DefaultX(control)
+	if type(control.x) == "function" then return control.x() end
+	return control.x or 0
+end
+
+local function DefaultValue(field)
+	if type(field.default) == "function" then return field.default() end
+	return field.default
+end
+
+-- Value of a field as it is saved in the settings file
+local function SavedValue(field, value)
+	if value == nil then value = DefaultValue(field) end
+	if field.type == "int" then return Constants.FormatInt(tonumber(value) or DefaultValue(field)) end
+	if field.type == "string" then return value end
+	if field.invert then return value ~= true end
+	return value == true
+end
+
+-- Value of a field as it is kept in ControlData
+local function LoadedValue(field, saved)
+	if field.type == "int" then return tonumber(saved) or DefaultValue(field) end
+	if field.type == "string" then return saved end
+	if field.invert then return saved ~= true end
+	return saved == true
+end
+
+-- Defaults of the standard fields of a control, used by ControlRegistry.Register()
+function GetControlDefaults(controlId)
+	for _, control in ipairs(CONTROL_SETTINGS) do
+		if control.id == controlId then
+			return { show = control.show or false, where = control.where, x = DefaultX(control), y = 0 }
+		end
+	end
+end
+
+-- ============================================================================
 -- SETTINGS LOADING
 -- ============================================================================
 
@@ -153,7 +229,7 @@ function LoadSettings()
 		settings = Turbine.PluginData.Load( Constants.SETTINGS_SCOPE, Constants.SETTINGS_NAME_FR );
 	end
 	
-	tA, tR, tG, tB, tX, tY, tW = Constants.DEFAULT_ALPHA, Constants.DEFAULT_RED, Constants.DEFAULT_GREEN, Constants.DEFAULT_BLUE, Constants.DEFAULT_X, Constants.DEFAULT_Y, Constants.Position.NONE;
+	tA, tR, tG, tB, tX, tY = Constants.DEFAULT_ALPHA, Constants.DEFAULT_RED, Constants.DEFAULT_GREEN, Constants.DEFAULT_BLUE, Constants.DEFAULT_X, Constants.DEFAULT_Y;
 	tL, tT = Constants.DEFAULT_WINDOW_LEFT, Constants.DEFAULT_WINDOW_TOP;
 
 	---@type table<string, table>
@@ -237,165 +313,40 @@ function LoadSettings()
 	BGWToAll = background.A
 
 
-	-- Wallet control
-	local wallet = InitControlDefaults("Wallet", {}, {}, {})
-	wallet.V = wallet.V or false
-	LoadControlSettings("WI", wallet)
+	-- Controls: fill in defaults for missing settings, and load the controls' own fields.
+	-- The standard fields are loaded by ControlRegistry when a control registers.
+	for _, control in ipairs(CONTROL_SETTINGS) do
+		local section = InitControlDefaults(control.section, nil, { x = DefaultX(control) }, not control.noWindow and {} or nil)
+		if section.V == nil then section.V = control.show or false end
+		if control.where then section.W = section.W or Constants.FormatInt(control.where) end
 
-
-	-- Money control
-	local money = InitControlDefaults("Money", {}, {x=Constants.DEFAULT_MONEY_X}, {})
-	money.V = money.V == nil and true or money.V
-	money.S = money.S or false --Show Total Money of all characters on TitanBar Money control
-	money.SS = money.SS == nil and true or money.SS --Show stats for session
-	money.TS = money.TS == nil and true or money.TS --Show stats for today
-	money.W = money.W or Constants.FormatInt(Constants.Position.TITANBAR)
-	LoadControlSettings("Money", money)
-	_G.ControlData.Money = _G.ControlData.Money or {}
-	_G.ControlData.Money.stm = money.S
-	_G.ControlData.Money.sss = money.SS
-	_G.ControlData.Money.sts = money.TS
-
-	-- LOTROPoints control
-	local lotroPoints = InitControlDefaults("LOTROPoints", {}, {}, {})
-	lotroPoints.V = lotroPoints.V or false
-	lotroPoints.W = lotroPoints.W or Constants.FormatInt(tW)
-	LoadControlSettings("LP", lotroPoints)
-	_G.ControlData.LP = _G.ControlData.LP or {}
-
-
-	-- BagInfos control
-	local bagInfos = InitControlDefaults("BagInfos", {}, {}, {})
-	bagInfos.V = bagInfos.V == nil and true or bagInfos.V
-	bagInfos.U = bagInfos.U == nil and true or bagInfos.U
-	bagInfos.M = bagInfos.M == nil and true or bagInfos.M
-	LoadControlSettings("BI", bagInfos)
-	_G.ControlData.BI = _G.ControlData.BI or {}
-	_G.ControlData.BI.used = bagInfos.U
-	_G.ControlData.BI.max = bagInfos.M
-
+		if control.fields then
+			_G.ControlData[control.id] = _G.ControlData[control.id] or {}
+			local data = _G.ControlData[control.id]
+			for _, field in ipairs(control.fields) do
+				if section[field.key] == nil then section[field.key] = SavedValue(field, nil) end
+				data[field.field] = LoadedValue(field, section[field.key])
+			end
+		end
+	end
 
 	local bagInfosList = EnsureSettingsSection("BagInfosList")
 	SetDefaultWindowPosition(bagInfosList, tL, tT)
 	BLWLeft = tonumber(bagInfosList.L)
 	BLWTop = tonumber(bagInfosList.T)
 
-
-	-- PlayerInfos control
-	local playerInfos = InitControlDefaults("PlayerInfos", {}, {x=Constants.DEFAULT_PLAYER_INFO_X})
-	playerInfos.V = playerInfos.V or false
-	playerInfos.XP = playerInfos.XP or Constants.FormatInt(0)
-	playerInfos.Layout = playerInfos.Layout or false
-	LoadControlSettings("PI", playerInfos)
-	_G.ControlData.PI = _G.ControlData.PI or {}
-	_G.ControlData.PI.xp = playerInfos.XP
-	_G.ControlData.PI.layout = playerInfos.Layout
-	local piLayout = _G.ControlData.PI.layout
-	if not piLayout then
+	if not _G.ControlData.PI.layout then
 		_G.AlignLbl = Turbine.UI.ContentAlignment.MiddleLeft;
 		_G.AlignVal = Turbine.UI.ContentAlignment.MiddleRight;
 		_G.AlignOff = 0;
 		_G.AlignOffP = 5;
-	--  _G.AlignHead = Turbine.UI.ContentAlignment.MiddleLeft;
-	elseif piLayout then
+	else
 		_G.AlignLbl = Turbine.UI.ContentAlignment.MiddleRight;
 		_G.AlignVal = Turbine.UI.ContentAlignment.MiddleLeft;
 		_G.AlignOff = 5;
 		_G.AlignOffP = 0;
-	--	_G.AlignHead = Turbine.UI.ContentAlignment.MiddleCenter;
 	end
 
-	-- EquipInfos control
-	local equipInfos = InitControlDefaults("EquipInfos", {}, {x=Constants.DEFAULT_EQUIP_INFO_X})
-	equipInfos.V = equipInfos.V == nil and true or equipInfos.V
-	LoadControlSettings("EI", equipInfos)
-
-
-	-- DurabilityInfos control
-	local durabilityInfos = InitControlDefaults("DurabilityInfos", {}, {x=Constants.DEFAULT_DURABILITY_INFO_X}, {})
-	durabilityInfos.V = durabilityInfos.V == nil and true or durabilityInfos.V
-	durabilityInfos.I = durabilityInfos.I == nil and true or durabilityInfos.I
-	durabilityInfos.N = durabilityInfos.N == nil and true or durabilityInfos.N
-	LoadControlSettings("DI", durabilityInfos)
-	_G.ControlData.DI = _G.ControlData.DI or {}
-	_G.ControlData.DI.icon = durabilityInfos.I
-	_G.ControlData.DI.text = durabilityInfos.N
-
-
-	-- PlayerLoc control
-	local playerLoc = InitControlDefaults("PlayerLoc", {}, {x=screenWidth - Constants.DEFAULT_PLAYER_LOC_WIDTH})
-	playerLoc.V = playerLoc.V == nil and true or playerLoc.V
-	playerLoc.L = playerLoc.L or L["PLMsg"]
-	LoadControlSettings("PL", playerLoc)
-	_G.ControlData.PL = _G.ControlData.PL or {}
-	_G.ControlData.PL.text = playerLoc.L
-
-
-	-- TrackItems control
-	local trackItems = InitControlDefaults("TrackItems", {}, {}, {})
-	trackItems.V = trackItems.V or false
-	LoadControlSettings("TI", trackItems)
-
-
-	-- Infamy control
-	local infamy = InitControlDefaults("Infamy", {}, {}, {})
-	infamy.V = infamy.V or false
-	infamy.F = infamy.F == nil and true or infamy.F
-	infamy.P = infamy.P or Constants.FormatInt(0)
-	infamy.K = infamy.K or Constants.FormatInt(0)
-	LoadControlSettings("IF", infamy)
-	_G.ControlData.IF = _G.ControlData.IF or {}
-	_G.ControlData.IF.set = infamy.F
-	_G.ControlData.IF.points = tonumber(infamy.P) or 0
-	_G.ControlData.IF.rank = tonumber(infamy.K) or 0
-
-
-	-- Vault control
-	local vault = InitControlDefaults("Vault", {}, {}, {})
-	vault.V = vault.V or false
-	LoadControlSettings("VT", vault)
-
-
-	-- SharedStorage control
-	local sharedStorage = InitControlDefaults("SharedStorage", {}, {}, {})
-	sharedStorage.V = sharedStorage.V or false
-	LoadControlSettings("SS", sharedStorage)
-
-	-- DayNight control
-	local dayNight = InitControlDefaults("DayNight", {}, {}, {})
-	dayNight.V = dayNight.V or false
-	dayNight.N = dayNight.N == nil and true or dayNight.N
-	dayNight.S = dayNight.S or Constants.FormatInt(10350)
-	LoadControlSettings("DN", dayNight)
-	_G.ControlData.DN = _G.ControlData.DN or {}
-	_G.ControlData.DN.next = dayNight.N
-	_G.ControlData.DN.ts = tonumber(dayNight.S) or 0
-
-
-	-- Reputation control
-	local reputation = InitControlDefaults("Reputation", {}, {}, {})
-	reputation.V = reputation.V or false
-	reputation.H = reputation.H == nil and true or reputation.H
-	LoadControlSettings("RP", reputation)
-	_G.ControlData.RP = _G.ControlData.RP or {}
-	-- Legacy setting key: settings.Reputation.H stored "hide max". Runtime flag is now showMax.
-	_G.ControlData.RP.showMax = (reputation.H ~= true)
-
-
-	-- GameTime control
-	local gameTime = InitControlDefaults("GameTime", {}, {x=screenWidth - Constants.GAME_TIME_DEFAULT_OFFSET}, {})
-	gameTime.V = gameTime.V == nil and true or gameTime.V
-	gameTime.H = gameTime.H or false -- default to 12h format
-	gameTime.S = gameTime.S or false -- True = Show server time
-	gameTime.O = gameTime.O or false -- True = Show both server and real time
-	gameTime.M = gameTime.M or Constants.FormatInt(0)
-	LoadControlSettings("GT", gameTime)
-	_G.ControlData.GT = _G.ControlData.GT or {}
-	_G.ControlData.GT.clock24h = (gameTime.H == true)
-	_G.ControlData.GT.showST = (gameTime.S == true)
-	_G.ControlData.GT.showBT = (gameTime.O == true)
-	_G.ControlData.GT.userGMT = tonumber(gameTime.M) or 0
-	
 	for k,v in pairs(_G.currencies.list) do
 		CreateSettingsForCurrency(v)
 		LoadSettingsForCurrency(v.name)
@@ -475,88 +426,17 @@ function SaveSettings()
 	SaveWindowPosition(background, BGWLeft, BGWTop)
 	background.A = BGWToAll
 
-	-- Wallet
-	local wallet = EnsureSettingsSection("Wallet")
-	SaveControlSettings("WI", wallet)
-
-	-- Money
-	local money = EnsureSettingsSection("Money")
-	SaveControlSettings("Money", money)
-	money.S = _G.ControlData.Money.stm
-	money.SS = _G.ControlData.Money.sss
-	money.TS = _G.ControlData.Money.sts
-
-	-- LOTROPoints
-	local lotroPoints = EnsureSettingsSection("LOTROPoints")
-	SaveControlSettings("LP", lotroPoints)
-	
-	-- BagInfos
-	local bagInfos = EnsureSettingsSection("BagInfos")
-	SaveControlSettings("BI", bagInfos)
-	bagInfos.U = _G.ControlData.BI.used
-	bagInfos.M = _G.ControlData.BI.max
+	-- Controls
+	for _, control in ipairs(CONTROL_SETTINGS) do
+		local section = EnsureSettingsSection(control.section)
+		SaveControlSettings(control.id, section)
+		local data = _G.ControlData[control.id] or {}
+		for _, field in ipairs(control.fields or {}) do
+			section[field.key] = SavedValue(field, data[field.field])
+		end
+	end
 
 	SaveWindowPosition(EnsureSettingsSection("BagInfosList"), BLWLeft, BLWTop)
-
-	-- PlayerInfos
-	local playerInfos = EnsureSettingsSection("PlayerInfos")
-	SaveControlSettings("PI", playerInfos)
-	playerInfos.XP = (_G.ControlData.PI and _G.ControlData.PI.xp) or Constants.FormatInt(0)
-	playerInfos.Layout = (_G.ControlData.PI and _G.ControlData.PI.layout) or false
-
-	-- EquipInfos
-	local equipInfos = EnsureSettingsSection("EquipInfos")
-	SaveControlSettings("EI", equipInfos)
-	
-	-- DurabilityInfos
-	local durabilityInfos = EnsureSettingsSection("DurabilityInfos")
-	SaveControlSettings("DI", durabilityInfos)
-	durabilityInfos.I = _G.ControlData.DI.icon
-	durabilityInfos.N = _G.ControlData.DI.text
-
-	-- PlayerLoc
-	local playerLoc = EnsureSettingsSection("PlayerLoc")
-	SaveControlSettings("PL", playerLoc)
-	playerLoc.L = string.format(((_G.ControlData.PL and _G.ControlData.PL.text) or L["PLMsg"]))
-
-	-- TrackItems
-	local trackItems = EnsureSettingsSection("TrackItems")
-	SaveControlSettings("TI", trackItems)
-
-	-- Infamy
-	local infamy = EnsureSettingsSection("Infamy")
-	SaveControlSettings("IF", infamy)
-	infamy.F = (_G.ControlData.IF and _G.ControlData.IF.set) ~= false
-	infamy.P = Constants.FormatInt((_G.ControlData.IF and _G.ControlData.IF.points) or 0)
-	infamy.K = Constants.FormatInt((_G.ControlData.IF and _G.ControlData.IF.rank) or 0)
-
-	-- Vault
-	local vault = EnsureSettingsSection("Vault")
-	SaveControlSettings("VT", vault)
-	
-	-- SharedStorage
-	local sharedStorage = EnsureSettingsSection("SharedStorage")
-	SaveControlSettings("SS", sharedStorage)
-	
-	-- DayNight
-	local dayNight = EnsureSettingsSection("DayNight")
-	SaveControlSettings("DN", dayNight)
-	dayNight.N = ((_G.ControlData.DN and _G.ControlData.DN.next) ~= false)
-	dayNight.S = Constants.FormatInt(((_G.ControlData.DN and _G.ControlData.DN.ts) or 0))
-	
-	-- Reputation
-	local reputation = EnsureSettingsSection("Reputation")
-	SaveControlSettings("RP", reputation)
-	-- Persist legacy key as hideMax for backward compatibility.
-	reputation.H = ((_G.ControlData.RP and _G.ControlData.RP.showMax) ~= true)
-
-	-- GameTime
-	local gameTime = EnsureSettingsSection("GameTime")
-	SaveControlSettings("GT", gameTime)
-	gameTime.H = (_G.ControlData.GT and _G.ControlData.GT.clock24h) == true
-	gameTime.S = (_G.ControlData.GT and _G.ControlData.GT.showST) == true
-	gameTime.O = (_G.ControlData.GT and _G.ControlData.GT.showBT) == true
-	gameTime.M = Constants.FormatInt(((_G.ControlData.GT and tonumber(_G.ControlData.GT.userGMT)) or 0))
 
 	for k,v in pairs(_G.currencies.list) do
 		SetSettings(v.name)
@@ -589,28 +469,21 @@ function ResetSettings()
 	write( L["TBR"] );
 	TBLocale = "en";
 	
-	tA, tR, tG, tB, tX, tY, tW = 0.3, 0.3, 0.3, 0.3, 0, 0, 3;
-	tL, tT = 100, 100;
+	tA, tR, tG, tB = 0.3, 0.3, 0.3, 0.3;
 	
 	TBHeight, _G.TBFont, TBFontT, TBTop, TBAutoHide, TBIconSize, bcAlpha, bcRed, bcGreen, bcBlue = Constants.DEFAULT_TITANBAR_HEIGHT, 1107296268, "TrajanPro14", true, L["OPAHC"], Constants.ICON_SIZE_LARGE, tA, tR, tG, tB;
 	
 	-- Reset all controls (currencies included) to defaults defined in ControlRegistry
 	_G.ControlRegistry.ResetToDefaults()
-	
-	-- Reset control-specific settings that aren't in ControlData structure
-	_G.ControlData.Money.stm, _G.ControlData.Money.sss, _G.ControlData.Money.sts = false, true, true
-	_G.ControlData.BI.used, _G.ControlData.BI.max = true, true
-	_G.ControlData.DI.icon, _G.ControlData.DI.text = true, true
-	_G.ControlData.RP = _G.ControlData.RP or {}
-	_G.ControlData.RP.showMax = false
-	_G.ControlData.GT = _G.ControlData.GT or {}
-	_G.ControlData.GT.clock24h = false
-	_G.ControlData.GT.showST = false
-	_G.ControlData.GT.showBT = false
-	_G.ControlData.GT.userGMT = 0
-	_G.ControlData.DN = _G.ControlData.DN or {}
-	_G.ControlData.DN.next = true
-		
+
+	-- Reset the controls' own fields
+	for _, control in ipairs(CONTROL_SETTINGS) do
+		local data = _G.ControlData[control.id]
+		for _, field in ipairs(control.fields or {}) do
+			if not field.keepOnReset then data[field.field] = DefaultValue(field) end
+		end
+	end
+
 	SaveSettings();
 	ReloadTitanBar();
 end

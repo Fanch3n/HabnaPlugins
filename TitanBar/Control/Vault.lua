@@ -89,7 +89,6 @@ if _G.ControlRegistry and _G.ControlRegistry.Register then
         id = "VT",
         settingsKey = "Vault",
         hasWhere = false,
-        defaults = { show = false, x = 0, y = 0 },
         initFunc = InitializeVault
     })
 end

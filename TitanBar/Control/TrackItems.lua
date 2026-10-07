@@ -37,7 +37,6 @@ if _G.ControlRegistry and _G.ControlRegistry.Register then
         id = "TI",
         settingsKey = "TrackItems",
         hasWhere = false,
-        defaults = { show = false, x = 0, y = 0 },
         initFunc = InitializeTrackItems
     })
 end

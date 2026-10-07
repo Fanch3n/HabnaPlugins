@@ -83,33 +83,10 @@ end
 -- Registry structure for each control - maps ID to metadata
 local registry = {}
 
--- Helper function to get default X position for a control
-local function GetDefaultX(controlId)
-	if not Constants then return 0 end
-
-	if controlId == "Money" then
-		return Constants.DEFAULT_MONEY_X
-	elseif controlId == "PI" then
-		return Constants.DEFAULT_PLAYER_INFO_X
-	elseif controlId == "EI" then
-		return Constants.DEFAULT_EQUIP_INFO_X
-	elseif controlId == "DI" then
-		return Constants.DEFAULT_DURABILITY_INFO_X
-	elseif controlId == "PL" then
-		return TBWidth - Constants.DEFAULT_PLAYER_LOC_WIDTH
-	else
-		return 0
-	end
-end
-
 -- Initialize all control data structures
 function _G.ControlRegistry.InitializeAll()
 	for id, config in pairs(registry) do
-		-- Apply default x positions based on Constants if not set
 		local defaults = config.defaults or {}
-		if defaults.x == nil then
-			defaults.x = GetDefaultX(id)
-		end
 		InitControlData(id, config.settingsKey, config.toggleFunc, config.hasWhere, defaults)
 		_G.ControlData[id].kind = config.kind
 	end
@@ -132,7 +109,7 @@ function _G.ControlRegistry.ResetToDefaults()
 			data.colors.green = defaults.green or 0.3
 			data.colors.blue = defaults.blue or 0.3
 
-			data.location.x = defaults.x or GetDefaultX(id)
+			data.location.x = defaults.x or 0
 			data.location.y = defaults.y or 0
 		end
 	end
@@ -146,7 +123,8 @@ function _G.ControlRegistry.Register(config)
 		settingsKey = config.settingsKey or id,
 		toggleFunc = config.toggleFunc,
 		hasWhere = config.hasWhere or false,
-		defaults = config.defaults or {},
+		-- Standard controls get their defaults from settings.lua, currencies pass their own
+		defaults = config.defaults or GetControlDefaults(id) or {},
 		onShow = config.onShow,
 		onHide = config.onHide
 	}
@@ -155,7 +133,6 @@ function _G.ControlRegistry.Register(config)
 
 	-- Initialize data immediately
 	local defaults = registry[id].defaults
-	if defaults.x == nil then defaults.x = GetDefaultX(id) end
 	InitControlData(id, registry[id].settingsKey, registry[id].toggleFunc, registry[id].hasWhere, defaults, config.onShow, config.onHide)
 	_G.ControlData[id].kind = registry[id].kind
 end

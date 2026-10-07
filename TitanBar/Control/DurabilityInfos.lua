@@ -111,7 +111,6 @@ if _G.ControlRegistry and _G.ControlRegistry.Register then
         id = "DI",
         settingsKey = "DurabilityInfos",
         hasWhere = false,
-        defaults = { show = true, x = nil, y = 0 },
         initFunc = InitializeDurabilityInfos,
         onShow = OnShowDurabilityInfos
     })

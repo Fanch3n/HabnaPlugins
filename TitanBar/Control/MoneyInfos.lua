@@ -362,7 +362,6 @@ if _G.ControlRegistry and _G.ControlRegistry.Register then
 		id = "Money",
 		settingsKey = "Money",
 		hasWhere = true,
-		defaults = { show = true, where = 1, x = nil, y = 0 },
 		initFunc = InitializeMoneyInfos
 	})
 end
