@@ -45,13 +45,15 @@ end
 
 
 function UpdateCurrencyDisplay(currencyName)
-	if _G.CurrencyData[currencyName].Where == 1 then
+	local data = _G.ControlData[currencyName]
+	if data.where == 1 then
+		local lbl = data.controls.Lbl
 		if currencyName == "DestinyPoints" then
-			_G.CurrencyData[currencyName].Lbl:SetText(GetPlayerAttributes():GetDestinyPoints())
+			lbl:SetText(GetPlayerAttributes():GetDestinyPoints())
 		else
-			_G.CurrencyData[currencyName].Lbl:SetText(GetCurrency(L["M"..currencyName]))
+			lbl:SetText(GetCurrency(L["M"..currencyName]))
 		end
-		_G.CurrencyData[currencyName].Lbl:SetSize(_G.CurrencyData[currencyName].Lbl:GetTextLength() * NM, CTRHeight ); 
+		lbl:SetSize(lbl:GetTextLength() * NM, CTRHeight ); 
 		AdjustIcon(currencyName);
 	end
 end
@@ -67,30 +69,19 @@ function ChangeColor(tColor)
 	if BGWToAll then
 		TB["win"]:SetBackColor( tColor );
 		
-		-- Apply to all standard controls via ControlRegistry
+		-- Apply to all controls, currencies included
 		_G.ControlRegistry.ForEach(function(controlId, data)
 			if data.show and data.ui and data.ui.control then
 				data.ui.control:SetBackColor(tColor)
 			end
 		end)
-		
-		-- Apply to all currency controls
-		for k,v in pairs(_G.currencies.list) do
-			if _G.CurrencyData[v.name].IsVisible then
-				_G.CurrencyData[v.name].Ctr:SetBackColor(tColor)
-			end
-		end
 	else
 		if sFrom == "TitanBar" then 
 			TB["win"]:SetBackColor( tColor )
 		else
-			-- Try to get from ControlRegistry first
 			local data = _G.ControlRegistry.Get(sFrom)
 			if data and data.ui and data.ui.control then
 				data.ui.control:SetBackColor(tColor)
-			elseif _G.CurrencyData[sFrom] then
-				-- Fall back to currency data
-				_G.CurrencyData[sFrom].Ctr:SetBackColor(tColor)
 			end
 		end
 	end
@@ -113,8 +104,6 @@ function KeepIconControlInBar(controlName)
 	-- Special case for MI which is stored as "Money"
 	elseif controlName == "MI" and _G.ControlData and _G.ControlData.Money and _G.ControlData.Money.controls then
 		container = _G.ControlData.Money.controls
-	elseif (_G.CurrencyData[controlName] and _G.CurrencyData[controlName].Ctr) then 
-		container = _G.CurrencyData[controlName];
 	end
 
 	if (container and container["Ctr"]) then
@@ -167,12 +156,15 @@ function AdjustIcon(str)
 			end
 			_G.ControlData.Money.controls[ "Ctr" ]:SetSize(_G.ControlData.Money.controls["GCtr"]:GetWidth() + _G.ControlData.Money.controls["SCtr"]:GetWidth() + 
             _G.ControlData.Money.controls["CCtr"]:GetWidth(), CTRHeight );
-	elseif (_G.CurrencyData[str] and _G.CurrencyData[str].Icon) then
-		local iconLeft = _G.CurrencyData[str].Lbl:GetLeft() + _G.CurrencyData[str].Lbl:GetWidth();
-		if str ~= "DestinyPoints" then
-			iconLeft = iconLeft + 3;
+	elseif _G.ControlRegistry.IsCurrency(str) then
+		local controls = _G.ControlData[str].controls
+		if controls and controls.Icon then
+			local iconLeft = controls.Lbl:GetLeft() + controls.Lbl:GetWidth();
+			if str ~= "DestinyPoints" then
+				iconLeft = iconLeft + 3;
+			end
+			layoutIcon( controls.Icon, controls.Ctr, iconLeft, Y, iconLeft + TBIconSize );
 		end
-		layoutIcon( _G.CurrencyData[str].Icon, _G.CurrencyData[str].Ctr, iconLeft, Y, iconLeft + TBIconSize );
 	else
 		-- Generic standard control layout.
 		
@@ -249,13 +241,6 @@ function RelayoutIcons()
 			end
 		end
 	end)
-
-	for _, currency in pairs(_G.currencies.list) do
-		local currencyData = _G.CurrencyData[currency.name]
-		if currencyData and currencyData.Icon and currencyData.IsVisible and currencyData.Where == Constants.Position.TITANBAR then
-			AdjustIcon(currency.name);
-		end
-	end
 end
 
 function DecryptMoney( v )

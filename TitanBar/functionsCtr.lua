@@ -53,16 +53,16 @@ function ImportCtr( value )
         return
     end
 
-    -- 2. Currencies (Legacy system)
-    if _G.CurrencyData and _G.CurrencyData[value] then
-        if _G.CurrencyData[value].Where == 1 then
+    -- 2. Currencies
+    if data and data.kind == "currency" then
+        if data.where == 1 then
             createCurrencyTable(value)
-            local ctr = _G.CurrencyData[value].Ctr
+            local ctr = data.controls.Ctr
             if ctr then
-                ctr:SetPosition(_G.CurrencyData[value].LocX, _G.CurrencyData[value].LocY)
+                ctr:SetPosition(data.location.x, data.location.y)
             end
         end
-        if _G.CurrencyData[value].Where ~= 3 then
+        if data.where ~= 3 then
             if value == "DestinyPoints" then
                 AddCallback(GetPlayerAttributes(), "DestinyPointsChanged", function(sender, args)
                     UpdateCurrencyDisplay("DestinyPoints")
@@ -305,18 +305,19 @@ function UpdateCurrency(currency_display)
     if _G.Debug then write("UpdateCurrency:" ..currency_display); end
     local currency_name = _G.CurrencyLangMap[currency_display]
     if _G.Debug and not currency_name then write("Currency not supported!"); end
-    if currency_name and _G.CurrencyData[currency_name].IsVisible then
+    if currency_name and _G.ControlData[currency_name].show then
         UpdateCurrencyDisplay(currency_name)
     end
 end
 
 function SetCurrencyToZero(str)
     for _, currency in pairs(_G.currencies.list) do
-        if str == L["M" .. currency.name] and _G.CurrencyData[currency.name].IsVisible then
-            if _G.CurrencyData[currency.name].IsVisible then
-                if _G.CurrencyData[currency.name].Where == 1 then
-                    _G.CurrencyData[currency.name].Lbl:SetText("0");
-                    _G.CurrencyData[currency.name].Lbl:SetSize(_G.CurrencyData[currency.name].Lbl:GetTextLength() * NM, CTRHeight );
+        local data = _G.ControlData[currency.name]
+        if str == L["M" .. currency.name] and data.show then
+            if data.show then
+                if data.where == 1 then
+                    data.controls.Lbl:SetText("0");
+                    data.controls.Lbl:SetSize(data.controls.Lbl:GetTextLength() * NM, CTRHeight );
                     AdjustIcon(currency.name);
                 end
             end
@@ -326,11 +327,12 @@ end
 
 function SetCurrencyFromZero(str, amount)
     for _, currency in pairs(_G.currencies.list) do
-        if str == L["M" .. currency.name] and _G.CurrencyData[currency.name].IsVisible then
-            if _G.CurrencyData[currency.name].IsVisible then
-                if _G.CurrencyData[currency.name].Where == 1 then
-                    _G.CurrencyData[currency.name].Lbl:SetText(amount);
-                    _G.CurrencyData[currency.name].Lbl:SetSize(_G.CurrencyData[currency.name].Lbl:GetTextLength() * NM, CTRHeight );
+        local data = _G.ControlData[currency.name]
+        if str == L["M" .. currency.name] and data.show then
+            if data.show then
+                if data.where == 1 then
+                    data.controls.Lbl:SetText(amount);
+                    data.controls.Lbl:SetSize(data.controls.Lbl:GetTextLength() * NM, CTRHeight );
                     AdjustIcon(currency.name);
                 end
             end

@@ -445,28 +445,29 @@ end
 -- **^
 
 function LoadSettingsForCurrency(name)
-	if _G.CurrencyData == nil then
-		_G.CurrencyData = {}
-	end
-	if _G.CurrencyData[name] == nil then
-		_G.CurrencyData[name] = {}
-	end
-	
-	local data = _G.CurrencyData[name]
+	_G.ControlRegistry.Register({
+		id = name,
+		kind = "currency",
+		hasWhere = true,
+		defaults = { show = false, where = Constants.Position.NONE, x = 0, y = 0 },
+		toggleFunc = function() ShowHideCurrency(name) end
+	})
+
+	local data = _G.ControlData[name]
 	local section = settings[name]
 	
-	data.IsVisible = section.V
-	data.bcAlpha = tonumber(section.A) or Constants.DEFAULT_ALPHA
-	data.bcRed = tonumber(section.R) or Constants.DEFAULT_RED
-	data.bcGreen = tonumber(section.G) or Constants.DEFAULT_GREEN
-	data.bcBlue = tonumber(section.B) or Constants.DEFAULT_BLUE
-	data.LocX = tonumber(section.X) or Constants.DEFAULT_X
-	data.LocY = tonumber(section.Y) or Constants.DEFAULT_Y
-	data.Where = tonumber(section.W) or Constants.Position.NONE
+	data.show = section.V
+	data.colors.alpha = tonumber(section.A) or Constants.DEFAULT_ALPHA
+	data.colors.red = tonumber(section.R) or Constants.DEFAULT_RED
+	data.colors.green = tonumber(section.G) or Constants.DEFAULT_GREEN
+	data.colors.blue = tonumber(section.B) or Constants.DEFAULT_BLUE
+	data.location.x = tonumber(section.X) or Constants.DEFAULT_X
+	data.location.y = tonumber(section.Y) or Constants.DEFAULT_Y
+	data.where = tonumber(section.W) or Constants.Position.NONE
 	
-	if data.Where == Constants.Position.NONE and data.IsVisible then
-		data.Where = Constants.Position.TITANBAR
-		section.W = Constants.FormatInt(data.Where)
+	if data.where == Constants.Position.NONE and data.show then
+		data.where = Constants.Position.TITANBAR
+		section.W = Constants.FormatInt(data.where)
 	end
 end
 
@@ -607,13 +608,14 @@ function SaveSettings(str)
 end
 -- **^
 
+-- Currencies keep their own settings layout (no window position)
 function SetSettings(currencyName)
-	local data = _G.CurrencyData[currencyName]
+	local data = _G.ControlData[currencyName]
 	settings[currencyName] = {}
-	settings[currencyName].V = data.IsVisible
-	SaveColors(settings[currencyName], data.bcAlpha, data.bcRed, data.bcGreen, data.bcBlue)
-	SavePosition(settings[currencyName], data.LocX, data.LocY)
-	settings[currencyName].W = Constants.FormatInt(data.Where)
+	settings[currencyName].V = data.show
+	SaveColors(settings[currencyName], data.colors.alpha, data.colors.red, data.colors.green, data.colors.blue)
+	SavePosition(settings[currencyName], data.location.x, data.location.y)
+	settings[currencyName].W = Constants.FormatInt(data.where)
 end
 
 -- **v Reset All Settings v**
@@ -626,7 +628,7 @@ function ResetSettings()
 	
 	TBHeight, _G.TBFont, TBFontT, TBTop, TBAutoHide, TBIconSize, bcAlpha, bcRed, bcGreen, bcBlue = Constants.DEFAULT_TITANBAR_HEIGHT, 1107296268, "TrajanPro14", true, L["OPAHC"], Constants.ICON_SIZE_LARGE, tA, tR, tG, tB;
 	
-	-- Reset all controls to defaults defined in ControlRegistry
+	-- Reset all controls (currencies included) to defaults defined in ControlRegistry
 	_G.ControlRegistry.ResetToDefaults()
 	
 	-- Reset control-specific settings that aren't in ControlData structure
@@ -642,18 +644,6 @@ function ResetSettings()
 	_G.ControlData.GT.userGMT = 0
 	_G.ControlData.DN = _G.ControlData.DN or {}
 	_G.ControlData.DN.next = true
-	
-	-- Reset currency controls
-	for k,v in pairs(_G.currencies.list) do
-		_G.CurrencyData[v.name].IsVisible = false
-		_G.CurrencyData[v.name].bcAlpha = tA
-		_G.CurrencyData[v.name].bcRed = tR
-		_G.CurrencyData[v.name].bcGreen = tG
-		_G.CurrencyData[v.name].bcBlue = tB
-		_G.CurrencyData[v.name].LocX = tX
-		_G.CurrencyData[v.name].LocY = tY
-		_G.CurrencyData[v.name].Where = tW
-	end
 		
 	SaveSettings( true ); --True: Get & save all settings table to file. / False: only save settings table to file.
 	ReloadTitanBar();
@@ -669,7 +659,7 @@ function ReplaceCtr()
 	TBWidth = GetBarWidth();
 	settings.TitanBar.W = string.format("%.0f", TBWidth);
 	
-	-- Update all standard controls
+	-- Update all controls, currencies included
 	_G.ControlRegistry.ForEach(function(controlId, data)
 		local settingsKey = data.settingsKey
 		if settings[settingsKey] and settings[settingsKey].X then
@@ -696,18 +686,6 @@ function ReplaceCtr()
 			end
 		end
 	end)
-	
-	-- Update currency controls
-	for k,v in pairs(_G.currencies.list) do
-		if settings[v.name] and settings[v.name].X then
-			local oldLocX = settings[v.name].X / oldBarWidth
-			_G.CurrencyData[v.name].LocX = oldLocX * TBWidth
-			settings[v.name].X = string.format("%.0f", _G.CurrencyData[v.name].LocX)
-			if _G.CurrencyData[v.name].IsVisible and _G.CurrencyData[v.name].Where == Constants.Position.TITANBAR then
-				_G.CurrencyData[v.name].Ctr:SetPosition(_G.CurrencyData[v.name].LocX, _G.CurrencyData[v.name].LocY)
-			end
-		end
-	end
 
 	SaveSettings( false );
 	write( L["TBSSCD"] );

@@ -2,20 +2,12 @@
 import(AppDirD .. "UIHelpers")
 
 _G.createCurrencyTable = function(currencyName)
-	local currencyData = _G.CurrencyData[currencyName]
-	currencyData.Ctr = Turbine.UI.Control()
-	currencyData.Ctr:SetParent(TB.win)
-	currencyData.Ctr:SetMouseVisible(false)
-	currencyData.Ctr:SetZOrder(2)
-	currencyData.Ctr:SetBlendMode(Turbine.UI.BlendMode.AlphaBlend)
-	currencyData.Ctr:SetBackColor(
-		Turbine.UI.Color(
-			currencyData.bcAlpha,
-			currencyData.bcRed,
-			currencyData.bcGreen,
-			currencyData.bcBlue
-		)
-	)
+	local data = _G.ControlData[currencyName]
+	local currencyData = {} -- Ctr, Icon and Lbl, like the controls of a standard control
+	data.controls = currencyData
+	local colors = data.colors
+	CreateTitanBarControl(currencyData, colors.alpha, colors.red, colors.green, colors.blue)
+	data.ui.control = currencyData.Ctr
 
 	-- Currency icon on TitanBar
 	currencyData.Icon = Turbine.UI.Control()
@@ -87,8 +79,7 @@ _G.createCurrencyTable = function(currencyName)
 		_G.WasDrag = false
 	end
 
-	local dragHandlers = CreateDragHandlers(currencyData.Ctr, settings[currencyName], currencyName .. "LocX",
-		currencyName .. "LocY")
+	local dragHandlers = CreateDragHandlers(currencyData.Ctr, settings[currencyName], currencyName)
 	currencyData.Lbl.MouseDown = dragHandlers.MouseDown
 	currencyData.Lbl.MouseUp = dragHandlers.MouseUp
 

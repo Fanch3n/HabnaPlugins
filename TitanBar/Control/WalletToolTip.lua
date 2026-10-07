@@ -41,7 +41,7 @@ function RefreshWITTListBox()
 		end
 		for k,v in pairs(_G.currencies.list) do
 			if wttcur == L["M" .. v.name] then
-				ttw = _G.CurrencyData[v.name].Where
+				ttw = _G.ControlData[v.name].where
 				CtrIconCodeIs = v.icon
 				if wttcur == L["MDestinyPoints"] then
 					CtrQteIs = GetPlayerAttributes():GetDestinyPoints()

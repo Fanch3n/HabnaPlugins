@@ -229,14 +229,14 @@ function frmWalletWindow()
 			UpdateLOTROPoints()
 		else
 			local cur = _G.CurrencyLangMap[wcur]
-			_G.CurrencyData[cur].Where = SelIndex
+			_G.ControlData[cur].where = SelIndex
 			settings[cur].W = string.format("%.0f", SelIndex)
 			if SelIndex == Constants.Position.TITANBAR then
-				if not _G.CurrencyData[cur].IsVisible then
+				if not _G.ControlData[cur].show then
 					ShowHideCurrency(cur)
 				end
 			else
-				if _G.CurrencyData[cur].IsVisible then
+				if _G.ControlData[cur].show then
 					ShowHideCurrency(cur)
 				end
 			end
@@ -301,7 +301,7 @@ function RefreshWIListBox()
 					WItxtLOTROPTS:Focus(); -- LOTRO Points
 					WIbutSave:SetPosition( WIWCtr:GetWidth()/2 - WIbutSave:GetWidth()/2, LPWCtr:GetTop()+LPWCtr:GetHeight()+10); -- LOTRO Points
 				else
-					tw = _G.CurrencyData[_G.CurrencyLangMap[wcur]].Where
+					tw = _G.ControlData[_G.CurrencyLangMap[wcur]].where
 				end
 
 				for k, v in pairs(WICBO) do

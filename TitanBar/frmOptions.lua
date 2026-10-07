@@ -25,11 +25,9 @@ function GetWalletControls()
 	if _G.ControlData.GT and _G.ControlData.GT.controls then walletControls[ "GT" ] = { IsVisible = _G.ControlData.GT.show, Control = _G.ControlData.GT.controls[ "Ctr" ] }; end
 
 	for _, currency in pairs(_G.currencies.list) do
-		if _G.CurrencyData[currency.name] ~= nil then
-			walletControls[currency.name] = {
-				IsVisible = _G.CurrencyData[currency.name].IsVisible,
-				Control = _G.CurrencyData[currency.name].Ctr
-			}
+		local data = _G.ControlData[currency.name]
+		if data and data.controls then
+			walletControls[currency.name] = { IsVisible = data.show, Control = data.controls[ "Ctr" ] }
 		end
 	end
 	return walletControls;

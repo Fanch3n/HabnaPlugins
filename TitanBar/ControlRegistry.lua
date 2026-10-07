@@ -111,6 +111,7 @@ function _G.ControlRegistry.InitializeAll()
 			defaults.x = GetDefaultX(id)
 		end
 		InitControlData(id, config.settingsKey, config.toggleFunc, config.hasWhere, defaults)
+		_G.ControlData[id].kind = config.kind
 	end
 end
 
@@ -141,6 +142,7 @@ end
 function _G.ControlRegistry.Register(config)
 	local id = config.id
 	registry[id] = {
+		kind = config.kind or "control", -- "control" or "currency"
 		settingsKey = config.settingsKey or id,
 		toggleFunc = config.toggleFunc,
 		hasWhere = config.hasWhere or false,
@@ -155,6 +157,7 @@ function _G.ControlRegistry.Register(config)
 	local defaults = registry[id].defaults
 	if defaults.x == nil then defaults.x = GetDefaultX(id) end
 	InitControlData(id, registry[id].settingsKey, registry[id].toggleFunc, registry[id].hasWhere, defaults, config.onShow, config.onHide)
+	_G.ControlData[id].kind = registry[id].kind
 end
 
 -- Get registration metadata
@@ -176,7 +179,7 @@ function _G.ControlRegistry.GetAllIds()
 	return ids
 end
 
--- Helper function to iterate over all standard controls
+-- Helper function to iterate over all controls, currencies included
 function _G.ControlRegistry.ForEach(callback)
 	for id, data in pairs(_G.ControlData) do
 		callback(id, data)
@@ -193,7 +196,8 @@ function _G.ControlRegistry.SetToggleFunc(controlId, func)
 	end
 end
 
--- Helper to check if a control is a currency (uses different data structure)
+-- Helper to check if a control is a currency
 function _G.ControlRegistry.IsCurrency(controlId)
-	return _G.currencies and _G.currencies[controlId] ~= nil
+	local data = _G.ControlData[controlId]
+	return data ~= nil and data.kind == "currency"
 end

@@ -58,19 +58,12 @@ function frmBackground()
 		curSelGreen = bcGreen or 0.3
 		curSelBlue = bcBlue or 0.3
 	else
-		-- Try to get from ControlRegistry first
 		local data = _G.ControlRegistry.Get(sFrom)
 		if data then
 			curSelAlpha = data.colors.alpha or 0.3
 			curSelRed = data.colors.red or 0.3
 			curSelGreen = data.colors.green or 0.3
 			curSelBlue = data.colors.blue or 0.3
-		elseif _G.CurrencyData[sFrom] then
-			-- Fall back to currency data
-			curSelAlpha = _G.CurrencyData[sFrom].bcAlpha or 0.3
-			curSelRed = _G.CurrencyData[sFrom].bcRed or 0.3
-			curSelGreen = _G.CurrencyData[sFrom].bcGreen or 0.3
-			curSelBlue = _G.CurrencyData[sFrom].bcBlue or 0.3
 		end
 	end
 	
@@ -283,21 +276,13 @@ function UpdateBCvariable()
 	if BGWToAll then
 		bcAlpha, bcRed, bcGreen, bcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
 		
-		-- Update all standard controls via ControlRegistry
+		-- Update all controls, currencies included
 		_G.ControlRegistry.ForEach(function(controlId, data)
 			data.colors.alpha = curSelAlpha
 			data.colors.red = curSelRed
 			data.colors.green = curSelGreen
 			data.colors.blue = curSelBlue
 		end)
-		
-		-- Update all currency controls
-		for k,v in pairs(_G.currencies.list) do
-			_G.CurrencyData[v.name].bcAlpha = curSelAlpha
-			_G.CurrencyData[v.name].bcRed = curSelRed
-			_G.CurrencyData[v.name].bcGreen = curSelGreen
-			_G.CurrencyData[v.name].bcBlue = curSelBlue
-		end
 	else
 		if sFrom == "TitanBar" then 
 			bcAlpha = curSelAlpha
@@ -305,19 +290,12 @@ function UpdateBCvariable()
 			bcGreen = curSelGreen
 			bcBlue = curSelBlue
 		else
-			-- Try to get from ControlRegistry first
 			local data = _G.ControlRegistry.Get(sFrom)
 			if data then
 				data.colors.alpha = curSelAlpha
 				data.colors.red = curSelRed
 				data.colors.green = curSelGreen
 				data.colors.blue = curSelBlue
-			elseif _G.CurrencyData[sFrom] then
-				-- Fall back to currency data
-				_G.CurrencyData[sFrom].bcAlpha = curSelAlpha
-				_G.CurrencyData[sFrom].bcRed = curSelRed
-				_G.CurrencyData[sFrom].bcGreen = curSelGreen
-				_G.CurrencyData[sFrom].bcBlue = curSelBlue
 			end
 		end
 	end

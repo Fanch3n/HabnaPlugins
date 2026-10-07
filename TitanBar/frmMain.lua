@@ -163,9 +163,7 @@ function frmMain()
 	if PlayerAlign == 1 then
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
 				for k,v in pairs(_G.currencies.list) do
-					if _G.CurrencyData[v.name] == nil then _G.CurrencyData[v.name] = {} end
-					if _G.CurrencyData[v.name].Where == nil then _G.CurrencyData[v.name].Where = 3 end
-					if _G.CurrencyData[v.name].Where ~= 3 then ImportCtr(v.name); end
+					if _G.ControlData[v.name].where ~= 3 then ImportCtr(v.name); end
 				end
 		end
 	else
@@ -175,14 +173,14 @@ function frmMain()
 		_G.ControlData.RP.show = false
 		for _,cur in pairs(_G.currencies.list) do
 			if not cur.visibleInMonsterPlay then
-				_G.CurrencyData[cur.name].IsVisible = false
+				_G.ControlData[cur.name].show = false
 			end
 		end
 
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
 			-- if _G.ControlData.WI.show then ImportCtr( "WI" ); end
 			for _,cur in pairs(_G.currencies.list) do
-				if cur.visibleInMonsterPlay and _G.CurrencyData[cur.name].Where ~= 3 then ImportCtr(cur.name); end
+				if cur.visibleInMonsterPlay and _G.ControlData[cur.name].where ~= 3 then ImportCtr(cur.name); end
 			end
 			if ((_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "LP" ); end
 		end

@@ -116,20 +116,17 @@ function AboutTitanBar()
 end
 
 function ShowHideCurrency(currency)
-	_G.CurrencyData[currency].IsVisible = not _G.CurrencyData[currency].IsVisible
-	settings[currency].V = _G.CurrencyData[currency].IsVisible
-	settings[currency].W = string.format("%.0f", _G.CurrencyData[currency].Where);
+	local data = _G.ControlData[currency]
+	data.show = not data.show
+	settings[currency].V = data.show
+	settings[currency].W = string.format("%.0f", data.where);
 	SaveSettings(false);
 	ImportCtr(currency);
 
 	if _G.Debug then write("ShowHideCurrency:" .. currency); end
-	if _G.CurrencyData[currency].IsVisible then
-		_G.CurrencyData[currency].Ctr:SetBackColor(Turbine.UI.Color(
-			_G.CurrencyData[currency].bcAlpha,
-			_G.CurrencyData[currency].bcRed,
-			_G.CurrencyData[currency].bcGreen,
-			_G.CurrencyData[currency].bcBlue
-		))
+	if data.show then
+		local colors = data.colors
+		data.controls.Ctr:SetBackColor(Turbine.UI.Color(colors.alpha, colors.red, colors.green, colors.blue))
 	end
-	_G.CurrencyData[currency].Ctr:SetVisible(_G.CurrencyData[currency].IsVisible);
+	data.controls.Ctr:SetVisible(data.show);
 end
