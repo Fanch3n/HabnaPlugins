@@ -171,6 +171,32 @@ function CreateSearchControl(parent, left, top, width, height, font, resources)
     if font then tb:SetFont(font) end
     tb:SetMultiline(false)
 
+    -- The LOTRO TextBox does not raise TextChanged for every edit (e.g. the Del key),
+    -- so while it has focus, compare the text every frame and raise the missed changes.
+    -- The window's handler is wrapped to remember the text it was last called with,
+    -- so edits that do raise TextChanged are not reported twice.
+    local lastText = tb:GetText()
+    local windowHandler
+    local function dispatch(sender, args)
+        lastText = tb:GetText()
+        if windowHandler then windowHandler(sender, args) end
+    end
+    tb.FocusGained = function(sender, args)
+        if tb.TextChanged ~= dispatch then
+            windowHandler = tb.TextChanged
+            tb.TextChanged = dispatch
+        end
+        lastText = tb:GetText()
+        tb:SetWantsUpdates(true)
+    end
+    tb.Update = function(sender, args)
+        if tb:GetText() ~= lastText then dispatch(tb, args) end
+    end
+    tb.FocusLost = function(sender, args)
+        tb.Update(sender, args)
+        tb:SetWantsUpdates(false)
+    end
+
     local del = Turbine.UI.Label()
     del:SetParent(container)
     del:SetPosition(width - 20, 0)
