@@ -31,6 +31,7 @@ function TIRefreshListBox()
 	for i, v in pairs(ITL) do newt[tonumber(i)] = v; end
 	ITL = newt;
 
+	local bItemInListFoundInBag
 	if #ITL == 0 then
 		local lblName = Turbine.UI.Label();
 		lblName:SetParent( _G.ToolTipWin );
@@ -90,7 +91,7 @@ function TIRefreshListBox()
 
 							-- Item Quantity
 							BITTItemTot = item:GetQuantity();
-							itemQTE = CreateQuantityLabel(BITTCtr, BITTItemTot)
+							local itemQTE = CreateQuantityLabel(BITTCtr, BITTItemTot)
 
 							--Check the rest of bag for same item (in case user as multiple stack
 							for iii = ii+1, size do
@@ -105,7 +106,7 @@ function TIRefreshListBox()
 							--itemQTE:SetText( "9999" ); -- Debuf purpose
 
 							-- Item name
-							itemsLbl = CreateControl(Turbine.UI.Label, BITTCtr, 37, 2, TITTListBox:GetWidth() - 35, 35);
+							local itemsLbl = CreateControl(Turbine.UI.Label, BITTCtr, 37, 2, TITTListBox:GetWidth() - 35, 35);
 							itemsLbl:SetFont( Turbine.UI.Lotro.Font.TrajanPro16 );
 							itemsLbl:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 							itemsLbl:SetBackColorBlendMode( Turbine.UI.BlendMode.Overlay );

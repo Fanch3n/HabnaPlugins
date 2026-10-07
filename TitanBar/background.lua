@@ -4,10 +4,12 @@
 
 import(AppDirD .. "UIHelpers")
 
+local curAlpha, curSelAlpha, curSelRed, curSelGreen, curSelBlue
+
 function frmBackground()
 	sFrom = _G.sFromCtr;
-	curColor = {};
-	bClick = false;
+	local curColor = {};
+	local bClick = false;
 
 	import(AppDirD .. "WindowFactory")
 	
@@ -44,10 +46,10 @@ function frmBackground()
 	local CurSetColorLbl = CreateTitleLabel(wBackground, L["BWCurSetColor"], 305, 35, nil, Color["rustedgold"], nil, 80, 30)
 	-- **^
 	-- **v Currently Selected color - box v**
-	curSelColorBorder = CreateControl(Turbine.UI.Label, wBackground, 305, 60, 73, 73);
+	local curSelColorBorder = CreateControl(Turbine.UI.Label, wBackground, 305, 60, 73, 73);
 	curSelColorBorder:SetBackColor( Color["white"] );
 
-	curSelColor = CreateControl(Turbine.UI.Label, curSelColorBorder, 1, 1, 71, 71);
+	local curSelColor = CreateControl(Turbine.UI.Label, curSelColorBorder, 1, 1, 71, 71);
 	
 	-- Set backcolor window setting to currently control color
 	if sFrom == "TitanBar" then
@@ -228,6 +230,7 @@ function frmBackground()
 		return curColor;
 	end
 
+	local mColor
 	ColourPicker.MouseMove = function( sender, args )
 		mColor = ColourPicker:GetColorFromCoord( args.X, args.Y );
 		BGWToAll = SetToAllCtr:IsChecked();

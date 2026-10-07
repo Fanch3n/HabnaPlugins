@@ -31,14 +31,15 @@ function DIRefreshListBox()
 	DIListBox:ClearItems();
 	DITTPosY = 36;
 
-	mis, mts, nint = 0, 0, false;
+	local cw -- tooltip width
+	local mis, mts, nint = 0, 0, false;
 	local diData = (_G.ControlData and _G.ControlData.DI) or {}
 	local showIcon = (diData.icon ~= false) -- default true
 	local showText = (diData.text ~= false) -- default true
 
 	if (not showIcon) and (not showText) then nint=true; end
 
-	iFound = 0;
+	local iFound = 0;
 	
     -- Use EquipmentManager
     local itemEquipRef = EquipmentManager and EquipmentManager.GetItems()

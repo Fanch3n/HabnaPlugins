@@ -2,6 +2,7 @@
 -- written by Habna
 
 local SelCN -- character selected in this window's dropdown
+local tbackpack, backpackCount, itemCtl, titem
 
 function frmBagInfos()
 	import(AppDirD .. "WindowFactory")
@@ -189,6 +190,7 @@ function AddBagsPack(n, addCharacterName)
 	local ui = _G.ControlData.BI and _G.ControlData.BI.ui
 	if not ui then return end
 	for i = 1, backpackCount do
+		local itemName
 		if n == PN then	titem = tbackpack:GetItem(i); if titem ~= nil then itemName = titem:GetName(); else itemName = ""; end
 		else titem = PlayerBags[n][tostring(i)]; itemName = PlayerBags[n][tostring(i)].T; end
 

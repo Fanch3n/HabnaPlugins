@@ -4,6 +4,8 @@
 
 import(AppDirD .. "UIHelpers")
 
+local iFound -- set by MITTShowData()
+
 function ShowMIWindow()
 	local tt = CreateTooltipWindow({
 		width = Constants.TOOLTIP_WIDTH_MEDIUM,
@@ -123,7 +125,7 @@ function MIRefreshMITTListBox()
 
     MITTShowData(MITTListBox, L["MIEarned"], walletStats[DOY][PN].Earned, Color["rustedgold"], Color["white"]);
 		MITTShowData(MITTListBox, L["MISpent"], walletStats[DOY][PN].Spent, Color["rustedgold"], Color["white"]);
-    if bSumSSS then color = Color["white"] else color = Color["red"] end
+    local color = bSumSSS and Color["white"] or Color["red"]
     MITTShowData(MITTListBox, L["MIWTotal"], walletStats[DOY][PN].SumSS, Color["rustedgold"], color);
 	  MITTPosY = MITTPosY + 3*19;
   end
@@ -153,7 +155,7 @@ function MIRefreshMITTListBox()
 
     MITTShowData(MITTListBox, L["MIEarned"], totem, Color["rustedgold"], Color["white"]);
 		MITTShowData(MITTListBox, L["MISpent"], totsm, Color["rustedgold"], Color["white"]);
-    if bSumSTS then color = Color["white"] else color = Color["red"] end
+    local color = bSumSTS and Color["white"] or Color["red"]
     MITTShowData(MITTListBox, L["MIWTotal"], walletStats[DOY][PN].SumTS, Color["rustedgold"], color);
     MITTPosY = MITTPosY + 3*19;
 	end
@@ -217,7 +219,7 @@ function MITTShowData(parent,l,m,lc,mc,showDelIcon) -- l = label, m = money, lc 
         local NewLbl = Turbine.UI.Label();
         NewLbl:SetParent(MoneyCtr);
         NewLbl:SetText(string.format("%.0f", g[i]));
-        if i == 3 then size = 48 else size = 18 end;
+        local size = (i == 3) and 48 or 18;
         NewLbl:SetSize(size + 2, MoneyCtr:GetHeight());
         NewLbl:SetPosition(NewIcon:GetLeft() - size, 0);
         NewLbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight);

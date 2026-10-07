@@ -2,6 +2,9 @@
 -- Written by Habna
 -- Rewritten by many
 
+-- Defaults for new settings, set in LoadSettings() and ResetSettings()
+local tX, tY, tW, tL, tT
+
 -- ============================================================================
 -- HELPER FUNCTIONS FOR LOADING SETTINGS
 -- ============================================================================
@@ -223,7 +226,7 @@ function LoadSettings()
 		CTRHeight = TBHeight; 
 	end
 	--write(CTRHeight);
-	tStr = string.sub( TBFontT, 1, string.len(TBFontT) - 2 ); --Get Font name
+	local tStr = string.sub( TBFontT, 1, string.len(TBFontT) - 2 ); --Get Font name
 	--write(tStr);
 	if tStrS == nil then tStrS = 0; end
 	NM = _G.FontN[tStr][tStrS]; --Number multiplier

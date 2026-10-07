@@ -3,6 +3,8 @@
 import(AppDirD .. "UIHelpers")
 import(AppDirD .. "ControlFactory")
 
+local sDay, timer, ntimer, totalseconds, cdminutes -- set by GetInGameTime()
+
 function GetInGameTime()
 	local nowtime = Turbine.Engine.GetLocalTime();
 	local gametime = Turbine.Engine.GetGameTime();

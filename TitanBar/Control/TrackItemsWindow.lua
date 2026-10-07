@@ -6,6 +6,8 @@ local player = Turbine.Gameplay.LocalPlayer.GetInstance();
 local backpack = player:GetBackpack();
 local size = backpack:GetSize();
 
+local item, itemCtl, itemLbl -- filled by CheckForStackableItems()
+
 function frmTrackItemsWindow()
 	import(AppDirD .. "WindowFactory")
 
@@ -77,7 +79,7 @@ function CheckForStackableItems()
 	item = {};
 	itemCtl = {};
 	itemLbl = {};
-	bFound = false;
+	local bFound = false;
 
 	for i = 1, size do
 		item[i] = backpack:GetItem( i );

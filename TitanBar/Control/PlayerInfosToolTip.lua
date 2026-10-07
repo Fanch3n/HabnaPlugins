@@ -130,6 +130,8 @@ local IsRegenStat = {
 	[PD.RACEICMR] = true,	[PD.RACENCMR] = true,	[PD.RACEICPR] = true,	[PD.RACENCPR] = true
 }
 
+local aPlayerData -- filled by GetPlayerData()
+
 local function GetPlayerData()
 	aPlayerData = {}
 	for _,nPDId in ipairs(PD) do
@@ -310,7 +312,7 @@ CAPCOLOR.T3 = Color["red"]
 -- needs CalcStat for caps
 local function GetRatCapColor(sCSRatName,nRating,aCSPenRats)
 	if useCalcStat and type(sCSRatName) == "string" and type(nRating) == "number" then
-		nPRatPCapR = CalcStat(sCSRatName.."PRatPCapR",aPlayerData[PD.LEVEL]) -- (normal) cap rating
+		local nPRatPCapR = CalcStat(sCSRatName.."PRatPCapR",aPlayerData[PD.LEVEL]) -- (normal) cap rating
 		if aCSPenRats then
 			-- penetration ratings are negative values, so need to be substracted here to calculate the compensated cap rating
 			if nRating >= nPRatPCapR-aCSPenRats.T3 then

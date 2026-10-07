@@ -35,18 +35,18 @@ function GetWalletControls()
 	return walletControls;
 end
 
-tFonts = { "Arial12", "TrajanPro13", "TrajanPro14", "TrajanPro15", "TrajanPro16", "TrajanPro18", "TrajanPro19", "TrajanPro20", "TrajanPro21",
+local tFonts = { "Arial12", "TrajanPro13", "TrajanPro14", "TrajanPro15", "TrajanPro16", "TrajanPro18", "TrajanPro19", "TrajanPro20", "TrajanPro21",
 			"TrajanPro23", "TrajanPro24", "TrajanPro25", "TrajanPro26", "TrajanPro28", "TrajanProBold16", "TrajanProBold22", "TrajanProBold24",
 			"TrajanProBold25", "TrajanProBold30", "TrajanProBold36", "Verdana10", "Verdana12", "Verdana14", "Verdana16",
 			"Verdana18", "Verdana20", "Verdana22", "Verdana23" };
 
-tFontsF = { "1107296297", "1107296258", "1107296268", "1107296263", "1107296267", "1107296265", "1107296309", "1107296256", "1107296266", "1107296269",
+local tFontsF = { "1107296297", "1107296258", "1107296268", "1107296263", "1107296267", "1107296265", "1107296309", "1107296256", "1107296266", "1107296269",
 			"1107296277", "1107296326", "1107296293", "1107296294", "1107296298", "1107296275",	"1107296292", "1107296274", "1107296273", "1107296276",
 			"1107296279", "1107296264", "1107296257", "1107296280", "1107296281", "1107296278", "1107296282", "1107296283" };
 
-aAutoHide = { L[ "OPAHD" ], L[ "OPAHE" ], L[ "OPAHC" ] };
+local aAutoHide = { L[ "OPAHD" ], L[ "OPAHE" ], L[ "OPAHC" ] };
 
-aIconSize = { L[ "OPISS" ], L[ "OPISL" ] }; --Small & Large
+local aIconSize = { L[ "OPISS" ], L[ "OPISL" ] }; --Small & Large
 --aIconSize = { L[ "OPISS" ], L[ "OPISM" ], L[ "OPISL" ] }; --Small, Medium & Large
 
 function frmOptions()
@@ -91,7 +91,8 @@ function frmOptions()
 	local lblHeight = CreateTitleLabel(wOptions, L["OPHText"], 25, 40, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	-- **^
 	-- **v Set the scrollbar v**
-	wScrollBar = CreateControl(Turbine.UI.Lotro.ScrollBar, wOptions, lblHeight:GetLeft(), lblHeight:GetTop() + 15, wOptions:GetWidth() - 75, 10);
+	local lblHeightV, lblIconSizeV -- created further down, updated by the scroll bars
+	local wScrollBar = CreateControl(Turbine.UI.Lotro.ScrollBar, wOptions, lblHeight:GetLeft(), lblHeight:GetTop() + 15, wOptions:GetWidth() - 75, 10);
 	wScrollBar:SetOrientation( Turbine.UI.Orientation.Horizontal );
 	wScrollBar:SetMinimum( 10 );
 	wScrollBar:SetMaximum( 100 );
@@ -114,7 +115,7 @@ function frmOptions()
 	-- **^
 
 	-- **v TitanBar Font - label & DropDown box v**
-	lblFont = CreateTitleLabel(wOptions, L["OPFText"], 25, wScrollBar:GetTop() + 20, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
+	local lblFont = CreateTitleLabel(wOptions, L["OPFText"], 25, wScrollBar:GetTop() + 20, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	
 	FontDD:SetParent( wOptions );
 	FontDD:SetSize( Constants.DROPDOWN_WIDTH, Constants.DROPDOWN_HEIGHT );
@@ -139,7 +140,7 @@ function frmOptions()
 	-- **^
 
 	-- **v TitanBar Auto hide - label & DropDown box v**
-	lblAuto = CreateTitleLabel(wOptions, L["OPAText"], 25, FontDD:GetTop() + 30, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
+	local lblAuto = CreateTitleLabel(wOptions, L["OPAText"], 25, FontDD:GetTop() + 30, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	
 	AutoDD = HabnaPlugins.TitanBar.Class.ComboBox();
 	AutoDD:SetParent( wOptions );
@@ -164,9 +165,9 @@ function frmOptions()
 	end
 	-- **^
 	-- **v TitanBar Icon Size - label & DropDown box v**
-	lblIconSize = CreateTitleLabel(wOptions, L["OPIText"], 25, AutoDD:GetTop() + 30, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
+	local lblIconSize = CreateTitleLabel(wOptions, L["OPIText"], 25, AutoDD:GetTop() + 30, nil, Color["rustedgold"], nil, wOptions:GetWidth() - 25, 15)
 	
-	wIconScrollBar = CreateControl(Turbine.UI.Lotro.ScrollBar, wOptions, lblIconSize:GetLeft(), lblIconSize:GetTop() + 15, wOptions:GetWidth() - 75, 10);
+	local wIconScrollBar = CreateControl(Turbine.UI.Lotro.ScrollBar, wOptions, lblIconSize:GetLeft(), lblIconSize:GetTop() + 15, wOptions:GetWidth() - 75, 10);
 	wIconScrollBar:SetOrientation( Turbine.UI.Orientation.Horizontal );
 	wIconScrollBar:SetMinimum( Constants.ICON_SIZE_SMALL );
 	wIconScrollBar:SetMaximum( Constants.ICON_SIZE_LARGE );

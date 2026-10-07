@@ -31,7 +31,7 @@ function ShowEIWindow()
 	--AEICtr:SetBackColor( Color["red"] ); -- Debug purpose
 	--**^
 
-	lblBackPack = Turbine.UI.Label();
+	local lblBackPack = Turbine.UI.Label();
 	lblBackPack:SetParent( AEICtr );
 	lblBackPack:SetText( L["EWLbl"] );
 	lblBackPack:SetPosition( 15, 15);
@@ -39,7 +39,7 @@ function ShowEIWindow()
 	lblBackPack:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 	lblBackPack:SetForeColor( Color["green"] );
 
-	lblBackPackD = Turbine.UI.Label();
+	local lblBackPackD = Turbine.UI.Label();
 	lblBackPackD:SetParent( AEICtr );
 	lblBackPackD:SetText( L["EWLblD"] );
 	lblBackPackD:SetSize( Constants.LABEL_WIDTH_NARROW, Constants.LABEL_HEIGHT_STANDARD );

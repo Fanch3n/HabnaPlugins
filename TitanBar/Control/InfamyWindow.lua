@@ -6,6 +6,8 @@ function frmInfamyWindow()
 	import(AppDirD .. "WindowFactory")
 	import(AppDirD .. "UIHelpers")
 
+	local buttonSave -- assigned below, used by the Enter key handler
+
 	-- Create window via helper
 	local wIF = CreateControlWindow(
 		"Infamy", "IF",
@@ -60,7 +62,7 @@ function frmInfamyWindow()
 		end
 	end
 
-	local buttonSave = CreateAutoSizedButton(IFWCtr, L["PWSave"], txtInfamy:GetLeft()+txtInfamy:GetWidth()+5, txtInfamy:GetTop())
+	buttonSave = CreateAutoSizedButton(IFWCtr, L["PWSave"], txtInfamy:GetLeft()+txtInfamy:GetWidth()+5, txtInfamy:GetTop())
 
 	buttonSave.Click = function( sender, args )
 		local parsed_text = txtInfamy:GetText();

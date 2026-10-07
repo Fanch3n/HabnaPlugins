@@ -2,6 +2,8 @@
 -- Written by Habna
 
 
+local buttonLoad, buttonCreate, lblName, vPProfileSettings
+
 function frmProfile()
 	TB["win"].MouseLeave();
 	import(AppDirD .. "WindowFactory")
@@ -82,7 +84,7 @@ function frmProfile()
 		InputBox:SelectAll();
 	end
 	
-	buttonSave = CreateAutoSizedButton(CreateCtr, L["PWSave"], 0, 25)
+	local buttonSave = CreateAutoSizedButton(CreateCtr, L["PWSave"], 0, 25)
 	buttonSave:SetEnabled( true );
 
 	buttonSave.Click = function( sender, args )
@@ -118,7 +120,7 @@ function frmProfile()
 		]]
 	end
 
-	buttonCancel = CreateAutoSizedButton(CreateCtr, L["PWCancel"], buttonSave:GetLeft() + buttonSave:GetWidth() + 5, 25, TM)
+	local buttonCancel = CreateAutoSizedButton(CreateCtr, L["PWCancel"], buttonSave:GetLeft() + buttonSave:GetWidth() + 5, 25, TM)
 	buttonCancel:SetEnabled( true );
 
 	buttonCancel.Click = function( sender, args )
@@ -135,8 +137,9 @@ end
 
 function RefreshListBox()
 	local PosY = 20;
+	local vPProfile
 	Ctr, DelIcon, lblName, vPProfile = {}, {}, {}, {};
-	PrevItemClic, i = 0, 1;
+	PrevItemClic = 0;
 	ListBox:ClearItems();
 
 	vPProfile = {};

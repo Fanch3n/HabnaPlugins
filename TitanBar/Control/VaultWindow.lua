@@ -2,9 +2,10 @@
 -- written by Habna
 
 local SelCN -- character selected in this window's dropdown
+local itemCtl -- filled by CountVIItems()
 
 function frmVault()
-	tvaultpack = vaultpack;
+	local tvaultpack = vaultpack;
 	SelCN = PN;
 	import (AppClassD.."ComboBox");
 	VICB = HabnaPlugins.TitanBar.Class.ComboBox();

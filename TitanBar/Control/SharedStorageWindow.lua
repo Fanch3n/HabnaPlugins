@@ -2,8 +2,10 @@
 -- written by Habna
 
 
+local sspackCount
+
 function frmSharedStorage()
-	tsspack = sspack;
+	local tsspack = sspack;
 	import(AppDirD .. "WindowFactory")
 
 	-- Initialize UI state table
@@ -75,7 +77,7 @@ function SetSharedStoragePack()
 	local ui = _G.ControlData.SS and _G.ControlData.SS.ui
 	if not (ui and ui.window) then return end
 	ui.ListBox:ClearItems();
-	itemCtl = {};
+	local itemCtl = {};
 
 	for i = 1, sspackCount do
 		local itemName = PlayerSharedStorage[tostring(i)].T;

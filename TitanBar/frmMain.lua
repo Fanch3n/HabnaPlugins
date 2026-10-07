@@ -263,6 +263,7 @@ function frmMain()
 		SaveSettings( false )
 	end --TitanBar was reloaded
 
+	local oldsecond, oldminute
 	OneTimer.Update = function( sender, args )
 		local currentdate = Turbine.Engine.GetDate();
 		local currentsecond = currentdate.Second;
@@ -290,7 +291,7 @@ function frmMain()
 				NumSec = NumSec + 1;
 
 				if _G.Debug then
-					if NumSec <= 1 then seconds = "sec"; else seconds = "secs"; end
+					local seconds = (NumSec <= 1) and "sec" or "secs";
 					write( "OneTimer: " .. NumSec .. " " .. seconds );
 				end
 			end

@@ -258,10 +258,10 @@ end
 function SavePlayerBags()
     if string.sub( PN, 1, 1 ) == "~" then return end; --Ignore session play
 
-    backpackSize = backpack:GetSize();
+    local backpackSize = backpack:GetSize();
 
     PlayerBags[PN] = {};
-    ii=1;
+    local ii=1;
     for i = 1, backpackSize do
 
         local items = backpack:GetItem( i );
