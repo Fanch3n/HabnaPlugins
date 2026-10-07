@@ -181,7 +181,9 @@ function frmMain()
 
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
 			-- if _G.ControlData.WI.show then ImportCtr( "WI" ); end
-			if _G.CurrencyData["Commendation"].Where ~= 3 then ImportCtr("Commendation"); end
+			for _,cur in pairs(_G.currencies.list) do
+				if cur.visibleInMonsterPlay and _G.CurrencyData[cur.name].Where ~= 3 then ImportCtr(cur.name); end
+			end
 			if ((_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "LP" ); end
 		end
 	end
