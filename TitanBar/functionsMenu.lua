@@ -103,8 +103,12 @@ function UnloadTitanBar()
 	Turbine.PluginManager.LoadPlugin('TitanBar Unloader');  --workaround
 end
 
-function ReloadTitanBar()
-	settings.TitanBar.Z = true;
+-- reason: window to reopen after the reload ("Profile" or "Font"), nil for none
+function ReloadTitanBar(reason)
+	TBReloaded = true;
+	TBReloadedText = reason or "TB";
+	settings.TitanBar.Z = TBReloaded;
+	settings.TitanBar.ZT = TBReloadedText;
 	SaveSettings(false);
 	Turbine.PluginManager.LoadPlugin('TitanBar Reloader');  --workaround
 end

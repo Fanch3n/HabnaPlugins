@@ -14,8 +14,8 @@ for i = 1, 3 do
 	if TBLocale == Lang[i] then LocItems:SetChecked( true ); end
 	LocItems.Click = function( sender, args )
 		if TBLocale == Lang[i] then return end
-		settings.TitanBar.L = Lang[i];
-		SaveSettings( false );
+		TBLocale = Lang[i];
+		settings.TitanBar.L = TBLocale;
 		ReloadTitanBar();
 	end
 	

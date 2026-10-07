@@ -51,9 +51,7 @@ function frmProfile()
 			settings = vPProfileSettings[PrevItemClic];
 			local plText = (_G.ControlData and _G.ControlData.PL and _G.ControlData.PL.text) or (settings.PlayerLoc and settings.PlayerLoc.L) or L["PLMsg"]
 			settings.PlayerLoc.L = plText;
-			settings.TitanBar.ZT = "Profile";
-			SaveSettings( false );
-			ReloadTitanBar();
+			ReloadTitanBar("Profile");
 		else
 			write("TitanBar: `"..lblName[PrevItemClic]:GetText().."`"..L["PWFail"]);
 		end
@@ -105,12 +103,11 @@ function frmProfile()
 		table.insert( PProfile, vProfile );
 		write( "TitanBar: "..L["PWNew"].." `"..strProfileName.."` "..L["PWCreated"] );
 		
-		settings.TitanBar.ZT = "Profile";
 		SavePlayerProfile();
 		SaveSettings( false );
 		local plText = (_G.ControlData and _G.ControlData.PL and _G.ControlData.PL.text) or (settings.PlayerLoc and settings.PlayerLoc.L) or L["PLMsg"]
 		settings.PlayerLoc.L = plText;
-		ReloadTitanBar(); -- Need to reload, because if create more then 1 profile, previous profile will be lost!
+		ReloadTitanBar("Profile"); -- Need to reload, because if create more then 1 profile, previous profile will be lost!
 		--[[
 		CreateCtr:SetVisible( false );
 		buttonLoad:SetVisible( true );

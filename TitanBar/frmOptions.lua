@@ -129,11 +129,11 @@ function frmOptions()
 	end
 
 	FontDD.ItemChanged = function( sender, args ) -- The event that's executed when a menu item is clicked.
-		settings.TitanBar.ZT = "Font";
+		_G.TBFont = tonumber(tFontsF[ args.selection ]);
+		TBFontT = FontDD.label:GetText();
 		settings.TitanBar.F = tFontsF[ args.selection ];
-		settings.TitanBar.T = FontDD.label:GetText();
-		SaveSettings( false );
-		ReloadTitanBar();
+		settings.TitanBar.T = TBFontT;
+		ReloadTitanBar("Font");
 	end
 	-- **^
 
