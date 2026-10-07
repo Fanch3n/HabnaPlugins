@@ -261,7 +261,6 @@ function InitializeReputation()
 		SetupControlInteraction({
 			icon = RP["Icon"],
 			controlTable = RP,
-			settingsSection = settings.Reputation,
 			windowImportPath = AppCtrD .. "ReputationWindow",
 			windowFunction = "frmReputationWindow",
 			tooltipKey = "RP",

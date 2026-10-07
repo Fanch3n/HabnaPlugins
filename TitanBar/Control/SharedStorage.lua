@@ -61,7 +61,6 @@ function InitializeSharedStorage()
         SetupControlInteraction({
             icon = SS["Icon"],
             controlTable = SS,
-            settingsSection = settings.SharedStorage,
             windowImportPath = AppCtrD .. "SharedStorageWindow",
             windowFunction = "frmSharedStorage",
             tooltipKey = "SS",

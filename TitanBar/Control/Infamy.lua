@@ -47,8 +47,6 @@ function HandleInfamyChat(sender, args)
                 break
             end
         end
-        settings.Infamy.P = string.format("%.0f", _G.ControlData.IF.points);
-        settings.Infamy.K = string.format("%.0f", _G.ControlData.IF.rank or 0);
         SaveSettings();
         UpdateInfamy();
     end
@@ -72,11 +70,9 @@ function UpdateInfamy()
     end
 
     --Change Rank icon with infamy points
-    if IF["Icon"] and settings.Infamy and settings.Infamy.K then
-        local rankIndex = tonumber(settings.Infamy.K)
-        if rankIndex and InfIcon[rankIndex] then
-            IF["Icon"]:SetBackground(InfIcon[rankIndex]);
-        end
+    local rankIndex = _G.ControlData.IF and tonumber(_G.ControlData.IF.rank)
+    if IF["Icon"] and rankIndex and InfIcon[rankIndex] then
+        IF["Icon"]:SetBackground(InfIcon[rankIndex]);
     end
 
     AdjustIcon("IF");
@@ -96,7 +92,6 @@ function InitializeInfamy()
         SetupControlInteraction({
             icon = IF["Icon"],
             controlTable = IF,
-            settingsSection = settings.Infamy,
             windowImportPath = AppCtrD .. "InfamyWindow",
             windowFunction = "frmInfamyWindow",
             customTooltipHandler = ShowIFWindow

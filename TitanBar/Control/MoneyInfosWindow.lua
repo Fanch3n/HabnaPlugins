@@ -43,7 +43,6 @@ function frmMoneyInfosWindow()
 
 	allCharCB.CheckedChanged = function( sender, args )
 		moneyData.stm = allCharCB:IsChecked();
-		settings.Money.S = moneyData.stm;
 		SaveSettings();
 		UpdateMoney();
 	end
@@ -71,7 +70,6 @@ function frmMoneyInfosWindow()
 
 	sssCB.CheckedChanged = function(sender, args)
 		moneyData.sss = sssCB:IsChecked();
-		settings.Money.SS = moneyData.sss;
 		SaveSettings();
 	end
 
@@ -80,7 +78,6 @@ function frmMoneyInfosWindow()
 
 	stsCB.CheckedChanged = function( sender, args )
 		moneyData.sts = stsCB:IsChecked();
-		settings.Money.TS = moneyData.sts;
 		SaveSettings();
 	end
 

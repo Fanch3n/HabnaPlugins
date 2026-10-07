@@ -257,8 +257,6 @@ function frmMain()
 		OneTimer:SetWantsUpdates( false )
 		AllTimer:SetWantsUpdates( true )
 		TBReloaded, TBReloadedText = false, "TB"
-		settings.TitanBar.Z = TBReloaded
-		settings.TitanBar.ZT = TBReloadedText
 		SaveSettings()
 	end --TitanBar was reloaded
 

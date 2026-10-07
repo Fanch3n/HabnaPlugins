@@ -88,7 +88,6 @@ function InitializeBagInfos()
 	SetupControlInteraction({
 		icon = BI["Lbl"],
 		controlTable = BI,
-		settingsSection = settings.BagInfos,
 		windowImportPath = AppCtrD .. "BagInfosWindow",
 		windowFunction = "frmBagInfos",
 		leaveControl = BI["Lbl"]

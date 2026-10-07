@@ -9,17 +9,6 @@ function ToggleControl(id)
 	-- Toggle state
 	controlData.show = not controlData.show
 
-	-- Update Settings
-	local regData = _G.ControlRegistry.Get(id)
-	if regData and regData.settingsKey then
-		if not settings[regData.settingsKey] then settings[regData.settingsKey] = {} end
-		settings[regData.settingsKey].V = controlData.show
-		-- Preserving 'Where' if it exists (some existing functions do this)
-		if controlData.where ~= nil then
-			settings[regData.settingsKey].W = string.format("%.0f", controlData.where or Constants.Position.NONE)
-		end
-	end
-
 	SaveSettings()
 
 	-- Handle UI Update
@@ -104,12 +93,18 @@ function UnloadTitanBar()
 end
 
 -- reason: window to reopen after the reload ("Profile" or "Font"), nil for none
-function ReloadTitanBar(reason)
+-- newSettings: settings table to reload with instead of the current state (a profile)
+function ReloadTitanBar(reason, newSettings)
 	TBReloaded = true;
 	TBReloadedText = reason or "TB";
-	settings.TitanBar.Z = TBReloaded;
-	settings.TitanBar.ZT = TBReloadedText;
-	WriteSettings();
+	if newSettings then
+		settings = newSettings;
+		settings.TitanBar.Z = TBReloaded;
+		settings.TitanBar.ZT = TBReloadedText;
+		WriteSettings();
+	else
+		SaveSettings();
+	end
 	Turbine.PluginManager.LoadPlugin('TitanBar Reloader');  --workaround
 end
 
@@ -122,8 +117,6 @@ end
 function ShowHideCurrency(currency)
 	local data = _G.ControlData[currency]
 	data.show = not data.show
-	settings[currency].V = data.show
-	settings[currency].W = string.format("%.0f", data.where);
 	SaveSettings();
 	ImportCtr(currency);
 

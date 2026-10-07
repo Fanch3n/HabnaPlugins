@@ -431,10 +431,8 @@ end
 -- Save control position to settings
 -- Parameters:
 --  control: the control to get position from
---  settingsTable: the settings table to update (e.g., settings.Wallet)
---  globalXVar: the global variable name for X position (e.g., "_G.WILocX")
---  globalYVar: the global variable name for Y position (e.g., "_G.WILocY")
-function SaveControlPosition(control, settingsTable, controlId)
+--  controlId: the control ID from ControlRegistry (e.g., "WI")
+function SaveControlPosition(control, controlId)
 	local x = control:GetLeft()
 	local y = control:GetTop()
 	
@@ -445,9 +443,6 @@ function SaveControlPosition(control, settingsTable, controlId)
 		data.location.y = y
 	end
 	
-	-- Update settings file
-	settingsTable.X = string.format("%.0f", x)
-	settingsTable.Y = string.format("%.0f", y)
 	SaveSettings()
 end
 
@@ -573,14 +568,13 @@ end
 -- Create standard MouseDown and MouseUp handlers for draggable controls
 -- Parameters:
 --  control: the control to drag (e.g., WI["Ctr"])
---  settingsTable: the settings table to save position to (e.g., settings.Wallet)
 --  controlId: the control ID from ControlRegistry (e.g., "WI")
 -- Returns: { MouseDown = function, MouseUp = function }
 -- Usage: 
---   local handlers = CreateDragHandlers(WI["Ctr"], settings.Wallet, "WI")
+--   local handlers = CreateDragHandlers(WI["Ctr"], "WI")
 --   WI["Icon"].MouseDown = handlers.MouseDown
 --   WI["Icon"].MouseUp = handlers.MouseUp
-function CreateDragHandlers(control, settingsTable, controlId)
+function CreateDragHandlers(control, controlId)
 	return {
 		MouseDown = function(sender, args)
 			if args.Button == Turbine.UI.MouseButton.Left then
@@ -590,7 +584,7 @@ function CreateDragHandlers(control, settingsTable, controlId)
 		MouseUp = function(sender, args)
 			control:SetZOrder(2)
 			_G.dragging = false
-			SaveControlPosition(control, settingsTable, controlId)
+			SaveControlPosition(control, controlId)
 		end
 	}
 end

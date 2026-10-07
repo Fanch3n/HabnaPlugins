@@ -79,7 +79,7 @@ _G.createCurrencyTable = function(currencyName)
 		_G.WasDrag = false
 	end
 
-	local dragHandlers = CreateDragHandlers(currencyData.Ctr, settings[currencyName], currencyName)
+	local dragHandlers = CreateDragHandlers(currencyData.Ctr, currencyName)
 	currencyData.Lbl.MouseDown = dragHandlers.MouseDown
 	currencyData.Lbl.MouseUp = dragHandlers.MouseUp
 

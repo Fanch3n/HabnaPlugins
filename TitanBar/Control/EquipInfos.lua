@@ -36,7 +36,6 @@ function InitializeEquipInfos()
         SetupControlInteraction({
             icon = EI["Lbl"],
             controlTable = EI,
-            settingsSection = settings.EquipInfos,
             onLeftClick = function() end,
             customTooltipHandler = ShowEIWindow
         })

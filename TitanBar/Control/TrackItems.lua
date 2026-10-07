@@ -21,7 +21,6 @@ function InitializeTrackItems()
         SetupControlInteraction({
             icon = TI["Icon"],
             controlTable = TI,
-            settingsSection = settings.TrackItems,
             windowImportPath = AppCtrD .. "TrackItemsWindow",
             windowFunction = "frmTrackItemsWindow",
             tooltipKey = "TI",                  -- Uses generic ShowTIToolTip? No, checked grep, usually tailored.

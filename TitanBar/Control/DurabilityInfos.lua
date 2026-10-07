@@ -61,7 +61,6 @@ function InitializeDurabilityInfos()
         SetupControlInteraction({
             icon = DI["Lbl"],
             controlTable = DI,
-            settingsSection = settings.DurabilityInfos,
             windowImportPath = AppCtrD .. "DurabilityInfosWindow",
             windowFunction = "frmDurabilityInfosWindow",
             customTooltipHandler = ShowDIWindow

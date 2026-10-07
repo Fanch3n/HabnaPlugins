@@ -63,7 +63,6 @@ function InitializeVault()
         SetupControlInteraction({
             icon = VT["Icon"],
             controlTable = VT,
-            settingsSection = settings.Vault,
             windowImportPath = AppCtrD .. "VaultWindow",
             windowFunction = "frmVault",
             tooltipKey = "VT",

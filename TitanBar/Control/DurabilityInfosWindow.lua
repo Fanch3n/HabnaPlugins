@@ -26,7 +26,6 @@ function frmDurabilityInfosWindow()
 
 	TTIcon.CheckedChanged = function( sender, args )
 		diData.icon = TTIcon:IsChecked();
-		settings.DurabilityInfos.I = diData.icon;
 		SaveSettings();
 	end
 
@@ -34,7 +33,6 @@ function frmDurabilityInfosWindow()
 
 	TTItemName.CheckedChanged = function( sender, args )
 		diData.text = TTItemName:IsChecked();
-		settings.DurabilityInfos.N = diData.text;
 		SaveSettings();
 	end
 

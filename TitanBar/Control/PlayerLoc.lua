@@ -46,7 +46,6 @@ function InitializePlayerLoc()
     SetupControlInteraction({
         icon = PL["Lbl"],
         controlTable = PL,
-        settingsSection = settings.PlayerLoc,
         onLeftClick = function() end
     })
 
@@ -71,7 +70,6 @@ function InitializePlayerLoc()
                         _G.ControlData.PL = _G.ControlData.PL or {}
                         _G.ControlData.PL.text = tmpPL
                         UpdatePlayerLoc(tmpPL);
-                        settings.PlayerLoc.L = string.format(tmpPL);
                         SaveSettings();
                     end
                 end

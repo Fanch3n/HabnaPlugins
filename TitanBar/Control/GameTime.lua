@@ -83,7 +83,6 @@ function InitializeGameTime()
 		SetupControlInteraction({
 			icon = GT["Lbl"],
 			controlTable = GT,
-			settingsSection = settings.GameTime,
 			windowImportPath = AppCtrD .. "GameTimeWindow",
 			windowFunction = "frmGameTimeWindow",
 			tooltipKey = "GT",

@@ -101,7 +101,6 @@ function frmOptions()
 		lblHeightV:SetText( tValue );
 		TBHeight = tValue;
 		LayoutBar();
-		settings.TitanBar.H = string.format( "%.0f", tValue );
 
 		--Size Control if height is less 30px & stop at 30px if more 30px
 		ResizeControls();
@@ -131,8 +130,6 @@ function frmOptions()
 	FontDD.ItemChanged = function( sender, args ) -- The event that's executed when a menu item is clicked.
 		_G.TBFont = tonumber(tFontsF[ args.selection ]);
 		TBFontT = FontDD.label:GetText();
-		settings.TitanBar.F = tFontsF[ args.selection ];
-		settings.TitanBar.T = TBFontT;
 		ReloadTitanBar("Font");
 	end
 	-- **^
@@ -156,7 +153,6 @@ function frmOptions()
 
 	AutoDD.ItemChanged = function( sender, args ) -- The event that's executed when a menu item is clicked.
 		TBAutoHide = AutoDD.label:GetText();
-		settings.Options.H = TBAutoHide;
 		if TBAutoHide == L[ "OPAHE" ] then windowOpen = true; AutoHideCtr:SetWantsUpdates( true );
 		elseif TBAutoHide == L[ "OPAHD" ] or TBAutoHide == L[ "OPAHC" ] then windowOpen = false; AutoHideCtr:SetWantsUpdates( true ); end
 		SaveSettings();
@@ -175,7 +171,6 @@ function frmOptions()
 		local itValue = wIconScrollBar:GetValue();
 		lblIconSizeV:SetText( itValue );
 		TBIconSize = itValue;
-		settings.Options.I = string.format( "%.0f", itValue );
 		SaveSettings();
 		ResizeIcon();
 	end
@@ -188,7 +183,6 @@ function frmOptions()
 
 	TBTopCB.CheckedChanged = function( sender, args )
 		TBTop = TBTopCB:IsChecked();
-		settings.TitanBar.D = TBTop;
 		SaveSettings();
 		LayoutBar();
 		if TBAutoHide == L[ "OPAHE" ] then windowOpen = true; AutoHideCtr:SetWantsUpdates( true );
@@ -202,7 +196,6 @@ function frmOptions()
 	PILayoutCB.CheckedChanged = function( sender, args )
 		_G.ControlData.PI = _G.ControlData.PI or {}
 		_G.ControlData.PI.layout = PILayoutCB:IsChecked();
-		settings.PlayerInfos.Layout = _G.ControlData.PI.layout;
 		SaveSettings();
 		ReloadTitanBar();
 	end

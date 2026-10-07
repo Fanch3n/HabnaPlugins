@@ -87,8 +87,6 @@ function frmInfamyWindow()
 			end
 		end
 
-		settings.Infamy.P = string.format("%.0f", _G.ControlData.IF.points);
-		settings.Infamy.K = string.format("%.0f", _G.ControlData.IF.rank or 0);
 		SaveSettings();
 
 		txtInfamy:Focus();

@@ -119,7 +119,6 @@ function InitializeDayNight()
 		SetupControlInteraction({
 			icon = DN["Lbl"],
 			controlTable = DN,
-			settingsSection = settings.DayNight,
 			windowImportPath = AppCtrD .. "DayNightWindow",
 			windowFunction = "frmDayNightWindow",
 			tooltipKey = "DN",

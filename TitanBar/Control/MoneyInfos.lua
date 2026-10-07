@@ -324,7 +324,7 @@ function InitializeMoneyInfos()
 		_G.WasDrag = false;
 	end
 
-	local dragHandlers = CreateDragHandlers(MI["Ctr"], settings.Money, "Money")
+	local dragHandlers = CreateDragHandlers(MI["Ctr"], "Money")
 	MI["CLbl"].MouseDown = dragHandlers.MouseDown
 	MI["CLbl"].MouseUp = dragHandlers.MouseUp
 

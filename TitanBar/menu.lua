@@ -15,7 +15,6 @@ for i = 1, 3 do
 	LocItems.Click = function( sender, args )
 		if TBLocale == Lang[i] then return end
 		TBLocale = Lang[i];
-		settings.TitanBar.L = TBLocale;
 		ReloadTitanBar();
 	end
 	

@@ -69,7 +69,6 @@ function InitializePlayerInfos()
     SetupControlInteraction({
         icon = PI["Name"],
         controlTable = PI,
-        settingsSection = settings.PlayerInfos,
         onLeftClick = function() end,
         customTooltipHandler = ShowPIWindow
     })
@@ -116,7 +115,6 @@ function InitializePlayerInfos()
                     if tmpXP ~= nil then
                         _G.ControlData.PI = _G.ControlData.PI or {}
                         _G.ControlData.PI.xp = tmpXP;
-                        settings.PlayerInfos.XP = tmpXP;
                         SaveSettings();
                     end
                 end

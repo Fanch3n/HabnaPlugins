@@ -47,7 +47,6 @@ function InitializeLOTROPoints()
 		SetupControlInteraction({
 			icon = LP["Lbl"],
 			controlTable = LP,
-			settingsSection = settings.LOTROPoints,
 			windowImportPath = AppCtrD .. "LOTROPointsWindow",
 			windowFunction = "frmLOTROPointsWindow",
 			tooltipKey = "LP",

@@ -115,7 +115,6 @@ function frmBagInfos()
 
 	ui.UsedSlots.CheckedChanged = function(sender, args)
 		biData.used = ui.UsedSlots:IsChecked();
-		settings.BagInfos.U = biData.used;
 		SaveSettings();
 		UpdateBackpackInfos();
 	end
@@ -124,7 +123,6 @@ function frmBagInfos()
 
 	ui.MaxSlots.CheckedChanged = function(sender, args)
 		biData.max = ui.MaxSlots:IsChecked();
-		settings.BagInfos.M = biData.max;
 		SaveSettings();
 		UpdateBackpackInfos();
 	end

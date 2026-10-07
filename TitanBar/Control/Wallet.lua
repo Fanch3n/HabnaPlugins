@@ -31,7 +31,6 @@ function InitializeWallet()
 	SetupControlInteraction({
 		icon = WI["Icon"],
 		controlTable = WI,
-		settingsSection = settings.Wallet,
 		windowImportPath = AppCtrD .. "WalletWindow",
 		windowFunction = "frmWalletWindow",
 		hasTooltip = true,

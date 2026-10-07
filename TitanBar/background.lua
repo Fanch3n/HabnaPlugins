@@ -37,7 +37,6 @@ function frmBackground()
 	SetToAllCtr.CheckedChanged = function( sender, args )
 		BGWToAll = SetToAllCtr:IsChecked();
 		--if BGWToAll then ChangeColor(mColor); end
-		settings.Background.A = BGWToAll;
 		SaveSettings();
 	end
 	-- **^
@@ -247,8 +246,6 @@ function frmBackground()
 	end
 
 	wBackground.MouseUp = function( sender, args )
-		settings.Background.L = string.format("%.0f", wBackground:GetLeft());
-		settings.Background.T = string.format("%.0f", wBackground:GetTop());
 		BGWLeft, BGWTop = wBackground:GetPosition();
 		SaveSettings();
 	end
