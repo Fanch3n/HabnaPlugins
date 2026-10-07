@@ -1,6 +1,7 @@
 -- VaultWindow.lua
 -- written by Habna
 
+local SelCN -- character selected in this window's dropdown
 
 function frmVault()
 	tvaultpack = vaultpack;

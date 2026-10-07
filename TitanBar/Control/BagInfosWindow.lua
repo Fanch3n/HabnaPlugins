@@ -1,6 +1,8 @@
 -- BagInfosWindow.lua
 -- written by Habna
 
+local SelCN -- character selected in this window's dropdown
+
 function frmBagInfos()
 	import(AppDirD .. "WindowFactory")
 	import(AppDirD .. "UIHelpers")

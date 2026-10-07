@@ -93,7 +93,6 @@ function MIRefreshMITTListBox()
   MITTShowData(MITTListBox, L["MIWTotal"], (CopperTot + SilverTot*100 + GoldTot*100000), Color["white"], Color["white"]);
 	MITTPosY = MITTPosY + 19;
     
-	MITTListBox:AddItem( TotMoneyCtr );
 	MITTPosY = MITTPosY + 8;
 
 	--**v Statistics section v**

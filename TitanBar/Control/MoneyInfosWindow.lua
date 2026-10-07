@@ -158,7 +158,6 @@ function RefreshMIListBox()
 	MITTShowData(miListBox, L["MIWTotal"], (GoldTot*100000+SilverTot*100+CopperTot), Color["white"], Color["white"]);
   MIPosY = MIPosY + 19;
 	
-	miListBox:AddItem( TotMoneyCtr );
 	MIPosY = MIPosY + 19;
 	miListBox:SetHeight( MIPosY );
 
