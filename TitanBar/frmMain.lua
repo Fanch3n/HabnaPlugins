@@ -66,8 +66,6 @@ function frmMain()
 			mouseXPos, mouseYPos = Turbine.UI.Display.GetMousePosition();
 			_G.sFromCtr = "TitanBar";
 			TitanBarMenu:ShowMenu();
-		--elseif ( args.Button == Turbine.UI.MouseButton.Left ) then
-			
 		end
 	end
 

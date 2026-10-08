@@ -31,7 +31,6 @@ L[ "MSC" ] = "Commandes shell";
 L[ "MRA" ] = "R\195\169initialiser les param\195\168tres";
 L[ "MUTB" ] = "D\195\169charger";
 L[ "MRTB" ] = "Recharger";
-L[ "MATB" ] = "\195\128 propos de TitanBar ";
 L[ "MBG" ] = "Changer l'arri\195\168re plan";
 L[ "MCL" ] = "Changer la langue vers ...";
 L[ "MCLen" ] = "l'anglais";

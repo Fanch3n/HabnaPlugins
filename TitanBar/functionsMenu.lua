@@ -106,9 +106,6 @@ function ReloadTitanBar(reason, newSettings)
 	Turbine.PluginManager.LoadPlugin('TitanBar Reloader');  --workaround
 end
 
-function AboutTitanBar()
-end
-
 function ShowHideCurrency(currency)
 	local data = _G.ControlData[currency]
 	data.show = not data.show

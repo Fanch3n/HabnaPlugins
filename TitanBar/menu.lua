@@ -39,9 +39,10 @@ RBCMenu.Items:Add( RBCMenu2 );
 TitanBarMenu = Turbine.UI.ContextMenu();
 TitanBarMenu.items = TitanBarMenu:GetItems();
 
+-- Clicking an item closes the menu: open it again where it was, so that several controls can be switched in a row
 local function ToggleMenuVisibility(menuToggle)
 	menuToggle()
-	TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos) -- TODO what does this actually do?
+	TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos)
 end
 
 local opt_line = Turbine.UI.MenuItem("---------------------------------------------", false);
@@ -91,10 +92,6 @@ opt_unload.Click = function( sender, args ) UnloadTitanBar(); end
 local opt_reload = Turbine.UI.MenuItem(L["MRTB"] .. " TitanBar " .. Version);
 opt_reload.Click = function( sender, args ) ReloadTitanBar(); end
 
-local opt_about = Turbine.UI.MenuItem(L["MATB"] .. " TitanBar " .. Version);
-opt_about.Click = function( sender, args ) AboutTitanBar(); end
-
-
 
 for _, item in ipairs(controlMenuItems) do TitanBarMenu.items:Add(item); end
 TitanBarMenu.items:Add(opt_line);
@@ -110,5 +107,3 @@ TitanBarMenu.items:Add(opt_ResetAllSet);
 TitanBarMenu.items:Add(opt_empty);
 TitanBarMenu.items:Add(opt_unload);
 TitanBarMenu.items:Add(opt_reload);
---TitanBarMenu.items:Add(opt_empty); --Add when about function in plugin manager is available
---TitanBarMenu.items:Add(opt_about); --Add when about function in plugin manager is available
