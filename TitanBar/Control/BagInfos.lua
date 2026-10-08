@@ -135,6 +135,7 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
 	_G.ControlRegistry.Register({
 		id = "BI",
+		tooltipHeader = "MBI",
 		menuText = "MBI",
 		icon = { dx = 3, dy = 1 },
 		settingsKey = "BagInfos",

@@ -132,7 +132,8 @@ function _G.ControlRegistry.Register(config)
 		onHide = config.onHide,
 		menuText = config.menuText, -- localization key of the entry in the TitanBar menu (none: not in the menu)
 		freePeopleOnly = config.freePeopleOnly, -- hidden in Monster Play
-		icon = config.icon -- icon layout, see AdjustIcon()
+		icon = config.icon, -- icon layout, see AdjustIcon()
+		tooltipHeader = config.tooltipHeader -- localization key of the header of the standard tooltip
 	}
 	-- Also store initFunc in defaults so InitControlData picks it up
 	registry[id].defaults.initFunc = config.initFunc

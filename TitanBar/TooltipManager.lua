@@ -222,49 +222,27 @@ function TooltipManager.HideStandard()
 	end
 end
 
-function TooltipManager.ShowStandard(key)
-	local w = 350
-	local x, y = -5, -15
-	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition()
-	local h = 80
-
-	if TBLocale == "fr" then w = 315
-	elseif TBLocale == "de" then
-		if key == "DI" then w = 225
-		else w = 305 end
-	end
-
-	local header
-	local texts = {}
-
-	local headerKeys = {
-		BI = "MBI",
-		GT = "GTh",
-		VT = "MVault",
-		SS = "MStorage",
-		DN = "MDayNight",
-		LP = "LotroPointsh",
-	}
-
-	if headerKeys[key] then
-		header = L[headerKeys[key]]
-		table.insert(texts, L["EIt1"]) -- Left click to move
-		table.insert(texts, L["EIt2"]) -- Right click options
-		table.insert(texts, L["EIt3"]) -- Ctrl + Left click
-	elseif key == "DP" or key == "PL" or (_G.currencies and _G.currencies.byName[key]) then
-		h = 65
-		header = L[key .. "h"]
-		table.insert(texts, L["EIt2"])
-		table.insert(texts, L["EIt3"])
-	elseif key == "IF" then
-		h = 65
-		header = L["Infamyh"]
-		table.insert(texts, L["EIt2"])
-		table.insert(texts, L["EIt3"])
-	else
+-- The standard tooltip of a control: the header of its registration (tooltipHeader) and how to use it.
+-- opensWindow: a left click opens the options window of the control
+function TooltipManager.ShowStandard(key, opensWindow)
+	local meta = _G.ControlRegistry.GetMetadata(key)
+	if not (meta and meta.tooltipHeader) then
 		Turbine.Shell.WriteLine("TitanBar: Unknown tooltip key " .. tostring(key))
 		return
 	end
+
+	local w = 350
+	if TBLocale == "fr" then w = 315
+	elseif TBLocale == "de" then w = 305 end
+	local x, y = -5, -15
+	local mouseX, mouseY = Turbine.UI.Display.GetMousePosition()
+
+	local header = L[meta.tooltipHeader]
+	local texts = {}
+	if opensWindow then table.insert(texts, L["EIt1"]) end -- Left click to open the options window
+	table.insert(texts, L["EIt2"]) -- Hold left click to move the control
+	table.insert(texts, L["EIt3"]) -- Right click to open the control menu
+	local h = 35 + 15 * #texts
 
 	local win = TooltipManager.CreateStandardWindow(x, y, w, h, header, texts)
 

@@ -23,8 +23,8 @@ function InitializeTrackItems()
             controlTable = TI,
             windowImportPath = AppCtrD .. "TrackItemsWindow",
             windowFunction = "frmTrackItemsWindow",
-            tooltipKey = "TI",                  -- Uses generic ShowTIToolTip? No, checked grep, usually tailored.
-            customTooltipHandler = ShowTIWindow -- Assuming this name based on pattern
+            tooltipKey = "TI",
+            customTooltipHandler = ShowTIWindow
         })
     end
 

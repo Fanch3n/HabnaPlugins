@@ -102,7 +102,7 @@ function SetupControlInteraction(config)
 			tooltipShowFn = customTooltipHandler
 		else
 			tooltipShowFn = function()
-				TooltipManager.ShowStandard(tooltipName)
+				TooltipManager.ShowStandard(tooltipName, onLeftClick == nil)
 			end
 		end
 

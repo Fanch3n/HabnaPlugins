@@ -111,6 +111,7 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
 	_G.ControlRegistry.Register({
 		id = "GT",
+		tooltipHeader = "GTh",
 		menuText = "MGT",
 		icon = false,
 		settingsKey = "GameTime",

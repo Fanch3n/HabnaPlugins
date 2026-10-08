@@ -136,6 +136,7 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
 	_G.ControlRegistry.Register({
 		id = "DN",
+		tooltipHeader = "MDayNight",
 		menuText = "MDayNight",
 		icon = { dy = 1 },
 		settingsKey = "DayNight",

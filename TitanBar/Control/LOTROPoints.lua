@@ -104,6 +104,7 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
 	_G.ControlRegistry.Register({
 		id = "LP",
+		tooltipHeader = "LotroPointsh",
 		icon = { dx = 2, dy = 1 },
 		settingsKey = "LOTROPoints",
 		hasWhere = true,
