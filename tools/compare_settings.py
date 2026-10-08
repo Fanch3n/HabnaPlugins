@@ -3,7 +3,7 @@
 Runs TitanBar's settings code of a git ref (default: HEAD) and of the working tree
 in Lua 5.1 with a stubbed Turbine API, and compares what both save for a few scenarios:
 a new character, an existing character with changed values, an incomplete file,
-settings changed at runtime, and "Reset all settings".
+settings changed at runtime, "Reset all settings", and switching the game language.
 
 Requirements: Python 3 with git on the PATH, and the Lua runtime for Python:
     pip install lupa
@@ -28,7 +28,9 @@ except ImportError:
     sys.exit("This tool needs the Lua runtime for Python: pip install lupa")
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SETTINGS_NAME = "TitanBarSettingsEN"
+# Settings files: one per game language before 1.53, one for all languages since then
+OLD_SETTINGS_NAMES = {"en": "TitanBarSettingsEN", "de": "TitanBarSettingsDE", "fr": "TitanBarSettingsFR"}
+SETTINGS_NAME = "TitanBarSettings"
 
 # Stubs for everything the settings code needs outside of its own files
 PRELUDE = r"""
@@ -52,7 +54,6 @@ Turbine.PluginData = {
 }
 write = function() end
 screenWidth, screenHeight = 1920, 1080
-GLocale = "en"
 PlayerAlign = 1
 Version = "test"
 AppDirD = "HabnaPlugins.TitanBar."; AppCtrD = AppDirD .. "Control."; AppLocaleD = AppDirD .. "Locale."
@@ -98,9 +99,10 @@ class Variant:
         return calls
 
 
-def start(variant):
+def start(variant, game_locale):
     lua = lua51.LuaRuntime(unpack_returned_tuples=True)
     lua.execute(PRELUDE)
+    lua.execute(f'GLocale = "{game_locale}"')
     lua.globals().import_file = lambda p: lua.execute(
         variant.read(p.replace("HabnaPlugins.TitanBar.", "").replace(".", "/") + ".lua"))
     lua.execute("import = function(p) import_file(p) end")
@@ -128,18 +130,24 @@ def lua_literal(v):
     raise TypeError(v)
 
 
-def run(variant, stored, actions):
+def saved_settings(lua, game_locale):
+    """The settings file the code wrote: the single file, or the file of the game language (older versions)."""
+    saved = to_py(lua.eval("saved"))
+    return saved.get(SETTINGS_NAME) or saved[OLD_SETTINGS_NAMES[game_locale]]
+
+
+def run(variant, files, actions, game_locale):
     """Load the settings like at login, register the controls, run actions, save. Returns both saved files."""
-    lua = start(variant)
-    if stored is not None:
-        lua.execute(f"storage[{json.dumps(SETTINGS_NAME)}] = {lua_literal(stored)}")
+    lua = start(variant, game_locale)
+    for name, content in files.items():
+        lua.execute(f"storage[{json.dumps(name)}] = {lua_literal(content)}")
     lua.execute("LoadSettings()")
-    after_load = to_py(lua.eval("saved")[SETTINGS_NAME])
+    after_load = saved_settings(lua, game_locale)
     for call in variant.register_calls():
         lua.execute(call)
     lua.execute(actions)
     lua.execute("SaveSettings()")
-    after_save = to_py(lua.eval("saved")[SETTINGS_NAME])
+    after_save = saved_settings(lua, game_locale)
     return after_load, after_save
 
 
@@ -165,9 +173,12 @@ def main():
     old, new = Variant(args.ref), Variant(None)
     differences = 0
 
-    def scenario(name, stored, actions=""):
+    def scenario(name, stored, actions="", files=None, game_locale="en"):
+        """stored: content of the English settings file of older versions; files: other files instead"""
         nonlocal differences
-        results = [run(old, stored, actions), run(new, stored, actions)]
+        if files is None:
+            files = {} if stored is None else {OLD_SETTINGS_NAMES["en"]: stored}
+        results = [run(old, files, actions, game_locale), run(new, files, actions, game_locale)]
         print(f"== {name}")
         for i, label in enumerate(("after LoadSettings", "after SaveSettings")):
             d = diff(results[0][i], results[1][i])
@@ -208,6 +219,22 @@ def main():
 
     # 5. "Reset all settings"
     scenario("reset all settings", existing, "ResetSettings()")
+
+    # 6. switching the game language to German: older versions start with new settings,
+    #    newer versions take over the English file (or keep using the file for all languages)
+    scenario("German game, only an English file", None, files={OLD_SETTINGS_NAMES["en"]: existing}, game_locale="de")
+    german = json.loads(json.dumps(existing))
+    german["TitanBar"]["L"] = "de"
+    german["Options"]["H"] = "Nur in der Schlacht"
+    german["Money"]["X"] = "999"
+    scenario("German game, German and English file", None, game_locale="de",
+             files={OLD_SETTINGS_NAMES["en"]: existing, OLD_SETTINGS_NAMES["de"]: german})
+
+    # 7. a file with French texts (e.g. a profile created in the French client)
+    french = json.loads(json.dumps(existing))
+    french["TitanBar"]["L"] = "fr"
+    french["Options"]["H"] = "Toujours"
+    scenario("French texts in an English game", french)
 
     print(f"\n{differences} differences between {args.ref} and the working tree")
     sys.exit(1 if differences else 0)

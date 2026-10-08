@@ -48,18 +48,98 @@ function ImportCtr( value )
 
 end
 
+-- The item tracking list (ITL) is a list of { N = item name, L = game language, B, U, S, I = icons }.
+-- Items are tracked by their name, which is only known in the game language the item was ticked in:
+-- the game has no language-independent id for items. Items tracked in another language are kept
+-- and count again when the game runs in that language. The icons draw items that are not in the bags.
+-- One file for all game languages (since 1.53); older versions had one list per language.
+local TRACKING_LIST_NAME = "TitanBarPlayerItemTrackingList"
+
+-- The values of a saved list in their order (the keys are saved as text: "1", "2", ...)
+local function SavedList(saved)
+    local keys = {};
+    for k in pairs(saved) do table.insert(keys, k) end
+    table.sort(keys, function(a, b) return (tonumber(a) or 0) < (tonumber(b) or 0) end);
+    local list = {};
+    for _, k in ipairs(keys) do table.insert(list, saved[k]) end
+    return list
+end
+
+local function IsTrackedItem(entry)
+    return type(entry) == "table" and type(entry.N) == "string" and type(entry.L) == "string" and entry.I ~= nil
+end
+
+-- A list of an older version, { [name] = { Q, B, U, S, I } } for one game language
+local function OldTrackingList(old, locale)
+    local list = {};
+    for _, entry in ipairs(SavedList(old)) do
+        local name, icons;
+        if type(entry) == "table" then name, icons = next(entry) end
+        if type(name) == "string" and type(icons) == "table" and icons.I ~= nil then
+            table.insert(list, { N = name, L = locale, B = icons.B, U = icons.U, S = icons.S, I = icons.I });
+        end
+    end
+    return list
+end
+
 function LoadPlayerItemTrackingList()
-    local locale = "TitanBarPlayerItemTrackingList" .. GLocale:upper();
-    ITL = Turbine.PluginData.Load(Turbine.DataScope.Character, locale);
-    if ITL == nil then ITL = {}; end
+    ITL = {};
+    local loaded = Turbine.PluginData.Load(Turbine.DataScope.Character, TRACKING_LIST_NAME);
+    if loaded then
+        for _, entry in ipairs(SavedList(loaded)) do
+            if IsTrackedItem(entry) then table.insert(ITL, entry) end
+        end
+        return
+    end
+
+    -- First start of a version with one list: take over the lists of all game languages
+    for _, locale in ipairs(GameLocalesCurrentFirst()) do
+        local ok, old = pcall(Turbine.PluginData.Load, Turbine.DataScope.Character, TRACKING_LIST_NAME .. locale:upper());
+        if ok and type(old) == "table" then
+            for _, entry in ipairs(OldTrackingList(old, locale)) do table.insert(ITL, entry) end
+        end
+    end
+    SavePlayerItemTrackingList(ITL);
+end
+
+-- The tracked items of the current game language
+function TrackedItemsOfLanguage()
+    local list = {};
+    for _, entry in ipairs(ITL) do
+        if entry.L == GLocale then table.insert(list, entry) end
+    end
+    return list
+end
+
+function IsItemTracked(name)
+    for _, entry in ipairs(ITL) do
+        if entry.L == GLocale and entry.N == name then return true end
+    end
+    return false
+end
+
+function TrackItem(item)
+    local itemInfo = item:GetItemInfo();
+    table.insert(ITL, {
+        N = itemInfo:GetName(),
+        L = GLocale,
+        B = tostring(itemInfo:GetBackgroundImageID()),
+        U = tostring(itemInfo:GetUnderlayImageID()),
+        S = tostring(itemInfo:GetShadowImageID()),
+        I = tostring(itemInfo:GetIconImageID()),
+    });
+    SavePlayerItemTrackingList(ITL);
+end
+
+function UntrackItem(name)
+    for i = #ITL, 1, -1 do
+        if ITL[i].L == GLocale and ITL[i].N == name then table.remove(ITL, i) end
+    end
+    SavePlayerItemTrackingList(ITL);
 end
 
 function SavePlayerItemTrackingList(ITL)
-    local newt = {};
-    for k, v in pairs(ITL) do newt[tostring(k)] = v; end
-    ITL = newt;
-    local locale = "TitanBarPlayerItemTrackingList" .. GLocale:upper();
-    Turbine.PluginData.Save(Turbine.DataScope.Character, locale, ITL);
+    Turbine.PluginData.Save(Turbine.DataScope.Character, TRACKING_LIST_NAME, SaveableTable(ITL));
 end
 
 function LoadPlayerMoney()

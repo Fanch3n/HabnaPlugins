@@ -39,22 +39,14 @@ function frmProfile()
 	buttonLoad:SetEnabled( false );
 
 	buttonLoad.Click = function( sender, args )
-		local LProfile = false; --Load profile
-		local PLang = nil; --Profile Language
-		PLang = vPProfileSettings[PrevItemClic].TitanBar.L;
-		
-		if PLang == "en" then if GLocale == "en" then LProfile = true; end
-		else if GLocale ~= "en" then LProfile = true; end end
-
-		if LProfile then
-			write("TitanBar: "..L["PWProfile"].." `"..lblName[PrevItemClic]:GetText().."` "..L["PWLoaded"]);
-			local profile = vPProfileSettings[PrevItemClic];
-			local plText = (_G.ControlData and _G.ControlData.PL and _G.ControlData.PL.text) or (profile.PlayerLoc and profile.PlayerLoc.L) or L["PLMsg"]
-			profile.PlayerLoc.L = plText;
-			ReloadTitanBar("Profile", profile);
-		else
-			write("TitanBar: `"..lblName[PrevItemClic]:GetText().."`"..L["PWFail"]);
-		end
+		-- Settings are independent of the game language, so a profile can be loaded in every language
+		write("TitanBar: "..L["PWProfile"].." `"..lblName[PrevItemClic]:GetText().."` "..L["PWLoaded"]);
+		local profile = vPProfileSettings[PrevItemClic];
+		local plText = (_G.ControlData and _G.ControlData.PL and _G.ControlData.PL.text) or (profile.PlayerLoc and profile.PlayerLoc.L) or L["PLMsg"]
+		profile.PlayerLoc.L = plText;
+		-- A profile keeps TitanBar's language as it is
+		profile.TitanBar.L = TBLocaleChoice;
+		ReloadTitanBar("Profile", profile);
 	end
 
 	buttonCreate = CreateAutoSizedButton(wProfile, L["PWCreate"])

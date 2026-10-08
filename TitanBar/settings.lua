@@ -214,20 +214,87 @@ function GetControlDefaults(controlId)
 end
 
 -- ============================================================================
+-- LANGUAGE-INDEPENDENT VALUES
+-- ============================================================================
+
+-- PluginData writes numbers with the decimal separator of the game language (e.g. 1,5 in German),
+-- and no client can read such a file back. So only strings and booleans are saved.
+-- Returns a copy of t with all numbers (values and keys) turned into strings.
+function SaveableTable(t)
+	local copy = {}
+	for k, v in pairs(t) do
+		if type(k) == "number" then k = tostring(k) end
+		if type(v) == "number" then
+			v = tostring(v)
+		elseif type(v) == "table" then
+			v = SaveableTable(v)
+		end
+		copy[k] = v
+	end
+	return copy
+end
+
+-- Auto hide is saved as a code. Older versions saved the translated text of the option.
+local AUTO_HIDE_KEYS = { never = "OPAHD", always = "OPAHE", combat = "OPAHC" }
+local AUTO_HIDE_OLD_TEXTS = {
+	["Disabled"] = "never", ["D\195\169sactiver"] = "never", ["niemals"] = "never",
+	["Always"] = "always", ["Toujours"] = "always", ["immer"] = "always",
+	["Only in combat"] = "combat", ["Seulement en combat"] = "combat", ["Nur in der Schlacht"] = "combat",
+}
+
+-- Saved value (code or old text) -> text of the option in TitanBar's language, as used at runtime
+local function AutoHideText(saved)
+	local code = AUTO_HIDE_KEYS[saved] and saved or AUTO_HIDE_OLD_TEXTS[saved] or "never"
+	return L[AUTO_HIDE_KEYS[code]]
+end
+
+-- Text of the option -> code to save
+local function AutoHideCode(text)
+	for code, key in pairs(AUTO_HIDE_KEYS) do
+		if L[key] == text then return code end
+	end
+	return "never"
+end
+
+-- Icon size, saved as text by very old versions
+local ICON_SIZE_OLD_TEXTS = {
+	["Small (16x16)"] = Constants.ICON_SIZE_SMALL, ["Petit (16x16)"] = Constants.ICON_SIZE_SMALL, ["klein (16x16)"] = Constants.ICON_SIZE_SMALL,
+	["Large (32x32)"] = Constants.ICON_SIZE_LARGE, ["Grand (32x32)"] = Constants.ICON_SIZE_LARGE, ["Breit (32x32)"] = Constants.ICON_SIZE_LARGE,
+}
+
+-- The game languages, the current one first: the order in which files of older versions are taken over
+function GameLocalesCurrentFirst()
+	local order = { GLocale }
+	for _, locale in ipairs({ "en", "de", "fr" }) do
+		if locale ~= GLocale then table.insert(order, locale) end
+	end
+	return order
+end
+
+-- Loads the settings file. On the first start of a version with one file for all game languages,
+-- the file of the current game language is taken over, or else the file of another language.
+-- The old files are kept, so older TitanBar versions still find them.
+local function LoadSettingsFile()
+	local loaded = Turbine.PluginData.Load( Constants.SETTINGS_SCOPE, Constants.SETTINGS_NAME )
+	if loaded then return loaded end
+
+	for _, locale in ipairs(GameLocalesCurrentFirst()) do
+		local ok, old = pcall(Turbine.PluginData.Load, Constants.SETTINGS_SCOPE, Constants.GetSettingsName(locale))
+		if ok and type(old) == "table" then
+			-- TitanBar's language was the game language unless it was changed in the menu
+			if old.TitanBar and old.TitanBar.L == locale then old.TitanBar.L = "auto" end
+			return old
+		end
+	end
+end
+
+-- ============================================================================
 -- SETTINGS LOADING
 -- ============================================================================
 
 -- **v Load / update / set default settings v**
--- I'm confused as to what most of this is... Most of these strings should be in localization files, and I believe they are - so why are they here too?  Deprecated code that hasn't been cleaned up yet?
--- It's probably to solve the radix point problem. This can be solved with a combination of vindar_patch and string replacement in the future.
 function LoadSettings()
-	if GLocale == "de" then
-		settings = Turbine.PluginData.Load( Constants.SETTINGS_SCOPE, Constants.SETTINGS_NAME_DE );
-	elseif GLocale == "en" then
-		settings = Turbine.PluginData.Load( Constants.SETTINGS_SCOPE, Constants.SETTINGS_NAME_EN );
-	elseif GLocale == "fr" then
-		settings = Turbine.PluginData.Load( Constants.SETTINGS_SCOPE, Constants.SETTINGS_NAME_FR );
-	end
+	settings = LoadSettingsFile()
 	
 	tA, tR, tG, tB, tX, tY = Constants.DEFAULT_ALPHA, Constants.DEFAULT_RED, Constants.DEFAULT_GREEN, Constants.DEFAULT_BLUE, Constants.DEFAULT_X, Constants.DEFAULT_Y;
 	tL, tT = Constants.DEFAULT_WINDOW_LEFT, Constants.DEFAULT_WINDOW_TOP;
@@ -238,7 +305,7 @@ function LoadSettings()
 	local titanBar = EnsureSettingsSection("TitanBar")
 	SetDefaultColors(titanBar, tA, tR, tG, tB)
 	titanBar.W = titanBar.W or Constants.FormatInt(screenWidth)
-	titanBar.L = titanBar.L or GLocale
+	titanBar.L = titanBar.L or "auto" -- TitanBar's language, "auto": the game language
 	titanBar.H = titanBar.H or Constants.FormatInt(Constants.DEFAULT_TITANBAR_HEIGHT)
 	titanBar.F = titanBar.F or Constants.FormatInt(Constants.DEFAULT_TITANBAR_FONT_ID)
 	titanBar.T = titanBar.T or Constants.DEFAULT_TITANBAR_FONT_NAME
@@ -250,7 +317,8 @@ function LoadSettings()
 	bcGreen = tonumber(titanBar.G) or Constants.DEFAULT_GREEN
 	bcBlue = tonumber(titanBar.B) or Constants.DEFAULT_BLUE
 	TBWidth = tonumber(titanBar.W) or screenWidth
-	TBLocale = titanBar.L
+	TBLocaleChoice = titanBar.L
+	TBLocale = (TBLocaleChoice == "auto") and GLocale or TBLocaleChoice
 	import (AppLocaleD..TBLocale)
 	TBHeight = tonumber(titanBar.H) or Constants.DEFAULT_TITANBAR_HEIGHT
 	_G.TBFont = tonumber(titanBar.F) or Constants.DEFAULT_TITANBAR_FONT_ID
@@ -277,21 +345,14 @@ function LoadSettings()
 	local options = EnsureSettingsSection("Options")
 	options.V = nil
 	SetDefaultWindowPosition(options, tL, tT)
-	options.H = options.H or L["OPAHD"]
+	options.H = options.H or "never"
 	options.I = options.I or Constants.FormatInt(Constants.DEFAULT_ICON_SIZE)
 	OPWLeft = tonumber(options.L)
 	OPWTop = tonumber(options.T)
 	
-	TBAutoHide = options.H
-	-- If user change language, Auto hide option not showing in proper language. Fix: Re-input correct word in variable.
-	if TBAutoHide == "Disabled" or TBAutoHide == "D\195\169sactiver" or TBAutoHide == "niemals" then TBAutoHide = L["OPAHD"]; end
-	if TBAutoHide == "Always" or TBAutoHide == "Toujours" or TBAutoHide == "immer" then TBAutoHide = L["OPAHE"]; end
-	if TBAutoHide == "Only in combat" or TBAutoHide == "Seulement en combat" or TBAutoHide == "Nur in der Schlacht" then TBAutoHide = L["OPAHC"]; end
-
-	TBIconSize = options.I
-	-- If user change language, icon disappear. Fix: Re-input correct word in variable.
-	if TBIconSize == "Small (16x16)" or TBIconSize == "Petit (16x16)" or TBIconSize == "klein (16x16)" then TBIconSize = L["OPISS"];
-	elseif TBIconSize == "Large (32x32)" or TBIconSize == "Grand (32x32)" or TBIconSize == "Breit (32x32)" then TBIconSize = L["OPISL"]; end
+	TBAutoHide = AutoHideText(options.H)
+	options.H = AutoHideCode(TBAutoHide) -- old files: the code instead of the translated text
+	TBIconSize = ICON_SIZE_OLD_TEXTS[options.I] or tonumber(options.I) or Constants.DEFAULT_ICON_SIZE
 	
 
 	local profile = EnsureSettingsSection("Profile")
@@ -406,7 +467,7 @@ function SaveSettings()
 	local titanBar = EnsureSettingsSection("TitanBar")
 	SaveColors(titanBar, bcAlpha, bcRed, bcGreen, bcBlue)
 	titanBar.W = Constants.FormatInt(TBWidth)
-	titanBar.L = TBLocale
+	titanBar.L = TBLocaleChoice
 	titanBar.H = Constants.FormatInt(TBHeight)
 	titanBar.F = Constants.FormatInt(_G.TBFont)
 	titanBar.T = TBFontT
@@ -417,7 +478,7 @@ function SaveSettings()
 	-- Options
 	local options = EnsureSettingsSection("Options")
 	SaveWindowPosition(options, OPWLeft, OPWTop)
-	options.H = TBAutoHide
+	options.H = AutoHideCode(TBAutoHide)
 	options.I = Constants.FormatInt(TBIconSize)
 
 	-- Profile, Shell, Background
@@ -451,7 +512,7 @@ end
 -- Writes the settings table to disk as it is, without taking over the runtime state
 -- (used while loading, and when a profile replaced the settings table)
 function WriteSettings()
-	Turbine.PluginData.Save( Constants.SETTINGS_SCOPE, Constants.GetSettingsName( GLocale ), settings );
+	Turbine.PluginData.Save( Constants.SETTINGS_SCOPE, Constants.SETTINGS_NAME, SaveableTable(settings) );
 end
 -- **^
 
@@ -468,7 +529,7 @@ end
 -- **v Reset All Settings v**
 function ResetSettings()
 	write( L["TBR"] );
-	TBLocale = "en";
+	TBLocaleChoice = "auto";
 	
 	tA, tR, tG, tB = 0.3, 0.3, 0.3, 0.3;
 	

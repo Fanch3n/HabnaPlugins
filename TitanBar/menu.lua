@@ -14,7 +14,8 @@ for i = 1, 3 do
 	if TBLocale == Lang[i] then LocItems:SetChecked( true ); end
 	LocItems.Click = function( sender, args )
 		if TBLocale == Lang[i] then return end
-		TBLocale = Lang[i];
+		-- Choosing the game language means: follow the game language
+		TBLocaleChoice = (Lang[i] == GLocale) and "auto" or Lang[i];
 		ReloadTitanBar();
 	end
 	

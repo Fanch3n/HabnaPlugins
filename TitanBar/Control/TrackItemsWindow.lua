@@ -139,59 +139,16 @@ function ShowStackableItems()
 
 				itemLbl[i].MouseClick = function( sender, args )
 					if ( args.Button == Turbine.UI.MouseButton.Left ) then
-						if not ui.itemState[i] then
-							ui.itemState[i] = true;
-							itemLbl[i]:SetForeColor( Color["green"] );
+						local name = itemLbl[i]:GetText();
+						local tracked = not ui.itemState[i];
+						if tracked then TrackItem(item[i]); else UntrackItem(name); end
 
-							local tITL = {};
-							local iteminfo = item[i]:GetItemInfo();
-							tITL[item[i].Name] = {};
-							tITL[item[i].Name].Q = tostring(iteminfo:GetQualityImageID());
-							tITL[item[i].Name].B = tostring(iteminfo:GetBackgroundImageID());
-							tITL[item[i].Name].U = tostring(iteminfo:GetUnderlayImageID());
-							tITL[item[i].Name].S = tostring(iteminfo:GetShadowImageID());
-							tITL[item[i].Name].I = tostring(iteminfo:GetIconImageID());
-							table.insert( ITL, tITL );
-                            
-							SavePlayerItemTrackingList(ITL);
-
-							--Check all listbox for identical item name
-							for ii = 1, size do
-								if item[ii] ~= "zEmpty" and item[ii].Stackable then
-									if ii ~= i then
-										if item[ii].Name == itemLbl[i]:GetText() then
-											itemLbl[ii]:SetForeColor( Color["green"] );
-											itemLbl[ii]:SetBackColor( Color["darkgrey"] );
-											ui.itemState[ii] = true;
-										end
-									end
-								end
-							end
-						else
-							ui.itemState[i] = false;
-							itemLbl[i]:SetForeColor( Color["white"] );
-
-							local iFoundAt = 0;
-							for ii = 1, #ITL do
-								for k, v in pairs(ITL[ii]) do
-									if k == itemLbl[i]:GetText() then iFoundAt = ii; break end
-								end
-							end
-                        
-							table.remove( ITL, iFoundAt );
-							SavePlayerItemTrackingList(ITL)
-
-							--Check all listbox for identical item name
-							for ii = 1, size do
-								if item[ii] ~= "zEmpty" and item[ii].Stackable then
-									if ii ~= i then
-										if item[ii].Name == itemLbl[i]:GetText() then
-											itemLbl[ii]:SetForeColor( Color["white"] );
-											itemLbl[ii]:SetBackColor( Color["black"] );
-											ui.itemState[ii] = false;
-										end
-									end
-								end
+						--Mark all stacks of the same item in the listbox
+						for ii = 1, size do
+							if item[ii] ~= "zEmpty" and item[ii].Stackable and itemLbl[ii] and item[ii].Name == name then
+								ui.itemState[ii] = tracked;
+								itemLbl[ii]:SetForeColor( tracked and Color["green"] or Color["white"] );
+								if ii ~= i then itemLbl[ii]:SetBackColor( tracked and Color["darkgrey"] or Color["black"] ); end
 							end
 						end
 					end
@@ -210,17 +167,12 @@ function ShowStackableItems()
 		end
 	end
 	
-	for i = 1, #ITL do
-		for k, v in pairs(ITL[i]) do
-			for ii = 1, size do
-				if item[ii] ~= "zEmpty" and item[ii].Stackable then
-					if k == itemLbl[ii]:GetText() then
-						itemLbl[ii]:SetForeColor( Color["green"] );
-						itemLbl[ii]:SetBackColor( Color["darkgrey"] );
-						ui.itemState[ii] = true;
-					end
-				end
-			end
+	-- Mark the tracked items (only items shown by the search have a label)
+	for ii = 1, size do
+		if item[ii] ~= "zEmpty" and item[ii].Stackable and itemLbl[ii] and IsItemTracked(itemLbl[ii]:GetText()) then
+			itemLbl[ii]:SetForeColor( Color["green"] );
+			itemLbl[ii]:SetBackColor( Color["darkgrey"] );
+			ui.itemState[ii] = true;
 		end
 	end
 
