@@ -67,9 +67,8 @@ function InitializeSharedStorage()
             customTooltipHandler = ShowSharedToolTip
         })
 
-        -- Load data and register callbacks
-        LoadPlayerSharedStorage()
-
+        -- Register callbacks. The data was loaded at startup (frmMain): PluginData can only be
+        -- loaded synchronously while the plugin loads, and the control can be added later
         local ssData = _G.ControlData.SS
         ssData.callbacks = ssData.callbacks or {}
         local cb = AddCallback(sspack, "CountChanged",

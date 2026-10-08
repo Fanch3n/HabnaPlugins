@@ -6,6 +6,11 @@ Version 1.53 (October ??, 2026)
 - Simplified adding currencies: Just add them to Currencies.lua and language files, no code changes
 - Fixed changing colour of all controls not applying to hidden controls
 - Fixed dropdowns in options menu closing unintentionally
+- Fixed "Unload this control" / "Unload all controls" doing nothing for regular controls
+- Fixed the "Total"/"You" text staying on the Money control after turning off "Show total on TitanBar"
+- Fixed the Profile or Options window sometimes opening by itself at login
+- Fixed "Reset all settings" not showing Game Time and Player Location
+- Fixed an error when adding the Vault or Shared Storage control after login
 - Fixed an error when the money window is opened before the tooltip is displayed at least once
 - Fixed rare case where changed positions are not saved
 - Refactored saving and loading settings, hopefully a step towards language-independent saves

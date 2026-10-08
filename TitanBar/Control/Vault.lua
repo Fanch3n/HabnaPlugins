@@ -69,8 +69,8 @@ function InitializeVault()
             customTooltipHandler = ShowVaultToolTip
         })
 
-        -- Load data
-        LoadPlayerVault()
+        -- The data was loaded at startup (frmMain): PluginData can only be loaded
+        -- synchronously while the plugin loads, and the control can be added later
 
         -- Register callbacks
         local vtData = _G.ControlData.VT
