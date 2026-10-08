@@ -32,7 +32,6 @@ Constants.ICON_SIZE_SMALL = 16
 Constants.ICON_SIZE_MEDIUM = 24
 Constants.ICON_SIZE_MEDIUM_LARGE = 30
 Constants.ICON_SIZE_LARGE = 32
-Constants.ITEM_CONTROL_SIZE = 34 -- Turbine ItemControl size
 Constants.ICON_SIZE_XLARGE = 40  -- Item slot size
 Constants.ICON_SIZE_XXLARGE = 44 -- Equipment slot size
 Constants.DEFAULT_ICON_SIZE = Constants.ICON_SIZE_LARGE

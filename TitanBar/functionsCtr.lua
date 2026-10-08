@@ -120,7 +120,7 @@ end
 
 function TrackItem(item)
     local itemInfo = item:GetItemInfo();
-    table.insert(ITL, {
+    TrackEntry({
         N = itemInfo:GetName(),
         L = GLocale,
         B = tostring(itemInfo:GetBackgroundImageID()),
@@ -128,6 +128,11 @@ function TrackItem(item)
         S = tostring(itemInfo:GetShadowImageID()),
         I = tostring(itemInfo:GetIconImageID()),
     });
+end
+
+-- Tracks an entry of the list again (an item that is not in the bags)
+function TrackEntry(entry)
+    table.insert(ITL, entry);
     SavePlayerItemTrackingList(ITL);
 end
 

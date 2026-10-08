@@ -176,6 +176,41 @@ function ShowStackableItems()
 		end
 	end
 
+	-- Tracked items that are not in the bags (any more), so they can be untracked
+	local inBags = {}
+	for ii = 1, size do
+		if item[ii] ~= "zEmpty" then inBags[item[ii].Name] = true end
+	end
+	for _, entry in ipairs(TrackedItemsOfLanguage()) do
+		if not inBags[entry.N] and (not ui.searchText or string.find(string.lower( entry.N ), ui.searchText, 1, true)) then
+			local row = CreateItemRow(nil, ui.ListBox:GetWidth(), 35, false, { B = entry.B, U = entry.U, S = entry.S, I = entry.I, N = "0" })
+			row.ItemQuantity:SetForeColor( Color["red"] )
+			local label = row.ItemLabel
+			label:SetSize( ui.ListBox:GetWidth() - 48, 33 )
+			label:SetPosition( 36, 3 )
+			label:SetText( entry.N )
+
+			local tracked = true
+			local function ShowState()
+				label:SetForeColor( tracked and Color["green"] or Color["white"] );
+				label:SetBackColor( tracked and Color["darkgrey"] or Color["black"] );
+			end
+			ShowState()
+
+			label.MouseClick = function( sender, args )
+				if ( args.Button == Turbine.UI.MouseButton.Left ) then
+					tracked = not tracked;
+					if tracked then TrackEntry(entry); else UntrackItem(entry.N); end
+					ShowState()
+				end
+			end
+			label.MouseHover = function(sender, args) label:SetBackColor( Color["lightgrey"] ); end
+			label.MouseLeave = function(sender, args) ShowState() end
+
+			ui.ListBox:AddItem( row.Container );
+		end
+	end
+
 	ui.ListBoxBorder:SetPosition( 15, ui.searchLabel:GetTop() + ui.searchLabel:GetHeight() + 5 );
 	ui.ListBoxBorder:SetHeight( Constants.LISTBOX_HEIGHT_STANDARD );
 	ui.ListBox:SetPosition( ui.ListBoxBorder:GetLeft() + 2, ui.ListBoxBorder:GetTop() + 2 );

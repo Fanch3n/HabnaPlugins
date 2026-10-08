@@ -256,8 +256,10 @@ function CreateItemRow(parent, width, height, isPlayerItem, itemSpec)
         if itemSpec then
             local itemBG = Turbine.UI.Lotro.ItemControl(itemSpec)
             itemBG:SetParent(ctl)
-            itemBG:SetSize(Constants.ITEM_CONTROL_SIZE, Constants.ITEM_CONTROL_SIZE)
+            -- Keep the size of the ItemControl: making it smaller cuts off the right and bottom
+            -- of the red frame of unusable items
             itemBG:SetPosition(0, 0)
+            if itemBG:GetHeight() > height then ctl:SetHeight(itemBG:GetHeight()) end
         end
     else
         local itemBG = CreateControl(Turbine.UI.Control, ctl, 3, 3, 32, 32)
