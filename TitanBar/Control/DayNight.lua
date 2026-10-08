@@ -59,7 +59,6 @@ function GetInGameTime()
 		- cdminutes) + 0.5);
 end
 
--- Moved from functions.lua
 function UpdateDayNight()
 	local cdate = Turbine.Engine.GetDate();
 	local chour = cdate.Hour;

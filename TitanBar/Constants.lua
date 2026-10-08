@@ -1,6 +1,5 @@
 -- Constants.lua
 -- Centralized constants for TitanBar
--- Created to eliminate magic numbers and improve maintainability
 
 -- Export constants table globally
 _G.Constants = {}

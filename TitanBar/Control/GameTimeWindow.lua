@@ -1,4 +1,4 @@
--- GameTimesWindow.lua
+-- GameTimeWindow.lua
 -- written by Habna
 
 
@@ -51,8 +51,6 @@ function frmGameTimeWindow()
 	GMT:SetText( tostring(tonumber(gtData.userGMT) or 0) );
 	GMT:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
 	GMT:SetSize( Constants.GMT_FIELD_WIDTH, Constants.GMT_FIELD_HEIGHT );
-	--GMT:SetVisible( true );
-	--GMT:SetEnabled( false );
 	GMT:SetForeColor( Color["white"] );
 
 	GMT.FocusGained = function( sender, args )

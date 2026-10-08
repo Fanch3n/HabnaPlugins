@@ -1,5 +1,4 @@
 -- BagInfosWindow.lua
--- written by Habna
 
 -- Options of the BagInfos control, below the list of items
 local function BagSlotOptions(window, top)

@@ -164,9 +164,7 @@ function LoadPlayerMoney()
 	_G.ControlData.Money.scma = wallet[PN].ShowToAll
 
 
-    --Convert wallet
-    --Removed 2017-02-07 (after 2012-08-18)
-    --Restored 2017-10-02 (was causing "Invalid Data Scope" bug)
+    --Convert wallets of very old versions (Gold, Silver and Copper instead of Money)
     local tGold, tSilver, tCopper, bOk;
     for k,v in pairs(wallet) do
         if wallet[k].Gold ~= nil then

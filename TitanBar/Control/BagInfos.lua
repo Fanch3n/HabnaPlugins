@@ -66,7 +66,6 @@ function UpdateBackpackInfos()
 	if bi >= 31 and bi <= 75 then i = 3; end -- 31% to 75% Full bag
 	if bi >= 76 and bi <= 99 then i = 4; end -- 75% to 99% Full bag
 	if bi == 100 then i = 5; end            -- 100% Full bag
-	--if bi >= 101 then BagIcon = 0x41007ecf; end-- over loaded bag
 
 	_G.ControlData.BI.controls["Icon"]:SetBackground(resources.BagIcon[i]);
 

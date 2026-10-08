@@ -1,4 +1,4 @@
--- EquipInfosWindow.lua
+-- EquipInfosToolTip.lua
 -- Written by Habna
 
 
@@ -107,7 +107,6 @@ function EIRefreshListBox()
 		EIitemLbl[i]:SetSize( 205, EIitemCtl[i]:GetHeight() );
 		EIitemLbl[i]:SetFont(Turbine.UI.Lotro.Font.TrajanPro12 );
 		EIitemLbl[i]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-		--EIitemLbl[i]:SetForeColor( Color["white"] );
 		
 		if itemEquipRef[i].Item == false then 
 			EIitemLbl[i]:SetForeColor( Color["red"] );

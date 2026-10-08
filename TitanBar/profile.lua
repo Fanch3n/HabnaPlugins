@@ -142,7 +142,6 @@ function RefreshListBox()
 		--**v Profil name v**
 		local lblName = Turbine.UI.Label();
 		lblName:SetParent( Ctr );
-		--lblName:SetFont ( 12 );
 		lblName:SetText( L["PWNFound"] );
 		lblName:SetPosition( 0, 0 );
 		lblName:SetSize( Ctr:GetWidth(), Ctr:GetHeight() );
@@ -209,7 +208,6 @@ function RefreshListBox()
 				end
 				PrevItemClic = lblName[i].Id;
 				lblName[PrevItemClic]:SetForeColor( Color["green"] );
-				--lblName[PrevItemClic]:SetBackColor( Color["darkgrey"] );
 				lblName[i].Sel = true;
 				buttonLoad:SetEnabled( true );
 			end

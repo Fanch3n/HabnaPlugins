@@ -25,8 +25,6 @@ function ToggleControl(id)
 		-- Custom OnShow Hook
 		if controlData.onShow then controlData.onShow() end
 		
-		-- Special case for Equipment callbacks (removed from legacy functions but logic was complex)
-		-- Since Equipment Infos logic is quite specific (callbacks added in Toggle), we might need to handle EI/DI separately or move logic to Initialize
 	else
 		-- Cleanup Callbacks
 		if controlData.callbacks then
@@ -109,9 +107,6 @@ function ReloadTitanBar(reason, newSettings)
 end
 
 function AboutTitanBar()
-	--write( "TitanBar: About!" );
-	--Turbine.PluginManager.ShowAbouts(Plugins.TitanBar); -- Add this when About is available
-	--Turbine.PluginManager.ShowOptions(Plugins.TitanBar); --This will open plugin manager and show TitanBar options (THIS IS AN EXAMLPE)
 end
 
 function ShowHideCurrency(currency)

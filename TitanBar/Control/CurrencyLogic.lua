@@ -1,4 +1,5 @@
--- Create tables in _G
+-- CurrencyLogic.lua
+-- The controls of the currencies on TitanBar (all currencies share this code)
 import(AppDirD .. "UIHelpers")
 
 _G.createCurrencyTable = function(currencyName)

@@ -4,8 +4,6 @@
 
 plugin.GetOptionsPanel = function( self )
 	local optPanel = Turbine.UI.Control();
-	--optPanel:SetBackColor( Turbine.UI.Color( 0.3, 0.3, 0.3 ) );
-	--optPanel:SetSize( 200, 30 );
 
 	local optLabel = Turbine.UI.Label();
 	optLabel:SetParent( optPanel );

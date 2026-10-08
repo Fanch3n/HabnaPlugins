@@ -25,12 +25,10 @@ function frmMain()
 	TB["win"] = Turbine.UI.Window();
 	TB["win"]:SetLeft( 0 );
 	LayoutBar();
-	--TB["win"]:SetBackground( resources.TitanBar.Background );
 	TB["win"]:SetBackColor( Turbine.UI.Color( bcAlpha, bcRed, bcGreen, bcBlue ) );
 	--TB["win"]:SetMouseVisible( false ); -- If set to false, menu will not work.
 	TB["win"]:SetWantsKeyEvents( true );
 	TB["win"]:SetVisible( true );
-	--TB["win"]:SetZOrder( 10 );
 	TB["win"]:Activate();
 
 	
@@ -82,7 +80,6 @@ function frmMain()
 	MouseHoverCtr:SetSize( 250, 15 );
 	MouseHoverCtr:SetTop( GetBarScreenHeight() );
 	CenterMouseHover();
-	--MouseHoverCtr:SetZOrder( 1 );
 	--MouseHoverCtr:SetBackColor( Color["red"] ); --debug purpose
 	MouseHoverCtr:SetBackground( resources.frmMain ); 
 
@@ -288,9 +285,6 @@ function frmMain()
 		oldminute = currentminute;
 		oldsecond = currentsecond;
 
-		--When player log out & log in with same character, the durability control show -1%
-		--Because equipment info are not avail when re-login, weird!
-		--if PlayerAlign == 1 and _G.ControlData.DI.show then if DI[ "Lbl" ]:GetText() == "-1%" then GetEquipmentInfos(); UpdateDurabilityInfos(); end end
 	end
 	--**
 end

@@ -1,6 +1,5 @@
 -- ControlFactory.lua
 -- Factory functions for creating TitanBar controls consistently
--- Eliminates repetitive control setup code
 
 -- ============================================================================
 -- TITANBAR CONTROL CREATION

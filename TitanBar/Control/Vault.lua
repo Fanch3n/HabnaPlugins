@@ -4,7 +4,6 @@ import(AppDirD .. "UIHelpers")
 import(AppCtrD .. "StoredItems")
 import(AppDirD .. "ControlFactory")
 
--- Moved from functions.lua
 function UpdateVault()
     AdjustIcon("VT");
 end

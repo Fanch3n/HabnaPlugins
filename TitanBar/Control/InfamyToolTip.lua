@@ -99,7 +99,6 @@ function RefreshIFToolTip()
 	NextRankCtr:SetSize( lblNextRank:GetWidth()+labelTN:GetWidth()+10, 15 );
 
 	local percentage_done = string.format("%.1f", points / infamyRanks[rank+1]*100);
-	--percentage_done = string.format("%.1f", percentage_done);
 	--percentage_done = 1; --debug purpose
 
 	--**v Infamy progress bar v**		

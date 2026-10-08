@@ -33,7 +33,6 @@ local aIconSize = { L[ "OPISS" ], L[ "OPISL" ] }; --Small & Large
 
 function frmOptions()
 	TB["win"].MouseLeave();
-	--itValue, tValue = 32, TBHeight;
 
 	import ( AppClassD .. "ComboBox" );
 	FontDD = HabnaPlugins.TitanBar.Class.ComboBox();

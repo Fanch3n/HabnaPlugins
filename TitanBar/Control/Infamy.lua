@@ -52,7 +52,6 @@ function HandleInfamyChat(sender, args)
     end
 end
 
--- Moved from functions.lua
 function UpdateInfamy()
     -- Ensure dependencies
     if not (AdjustIcon and _G.ControlData.IF and _G.ControlData.IF.controls) then return end

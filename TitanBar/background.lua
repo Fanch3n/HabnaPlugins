@@ -32,7 +32,6 @@ function frmBackground()
 
 	SetToAllCtr.CheckedChanged = function( sender, args )
 		BGWToAll = SetToAllCtr:IsChecked();
-		--if BGWToAll then ChangeColor(mColor); end
 		SaveSettings();
 	end
 	-- **^
@@ -164,7 +163,6 @@ function frmBackground()
 		local blockYvalue = (round(ColourPicker:GetHeight()/2));
 
 		curColor = Turbine.UI.Color();
-		--curColor.A = 1.0;
 		local myX = X;
 		local myY = Y;
 		local curRed = 0;

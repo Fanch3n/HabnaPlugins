@@ -1,4 +1,4 @@
--- Main.lua
+-- main.lua
 -- written by Habna
 -- rewritten by many
 

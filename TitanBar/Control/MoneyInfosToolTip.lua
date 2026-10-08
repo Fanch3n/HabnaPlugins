@@ -46,7 +46,6 @@ function MIRefreshMITTListBox()
 	local a = {};
     for n in pairs(wallet) do table.insert(a, n) end
     table.sort(a);
-    --for i,n in ipairs(a) do write(n) end --degug purpose
 
 	for i = 1, #a do
 		DecryptMoney(wallet[a[i]].Money);
@@ -82,7 +81,6 @@ function MIRefreshMITTListBox()
 
 	--**v Line Control v**
 	local LineCtr = CreateControl(Turbine.UI.Control, MITTListBox, 0, 0, MITTListBox:GetWidth(), 7)
-	--LineCtr:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 
 	local LineLbl = CreateControl(Turbine.UI.Label, LineCtr, 0, 2, MITTListBox:GetWidth(), 1)
 	LineLbl:SetText( "" );

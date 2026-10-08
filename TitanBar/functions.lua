@@ -138,9 +138,6 @@ end
 --   icon = { layout = function(iconTop) end }   the control lays out its icons itself
 --   icon = false             the control has no icon
 function AdjustIcon(str)
-	--if TBHeight > 30 then CTRHeight = 30; end
-    --Stop ajusting icon size if TitanBar height is > 30px
-	--CTRHeight=TBHeight;
 	local Y = -1 - ((TBIconSize - CTRHeight) / 2);
 	local data = _G.ControlData[str]
 	local meta = _G.ControlRegistry.GetMetadata(str) or {}

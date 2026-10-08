@@ -54,7 +54,6 @@ function frmInfamyWindow()
 
 		if tonumber(parsed_text) == nil or string.find(parsed_text,"%.") ~= nil then
 			txtInfamy:SetText( string.sub( parsed_text, 1, string.len(parsed_text)-1 ) );
-			--txtInfamy:Focus();
 			return
 		elseif string.len(parsed_text) > 1 and string.sub(parsed_text,1,1) == "0" then
 			txtInfamy:SetText( string.sub( parsed_text, 2 ) );

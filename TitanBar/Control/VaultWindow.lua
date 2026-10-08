@@ -1,5 +1,4 @@
 -- VaultWindow.lua
--- written by Habna
 
 -- The saved vaults of all characters (see StoredItems.lua)
 function frmVault()

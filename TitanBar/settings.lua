@@ -453,7 +453,6 @@ function LoadSettings()
 
 	WriteSettings();
 	
-	--if settings.TitanBar.W ~= screenWidth then ReplaceCtr(); end --Replace control if screen width as changed
 end
 -- **^
 

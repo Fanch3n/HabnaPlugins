@@ -143,7 +143,7 @@ function TooltipManager.Reset(key)
 end
 
 -- ============================================================================
--- Standard Tooltip Implementation (Console/Legacy Style)
+-- Standard Tooltip
 -- ============================================================================
 
 function TooltipManager.ApplySkin(window)

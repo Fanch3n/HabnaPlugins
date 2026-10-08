@@ -104,9 +104,7 @@ function RefreshMIListBox()
 	local a = {};
     for n in pairs(wallet) do table.insert(a, n) end
     table.sort(a);
-    --for i,n in ipairs(a) do write(n) end --degug purpose
 
-	--for k,v in pairs(wallet) do
 	for i = 1, #a do
 		if a[i] == Player:GetName() then
 			if wallet[a[i]].Show then 
@@ -139,7 +137,6 @@ function RefreshMIListBox()
 	local LineCtr = Turbine.UI.Control();
 	LineCtr:SetParent( miListBox );
 	LineCtr:SetSize( miListBox:GetWidth(), 7 );
-	--LineCtr:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 
 	local LineLbl = Turbine.UI.Label();
 	LineLbl:SetParent( LineCtr );

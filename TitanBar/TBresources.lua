@@ -1,4 +1,4 @@
--- resources.lua
+-- TBresources.lua
 -- written by Thorondor
 -- patched by Technical_13, Giseldah
 

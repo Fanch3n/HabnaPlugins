@@ -1,5 +1,4 @@
 -- SharedStorageWindow.lua
--- written by Habna
 
 -- The saved shared storage (see StoredItems.lua)
 function frmSharedStorage()

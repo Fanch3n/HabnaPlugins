@@ -712,7 +712,6 @@ function ShowPIWindow()
 	APICtr:SetZOrder(1)
 	APICtr:SetBlendMode(Turbine.UI.BlendMode.AlphaBlend)
 	--APICtr:SetBackColor(Color["trueblue"]) -- test size
-	--APICtr:SetBackground("HabnaPlugins/TitanBar/Resources/".."PIbk.tga")
 	--**^
 
 	-- creates all needed controls defined in the layout and returns a list with controls with 'dynamic' content: these need to be updated with data

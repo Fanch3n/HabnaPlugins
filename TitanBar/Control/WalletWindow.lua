@@ -144,7 +144,6 @@ function frmWalletWindow()
 
 	local WIlblLOTROPTS = Turbine.UI.Label();
 	WIlblLOTROPTS:SetParent( LPWCtr );
-	--WIlblLOTROPTS:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
 	WIlblLOTROPTS:SetText( L["MLotroPoints"] );
 	WIlblLOTROPTS:SetPosition( 0, 2 );
 	WIlblLOTROPTS:SetSize( WIlblLOTROPTS:GetTextLength() * 7.5, 15 ); --Auto size with text lenght
