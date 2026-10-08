@@ -2,7 +2,7 @@ This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Te
 
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
-Version 1.53 (October ??, 2026)
+Version 1.53 (October 09, 2026)
 - Settings are no longer separate per language: You can change your language without having to configure TitanBar again.
 	- When first loading TitanBar 1.53, the settings file for the current game language will be copied and used for every language. Old files are not deleted.
 	- Item tracking is language dependent. You will still have to set item tracking up for each language.
