@@ -2,6 +2,26 @@
 
 import(AppDirD .. "UIHelpers")
 import(AppDirD .. "ControlFactory")
+import(AppCtrD .. "StoredItems")
+
+function LoadPlayerBags()
+	PlayerBags = Turbine.PluginData.Load(Turbine.DataScope.Server, "TitanBarBags");
+	if PlayerBags == nil then PlayerBags = {}; end
+	if PlayerBags[PN] == nil then PlayerBags[PN] = {}; end
+end
+
+-- Takes over the items in the bags of the current character and saves the bags of all characters
+function SavePlayerBags()
+	if string.sub( PN, 1, 1 ) == "~" then return end; --Ignore session play
+
+	PlayerBags[PN] = SaveableItems(backpack, backpack:GetSize(), backpack:GetSize());
+	Turbine.PluginData.Save(Turbine.DataScope.Server, "TitanBarBags", PlayerBags);
+end
+
+-- Files in Control/ define their globals in their package (HabnaPlugins.TitanBar.Control), which the files
+-- in TitanBar/ can't see: frmMain loads the bags at startup, main.lua saves them when TitanBar is unloaded
+_G.LoadPlayerBags = LoadPlayerBags
+_G.SavePlayerBags = SavePlayerBags
 
 -- Internal timer to handle delayed updates specific to BagInfos
 local bagUpdateTimer = Turbine.UI.Control()

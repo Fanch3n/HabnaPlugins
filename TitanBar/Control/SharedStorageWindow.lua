@@ -1,94 +1,19 @@
 -- SharedStorageWindow.lua
 -- written by Habna
 
-
-local sspackCount
-
+-- The saved shared storage (see StoredItems.lua)
 function frmSharedStorage()
-	local tsspack = sspack;
-	import(AppDirD .. "WindowFactory")
-
-	-- Initialize UI state table
-	_G.ControlData.SS = _G.ControlData.SS or {}
-	_G.ControlData.SS.ui = _G.ControlData.SS.ui or {}
-	local ui = _G.ControlData.SS.ui
-
-	-- Create window via helper
-	local wSS = CreateControlWindow(
-		"SharedStorage", "SS",
-		L["MStorage"], 390, 475,
-		{
-			onClosing = function(sender, args)
-				RemoveCallback( tsspack, "CountChanged", ui.countChangedCallback );
-				-- Keep the references to the TitanBar control, drop everything of the window
-				_G.ControlData.SS.ui = { control = ui.control, optCheckbox = ui.optCheckbox }
-			end
-		}
-	)
-	ui.window = wSS
-
-	ui.searchLabel = CreateTitleLabel(wSS, L["VTSe"], 15, 40, Turbine.UI.Lotro.Font.TrajanPro15, Color["gold"], 8, nil, 18, Turbine.UI.ContentAlignment.MiddleLeft)
-
-	local searchLeft = ui.searchLabel:GetLeft() + ui.searchLabel:GetWidth()
-	local searchWidth = wSS:GetWidth() - 150
-	local search = CreateSearchControl(wSS, searchLeft, ui.searchLabel:GetTop(), searchWidth + 24, 18, Turbine.UI.Lotro.Font.Verdana14, resources)
-	ui.SearchTextBox = search.TextBox
-	ui.DelIcon = search.DelIcon
-
-	ui.SearchTextBox.TextChanged = function(sender, args)
-		ui.searchText = string.lower(ui.SearchTextBox:GetText());
-		if ui.searchText == "" then ui.searchText = nil; end
-		SetSharedStoragePack();
-	end
-
-	local lbTop = 80
-	local lb = CreateListBoxWithBorder(wSS, 15, lbTop, wSS:GetWidth() - 30, Constants.LISTBOX_HEIGHT_MEDIUM, Color["grey"])
-	ui.ListBoxBorder = lb.Border
-	ui.ListBox = lb.ListBox
-	ui.ListBoxScrollBar = lb.ScrollBar
-	ui.ListBox:SetMaxColumns(1);
-	ConfigureListBox(ui.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
-	
-	sspackCount = 0;
-	if PlayerSharedStorage ~= nil then for k, v in pairs(PlayerSharedStorage) do sspackCount = sspackCount + 1; end end
-
-	if sspackCount == 0 then --Shared storage is empty
-		ui.ListBoxBorder:SetVisible( false );
-		ui.ListBox:SetVisible( false );
-		ui.searchLabel:SetVisible( false );
-		ui.SearchTextBox:SetVisible( false );
-		ui.DelIcon:SetVisible( false );
-		
-		local lblmgs = GetLabel(L["SSnd"]);
-		lblmgs:SetParent( wSS );
-		lblmgs:SetSize( wSS:GetWidth()-32, 39 );
-		
-		ui.window:SetHeight( lblmgs:GetHeight() + 65 );
-		ui.ListBoxScrollBar:SetVisible( false );
-	else
-		ui.window:SetHeight( 475 );
-		SetSharedStoragePack();
-	end
-
-	ui.countChangedCallback = AddCallback(tsspack, "CountChanged", function(sender, args) sspackCount = tsspack:GetCount(); SetSharedStoragePack(); end);
-end
-
-function SetSharedStoragePack()
-	local ui = _G.ControlData.SS and _G.ControlData.SS.ui
-	if not (ui and ui.window) then return end
-	ui.ListBox:ClearItems();
-	local itemCtl = {};
-
-	for i = 1, sspackCount do
-		local itemName = PlayerSharedStorage[tostring(i)].T;
-		if not ui.searchText or string.find(string.lower( itemName ), ui.searchText, 1, true) then
-				-- Use CreateItemRow helper for shared storage item
-				local data = PlayerSharedStorage[tostring(i)]
-				local row = CreateItemRow(nil, ui.ListBox:GetWidth(), 35, false, data)
-				itemCtl[i] = row.Container
-				if row.ItemQuantity and data and data.N then row.ItemQuantity:SetText( tonumber(data.N) ) end
-				row.ItemLabel:SetText( data.T )
-				ui.ListBox:AddItem( itemCtl[i] )
-		end
-	end
+	CreateStoredItemsWindow({
+		id = "SS",
+		settingsKey = "SharedStorage",
+		title = L["MStorage"],
+		width = 390,
+		height = 475,
+		items = function() return PlayerSharedStorage end,
+		emptyMessage = "SSnd",
+		searchTop = 40,
+		listTop = 80,
+		listHeight = Constants.LISTBOX_HEIGHT_MEDIUM,
+		watch = { { object = sspack, event = "CountChanged" } },
+	})
 end

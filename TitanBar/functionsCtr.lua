@@ -300,61 +300,6 @@ end
 
 
 
-
-
-function LoadPlayerBags()
-    PlayerBags = Turbine.PluginData.Load(
-        Turbine.DataScope.Server, "TitanBarBags");
-    if PlayerBags == nil then PlayerBags = {}; end
-    if PlayerBags[PN] == nil then PlayerBags[PN] = {}; end
-end
-
-function SavePlayerBags()
-    if string.sub( PN, 1, 1 ) == "~" then return end; --Ignore session play
-
-    local backpackSize = backpack:GetSize();
-
-    PlayerBags[PN] = {};
-    local ii=1;
-    for i = 1, backpackSize do
-
-        local items = backpack:GetItem( i );
-
-        if items ~= nil then
-            local ind = tostring(ii);
-            PlayerBags[PN][ind] = items;
-            local iteminfo = PlayerBags[PN][ind]:GetItemInfo();
-
-            --local sc = Turbine.UI.Lotro.Shortcut( items );
-            --PlayerBags[PN][ind].C = sc:GetData();
-
-            PlayerBags[PN][ind].Q = tostring(iteminfo:GetQualityImageID());
-            PlayerBags[PN][ind].B = tostring(iteminfo:GetBackgroundImageID());
-            PlayerBags[PN][ind].U = tostring(iteminfo:GetUnderlayImageID());
-            PlayerBags[PN][ind].S = tostring(iteminfo:GetShadowImageID());
-            PlayerBags[PN][ind].I = tostring(iteminfo:GetIconImageID());
-            PlayerBags[PN][ind].T = tostring(iteminfo:GetName());
-            local tq = tostring(PlayerBags[PN][ind]:GetQuantity());
-            if tq == "1" then tq = ""; end
-            PlayerBags[PN][ind].N = tq;
-            PlayerBags[PN][ind].Z = tostring(backpackSize);
-
-            ii = ii +1;
-        end
-    end
-
-    Turbine.PluginData.Save(
-        Turbine.DataScope.Server, "TitanBarBags", PlayerBags);
-    --[[
-    Turbine.PluginData.Save(Turbine.DataScope.Server, "TitanBarSharedStorage",
-        PlayerBags[PN]); --Debug purpose since i dont have a shared storage
-    --]]
-end
-
-
-
-
-
 function UpdateCurrency(currency_display)
     if _G.Debug then write("UpdateCurrency:" ..currency_display); end
     local currency_name = _G.CurrencyLangMap[currency_display]
