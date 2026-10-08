@@ -297,7 +297,6 @@ end
 -- Fields per section, like the fields of CONTROL_SETTINGS (key, type, default, keepOnReset), and:
 --   get, set: access to the variable that holds the value at runtime
 --   load, save: conversion between the saved value and the variable, instead of type
---   reset: value after "Reset all settings", if it is not the default (a function)
 local BAR_SETTINGS = {
 	TitanBar = {
 		{ key = "A", type = "float", default = Constants.DEFAULT_ALPHA, get = function() return bcAlpha end, set = function(v) bcAlpha = v end },
@@ -319,7 +318,7 @@ local BAR_SETTINGS = {
 	},
 	Options = {
 		-- Auto hide: the text of the option at runtime, saved as a code
-		{ key = "H", default = function() return L["OPAHD"] end, reset = function() return L["OPAHC"] end, load = AutoHideText, save = AutoHideCode,
+		{ key = "H", default = function() return L["OPAHD"] end, load = AutoHideText, save = AutoHideCode,
 			get = function() return TBAutoHide end, set = function(v) TBAutoHide = v end },
 		{ key = "I", type = "int", default = Constants.DEFAULT_ICON_SIZE, load = function(saved) return ICON_SIZE_OLD_TEXTS[saved] or tonumber(saved) end,
 			get = function() return TBIconSize end, set = function(v) TBIconSize = v end },
@@ -364,7 +363,7 @@ local function ResetBarSettings()
 	for _, fields in pairs(BAR_SETTINGS) do
 		for _, field in ipairs(fields) do
 			if not field.keepOnReset then
-				if field.reset then field.set(field.reset()) else field.set(DefaultValue(field)) end
+				field.set(DefaultValue(field))
 			end
 		end
 	end
