@@ -18,15 +18,11 @@ function frmBackground()
 		text = L["BWTitle"],
 		width = 400,
 		height = 210,
-		left = BGWLeft,
-		top = BGWTop,
+		position = WindowPositions.Background,
 		config = {
 			settingsKey = "Background",
 			windowGlobalVar = "wBackground",
 			formGlobalVar = "frmBackground",
-			onPositionChanged = function(left, top)
-				BGWLeft, BGWTop = left, top
-			end
 		}
 	})
 	wBackground.Opacity = 1
@@ -246,7 +242,7 @@ function frmBackground()
 	end
 
 	wBackground.MouseUp = function( sender, args )
-		BGWLeft, BGWTop = wBackground:GetPosition();
+		WindowPositions.Background.left, WindowPositions.Background.top = wBackground:GetPosition();
 		SaveSettings();
 	end
 

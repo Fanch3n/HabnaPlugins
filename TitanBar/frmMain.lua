@@ -180,15 +180,6 @@ function frmMain()
 		end
 	end
 
-	--**v Workaround for the ItemRemoved that fires before the backpack was updated (Turbine API issue) v**
-	ItemRemovedTimer = Turbine.UI.Control();
-	
-	ItemRemovedTimer.Update = function( sender, args )
-		ItemRemovedTimer:SetWantsUpdates( false );
-		if UpdateBackpackInfos then UpdateBackpackInfos(); end
-	end
-	--**
-	
 	AddCallback(
 		PlayerWallet,
 		"ItemAdded",

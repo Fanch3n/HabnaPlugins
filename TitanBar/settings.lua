@@ -3,7 +3,7 @@
 -- Rewritten by many
 
 -- Defaults for new settings, set in LoadSettings()
-local tX, tY, tL, tT
+local tA, tR, tG, tB, tX, tY, tL, tT
 
 -- ============================================================================
 -- HELPER FUNCTIONS FOR LOADING SETTINGS
@@ -117,7 +117,7 @@ end
 --   show, where, x: defaults of the standard fields (x can be a function for positions that depend on the bar width)
 --   noWindow: the control has no window, so no window position is stored (PlayerLoc uses L for its text)
 --   fields: the control's own settings, saved as section[key] and kept in ControlData[id][field]
---     type: "bool" (the default), "int" (saved as a whole number) or "string"
+--     type: "bool" (the default), "int" (saved as a whole number), "float" (saved with 3 decimals) or "string"
 --     default: value of the field for new characters and after a reset (can be a function)
 --     invert: the saved value is the opposite of the field
 --     keepOnReset: "Reset all settings" keeps the current value
@@ -191,6 +191,7 @@ end
 local function SavedValue(field, value)
 	if value == nil then value = DefaultValue(field) end
 	if field.type == "int" then return Constants.FormatInt(tonumber(value) or DefaultValue(field)) end
+	if field.type == "float" then return Constants.FormatFloat(tonumber(value) or DefaultValue(field)) end
 	if field.type == "string" then return value end
 	if field.invert then return value ~= true end
 	return value == true
@@ -198,7 +199,7 @@ end
 
 -- Value of a field as it is kept in ControlData
 local function LoadedValue(field, saved)
-	if field.type == "int" then return tonumber(saved) or DefaultValue(field) end
+	if field.type == "int" or field.type == "float" then return tonumber(saved) or DefaultValue(field) end
 	if field.type == "string" then return saved end
 	if field.invert then return saved ~= true end
 	return saved == true
@@ -289,6 +290,103 @@ local function LoadSettingsFile()
 end
 
 -- ============================================================================
+-- SETTINGS OF TITANBAR ITSELF
+-- ============================================================================
+-- Kept in global variables. Loading, saving and "Reset all settings" all work from these tables.
+
+-- Fields per section, like the fields of CONTROL_SETTINGS (key, type, default, keepOnReset), and:
+--   get, set: access to the variable that holds the value at runtime
+--   load, save: conversion between the saved value and the variable, instead of type
+--   reset: value after "Reset all settings", if it is not the default (a function)
+local BAR_SETTINGS = {
+	TitanBar = {
+		{ key = "A", type = "float", default = Constants.DEFAULT_ALPHA, get = function() return bcAlpha end, set = function(v) bcAlpha = v end },
+		{ key = "R", type = "float", default = Constants.DEFAULT_RED, get = function() return bcRed end, set = function(v) bcRed = v end },
+		{ key = "G", type = "float", default = Constants.DEFAULT_GREEN, get = function() return bcGreen end, set = function(v) bcGreen = v end },
+		{ key = "B", type = "float", default = Constants.DEFAULT_BLUE, get = function() return bcBlue end, set = function(v) bcBlue = v end },
+		{ key = "W", type = "int", default = function() return screenWidth end, keepOnReset = true,
+			get = function() return TBWidth end, set = function(v) TBWidth = v end },
+		-- TitanBar's language, "auto": the game language
+		{ key = "L", type = "string", default = "auto", get = function() return TBLocaleChoice end, set = function(v) TBLocaleChoice = v end },
+		{ key = "H", type = "int", default = Constants.DEFAULT_TITANBAR_HEIGHT, get = function() return TBHeight end, set = function(v) TBHeight = v end },
+		{ key = "F", type = "int", default = Constants.DEFAULT_TITANBAR_FONT_ID, get = function() return _G.TBFont end, set = function(v) _G.TBFont = v end },
+		{ key = "T", type = "string", default = Constants.DEFAULT_TITANBAR_FONT_NAME, get = function() return TBFontT end, set = function(v) TBFontT = v end },
+		-- TitanBar at the top of the screen
+		{ key = "D", default = true, get = function() return TBTop end, set = function(v) TBTop = v end },
+		-- TitanBar was reloaded, and the window to open again after the reload ("Profile", "Font" or "TB" for none)
+		{ key = "Z", default = false, keepOnReset = true, get = function() return TBReloaded end, set = function(v) TBReloaded = v end },
+		{ key = "ZT", type = "string", keepOnReset = true, get = function() return TBReloadedText end, set = function(v) TBReloadedText = v end },
+	},
+	Options = {
+		-- Auto hide: the text of the option at runtime, saved as a code
+		{ key = "H", default = function() return L["OPAHD"] end, reset = function() return L["OPAHC"] end, load = AutoHideText, save = AutoHideCode,
+			get = function() return TBAutoHide end, set = function(v) TBAutoHide = v end },
+		{ key = "I", type = "int", default = Constants.DEFAULT_ICON_SIZE, load = function(saved) return ICON_SIZE_OLD_TEXTS[saved] or tonumber(saved) end,
+			get = function() return TBIconSize end, set = function(v) TBIconSize = v end },
+	},
+	Background = {
+		-- The background window applies the color to all controls
+		{ key = "A", default = false, keepOnReset = true, get = function() return BGWToAll end, set = function(v) BGWToAll = v end },
+	},
+}
+
+-- Positions of TitanBar's own windows by settings section, { left = , top = }.
+-- The windows keep them up to date when they are moved (see CreateWindow's position).
+WindowPositions = {}
+local WINDOW_SECTIONS = { "Options", "Profile", "Shell", "Background" }
+
+local function LoadBarSettings(sectionName)
+	local section = EnsureSettingsSection(sectionName)
+	for _, field in ipairs(BAR_SETTINGS[sectionName]) do
+		if section[field.key] == nil then
+			if field.save then section[field.key] = field.save(DefaultValue(field)) else section[field.key] = SavedValue(field, nil) end
+		end
+		local value
+		if field.load then value = field.load(section[field.key]) else value = LoadedValue(field, section[field.key]) end
+		if value == nil then value = DefaultValue(field) end
+		field.set(value)
+		-- Older versions saved some settings differently, e.g. as translated text
+		if field.save then section[field.key] = field.save(value) end
+	end
+end
+
+local function SaveBarSettings()
+	for sectionName, fields in pairs(BAR_SETTINGS) do
+		local section = EnsureSettingsSection(sectionName)
+		for _, field in ipairs(fields) do
+			local value = field.get()
+			if field.save then section[field.key] = field.save(value) else section[field.key] = SavedValue(field, value) end
+		end
+	end
+end
+
+local function ResetBarSettings()
+	for _, fields in pairs(BAR_SETTINGS) do
+		for _, field in ipairs(fields) do
+			if not field.keepOnReset then
+				if field.reset then field.set(field.reset()) else field.set(DefaultValue(field)) end
+			end
+		end
+	end
+end
+
+-- Size of the controls and the text multipliers, from TitanBar's height and font
+local function SetFontMetrics()
+	local tStrS = tonumber(string.sub( TBFontT, string.len(TBFontT) - 1, string.len(TBFontT) )); --Get Font Size
+	if TBHeight > Constants.DEFAULT_TITANBAR_HEIGHT and tStrS <= Constants.FONT_SIZE_THRESHOLD then
+		CTRHeight = Constants.DEFAULT_CONTROL_HEIGHT;
+	elseif TBHeight > Constants.DEFAULT_TITANBAR_HEIGHT and tStrS > Constants.FONT_SIZE_THRESHOLD then
+		CTRHeight = 2*tStrS;
+	else
+		CTRHeight = TBHeight;
+	end
+	local tStr = string.sub( TBFontT, 1, string.len(TBFontT) - 2 ); --Get Font name
+	if tStrS == nil then tStrS = 0; end
+	NM = _G.FontN[tStr][tStrS]; --Number multiplier
+	TM = _G.FontT[tStr][tStrS]; --Text multiplier
+end
+
+-- ============================================================================
 -- SETTINGS LOADING
 -- ============================================================================
 
@@ -302,77 +400,23 @@ function LoadSettings()
 	---@type table<string, table>
 	settings = settings or {}
 
-	local titanBar = EnsureSettingsSection("TitanBar")
-	SetDefaultColors(titanBar, tA, tR, tG, tB)
-	titanBar.W = titanBar.W or Constants.FormatInt(screenWidth)
-	titanBar.L = titanBar.L or "auto" -- TitanBar's language, "auto": the game language
-	titanBar.H = titanBar.H or Constants.FormatInt(Constants.DEFAULT_TITANBAR_HEIGHT)
-	titanBar.F = titanBar.F or Constants.FormatInt(Constants.DEFAULT_TITANBAR_FONT_ID)
-	titanBar.T = titanBar.T or Constants.DEFAULT_TITANBAR_FONT_NAME
-	titanBar.D = titanBar.D == nil and true or titanBar.D -- True ->TitanBar set to Top of the screen
-	titanBar.Z = titanBar.Z or false -- Titanbar was reloaded
-	--if settings.TitanBar.ZT == nil then settings.TitanBar.ZT = "TB"; end -- TitanBar was reloaded (text)
-	bcAlpha = tonumber(titanBar.A) or Constants.DEFAULT_ALPHA
-	bcRed = tonumber(titanBar.R) or Constants.DEFAULT_RED
-	bcGreen = tonumber(titanBar.G) or Constants.DEFAULT_GREEN
-	bcBlue = tonumber(titanBar.B) or Constants.DEFAULT_BLUE
-	TBWidth = tonumber(titanBar.W) or screenWidth
-	TBLocaleChoice = titanBar.L
+	LoadBarSettings("TitanBar")
 	TBLocale = (TBLocaleChoice == "auto") and GLocale or TBLocaleChoice
 	import (AppLocaleD..TBLocale)
-	TBHeight = tonumber(titanBar.H) or Constants.DEFAULT_TITANBAR_HEIGHT
-	_G.TBFont = tonumber(titanBar.F) or Constants.DEFAULT_TITANBAR_FONT_ID
-	TBFontT = titanBar.T
-	local tStrS = tonumber(string.sub( TBFontT, string.len(TBFontT) - 1, string.len(TBFontT) )); --Get Font Size
-	--write(tStrS);
-	if TBHeight > Constants.DEFAULT_TITANBAR_HEIGHT and tStrS <= Constants.FONT_SIZE_THRESHOLD then 
-		CTRHeight = Constants.DEFAULT_CONTROL_HEIGHT;
-	elseif TBHeight > Constants.DEFAULT_TITANBAR_HEIGHT and tStrS > Constants.FONT_SIZE_THRESHOLD then
-		CTRHeight = 2*tStrS;
-	else 
-		CTRHeight = TBHeight; 
+	SetFontMetrics()
+	LoadBarSettings("Options") -- needs the language: auto hide is kept as the text of the option
+	LoadBarSettings("Background")
+
+	for _, sectionName in ipairs(WINDOW_SECTIONS) do
+		local section = EnsureSettingsSection(sectionName)
+		SetDefaultWindowPosition(section, tL, tT)
+		WindowPositions[sectionName] = { left = tonumber(section.L), top = tonumber(section.T) }
 	end
-	--write(CTRHeight);
-	local tStr = string.sub( TBFontT, 1, string.len(TBFontT) - 2 ); --Get Font name
-	--write(tStr);
-	if tStrS == nil then tStrS = 0; end
-	NM = _G.FontN[tStr][tStrS]; --Number multiplier
-	TM = _G.FontT[tStr][tStrS]; --Text multiplier
-	TBTop = titanBar.D
-	TBReloaded = titanBar.Z
-	TBReloadedText = titanBar.ZT
 
-	local options = EnsureSettingsSection("Options")
-	options.V = nil
-	SetDefaultWindowPosition(options, tL, tT)
-	options.H = options.H or "never"
-	options.I = options.I or Constants.FormatInt(Constants.DEFAULT_ICON_SIZE)
-	OPWLeft = tonumber(options.L)
-	OPWTop = tonumber(options.T)
-	
-	TBAutoHide = AutoHideText(options.H)
-	options.H = AutoHideCode(TBAutoHide) -- old files: the code instead of the translated text
-	TBIconSize = ICON_SIZE_OLD_TEXTS[options.I] or tonumber(options.I) or Constants.DEFAULT_ICON_SIZE
-	
-
-	local profile = EnsureSettingsSection("Profile")
-	profile.V = nil
-	SetDefaultWindowPosition(profile, tL, tT)
-	PPWLeft = tonumber(profile.L)
-	PPWTop = tonumber(profile.T)
-
-	local shell = EnsureSettingsSection("Shell")
-	SetDefaultWindowPosition(shell, tL, tT)
-	SCWLeft = tonumber(shell.L)
-	SCWTop = tonumber(shell.T)
-
-	local background = EnsureSettingsSection("Background")
-	SetDefaultWindowPosition(background, tL, tT)
-	background.A = background.A or false
-	BGWLeft = tonumber(background.L)
-	BGWTop = tonumber(background.T)
-	BGWToAll = background.A
-
+	-- Settings of older versions: shown state of the options and profile windows, the old bags window
+	settings.Options.V = nil
+	settings.Profile.V = nil
+	settings.BagInfosList = nil
 
 	-- Controls: fill in defaults for missing settings, and load the controls' own fields.
 	-- The standard fields are loaded by ControlRegistry when a control registers.
@@ -390,11 +434,6 @@ function LoadSettings()
 			end
 		end
 	end
-
-	local bagInfosList = EnsureSettingsSection("BagInfosList")
-	SetDefaultWindowPosition(bagInfosList, tL, tT)
-	BLWLeft = tonumber(bagInfosList.L)
-	BLWTop = tonumber(bagInfosList.T)
 
 	if not _G.ControlData.PI.layout then
 		_G.AlignLbl = Turbine.UI.ContentAlignment.MiddleLeft;
@@ -464,30 +503,11 @@ end
 -- Copies the runtime state into the settings table and writes it to disk.
 -- The sections are updated in place, so references to them (e.g. in drag handlers) stay valid.
 function SaveSettings()
-	-- TitanBar
-	local titanBar = EnsureSettingsSection("TitanBar")
-	SaveColors(titanBar, bcAlpha, bcRed, bcGreen, bcBlue)
-	titanBar.W = Constants.FormatInt(TBWidth)
-	titanBar.L = TBLocaleChoice
-	titanBar.H = Constants.FormatInt(TBHeight)
-	titanBar.F = Constants.FormatInt(_G.TBFont)
-	titanBar.T = TBFontT
-	titanBar.D = TBTop
-	titanBar.Z = TBReloaded
-	titanBar.ZT = TBReloadedText
-	
-	-- Options
-	local options = EnsureSettingsSection("Options")
-	SaveWindowPosition(options, OPWLeft, OPWTop)
-	options.H = AutoHideCode(TBAutoHide)
-	options.I = Constants.FormatInt(TBIconSize)
-
-	-- Profile, Shell, Background
-	SaveWindowPosition(EnsureSettingsSection("Profile"), PPWLeft, PPWTop)
-	SaveWindowPosition(EnsureSettingsSection("Shell"), SCWLeft, SCWTop)
-	local background = EnsureSettingsSection("Background")
-	SaveWindowPosition(background, BGWLeft, BGWTop)
-	background.A = BGWToAll
+	SaveBarSettings()
+	for _, sectionName in ipairs(WINDOW_SECTIONS) do
+		local position = WindowPositions[sectionName]
+		SaveWindowPosition(EnsureSettingsSection(sectionName), position.left, position.top)
+	end
 
 	-- Controls
 	for _, control in ipairs(CONTROL_SETTINGS) do
@@ -498,8 +518,6 @@ function SaveSettings()
 			section[field.key] = SavedValue(field, data[field.field])
 		end
 	end
-
-	SaveWindowPosition(EnsureSettingsSection("BagInfosList"), BLWLeft, BLWTop)
 
 	for k,v in pairs(_G.currencies.list) do
 		SetSettings(v.name)
@@ -530,12 +548,8 @@ end
 -- **v Reset All Settings v**
 function ResetSettings()
 	write( L["TBR"] );
-	TBLocaleChoice = "auto";
-	
-	tA, tR, tG, tB = 0.3, 0.3, 0.3, 0.3;
-	
-	TBHeight, _G.TBFont, TBFontT, TBTop, TBAutoHide, TBIconSize, bcAlpha, bcRed, bcGreen, bcBlue = Constants.DEFAULT_TITANBAR_HEIGHT, 1107296268, "TrajanPro14", true, L["OPAHC"], Constants.ICON_SIZE_LARGE, tA, tR, tG, tB;
-	
+	ResetBarSettings()
+
 	-- Reset all controls (currencies included) to defaults defined in ControlRegistry
 	_G.ControlRegistry.ResetToDefaults()
 

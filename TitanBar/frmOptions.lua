@@ -46,14 +46,10 @@ function frmOptions()
 		text = L[ "OPWTitle" ],
 		width = 275,
 		height = 275,
-		left = OPWLeft,
-		top = OPWTop,
+		position = WindowPositions.Options,
 		config = {
 			settingsKey = "Options",
 			windowGlobalVar = "wOptions",
-			onPositionChanged = function(left, top)
-				OPWLeft, OPWTop = left, top
-			end,
 			onMouseDown = function(sender, args)
 				-- Close dropdowns when the window is clicked or starts being dragged
 				if FontDD and FontDD.dropped then FontDD:CloseDropDown(); end

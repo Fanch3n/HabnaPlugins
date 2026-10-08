@@ -14,14 +14,10 @@ function frmProfile()
 		text = L["MPP"],
 		width = 495,
 		height = 160,
-		left = PPWLeft,
-		top = PPWTop,
+		position = WindowPositions.Profile,
 		config = {
 			settingsKey = "Profile",
 			windowGlobalVar = "wProfile",
-			onPositionChanged = function(left, top)
-				PPWLeft, PPWTop = left, top
-			end,
 			onClosing = function( sender, args )
 				opt_profile:SetEnabled( true );
 			end,
@@ -118,7 +114,7 @@ function frmProfile()
 
 	RefreshListBox();
 
-    wProfile:SetPosition( PPWLeft, PPWTop );
+    wProfile:SetPosition( WindowPositions.Profile.left, WindowPositions.Profile.top );
 end
 
 function RefreshListBox()

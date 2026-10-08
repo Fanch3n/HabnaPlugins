@@ -14,8 +14,11 @@ local DEFAULT_WINDOW_CONFIG = {
 -- Returns { TextBox = tb, DelIcon = del, Container = container }
 import(AppDirD .. "UIHelpers")
 
+-- windowSettings: text, width, height, config, and the position as left and top,
+-- or as position: a table { left, top } that is kept up to date when the window is moved (see WindowPositions)
 function CreateWindow(windowSettings)
     local config = windowSettings.config or {}
+    local position = windowSettings.position
     
     -- Merge with defaults
     for key, value in pairs(DEFAULT_WINDOW_CONFIG) do
@@ -26,7 +29,11 @@ function CreateWindow(windowSettings)
 
     local window = Turbine.UI.Lotro.Window()
     window:SetText(windowSettings.text)
-    window:SetPosition(windowSettings.left, windowSettings.top)
+    if position then
+        window:SetPosition(position.left, position.top)
+    else
+        window:SetPosition(windowSettings.left, windowSettings.top)
+    end
     window:SetSize(windowSettings.width, windowSettings.height)
     window:SetWantsKeyEvents(true)
     window:SetVisible(true)
@@ -68,6 +75,7 @@ function CreateWindow(windowSettings)
         -- Save position
         if config.settingsKey then
             local left, top = window:GetPosition()
+            if position then position.left, position.top = left, top end
             if config.onPositionChanged then
                 config.onPositionChanged(left, top)
             end
