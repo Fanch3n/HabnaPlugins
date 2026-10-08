@@ -46,7 +46,6 @@ function InitializePlayerLoc()
     SetupControlInteraction({
         icon = PL["Lbl"],
         controlTable = PL,
-        settingsSection = settings.PlayerLoc,
         onLeftClick = function() end
     })
 
@@ -71,8 +70,7 @@ function InitializePlayerLoc()
                         _G.ControlData.PL = _G.ControlData.PL or {}
                         _G.ControlData.PL.text = tmpPL
                         UpdatePlayerLoc(tmpPL);
-                        settings.PlayerLoc.L = string.format(tmpPL);
-                        SaveSettings(false);
+                        SaveSettings();
                     end
                 end
             end
@@ -89,9 +87,11 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
         id = "PL",
+        tooltipHeader = "PLh",
+        menuText = "MPL",
+        icon = false,
         settingsKey = "PlayerLoc",
         hasWhere = false,
-        defaults = { show = false, x = 0, y = 0 },
         initFunc = InitializePlayerLoc
     })
 end

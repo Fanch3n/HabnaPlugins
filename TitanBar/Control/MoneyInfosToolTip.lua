@@ -4,6 +4,10 @@
 
 import(AppDirD .. "UIHelpers")
 
+local iFound -- set by MITTShowData()
+-- Copper, silver and gold icons of a money line (MITTShowData is also used by the Money window)
+local MoneyIcons = { resources.MoneyIcon.Copper, resources.MoneyIcon.Silver, resources.MoneyIcon.Gold }
+
 function ShowMIWindow()
 	local tt = CreateTooltipWindow({
 		width = Constants.TOOLTIP_WIDTH_MEDIUM,
@@ -38,13 +42,10 @@ function MIRefreshMITTListBox()
 	MITTListBox:ClearItems();
 	MITTPosY = 0;
 	iFound = false;
-    
-    MoneyIcons = {resources.MoneyIcon.Copper, resources.MoneyIcon.Silver, resources.MoneyIcon.Gold};
 	--Create an array of character name, sort it, then use it as a reference.
 	local a = {};
     for n in pairs(wallet) do table.insert(a, n) end
     table.sort(a);
-    --for i,n in ipairs(a) do write(n) end --degug purpose
 
 	for i = 1, #a do
 		DecryptMoney(wallet[a[i]].Money);
@@ -80,7 +81,6 @@ function MIRefreshMITTListBox()
 
 	--**v Line Control v**
 	local LineCtr = CreateControl(Turbine.UI.Control, MITTListBox, 0, 0, MITTListBox:GetWidth(), 7)
-	--LineCtr:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 
 	local LineLbl = CreateControl(Turbine.UI.Label, LineCtr, 0, 2, MITTListBox:GetWidth(), 1)
 	LineLbl:SetText( "" );
@@ -93,7 +93,6 @@ function MIRefreshMITTListBox()
   MITTShowData(MITTListBox, L["MIWTotal"], (CopperTot + SilverTot*100 + GoldTot*100000), Color["white"], Color["white"]);
 	MITTPosY = MITTPosY + 19;
     
-	MITTListBox:AddItem( TotMoneyCtr );
 	MITTPosY = MITTPosY + 8;
 
 	--**v Statistics section v**
@@ -124,7 +123,7 @@ function MIRefreshMITTListBox()
 
     MITTShowData(MITTListBox, L["MIEarned"], walletStats[DOY][PN].Earned, Color["rustedgold"], Color["white"]);
 		MITTShowData(MITTListBox, L["MISpent"], walletStats[DOY][PN].Spent, Color["rustedgold"], Color["white"]);
-    if bSumSSS then color = Color["white"] else color = Color["red"] end
+    local color = bSumSSS and Color["white"] or Color["red"]
     MITTShowData(MITTListBox, L["MIWTotal"], walletStats[DOY][PN].SumSS, Color["rustedgold"], color);
 	  MITTPosY = MITTPosY + 3*19;
   end
@@ -154,7 +153,7 @@ function MIRefreshMITTListBox()
 
     MITTShowData(MITTListBox, L["MIEarned"], totem, Color["rustedgold"], Color["white"]);
 		MITTShowData(MITTListBox, L["MISpent"], totsm, Color["rustedgold"], Color["white"]);
-    if bSumSTS then color = Color["white"] else color = Color["red"] end
+    local color = bSumSTS and Color["white"] or Color["red"]
     MITTShowData(MITTListBox, L["MIWTotal"], walletStats[DOY][PN].SumTS, Color["rustedgold"], color);
     MITTPosY = MITTPosY + 3*19;
 	end
@@ -218,7 +217,7 @@ function MITTShowData(parent,l,m,lc,mc,showDelIcon) -- l = label, m = money, lc 
         local NewLbl = Turbine.UI.Label();
         NewLbl:SetParent(MoneyCtr);
         NewLbl:SetText(string.format("%.0f", g[i]));
-        if i == 3 then size = 48 else size = 18 end;
+        local size = (i == 3) and 48 or 18;
         NewLbl:SetSize(size + 2, MoneyCtr:GetHeight());
         NewLbl:SetPosition(NewIcon:GetLeft() - size, 0);
         NewLbl:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight);

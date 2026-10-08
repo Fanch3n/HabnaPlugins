@@ -36,7 +36,6 @@ function InitializeEquipInfos()
         SetupControlInteraction({
             icon = EI["Lbl"],
             controlTable = EI,
-            settingsSection = settings.EquipInfos,
             onLeftClick = function() end,
             customTooltipHandler = ShowEIWindow
         })
@@ -84,9 +83,11 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
         id = "EI",
+        menuText = "MEI",
+        freePeopleOnly = true,
+        icon = { only = true },
         settingsKey = "EquipInfos",
         hasWhere = false,
-        defaults = { show = true, x = nil, y = 0 },
         initFunc = InitializeEquipInfos,
         onShow = OnShowEquipInfos
     })

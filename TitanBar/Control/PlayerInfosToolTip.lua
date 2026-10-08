@@ -130,6 +130,8 @@ local IsRegenStat = {
 	[PD.RACEICMR] = true,	[PD.RACENCMR] = true,	[PD.RACEICPR] = true,	[PD.RACENCPR] = true
 }
 
+local aPlayerData -- filled by GetPlayerData()
+
 local function GetPlayerData()
 	aPlayerData = {}
 	for _,nPDId in ipairs(PD) do
@@ -310,7 +312,7 @@ CAPCOLOR.T3 = Color["red"]
 -- needs CalcStat for caps
 local function GetRatCapColor(sCSRatName,nRating,aCSPenRats)
 	if useCalcStat and type(sCSRatName) == "string" and type(nRating) == "number" then
-		nPRatPCapR = CalcStat(sCSRatName.."PRatPCapR",aPlayerData[PD.LEVEL]) -- (normal) cap rating
+		local nPRatPCapR = CalcStat(sCSRatName.."PRatPCapR",aPlayerData[PD.LEVEL]) -- (normal) cap rating
 		if aCSPenRats then
 			-- penetration ratings are negative values, so need to be substracted here to calculate the compensated cap rating
 			if nRating >= nPRatPCapR-aCSPenRats.T3 then
@@ -710,7 +712,6 @@ function ShowPIWindow()
 	APICtr:SetZOrder(1)
 	APICtr:SetBlendMode(Turbine.UI.BlendMode.AlphaBlend)
 	--APICtr:SetBackColor(Color["trueblue"]) -- test size
-	--APICtr:SetBackground("HabnaPlugins/TitanBar/Resources/".."PIbk.tga")
 	--**^
 
 	-- creates all needed controls defined in the layout and returns a list with controls with 'dynamic' content: these need to be updated with data

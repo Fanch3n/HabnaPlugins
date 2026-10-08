@@ -47,7 +47,6 @@ function InitializeLOTROPoints()
 		SetupControlInteraction({
 			icon = LP["Lbl"],
 			controlTable = LP,
-			settingsSection = settings.LOTROPoints,
 			windowImportPath = AppCtrD .. "LOTROPointsWindow",
 			windowFunction = "frmLOTROPointsWindow",
 			tooltipKey = "LP",
@@ -105,9 +104,10 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
 	_G.ControlRegistry.Register({
 		id = "LP",
+		tooltipHeader = "LotroPointsh",
+		icon = { dx = 2, dy = 1 },
 		settingsKey = "LOTROPoints",
 		hasWhere = true,
-		defaults = { show = false, where = 3, x = 0, y = 0 },
 		initFunc = InitializeLOTROPoints
 	})
 end

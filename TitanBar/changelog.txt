@@ -2,6 +2,28 @@ This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Te
 
 If you notice an error, please send me a pm or post it on the boards.
 =================================================
+Version 1.53 (October 09, 2026)
+- Settings are no longer separate per language: You can change your language without having to configure TitanBar again.
+	- When first loading TitanBar 1.53, the settings file for the current game language will be copied and used for every language. Old files are not deleted.
+	- Item tracking is language dependent. You will still have to set item tracking up for each language.
+	- Item names for the vault, shared storage or other characters' inventory overview will keep their names until the Vault or Shared Storage is opened (or the respective character is logged in) and names can be updated.
+- Profiles are now language independent and can be loaded in any language
+- Items don't disappear from tracking when they are used up, they are displayed with 0 quantity instead
+- Refactored saving and loading settings
+- Simplified adding currencies: Just add them to Currencies.lua and language files, no code changes
+- Fixed Mithril Coins not being visible in Monster Play
+- Fixed removing text from search bars with the Del key not updating results
+- Fixed red border of unusable items in item tracking window not displaying correctly
+- Fixed changing colour of all controls not applying to hidden controls
+- Fixed dropdowns in options menu closing unintentionally
+- Fixed "Unload this control" / "Unload all controls" doing nothing for regular controls
+- Fixed the "Total"/"You" text staying on the Money control after turning off "Show total on TitanBar"
+- Fixed the Profile or Options window sometimes opening by itself at login
+- Fixed "Reset all settings" not showing Game Time and Player Location
+- Fixed an error when adding the Vault or Shared Storage control after login
+- Fixed an error when the money window is opened before the tooltip is displayed at least once
+- Fixed rare case where changed positions are not saved
+=================================================
 Version 1.52 (October 05, 2026)
 - Scaling works now when the Use Global Scaling checkbox is set. When it's unset, TitanBar is unaffected by global scaling.
 - Fixed an error when opening Vault or Shared Storage

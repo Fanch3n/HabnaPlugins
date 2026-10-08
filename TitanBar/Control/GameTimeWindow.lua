@@ -1,4 +1,4 @@
--- GameTimesWindow.lua
+-- GameTimeWindow.lua
 -- written by Habna
 
 
@@ -30,8 +30,7 @@ function frmGameTimeWindow()
 
 	Clock24Ctr.CheckedChanged = function( sender, args )
 		gtData.clock24h = Clock24Ctr:IsChecked() == true
-		settings.GameTime.H = gtData.clock24h
-		SaveSettings( false );
+		SaveSettings();
 		if gtData.showBT then ShowSTcb:SetChecked(gtData.showBT); UpdateGameTime("bt");
 		elseif gtData.showST then UpdateGameTime("st");
 		else UpdateGameTime("gt") end
@@ -43,9 +42,8 @@ function frmGameTimeWindow()
 	ShowSTcb.CheckedChanged = function( sender, args )
 		gtData.showST = ShowSTcb:IsChecked() == true
 		if not gtData.showST then ShowBTcb:SetChecked(false); end
-		settings.GameTime.S = gtData.showST
 		gtData.userGMT = tonumber(GMT:GetText()) or 0
-		SaveSettings( false );
+		SaveSettings();
 		if not gtData.showBT then UpdateGameTime("st"); end
 	end
 
@@ -53,8 +51,6 @@ function frmGameTimeWindow()
 	GMT:SetText( tostring(tonumber(gtData.userGMT) or 0) );
 	GMT:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
 	GMT:SetSize( Constants.GMT_FIELD_WIDTH, Constants.GMT_FIELD_HEIGHT );
-	--GMT:SetVisible( true );
-	--GMT:SetEnabled( false );
 	GMT:SetForeColor( Color["white"] );
 
 	GMT.FocusGained = function( sender, args )
@@ -81,8 +77,7 @@ function frmGameTimeWindow()
 			return
 		end
 		gtData.userGMT = tonumber(GMT:GetText()) or 0
-		settings.GameTime.M = Constants.FormatInt(gtData.userGMT)
-		SaveSettings( false );
+		SaveSettings();
 		if gtData.showST then
 			if gtData.showBT then UpdateGameTime("bt");
 			elseif gtData.showST then UpdateGameTime("st");
@@ -95,8 +90,7 @@ function frmGameTimeWindow()
 
 	ShowBTcb.CheckedChanged = function( sender, args )
 		gtData.showBT = ShowBTcb:IsChecked() == true
-		settings.GameTime.O = gtData.showBT
-		SaveSettings( false );
+		SaveSettings();
 		ShowSTcb:SetChecked(gtData.showBT);
 				
 		if gtData.showBT then UpdateGameTime("bt");

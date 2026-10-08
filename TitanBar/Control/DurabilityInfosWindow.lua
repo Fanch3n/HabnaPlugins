@@ -26,16 +26,14 @@ function frmDurabilityInfosWindow()
 
 	TTIcon.CheckedChanged = function( sender, args )
 		diData.icon = TTIcon:IsChecked();
-		settings.DurabilityInfos.I = diData.icon;
-		SaveSettings( false );
+		SaveSettings();
 	end
 
 	local TTItemName = CreateAutoSizedCheckBox(wDI, L["DIText"], 30, TTIcon:GetTop() + TTIcon:GetHeight(), diData.text);
 
 	TTItemName.CheckedChanged = function( sender, args )
 		diData.text = TTItemName:IsChecked();
-		settings.DurabilityInfos.N = diData.text;
-		SaveSettings( false );
+		SaveSettings();
 	end
 
 	-- Handle window close

@@ -31,14 +31,15 @@ function DIRefreshListBox()
 	DIListBox:ClearItems();
 	DITTPosY = 36;
 
-	mis, mts, nint = 0, 0, false;
+	local cw -- tooltip width
+	local mis, mts, nint = 0, 0, false;
 	local diData = (_G.ControlData and _G.ControlData.DI) or {}
 	local showIcon = (diData.icon ~= false) -- default true
 	local showText = (diData.text ~= false) -- default true
 
 	if (not showIcon) and (not showText) then nint=true; end
 
-	iFound = 0;
+	local iFound = 0;
 	
     -- Use EquipmentManager
     local itemEquipRef = EquipmentManager and EquipmentManager.GetItems()
@@ -57,7 +58,6 @@ function DIRefreshListBox()
 		cw=250;
 		local lblName = Turbine.UI.Label();
 		lblName:SetParent( _G.ToolTipWin );
-		--lblName:SetFont ( 12 );
 		lblName:SetText( L["DWLblND"] );
 		if iFound ~= 0 then
 			if nint then
@@ -89,7 +89,6 @@ function DIRefreshListBox()
 				-- Item control
 				DIitemCtl[i] = Turbine.UI.Control();
 				DIitemCtl[i]:SetParent( DIListBox );
-				--DIitemCtl[i]:SetSize( cw-mis-mts, 36 );
 				DIitemCtl[i]:SetHeight( 36 );
 				--DIitemCtl[i]:SetBackColor( Color["red"] ); -- debug purpose
 
@@ -120,7 +119,6 @@ function DIRefreshListBox()
 				DIitemLblScore[i]:SetFontStyle( Turbine.UI.FontStyle.Outline );
 				DIitemLblScore[i]:SetOutlineColor( Color["black"] );
 				DIitemLblScore[i]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
-				--DIitemLblScore[i]:SetBackColorBlendMode( Turbine.UI.BlendMode.Overlay );
 				else
 					mis=37;
 				end
@@ -131,7 +129,6 @@ function DIRefreshListBox()
 					DIitemLbl[i] = CreateControl(Turbine.UI.Label, DIitemCtl[i], 37-mis, 2, 208, DIitemCtl[i]:GetHeight());
 					DIitemLbl[i]:SetFont(Turbine.UI.Lotro.Font.TrajanPro12 );
 					DIitemLbl[i]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-					--DIitemLbl[i]:SetForeColor( Color["white"] );
 					--DIitemLbl[i]:SetBackColor( Color["blue"] ); -- debug purpose
 		
 					if itemEquipRef[i].Item == false then 

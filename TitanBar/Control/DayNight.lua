@@ -3,6 +3,8 @@
 import(AppDirD .. "UIHelpers")
 import(AppDirD .. "ControlFactory")
 
+local sDay, timer, ntimer, totalseconds, cdminutes -- set by GetInGameTime()
+
 function GetInGameTime()
 	local nowtime = Turbine.Engine.GetLocalTime();
 	local gametime = Turbine.Engine.GetGameTime();
@@ -57,7 +59,6 @@ function GetInGameTime()
 		- cdminutes) + 0.5);
 end
 
--- Moved from functions.lua
 function UpdateDayNight()
 	local cdate = Turbine.Engine.GetDate();
 	local chour = cdate.Hour;
@@ -117,7 +118,6 @@ function InitializeDayNight()
 		SetupControlInteraction({
 			icon = DN["Lbl"],
 			controlTable = DN,
-			settingsSection = settings.DayNight,
 			windowImportPath = AppCtrD .. "DayNightWindow",
 			windowFunction = "frmDayNightWindow",
 			tooltipKey = "DN",
@@ -135,9 +135,11 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
 	_G.ControlRegistry.Register({
 		id = "DN",
+		tooltipHeader = "MDayNight",
+		menuText = "MDayNight",
+		icon = { dy = 1 },
 		settingsKey = "DayNight",
 		hasWhere = false,
-		defaults = { show = false, x = 0, y = 0 },
 		initFunc = InitializeDayNight
 	})
 end

@@ -2,6 +2,26 @@
 
 import(AppDirD .. "UIHelpers")
 import(AppDirD .. "ControlFactory")
+import(AppCtrD .. "StoredItems")
+
+function LoadPlayerBags()
+	PlayerBags = Turbine.PluginData.Load(Turbine.DataScope.Server, "TitanBarBags");
+	if PlayerBags == nil then PlayerBags = {}; end
+	if PlayerBags[PN] == nil then PlayerBags[PN] = {}; end
+end
+
+-- Takes over the items in the bags of the current character and saves the bags of all characters
+function SavePlayerBags()
+	if string.sub( PN, 1, 1 ) == "~" then return end; --Ignore session play
+
+	PlayerBags[PN] = SaveableItems(backpack, backpack:GetSize(), backpack:GetSize());
+	Turbine.PluginData.Save(Turbine.DataScope.Server, "TitanBarBags", PlayerBags);
+end
+
+-- Files in Control/ define their globals in their package (HabnaPlugins.TitanBar.Control), which the files
+-- in TitanBar/ can't see: frmMain loads the bags at startup, main.lua saves them when TitanBar is unloaded
+_G.LoadPlayerBags = LoadPlayerBags
+_G.SavePlayerBags = SavePlayerBags
 
 -- Internal timer to handle delayed updates specific to BagInfos
 local bagUpdateTimer = Turbine.UI.Control()
@@ -46,7 +66,6 @@ function UpdateBackpackInfos()
 	if bi >= 31 and bi <= 75 then i = 3; end -- 31% to 75% Full bag
 	if bi >= 76 and bi <= 99 then i = 4; end -- 75% to 99% Full bag
 	if bi == 100 then i = 5; end            -- 100% Full bag
-	--if bi >= 101 then BagIcon = 0x41007ecf; end-- over loaded bag
 
 	_G.ControlData.BI.controls["Icon"]:SetBackground(resources.BagIcon[i]);
 
@@ -88,7 +107,6 @@ function InitializeBagInfos()
 	SetupControlInteraction({
 		icon = BI["Lbl"],
 		controlTable = BI,
-		settingsSection = settings.BagInfos,
 		windowImportPath = AppCtrD .. "BagInfosWindow",
 		windowFunction = "frmBagInfos",
 		leaveControl = BI["Lbl"]
@@ -116,9 +134,11 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
 	_G.ControlRegistry.Register({
 		id = "BI",
+		tooltipHeader = "MBI",
+		menuText = "MBI",
+		icon = { dx = 3, dy = 1 },
 		settingsKey = "BagInfos",
 		hasWhere = false,
-		defaults = { show = true, x = 0, y = 0 },
 		initFunc = InitializeBagInfos
 	})
 end

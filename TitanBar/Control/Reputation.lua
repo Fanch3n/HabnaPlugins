@@ -261,7 +261,6 @@ function InitializeReputation()
 		SetupControlInteraction({
 			icon = RP["Icon"],
 			controlTable = RP,
-			settingsSection = settings.Reputation,
 			windowImportPath = AppCtrD .. "ReputationWindow",
 			windowFunction = "frmReputationWindow",
 			tooltipKey = "RP",
@@ -360,9 +359,11 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
 	_G.ControlRegistry.Register({
 		id = "RP",
+		menuText = "MReputation",
+		freePeopleOnly = true,
+		icon = { only = true, dy = 2 },
 		settingsKey = "Reputation",
 		hasWhere = false,
-		defaults = { show = false, x = 0, y = 0 },
 		initFunc = InitializeReputation
 	})
 end

@@ -1,4 +1,4 @@
--- Main.lua
+-- main.lua
 -- written by Habna
 -- rewritten by many
 
@@ -107,21 +107,22 @@ _G.CreateControlLabel = CreateControlLabel;
 import (AppDirD.."functions");
 import (AppCtrD.."CurrencyLogic");
 import (AppDirD.."functionsCtr");
+-- The controls. They register themselves; this order is the order in the TitanBar menu.
 import (AppCtrD.."Wallet");
 import (AppCtrD.."MoneyInfos");
 import (AppCtrD.."BagInfos");
 import (AppCtrD.."PlayerInfos");
-import (AppCtrD.."PlayerLoc");
 import (AppCtrD.."EquipInfos");
 import (AppCtrD.."DurabilityInfos");
+import (AppCtrD.."PlayerLoc");
 import (AppCtrD.."TrackItems");
 import (AppCtrD.."Infamy");
+import (AppCtrD.."GameTime");
 import (AppCtrD.."Vault");
 import (AppCtrD.."SharedStorage");
 import (AppCtrD.."DayNight");
 import (AppCtrD.."Reputation");
 import (AppCtrD.."LOTROPoints");
-import (AppCtrD.."GameTime");
 import (AppDirD.."functionsMenu");
 import (AppDirD.."functionsMenuControl");
 import (AppDirD.."OptionPanel"); 
@@ -146,117 +147,23 @@ if _G.ControlRegistry and _G.ControlRegistry.ForEach then
     end)
 end
 
+-- Wallet entries in display order. Money and LOTRO Points are controls of their own,
+-- the currencies follow in the order of Currencies.lua.
 if PlayerAlign == 1 then
-  MenuItem = {
-		-- Coin
-		L["MGSC"], L["MCommendation"], L["MDestinyPoints"], L["MLotroPoints"], L["MMithrilCoins"],
-		-- Currency
-		L["MMotesOfEnchantment"], L["MFigmentsOfSplendour"], L["MEmbersOfEnchantment"], L["MAncientScript"], L["MDelvingWrit"],
-		-- Instances and Skirmishes
-		L["MSkirmishMarks"], L["MMedallions"], L["MSeals"], L["MStarsOfMerit"],
-		-- Festivals and Events
-		L["MAnniversaryToken"], L["MFallFestivalToken"], L["MFarmersFaireToken"], L["MMidsummerToken"], L["MSpringLeaf"], L["MYuleToken"],
-		L["MBuriedTreasureToken"],
-		-- Inn League and Ale Association
-		L["MBadgeOfTaste"], L["MBadgeOfDishonour"],
-		-- Item Advancement
-		L["MShards"],
-		-- Other   
-		L["MAmrothSilverPiece"], L["MBingoBadge"], L["MCentralGondorSilverPiece"], L["MEastGondorSilverPiece"], L["MGiftGiversBrand"], L["MTokensOfHytbold"], L["MColdIronToken"],
-		L["MMedallionOfMoria"], L["MMedallionOfLothlorien"], L["MTokenOfHeroism"], L["MHerosMark"], L["MGabilakkaWarMark"], L["MSteelToken"],
-		L["MCopperCoinOfGundabad"], L["MSilverCoinOfGundabad"], L["MIronCoinOfCardolan"], L["MBreeLandWoodMark"], L["MBronzeArnorianCoin"],
-		L["MSilverArnorianCoin"], L["MGreyfloodMark"], L["MGundabadMountainMark"], L["MSilverTokenOfTheRiddermark"], L["MGoldenTokenOfTheRiddermark"],
-		L["MMinasTirithSilverPiece"], L["MCrackedEasterlingSceptre"], L["MGrimOrkishBrand"], L["MSandWornCopperToken"], L["MFrigidSteelSignetRing"],
-		L["MEngravedOnyxSigil"], L["MSandSmoothedBurl"], L["MLumpOfRedRockSalt"], L["MIronSignetOfTheSeaShadow"],	L["MIronSignetOfTheFist"],
-		L["MIronSignetOfTheAxe"],	L["MIronSignetOfTheBlackMoon"],	L["MIronSignetOfTheNecromancer"],	L["MIronSignetOfTheTwinFlame"],
-    L["MPhialCrimsonExtract"], L["MPhialUmberExtract"], L["MPhialVerdantExtract"], L["MPhialGoldenExtract"], L["MPhialVioletExtract"], L["MPhialAmberExtract"],
-		L["MPhialSapphireExtract"], L["MShaganiGhin"], L["MHamatiUrgul"], L["MMurGhalaSarz"], L["MSilverSerpent"], L["MHuntersGuildMark"], L["MBlightedRelic"],
-		L["MTatteredShadow"], L["MFangornLeaf"],
-	}
+	MenuItem = { L["MGSC"], L["MLotroPoints"] }
 else
-	MenuItem = { L["MCommendation"], L["MLotroPoints"] }
+	MenuItem = { L["MLotroPoints"] }
+end
+
+_G.CurrencyLangMap = {} -- reverse lookup table necessary to get the internal item name
+for _, currency in ipairs(_G.currencies.list) do
+	if PlayerAlign == 1 or currency.visibleInMonsterPlay then
+		table.insert(MenuItem, L["M" .. currency.name])
+	end
+	_G.CurrencyLangMap[L["M" .. currency.name]] = currency.name
 end
 
 TitanBarCommand = Turbine.ShellCommand()
-
-_G.CurrencyLangMap = { -- reverse lookup table necessary to get the internal item name
-	[L["MGSC"]] = "GSC",
-	[L["MCommendation"]] = "Commendation",
-	[L["MDestinyPoints"]] = "DestinyPoints",
-	[L["MLotroPoints"]] = "LotroPoints",
-	[L["MMithrilCoins"]] = "MithrilCoins",
-	[L["MMotesOfEnchantment"]] = "MotesOfEnchantment",
-	[L["MFigmentsOfSplendour"]] = "FigmentsOfSplendour",
-	[L["MEmbersOfEnchantment"]] = "EmbersOfEnchantment",
-	[L["MAncientScript"]] = "AncientScript",
-	[L["MDelvingWrit"]] = "DelvingWrit",
-	[L["MSkirmishMarks"]] = "SkirmishMarks",
-	[L["MMedallions"]] = "Medallions",
-	[L["MSeals"]] = "Seals",
-	[L["MStarsOfMerit"]] = "StarsOfMerit",
-	[L["MAnniversaryToken"]] = "AnniversaryToken",
-	[L["MFallFestivalToken"]] = "FallFestivalToken",
-	[L["MFarmersFaireToken"]] = "FarmersFaireToken",
-	[L["MMidsummerToken"]] = "MidsummerToken",
-	[L["MSpringLeaf"]] = "SpringLeaf",
-	[L["MYuleToken"]] = "YuleToken",
-	[L["MBadgeOfTaste"]] = "BadgeOfTaste",
-	[L["MBadgeOfDishonour"]] = "BadgeOfDishonour",
-	[L["MShards"]] = "Shards",
-  [L["MAmrothSilverPiece"]] = "AmrothSilverPiece",
-	[L["MBingoBadge"]] = "BingoBadge",
-	[L["MCentralGondorSilverPiece"]] = "CentralGondorSilverPiece",
-	[L["MGiftGiversBrand"]] = "GiftGiversBrand",
-	[L["MTokensOfHytbold"]] = "TokensOfHytbold",
-	[L["MColdIronToken"]] = "ColdIronToken",
-	[L["MTokenOfHeroism"]] = "TokenOfHeroism",
-	[L["MHerosMark"]] = "HerosMark",
-	[L["MMedallionOfMoria"]] = "MedallionOfMoria",
-	[L["MMedallionOfLothlorien"]] = "MedallionOfLothlorien",
-	[L["MBuriedTreasureToken"]] = "BuriedTreasureToken",
-	[L["MGabilakkaWarMark"]] = "GabilakkaWarMark",
-	[L["MCopperCoinOfGundabad"]] = "CopperCoinOfGundabad",
-	[L["MSilverCoinOfGundabad"]] = "SilverCoinOfGundabad",
-	[L["MSteelToken"]] = "SteelToken",
-	[L["MIronCoinOfCardolan"]] = "IronCoinOfCardolan",
-	[L["MBreeLandWoodMark"]] = "BreeLandWoodMark",
-	[L["MBronzeArnorianCoin"]] = "BronzeArnorianCoin",
-	[L["MSilverArnorianCoin"]] = "SilverArnorianCoin",
-	[L["MEastGondorSilverPiece"]] = "EastGondorSilverPiece",
-	[L["MGreyfloodMark"]] = "GreyfloodMark",
-	[L["MGundabadMountainMark"]] = "GundabadMountainMark",
-	[L["MSilverTokenOfTheRiddermark"]] = "SilverTokenOfTheRiddermark",
-	[L["MGoldenTokenOfTheRiddermark"]] = "GoldenTokenOfTheRiddermark",
-	[L["MMinasTirithSilverPiece"]] = "MinasTirithSilverPiece",
-	[L["MCrackedEasterlingSceptre"]] = "CrackedEasterlingSceptre",
-	[L["MGrimOrkishBrand"]] = "GrimOrkishBrand",
-	[L["MSandWornCopperToken"]] = "SandWornCopperToken",
-	[L["MFrigidSteelSignetRing"]] = "FrigidSteelSignetRing",
-	[L["MEngravedOnyxSigil"]] = "EngravedOnyxSigil",
-	[L["MSandSmoothedBurl"]] = "SandSmoothedBurl",
-	[L["MLumpOfRedRockSalt"]] = "LumpOfRedRockSalt",
-	[L["MIronSignetOfTheSeaShadow"]] = "IronSignetOfTheSeaShadow",
-	[L["MIronSignetOfTheFist"]] = "IronSignetOfTheFist",
-	[L["MIronSignetOfTheAxe"]] = "IronSignetOfTheAxe",
-	[L["MIronSignetOfTheBlackMoon"]] = "IronSignetOfTheBlackMoon",
-	[L["MIronSignetOfTheNecromancer"]] = "IronSignetOfTheNecromancer",
-	[L["MIronSignetOfTheTwinFlame"]] = "IronSignetOfTheTwinFlame",
-	[L["MPhialCrimsonExtract"]] = "PhialCrimsonExtract",
-	[L["MPhialUmberExtract"]] = "PhialUmberExtract",
-	[L["MPhialVerdantExtract"]] = "PhialVerdantExtract",
-	[L["MPhialGoldenExtract"]] = "PhialGoldenExtract",
-	[L["MPhialVioletExtract"]] = "PhialVioletExtract",
-	[L["MPhialAmberExtract"]] = "PhialAmberExtract",
-	[L["MPhialSapphireExtract"]] = "PhialSapphireExtract",
-	[L["MShaganiGhin"]] = "ShaganiGhin",
-	[L["MHamatiUrgul"]] = "HamatiUrgul",
-	[L["MMurGhalaSarz"]] = "MurGhalaSarz",
-	[L["MSilverSerpent"]] = "SilverSerpent",
-	[L["MHuntersGuildMark"]] = "HuntersGuildMark",
-	[L["MBlightedRelic"]] = "BlightedRelic",
-	[L["MTatteredShadow"]] = "TatteredShadow",
-	[L["MFangornLeaf"]] = "FangornLeaf",
-}
 
 function CheckForReputationImport()
 	local reputationImport = Turbine.PluginData.Load(Turbine.DataScope.Character, "TitanBar_CompanionImport");

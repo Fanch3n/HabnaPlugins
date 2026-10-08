@@ -31,7 +31,6 @@ L[ "MSC" ] = "Shell-Befehle";
 L[ "MRA" ] = "Auf Standardwerte zur\195\188cksetzen";
 L[ "MUTB" ] = "entfernen";
 L[ "MRTB" ] = "neu laden";
-L[ "MATB" ] = "\195\188ber";
 L[ "MBG" ] = "Hintergrundfarbe";
 L[ "MCL" ] = "Sprache \195\164ndern ...";
 L[ "MCLen" ] = "Englisch";

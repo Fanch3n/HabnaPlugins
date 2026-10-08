@@ -69,7 +69,6 @@ function InitializePlayerInfos()
     SetupControlInteraction({
         icon = PI["Name"],
         controlTable = PI,
-        settingsSection = settings.PlayerInfos,
         onLeftClick = function() end,
         customTooltipHandler = ShowPIWindow
     })
@@ -116,8 +115,7 @@ function InitializePlayerInfos()
                     if tmpXP ~= nil then
                         _G.ControlData.PI = _G.ControlData.PI or {}
                         _G.ControlData.PI.xp = tmpXP;
-                        settings.PlayerInfos.XP = tmpXP;
-                        SaveSettings(false);
+                        SaveSettings();
                     end
                 end
             end
@@ -133,9 +131,10 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
         id = "PI",
+        menuText = "MPI",
+        icon = { dx = 3 },
         settingsKey = "PlayerInfos",
         hasWhere = false,
-        defaults = { show = false, x = nil, y = 0 },
         initFunc = InitializePlayerInfos
     })
 end

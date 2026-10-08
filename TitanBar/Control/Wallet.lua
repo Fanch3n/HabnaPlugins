@@ -31,7 +31,6 @@ function InitializeWallet()
 	SetupControlInteraction({
 		icon = WI["Icon"],
 		controlTable = WI,
-		settingsSection = settings.Wallet,
 		windowImportPath = AppCtrD .. "WalletWindow",
 		windowFunction = "frmWalletWindow",
 		hasTooltip = true,
@@ -45,9 +44,10 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
 	_G.ControlRegistry.Register({
 		id = "WI",
+		menuText = "MBag",
+		icon = { only = true },
 		settingsKey = "Wallet",
 		hasWhere = false,
-		defaults = { show = false, x = 0, y = 0 },
 		initFunc = InitializeWallet
 	})
 end

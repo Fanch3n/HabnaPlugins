@@ -3,11 +3,9 @@
 
 
 plugin.GetOptionsPanel = function( self )
-	optPanel = Turbine.UI.Control();
-	--optPanel:SetBackColor( Turbine.UI.Color( 0.3, 0.3, 0.3 ) );
-	--optPanel:SetSize( 200, 30 );
+	local optPanel = Turbine.UI.Control();
 
-	optLabel = Turbine.UI.Label();
+	local optLabel = Turbine.UI.Label();
 	optLabel:SetParent( optPanel );
 	optLabel:SetText( L["TBOpt"] );
 	optLabel:SetSize( optLabel:GetTextLength() * 9, 30 );

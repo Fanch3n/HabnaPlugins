@@ -1,6 +1,5 @@
 -- Constants.lua
 -- Centralized constants for TitanBar
--- Created to eliminate magic numbers and improve maintainability
 
 -- Export constants table globally
 _G.Constants = {}
@@ -32,7 +31,6 @@ Constants.ICON_SIZE_SMALL = 16
 Constants.ICON_SIZE_MEDIUM = 24
 Constants.ICON_SIZE_MEDIUM_LARGE = 30
 Constants.ICON_SIZE_LARGE = 32
-Constants.ITEM_CONTROL_SIZE = 34 -- Turbine ItemControl size
 Constants.ICON_SIZE_XLARGE = 40  -- Item slot size
 Constants.ICON_SIZE_XXLARGE = 44 -- Equipment slot size
 Constants.DEFAULT_ICON_SIZE = Constants.ICON_SIZE_LARGE
@@ -342,6 +340,9 @@ Constants.Alignment = {
 -- ============================================================================
 
 Constants.SETTINGS_SCOPE = nil -- Will be set to Turbine.DataScope.Character in InitializeConstants
+-- One settings file for all game languages (since 1.53). The per-language files of older
+-- versions are only read once, to take them over.
+Constants.SETTINGS_NAME = "TitanBarSettings"
 Constants.SETTINGS_NAME_DE = "TitanBarSettingsDE"
 Constants.SETTINGS_NAME_EN = "TitanBarSettingsEN"
 Constants.SETTINGS_NAME_FR = "TitanBarSettingsFR"
@@ -360,7 +361,7 @@ function Constants.FormatFloat(value)
     return string.format(Constants.FORMAT_FLOAT, value)
 end
 
--- Get settings name for locale
+-- Name of the settings file of older TitanBar versions for a game language
 function Constants.GetSettingsName(locale)
     if locale == "de" then
         return Constants.SETTINGS_NAME_DE

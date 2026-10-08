@@ -1,10 +1,9 @@
 -- Vault.lua
 
 import(AppDirD .. "UIHelpers")
-import(AppCtrD .. "VaultToolTip")
+import(AppCtrD .. "StoredItems")
 import(AppDirD .. "ControlFactory")
 
--- Moved from functions.lua
 function UpdateVault()
     AdjustIcon("VT");
 end
@@ -18,33 +17,17 @@ end
 
 _G.LoadPlayerVault = LoadPlayerVault
 
+-- Writes the saved vaults of all characters to disk
+function WritePlayerVault()
+    Turbine.PluginData.Save(Turbine.DataScope.Server, "TitanBarVault", _G.PlayerVault);
+end
+
+-- Takes over the items of the vault. The vault only has items after it was opened in this session.
 function SavePlayerVault()
     if string.sub(PN, 1, 1) == "~" then return end; --Ignore session play
 
-    local vaultpackSize = vaultpack:GetCapacity();
-    local vaultpackCount = vaultpack:GetCount();
-
-    _G.PlayerVault[PN] = {};
-
-    for ii = 1, vaultpackCount do
-        local ind = tostring(ii);
-        _G.PlayerVault[PN][ind] = vaultpack:GetItem(ii);
-        local iteminfo = _G.PlayerVault[PN][ind]:GetItemInfo();
-
-        _G.PlayerVault[PN][ind].Q = tostring(iteminfo:GetQualityImageID());
-        _G.PlayerVault[PN][ind].B = tostring(iteminfo:GetBackgroundImageID());
-        _G.PlayerVault[PN][ind].U = tostring(iteminfo:GetUnderlayImageID());
-        _G.PlayerVault[PN][ind].S = tostring(iteminfo:GetShadowImageID());
-        _G.PlayerVault[PN][ind].I = tostring(iteminfo:GetIconImageID());
-        _G.PlayerVault[PN][ind].T = tostring(iteminfo:GetName());
-        local tq = tostring(_G.PlayerVault[PN][ind]:GetQuantity());
-        if tq == "1" then tq = ""; end
-        _G.PlayerVault[PN][ind].N = tq;
-        _G.PlayerVault[PN][ind].Z = tostring(vaultpackSize);
-    end
-
-    Turbine.PluginData.Save(
-        Turbine.DataScope.Server, "TitanBarVault", _G.PlayerVault);
+    _G.PlayerVault[PN] = SaveableItems(vaultpack, vaultpack:GetCount(), vaultpack:GetCapacity());
+    WritePlayerVault();
 end
 
 function InitializeVault()
@@ -63,15 +46,14 @@ function InitializeVault()
         SetupControlInteraction({
             icon = VT["Icon"],
             controlTable = VT,
-            settingsSection = settings.Vault,
             windowImportPath = AppCtrD .. "VaultWindow",
             windowFunction = "frmVault",
             tooltipKey = "VT",
-            customTooltipHandler = ShowVaultToolTip
+            customTooltipHandler = function() ShowStoredItemsToolTip(_G.PlayerVault[PN], L["VTnd"]) end
         })
 
-        -- Load data
-        LoadPlayerVault()
+        -- The data was loaded at startup (frmMain): PluginData can only be loaded
+        -- synchronously while the plugin loads, and the control can be added later
 
         -- Register callbacks
         local vtData = _G.ControlData.VT
@@ -88,9 +70,11 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
         id = "VT",
+        menuText = "MVault",
+        freePeopleOnly = true,
+        icon = { only = true },
         settingsKey = "Vault",
         hasWhere = false,
-        defaults = { show = false, x = 0, y = 0 },
         initFunc = InitializeVault
     })
 end

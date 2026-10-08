@@ -25,12 +25,10 @@ function frmMain()
 	TB["win"] = Turbine.UI.Window();
 	TB["win"]:SetLeft( 0 );
 	LayoutBar();
-	--TB["win"]:SetBackground( resources.TitanBar.Background );
 	TB["win"]:SetBackColor( Turbine.UI.Color( bcAlpha, bcRed, bcGreen, bcBlue ) );
 	--TB["win"]:SetMouseVisible( false ); -- If set to false, menu will not work.
 	TB["win"]:SetWantsKeyEvents( true );
 	TB["win"]:SetVisible( true );
-	--TB["win"]:SetZOrder( 10 );
 	TB["win"]:Activate();
 
 	
@@ -68,8 +66,6 @@ function frmMain()
 			mouseXPos, mouseYPos = Turbine.UI.Display.GetMousePosition();
 			_G.sFromCtr = "TitanBar";
 			TitanBarMenu:ShowMenu();
-		--elseif ( args.Button == Turbine.UI.MouseButton.Left ) then
-			
 		end
 	end
 
@@ -82,7 +78,6 @@ function frmMain()
 	MouseHoverCtr:SetSize( 250, 15 );
 	MouseHoverCtr:SetTop( GetBarScreenHeight() );
 	CenterMouseHover();
-	--MouseHoverCtr:SetZOrder( 1 );
 	--MouseHoverCtr:SetBackColor( Color["red"] ); --debug purpose
 	MouseHoverCtr:SetBackground( resources.frmMain ); 
 
@@ -163,54 +158,22 @@ function frmMain()
 	if PlayerAlign == 1 then
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
 				for k,v in pairs(_G.currencies.list) do
-					if _G.CurrencyData[v.name] == nil then _G.CurrencyData[v.name] = {} end
-					if _G.CurrencyData[v.name].Where == nil then _G.CurrencyData[v.name].Where = 3 end
-					if _G.CurrencyData[v.name].Where ~= 3 then ImportCtr(v.name); end
+					if _G.ControlData[v.name].where ~= 3 then ImportCtr(v.name); end
 				end
 		end
 	else
-		-- Disable infos not useful in Monster Play
-		_G.ControlData.DI.show, _G.ControlData.EI.show = false, false
-		_G.ControlData.VT.show, _G.ControlData.SS.show = false, false
-		_G.ControlData.RP.show = false
-		for _,cur in pairs(_G.currencies.list) do
-			if not cur.visibleInMonsterPlay then
-				_G.CurrencyData[cur.name].IsVisible = false
-			end
-		end
+		-- Disable controls and currencies that are only useful for the Free People
+		_G.ControlRegistry.ForEachRegistered(function(id, data, meta)
+			if meta.freePeopleOnly then data.show = false end
+		end)
 
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
-			-- if _G.ControlData.WI.show then ImportCtr( "WI" ); end
-			if _G.CurrencyData["Commendation"].Where ~= 3 then ImportCtr("Commendation"); end
+			for _,cur in pairs(_G.currencies.list) do
+				if cur.visibleInMonsterPlay and _G.ControlData[cur.name].where ~= 3 then ImportCtr(cur.name); end
+			end
 			if ((_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "LP" ); end
 		end
 	end
-
-	-- Handled by ControlRegistry.ForEach in main.lua
-	-- if _G.ControlData.WI.show then ImportCtr( "WI" ); end
-	-- if ((_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "MI" ); end
-	if _G.ControlData.TI.show then ImportCtr( "TI" ); end --Track Items
-	if _G.ControlData.IF.show then ImportCtr( "IF" ); end --Infamy/Renown
-	if _G.ControlData.VT.show then ImportCtr( "VT" ); end --Vault
-	if _G.ControlData.SS.show then ImportCtr( "SS" ); end --SharedStorage
-	if _G.ControlData.DN.show then ImportCtr( "DN" ); end --Day & Night time
-	if _G.ControlData.RP.show then ImportCtr( "RP" ); end --Reputation Points
-	-- if ((_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "LP" ); end --LOTRO Points
-
-	--**v Workaround for the ItemRemoved that fires before the backpack was updated (Turbine API issue) v**
-	ItemRemovedTimer = Turbine.UI.Control();
-	
-	ItemRemovedTimer.Update = function( sender, args )
-		ItemRemovedTimer:SetWantsUpdates( false );
-		if UpdateBackpackInfos then UpdateBackpackInfos(); end
-	end
-	--**
-	
-	-- BagInfos handled by ControlRegistry.ForEach
-	-- if _G.ControlData.BI.show then ImportCtr( "BI" );	end
-	-- if _G.ControlData.PI.show then ImportCtr( "PI" ); end
-	if _G.ControlData.PL.show then ImportCtr( "PL" ); end
-	-- if _G.ControlData.GT.show then ImportCtr( "GT" ); end
 
 	AddCallback(
 		PlayerWallet,
@@ -239,9 +202,6 @@ function frmMain()
 		ItemUnEquippedTimer:SetWantsUpdates(false);
 	end
 	
-	if _G.ControlData.EI.show then ImportCtr( "EI" ); end
-	if _G.ControlData.DI.show then ImportCtr( "DI" ); end
-	
 	--**v Run these functions at-startup only once because if TitanBar is loaded with in-game plugin manager some controls do not update properly v**
 	OneTimer = Turbine.UI.Control();
 	AllTimer = Turbine.UI.Control();
@@ -256,11 +216,11 @@ function frmMain()
 	if TBReloaded then
 		OneTimer:SetWantsUpdates( false )
 		AllTimer:SetWantsUpdates( true )
-		settings.TitanBar.Z = false
-		settings.TitanBar.ZT = "TB"
-		SaveSettings( false )
+		TBReloaded, TBReloadedText = false, "TB"
+		SaveSettings()
 	end --TitanBar was reloaded
 
+	local oldsecond, oldminute
 	OneTimer.Update = function( sender, args )
 		local currentdate = Turbine.Engine.GetDate();
 		local currentsecond = currentdate.Second;
@@ -288,7 +248,7 @@ function frmMain()
 				NumSec = NumSec + 1;
 
 				if _G.Debug then
-					if NumSec <= 1 then seconds = "sec"; else seconds = "secs"; end
+					local seconds = (NumSec <= 1) and "sec" or "secs";
 					write( "OneTimer: " .. NumSec .. " " .. seconds );
 				end
 			end
@@ -323,9 +283,6 @@ function frmMain()
 		oldminute = currentminute;
 		oldsecond = currentsecond;
 
-		--When player log out & log in with same character, the durability control show -1%
-		--Because equipment info are not avail when re-login, weird!
-		--if PlayerAlign == 1 and _G.ControlData.DI.show then if DI[ "Lbl" ]:GetText() == "-1%" then GetEquipmentInfos(); UpdateDurabilityInfos(); end end
 	end
 	--**
 end

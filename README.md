@@ -15,3 +15,8 @@ You can find it on LOTRO interfaces: https://www.lotrointerface.com/downloads/in
 Feel free to download and tinker with the code.
 
 Thanks!
+
+## Development
+`tools/compare_settings.py` checks that a change keeps the saved settings compatible:
+it runs the settings code of `HEAD` (or `--ref <commit>`) and of the working tree in Lua 5.1
+and compares what both save. It needs Python 3 and `pip install lupa`.

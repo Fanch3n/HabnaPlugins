@@ -92,7 +92,6 @@ function RPRefreshListBox()
             if percentage_done == "max" then RPPBFill:SetSize( Constants.PROGRESS_BAR_WIDTH, Constants.PROGRESS_BAR_HEIGHT );
             else RPPBFill:SetSize( ( Constants.PROGRESS_BAR_WIDTH * tonumber(percentage_done) ) / 100, Constants.PROGRESS_BAR_HEIGHT ); end
             RPPBFill:SetBackground( resources.Reputation.BGGood );
-            --RPPBFill:SetBackground( resources.Reputation.BGBad );
 
             if faction.isCraftingGuild then
                 RPPBFill:SetBackground( resources.Reputation.BGGuild );
@@ -119,8 +118,6 @@ function RPRefreshListBox()
             local RPLvl = Turbine.UI.Label();
             RPLvl:SetForeColor( Color["white"] );
             if faction.name == "ReputationAcceleration" then RPLvl:SetForeColor( Color["purple"] ); end
-            --RPLvl:SetForeColor( Color["red"] );
-            --RPLvl:SetForeColor( Color["green"] );
 
             RPLvl:SetParent( RPTTCtr );
             RPLvl:SetText(L[rankName]);

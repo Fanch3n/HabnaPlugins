@@ -7,7 +7,6 @@ _G.Color = {}; -- Color table in _G
 Color["silver"] = Turbine.UI.Color.Silver;
 Color["blue"] = Turbine.UI.Color.Blue;
 Color["trueblue"] = Turbine.UI.Color( 0.2, 0.5, 0.9 );
---Color["trueblue"] = Turbine.UI.Color.;
 Color["stblue"] = Turbine.UI.Color( 1, 0, 0, 0.5 );
 Color["niceblue"] = Turbine.UI.Color( 0, 0.66, 0.75)
 Color["green"] = Turbine.UI.Color.Lime;

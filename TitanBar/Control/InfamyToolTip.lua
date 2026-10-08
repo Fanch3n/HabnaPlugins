@@ -36,9 +36,13 @@ function RefreshIFToolTip()
 	labelRank:SetZOrder( 2 );
 	--labelRank:SetBackColor( Color["red"] ); -- debug purpose
 
+	local ifData = _G.ControlData.IF or {}
+	local points = tonumber(ifData.points) or 0
+	local rank = tonumber(ifData.rank) or 0
+
 	local lblRank = Turbine.UI.Label();
 	lblRank:SetParent( _G.ToolTipWin );
-	lblRank:SetText( settings.Infamy.K );
+	lblRank:SetText( string.format("%.0f", rank) );
 	lblRank:SetPosition( labelRank:GetLeft()+labelRank:GetWidth()+5, labelRank:GetTop() );
 	lblRank:SetSize( lblRank:GetTextLength() * 7.5, 15 ); --Auto size with text lenght
 	lblRank:SetForeColor( Color["green"] );
@@ -61,7 +65,7 @@ function RefreshIFToolTip()
 	local infamyRanks = _G.InfamyRanks or Constants.INFAMY_RANKS
 	local lblInfamy = Turbine.UI.Label();
 	lblInfamy:SetParent( _G.ToolTipWin );
-	lblInfamy:SetText( settings.Infamy.P .. "/" .. infamyRanks[tonumber(settings.Infamy.K)+1]);
+	lblInfamy:SetText( string.format("%.0f", points) .. "/" .. infamyRanks[rank+1]);
 	lblInfamy:SetPosition( labelInfamy:GetLeft()+labelInfamy:GetWidth()+5, labelInfamy:GetTop() );
 	lblInfamy:SetSize( lblInfamy:GetTextLength() * 7.5, 15 ); --Auto size with text lenght
 	lblInfamy:SetForeColor( Color["green"] );
@@ -76,7 +80,7 @@ function RefreshIFToolTip()
 	
 	local lblNextRank = Turbine.UI.Label();
 	lblNextRank:SetParent( NextRankCtr );
-	lblNextRank:SetText( infamyRanks[tonumber(settings.Infamy.K)+1] - settings.Infamy.P);
+	lblNextRank:SetText( string.format("%.0f", infamyRanks[rank+1] - points) );
 	lblNextRank:SetPosition( 0, 0 );
 	lblNextRank:SetSize( lblNextRank:GetTextLength() * 7.5, 15 ); --Auto size with text lenght
 	lblNextRank:SetForeColor( Color["green"] );
@@ -94,8 +98,7 @@ function RefreshIFToolTip()
 
 	NextRankCtr:SetSize( lblNextRank:GetWidth()+labelTN:GetWidth()+10, 15 );
 
-	local percentage_done = string.format("%.1f", tonumber(settings.Infamy.P) / infamyRanks[tonumber(settings.Infamy.K)+1]*100);
-	--percentage_done = string.format("%.1f", percentage_done);
+	local percentage_done = string.format("%.1f", points / infamyRanks[rank+1]*100);
 	--percentage_done = 1; --debug purpose
 
 	--**v Infamy progress bar v**		

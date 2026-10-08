@@ -24,13 +24,17 @@ function UpdateMoney()
 		_G.ControlData.Money.controls["GLbl"]:SetSize(_G.ControlData.Money.controls["GLbl"]:GetTextLength() * NM, CTRHeight);
 		--Auto size with text length
 		_G.ControlData.Money.controls["SLbl"]:SetSize(4 * NM, CTRHeight);  --Auto size with text length
-		_G.ControlData.Money.controls["CLbl"]:SetSize(3 * NM, CTRHeight);  --Auto size with text length	_G.ControlData.Money.controls[ "GLblT" ]:SetVisible( showTotal );
-		_G.ControlData.Money.controls["GLbl"]:SetVisible(not showTotal); _G.ControlData.Money.controls["SLblT"]:SetVisible(
-		showTotal);
-		_G.ControlData.Money.controls["SLbl"]:SetVisible(not showTotal);
+		_G.ControlData.Money.controls["CLbl"]:SetSize(3 * NM, CTRHeight);  --Auto size with text length
 
+		-- Either the money of this character or the total of all characters (*LblT)
+		_G.ControlData.Money.controls["GLblT"]:SetVisible(showTotal);
+		_G.ControlData.Money.controls["GLbl"]:SetVisible(not showTotal);
+		_G.ControlData.Money.controls["SLblT"]:SetVisible(showTotal);
+		_G.ControlData.Money.controls["SLbl"]:SetVisible(not showTotal);
 		_G.ControlData.Money.controls["CLblT"]:SetVisible(showTotal);
-		_G.ControlData.Money.controls["CLbl"]:SetVisible(not showTotal); if showTotal then  --Add Total Money on TitanBar Money control.
+		_G.ControlData.Money.controls["CLbl"]:SetVisible(not showTotal);
+
+		if showTotal then  --Add Total Money on TitanBar Money control.
 			local strData = L["MIWTotal"] .. ": ";
 			local strData1 = string.format("%.0f", GoldTot);
 			local strData2 = L["You"] .. _G.ControlData.Money.controls["GLbl"]:GetText();
@@ -97,10 +101,10 @@ function UpdateMoney()
 		Turbine.PluginData.Save(
 			Turbine.DataScope.Server, "TitanBarPlayerWalletStats", walletStats);
 	end
-	AdjustIcon("MI");
+	AdjustIcon("Money");
 end
 
--- vvv Moved from functionsCtr.lua (Heridan) vvv
+-- Gold in the shared storage (by Heridan)
 function UpdateSharedStorageGold(sender, args)
 	if not (sspack and wallet and _G.L and UpdateMoney) then return end
 
@@ -174,7 +178,6 @@ function InitializeMoneyInfos()
 	MI["GCtr"] = Turbine.UI.Control();
 	MI["GCtr"]:SetParent(MI["Ctr"]);
 	MI["GCtr"]:SetMouseVisible(false);
-	--MI["GCtr"]:SetZOrder( 2 );
 	--MI["GCtr"]:SetBackColor( Color["blue"] ); -- Debug purpose
 	--**^
 	--**v Gold & total amount on TitanBar v**
@@ -182,7 +185,6 @@ function InitializeMoneyInfos()
 	MI["GLblT"]:SetParent(MI["GCtr"]);
 	MI["GLblT"]:SetPosition(0, 0);
 	MI["GLblT"]:SetFont(_G.TBFont);
-	--MI["GLblT"]:SetForeColor( Color["white"] );
 	MI["GLblT"]:SetFontStyle(Turbine.UI.FontStyle.Outline);
 	MI["GLblT"]:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight);
 	--MI["GLblT"]:SetBackColor( Color["white"] ); -- Debug purpose
@@ -192,7 +194,6 @@ function InitializeMoneyInfos()
 	MI["GLbl"]:SetParent(MI["GCtr"]);
 	MI["GLbl"]:SetPosition(0, 0);
 	MI["GLbl"]:SetFont(_G.TBFont);
-	--MI["GLbl"]:SetForeColor( Color["white"] );
 	MI["GLbl"]:SetFontStyle(Turbine.UI.FontStyle.Outline);
 	MI["GLbl"]:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight);
 	--MI["GLbl"]:SetBackColor( Color["white"] ); -- Debug purpose
@@ -209,7 +210,6 @@ function InitializeMoneyInfos()
 	MI["SCtr"] = Turbine.UI.Control();
 	MI["SCtr"]:SetParent(MI["Ctr"]);
 	MI["SCtr"]:SetMouseVisible(false);
-	--MI["SCtr"]:SetZOrder( 2 );
 	--MI["SCtr"]:SetBackColor( Color["blue"] ); -- Debug purpose
 	--**^
 	--**v Silver & total amount on TitanBar v**
@@ -217,7 +217,6 @@ function InitializeMoneyInfos()
 	MI["SLblT"]:SetParent(MI["SCtr"]);
 	MI["SLblT"]:SetPosition(0, 0);
 	MI["SLblT"]:SetFont(_G.TBFont);
-	--MI["SLblT"]:SetForeColor( Color["white"] );
 	MI["SLblT"]:SetFontStyle(Turbine.UI.FontStyle.Outline);
 	MI["SLblT"]:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight);
 	--MI["SLblT"]:SetBackColor( Color["white"] ); -- Debug purpose
@@ -228,8 +227,6 @@ function InitializeMoneyInfos()
 	MI["SLbl"]:SetParent(MI["SCtr"]);
 	MI["SLbl"]:SetPosition(0, 0);
 	MI["SLbl"]:SetFont(_G.TBFont);
-	--MI["SLbl"]:SetForeColor( Color["white"] );
-	--MI["SLbl"]:SetSize( 20, 30 );
 	MI["SLbl"]:SetFontStyle(Turbine.UI.FontStyle.Outline);
 	MI["SLbl"]:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight);
 	--MI["SLbl"]:SetBackColor( Color["white"] ); -- Debug purpose
@@ -246,7 +243,6 @@ function InitializeMoneyInfos()
 	MI["CCtr"] = Turbine.UI.Control();
 	MI["CCtr"]:SetParent(MI["Ctr"]);
 	MI["CCtr"]:SetMouseVisible(false);
-	--MI["CCtr"]:SetZOrder( 2 );
 	--MI["CCtr"]:SetBackColor( Color["blue"] ); -- Debug purpose
 	--**^
 	--**v Copper & total amount on TitanBar v**
@@ -254,7 +250,6 @@ function InitializeMoneyInfos()
 	MI["CLblT"]:SetParent(MI["CCtr"]);
 	MI["CLblT"]:SetPosition(0, 0);
 	MI["CLblT"]:SetFont(_G.TBFont);
-	--MI["CLblT"]:SetForeColor( Color["white"] );
 	MI["CLblT"]:SetFontStyle(Turbine.UI.FontStyle.Outline);
 	MI["CLblT"]:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight);
 	--MI["CLblT"]:SetBackColor( Color["white"] ); -- Debug purpose
@@ -277,14 +272,11 @@ function InitializeMoneyInfos()
 	MI["CLbl"]:SetParent(MI["CCtr"]);
 	MI["CLbl"]:SetPosition(0, 0);
 	MI["CLbl"]:SetFont(_G.TBFont);
-	--MI["CLbl"]:SetForeColor( Color["white"] );
-	--MI["CLbl"]:SetSize( 20, 30 );
 	MI["CLbl"]:SetFontStyle(Turbine.UI.FontStyle.Outline);
 	MI["CLbl"]:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleRight);
 	--MI["CLbl"]:SetBackColor( Color["white"] ); -- Debug purpose
 
 	MI["CLbl"].MouseMove = function(sender, args)
-		--MI["CLbl"].MouseLeave( sender, args );
 		TB["win"].MouseMove();
 		if dragging then
 			MoveMICtr(sender, args);
@@ -324,7 +316,7 @@ function InitializeMoneyInfos()
 		_G.WasDrag = false;
 	end
 
-	local dragHandlers = CreateDragHandlers(MI["Ctr"], settings.Money, "Money")
+	local dragHandlers = CreateDragHandlers(MI["Ctr"], "Money")
 	MI["CLbl"].MouseDown = dragHandlers.MouseDown
 	MI["CLbl"].MouseUp = dragHandlers.MouseUp
 
@@ -356,13 +348,30 @@ function InitializeMoneyInfos()
 	UpdateMoney()
 end
 
+-- Lays out the gold, silver and copper parts of the control (icon layout for AdjustIcon)
+local function LayoutMoneyIcons(iconTop)
+	local controls = _G.ControlData.Money.controls
+	local t = ""
+	if _G.ControlData.Money.stm == true then t = "T"; end
+	local p = { "G", "S", "C" }; --prefix for Gold, Silver, Copper controls
+	local setleft = 0;
+	for i = 1,3 do
+		local index = p[i] .. "Lbl" .. t;
+		controls[p[i] .. "Ctr"]:SetLeft(setleft);
+		local getright = controls[index]:GetLeft() + controls[index]:GetWidth();
+		LayoutIcon( controls[p[i] .. "Icon"], controls[p[i] .. "Ctr"], getright - 4, iconTop + 1, getright + TBIconSize );
+		setleft = controls[p[i].."Ctr"]:GetLeft() + controls[p[i].."Ctr"]:GetWidth();
+	end
+	controls[ "Ctr" ]:SetSize(controls["GCtr"]:GetWidth() + controls["SCtr"]:GetWidth() + controls["CCtr"]:GetWidth(), CTRHeight );
+end
+
 -- Self-registration
 if _G.ControlRegistry and _G.ControlRegistry.Register then
 	_G.ControlRegistry.Register({
 		id = "Money",
+		icon = { layout = LayoutMoneyIcons },
 		settingsKey = "Money",
 		hasWhere = true,
-		defaults = { show = true, where = 1, x = nil, y = 0 },
 		initFunc = InitializeMoneyInfos
 	})
 end

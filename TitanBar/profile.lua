@@ -2,6 +2,8 @@
 -- Written by Habna
 
 
+local buttonLoad, buttonCreate, lblName, vPProfileSettings
+
 function frmProfile()
 	TB["win"].MouseLeave();
 	import(AppDirD .. "WindowFactory")
@@ -12,14 +14,10 @@ function frmProfile()
 		text = L["MPP"],
 		width = 495,
 		height = 160,
-		left = PPWLeft,
-		top = PPWTop,
+		position = WindowPositions.Profile,
 		config = {
 			settingsKey = "Profile",
 			windowGlobalVar = "wProfile",
-			onPositionChanged = function(left, top)
-				PPWLeft, PPWTop = left, top
-			end,
 			onClosing = function( sender, args )
 				opt_profile:SetEnabled( true );
 			end,
@@ -37,24 +35,14 @@ function frmProfile()
 	buttonLoad:SetEnabled( false );
 
 	buttonLoad.Click = function( sender, args )
-		local LProfile = false; --Load profile
-		local PLang = nil; --Profile Language
-		PLang = vPProfileSettings[PrevItemClic].TitanBar.L;
-		
-		if PLang == "en" then if GLocale == "en" then LProfile = true; end
-		else if GLocale ~= "en" then LProfile = true; end end
-
-		if LProfile then
-			write("TitanBar: "..L["PWProfile"].." `"..lblName[PrevItemClic]:GetText().."` "..L["PWLoaded"]);
-			settings = vPProfileSettings[PrevItemClic];
-			local plText = (_G.ControlData and _G.ControlData.PL and _G.ControlData.PL.text) or (settings.PlayerLoc and settings.PlayerLoc.L) or L["PLMsg"]
-			settings.PlayerLoc.L = plText;
-			settings.TitanBar.ZT = "Profile";
-			SaveSettings( false );
-			ReloadTitanBar();
-		else
-			write("TitanBar: `"..lblName[PrevItemClic]:GetText().."`"..L["PWFail"]);
-		end
+		-- Settings are independent of the game language, so a profile can be loaded in every language
+		write("TitanBar: "..L["PWProfile"].." `"..lblName[PrevItemClic]:GetText().."` "..L["PWLoaded"]);
+		local profile = vPProfileSettings[PrevItemClic];
+		local plText = (_G.ControlData and _G.ControlData.PL and _G.ControlData.PL.text) or (profile.PlayerLoc and profile.PlayerLoc.L) or L["PLMsg"]
+		profile.PlayerLoc.L = plText;
+		-- A profile keeps TitanBar's language as it is
+		profile.TitanBar.L = TBLocaleChoice;
+		ReloadTitanBar("Profile", profile);
 	end
 
 	buttonCreate = CreateAutoSizedButton(wProfile, L["PWCreate"])
@@ -82,7 +70,7 @@ function frmProfile()
 		InputBox:SelectAll();
 	end
 	
-	buttonSave = CreateAutoSizedButton(CreateCtr, L["PWSave"], 0, 25)
+	local buttonSave = CreateAutoSizedButton(CreateCtr, L["PWSave"], 0, 25)
 	buttonSave:SetEnabled( true );
 
 	buttonSave.Click = function( sender, args )
@@ -103,12 +91,8 @@ function frmProfile()
 		table.insert( PProfile, vProfile );
 		write( "TitanBar: "..L["PWNew"].." `"..strProfileName.."` "..L["PWCreated"] );
 		
-		settings.TitanBar.ZT = "Profile";
 		SavePlayerProfile();
-		SaveSettings( false );
-		local plText = (_G.ControlData and _G.ControlData.PL and _G.ControlData.PL.text) or (settings.PlayerLoc and settings.PlayerLoc.L) or L["PLMsg"]
-		settings.PlayerLoc.L = plText;
-		ReloadTitanBar(); -- Need to reload, because if create more then 1 profile, previous profile will be lost!
+		ReloadTitanBar("Profile"); -- Need to reload, because if create more then 1 profile, previous profile will be lost!
 		--[[
 		CreateCtr:SetVisible( false );
 		buttonLoad:SetVisible( true );
@@ -118,7 +102,7 @@ function frmProfile()
 		]]
 	end
 
-	buttonCancel = CreateAutoSizedButton(CreateCtr, L["PWCancel"], buttonSave:GetLeft() + buttonSave:GetWidth() + 5, 25, TM)
+	local buttonCancel = CreateAutoSizedButton(CreateCtr, L["PWCancel"], buttonSave:GetLeft() + buttonSave:GetWidth() + 5, 25, TM)
 	buttonCancel:SetEnabled( true );
 
 	buttonCancel.Click = function( sender, args )
@@ -130,13 +114,14 @@ function frmProfile()
 
 	RefreshListBox();
 
-    wProfile:SetPosition( PPWLeft, PPWTop );
+    wProfile:SetPosition( WindowPositions.Profile.left, WindowPositions.Profile.top );
 end
 
 function RefreshListBox()
 	local PosY = 20;
+	local vPProfile
 	Ctr, DelIcon, lblName, vPProfile = {}, {}, {}, {};
-	PrevItemClic, i = 0, 1;
+	PrevItemClic = 0;
 	ListBox:ClearItems();
 
 	vPProfile = {};
@@ -157,7 +142,6 @@ function RefreshListBox()
 		--**v Profil name v**
 		local lblName = Turbine.UI.Label();
 		lblName:SetParent( Ctr );
-		--lblName:SetFont ( 12 );
 		lblName:SetText( L["PWNFound"] );
 		lblName:SetPosition( 0, 0 );
 		lblName:SetSize( Ctr:GetWidth(), Ctr:GetHeight() );
@@ -224,7 +208,6 @@ function RefreshListBox()
 				end
 				PrevItemClic = lblName[i].Id;
 				lblName[PrevItemClic]:SetForeColor( Color["green"] );
-				--lblName[PrevItemClic]:SetBackColor( Color["darkgrey"] );
 				lblName[i].Sel = true;
 				buttonLoad:SetEnabled( true );
 			end

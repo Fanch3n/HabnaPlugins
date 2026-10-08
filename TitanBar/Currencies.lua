@@ -5,17 +5,18 @@ TitanBar version which used that name.
 
 _G.currencies = {
   list = {
+    -- Coin
     {
-      name = "Shards",
-      legacyTitanbarName = "SP",
-      visibleInMonsterPlay = false,
-      icon = 0x41110d5b,
+      name = "Commendation",
+      legacyTitanbarName = "CP",
+      visibleInMonsterPlay = true,
+      icon = 0x41123495,
     },
     {
-      name = "SkirmishMarks",
-      legacyTitanbarName = "SM",
+      name = "DestinyPoints",
+      legacyTitanbarName = "DP",
       visibleInMonsterPlay = false,
-      icon = 0x4111c446,
+      icon = 0x4100a682,
     },
     {
       name = "MithrilCoins",
@@ -23,17 +24,43 @@ _G.currencies = {
       visibleInMonsterPlay = true,
       icon = 0x411348E1,
     },
+    -- Currency
     {
-      name = "YuleToken",
-      legacyTitanbarName = "YT",
+      name = "MotesOfEnchantment",
+      legacyTitanbarName = "MOE",
       visibleInMonsterPlay = false,
-      icon = 0x410FA62D,
+      icon = 0x411B91DD,
     },
     {
-      name = "TokensOfHytbold",
-      legacyTitanbarName = "HT",
+      name = "FigmentsOfSplendour",
+      legacyTitanbarName = "FOS",
       visibleInMonsterPlay = false,
-      icon = 0x41127D0C,
+      icon = 0x411CF13B,
+    },
+    {
+      name = "EmbersOfEnchantment",
+      legacyTitanbarName = "EOE",
+      visibleInMonsterPlay = false,
+      icon = 0x411CE971,
+    },
+    {
+      name = "AncientScript",
+      legacyTitanbarName = "AC",
+      visibleInMonsterPlay = false,
+      icon = 0x41212E84,
+    },
+    {
+      name = "DelvingWrit",
+      legacyTitanbarName = "DW",
+      visibleInMonsterPlay = false,
+      icon = 0x412204D8,
+    },
+    -- Instances and Skirmishes
+    {
+      name = "SkirmishMarks",
+      legacyTitanbarName = "SM",
+      visibleInMonsterPlay = false,
+      icon = 0x4111c446,
     },
     {
       name = "Medallions",
@@ -48,64 +75,17 @@ _G.currencies = {
       icon = 0x4111c449,
     },
     {
-      name = "Commendation",
-      legacyTitanbarName = "CP",
-      visibleInMonsterPlay = true,
-      icon = 0x41123495,
-    },
-    {
-      name = "AmrothSilverPiece",
-      legacyTitanbarName = "ASP",
-      visibleInMonsterPlay = false,
-      icon = 0x41152875,
-    },
-    {
       name = "StarsOfMerit",
       legacyTitanbarName = "SOM",
       visibleInMonsterPlay = false,
       icon = 0x4115bea4,
     },
-    {
-      name = "CentralGondorSilverPiece",
-      legacyTitanbarName = "CGSP",
-      visibleInMonsterPlay = false,
-      icon = 0x41155957,
-    },
-    {
-      name = "GiftGiversBrand",
-      legacyTitanbarName = "GGB",
-      visibleInMonsterPlay = false,
-      icon = 0x4115c888,
-    },
-    {
-      name = "BingoBadge",
-      legacyTitanbarName = "BB",
-      visibleInMonsterPlay = false,
-      icon = 0x410E6EE4,
-    },
+    -- Festivals and Events
     {
       name = "AnniversaryToken",
       legacyTitanbarName = "LAT",
       visibleInMonsterPlay = false,
       icon = 0x4110E2E7,
-    },
-    {
-      name = "MotesOfEnchantment",
-      legacyTitanbarName = "MOE",
-      visibleInMonsterPlay = false,
-      icon = 0x411B91DD,
-    },
-    {
-      name = "EmbersOfEnchantment",
-      legacyTitanbarName = "EOE",
-      visibleInMonsterPlay = false,
-      icon = 0x411CE971,
-    },
-    {
-      name = "FigmentsOfSplendour",
-      legacyTitanbarName = "FOS",
-      visibleInMonsterPlay = false,
-      icon = 0x411CF13B,
     },
     {
       name = "FallFestivalToken",
@@ -120,23 +100,29 @@ _G.currencies = {
       icon = 0x410E7BD6,
     },
     {
-      name = "SpringLeaf",
-      legacyTitanbarName = "SPL",
-      visibleInMonsterPlay = false,
-      icon = 0x410D74CB,
-    },
-    {
       name = "MidsummerToken",
       legacyTitanbarName = "MST",
       visibleInMonsterPlay = false,
       icon = 0x411EE829,
     },
     {
-      name = "AncientScript",
-      legacyTitanbarName = "AC",
+      name = "SpringLeaf",
+      legacyTitanbarName = "SPL",
       visibleInMonsterPlay = false,
-      icon = 0x41212E84,
+      icon = 0x410D74CB,
     },
+    {
+      name = "YuleToken",
+      legacyTitanbarName = "YT",
+      visibleInMonsterPlay = false,
+      icon = 0x410FA62D,
+    },
+    {
+      name = "BuriedTreasureToken",
+      visibleInMonsterPlay = false,
+      icon = 0x41002B2C,
+    },
+    -- Inn League and Ale Association
     {
       name = "BadgeOfTaste",
       legacyTitanbarName = "BOT",
@@ -148,6 +134,49 @@ _G.currencies = {
       legacyTitanbarName = "BOD",
       visibleInMonsterPlay = false,
       icon = 0x410D4316,
+    },
+    -- Item Advancement
+    {
+      name = "Shards",
+      legacyTitanbarName = "SP",
+      visibleInMonsterPlay = false,
+      icon = 0x41110d5b,
+    },
+    -- Other
+    {
+      name = "AmrothSilverPiece",
+      legacyTitanbarName = "ASP",
+      visibleInMonsterPlay = false,
+      icon = 0x41152875,
+    },
+    {
+      name = "BingoBadge",
+      legacyTitanbarName = "BB",
+      visibleInMonsterPlay = false,
+      icon = 0x410E6EE4,
+    },
+    {
+      name = "CentralGondorSilverPiece",
+      legacyTitanbarName = "CGSP",
+      visibleInMonsterPlay = false,
+      icon = 0x41155957,
+    },
+    {
+      name = "EastGondorSilverPiece",
+      visibleInMonsterPlay = false,
+      icon = 0x41152879,
+    },
+    {
+      name = "GiftGiversBrand",
+      legacyTitanbarName = "GGB",
+      visibleInMonsterPlay = false,
+      icon = 0x4115c888,
+    },
+    {
+      name = "TokensOfHytbold",
+      legacyTitanbarName = "HT",
+      visibleInMonsterPlay = false,
+      icon = 0x41127D0C,
     },
     {
       name = "ColdIronToken",
@@ -175,26 +204,14 @@ _G.currencies = {
       icon = 0x41231838,
     },
     {
-      name = "DelvingWrit",
-      legacyTitanbarName = "DW",
-      visibleInMonsterPlay = false,
-      icon = 0x412204D8,
-    },
-    {
-      name = "BuriedTreasureToken",
-      visibleInMonsterPlay = false,
-      icon = 0x41002B2C,
-    },
-    {
-      name = "DestinyPoints",
-      legacyTitanbarName = "DP",
-      visibleInMonsterPlay = false,
-      icon = 0x4100a682,
-    },
-    {
       name = "GabilakkaWarMark",
       visibleInMonsterPlay = false,
       icon = 0x411F9F8E,
+    },
+    {
+      name = "SteelToken",
+      visibleInMonsterPlay = false,
+      icon = 0x4112611F,
     },
     {
       name = "CopperCoinOfGundabad",
@@ -205,11 +222,6 @@ _G.currencies = {
       name = "SilverCoinOfGundabad",
       visibleInMonsterPlay = false,
       icon = 0x4120C6BD,
-    },
-    {
-      name = "SteelToken",
-      visibleInMonsterPlay = false,
-      icon = 0x4112611F,
     },
     {
       name = "IronCoinOfCardolan",
@@ -230,11 +242,6 @@ _G.currencies = {
       name = "SilverArnorianCoin",
       visibleInMonsterPlay = false,
       icon = 0x410E8278,
-    },
-    {
-      name = "EastGondorSilverPiece",
-      visibleInMonsterPlay = false,
-      icon = 0x41152879,
     },
     {
       name = "GreyfloodMark",

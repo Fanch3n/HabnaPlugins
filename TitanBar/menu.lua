@@ -14,8 +14,8 @@ for i = 1, 3 do
 	if TBLocale == Lang[i] then LocItems:SetChecked( true ); end
 	LocItems.Click = function( sender, args )
 		if TBLocale == Lang[i] then return end
-		settings.TitanBar.L = Lang[i];
-		SaveSettings( false );
+		-- Choosing the game language means: follow the game language
+		TBLocaleChoice = (Lang[i] == GLocale) and "auto" or Lang[i];
 		ReloadTitanBar();
 	end
 	
@@ -39,9 +39,10 @@ RBCMenu.Items:Add( RBCMenu2 );
 TitanBarMenu = Turbine.UI.ContextMenu();
 TitanBarMenu.items = TitanBarMenu:GetItems();
 
+-- Clicking an item closes the menu: open it again where it was, so that several controls can be switched in a row
 local function ToggleMenuVisibility(menuToggle)
 	menuToggle()
-	TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos) -- TODO what does this actually do?
+	TitanBarMenu:ShowMenuAt(mouseXPos, mouseYPos)
 end
 
 local opt_line = Turbine.UI.MenuItem("---------------------------------------------", false);
@@ -62,20 +63,13 @@ local function CreateControlMenuItem(id, label, toggleFunc)
 	return item
 end
 
--- Menu Items
-local opt_WI = CreateControlMenuItem("WI", L["MBag"])
-local opt_BI = CreateControlMenuItem("BI", L["MBI"])
-local opt_PI = CreateControlMenuItem("PI", L["MPI"])
-local opt_EI = CreateControlMenuItem("EI", L["MEI"])
-local opt_DI = CreateControlMenuItem("DI", L["MDI"])
-local opt_PL = CreateControlMenuItem("PL", L["MPL"])
-local opt_TI = CreateControlMenuItem("TI", L["MTI"])
-local opt_IF = CreateControlMenuItem("IF", L["IFWTitle"])
-local opt_GT = CreateControlMenuItem("GT", L["MGT"])
-local opt_VT = CreateControlMenuItem("VT", L["MVault"])
-local opt_SS = CreateControlMenuItem("SS", L["MStorage"])
-local opt_DN = CreateControlMenuItem("DN", L["MDayNight"])
-local opt_RP = CreateControlMenuItem("RP", L["MReputation"])
+-- Menu items of the controls, in the order they were registered (see main.lua)
+local controlMenuItems = {}
+_G.ControlRegistry.ForEachRegistered(function(id, data, meta)
+	if meta.menuText and (PlayerAlign == 1 or not meta.freePeopleOnly) then
+		table.insert(controlMenuItems, CreateControlMenuItem(id, L[meta.menuText]))
+	end
+end)
 
 opt_options = Turbine.UI.MenuItem(L["MOP"]);
 opt_options.Click = function( sender, args ) import (AppDirD.."frmOptions"); frmOptions(); opt_options:SetEnabled( false ); end
@@ -98,24 +92,8 @@ opt_unload.Click = function( sender, args ) UnloadTitanBar(); end
 local opt_reload = Turbine.UI.MenuItem(L["MRTB"] .. " TitanBar " .. Version);
 opt_reload.Click = function( sender, args ) ReloadTitanBar(); end
 
-local opt_about = Turbine.UI.MenuItem(L["MATB"] .. " TitanBar " .. Version);
-opt_about.Click = function( sender, args ) AboutTitanBar(); end
 
-
-
-TitanBarMenu.items:Add(opt_WI);
-TitanBarMenu.items:Add(opt_BI);
-TitanBarMenu.items:Add(opt_PI);
-if PlayerAlign == 1 then TitanBarMenu.items:Add(opt_EI); end -- only show if in Free People mode
-if PlayerAlign == 1 then TitanBarMenu.items:Add(opt_DI); end -- only show if in Free People mode
-TitanBarMenu.items:Add(opt_PL);
-TitanBarMenu.items:Add(opt_TI);
-TitanBarMenu.items:Add(opt_IF);
-TitanBarMenu.items:Add(opt_GT);
-if PlayerAlign == 1 then TitanBarMenu.items:Add(opt_VT); end -- only show if in Free People mode
-if PlayerAlign == 1 then TitanBarMenu.items:Add(opt_SS); end -- only show if in Free People mode
-TitanBarMenu.items:Add(opt_DN);
-if PlayerAlign == 1 then TitanBarMenu.items:Add(opt_RP); end -- only show if in Free People mode
+for _, item in ipairs(controlMenuItems) do TitanBarMenu.items:Add(item); end
 TitanBarMenu.items:Add(opt_line);
 TitanBarMenu.items:Add(opt_options);
 TitanBarMenu.items:Add(option_backcolor);
@@ -129,5 +107,3 @@ TitanBarMenu.items:Add(opt_ResetAllSet);
 TitanBarMenu.items:Add(opt_empty);
 TitanBarMenu.items:Add(opt_unload);
 TitanBarMenu.items:Add(opt_reload);
---TitanBarMenu.items:Add(opt_empty); --Add when about function in plugin manager is available
---TitanBarMenu.items:Add(opt_about); --Add when about function in plugin manager is available

@@ -31,7 +31,6 @@ L[ "MSC" ] = "Shell commands";
 L[ "MRA" ] = "Reset all settings";
 L[ "MUTB" ] = "Unload";
 L[ "MRTB" ] = "Reload";
-L[ "MATB" ] = "About ";
 L[ "MBG" ] = "Set back color";
 L[ "MCL" ] = "Change language to ...";
 L[ "MCLen" ] = "English";

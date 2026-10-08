@@ -83,7 +83,6 @@ function InitializeGameTime()
 		SetupControlInteraction({
 			icon = GT["Lbl"],
 			controlTable = GT,
-			settingsSection = settings.GameTime,
 			windowImportPath = AppCtrD .. "GameTimeWindow",
 			windowFunction = "frmGameTimeWindow",
 			tooltipKey = "GT",
@@ -112,9 +111,11 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
 	_G.ControlRegistry.Register({
 		id = "GT",
+		tooltipHeader = "GTh",
+		menuText = "MGT",
+		icon = false,
 		settingsKey = "GameTime",
 		hasWhere = false,
-		defaults = { show = false, x = 0, y = 0 },
 		initFunc = InitializeGameTime
 	})
 end

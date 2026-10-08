@@ -1,4 +1,4 @@
--- EquipInfosWindow.lua
+-- EquipInfosToolTip.lua
 -- Written by Habna
 
 
@@ -31,7 +31,7 @@ function ShowEIWindow()
 	--AEICtr:SetBackColor( Color["red"] ); -- Debug purpose
 	--**^
 
-	lblBackPack = Turbine.UI.Label();
+	local lblBackPack = Turbine.UI.Label();
 	lblBackPack:SetParent( AEICtr );
 	lblBackPack:SetText( L["EWLbl"] );
 	lblBackPack:SetPosition( 15, 15);
@@ -39,7 +39,7 @@ function ShowEIWindow()
 	lblBackPack:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 	lblBackPack:SetForeColor( Color["green"] );
 
-	lblBackPackD = Turbine.UI.Label();
+	local lblBackPackD = Turbine.UI.Label();
 	lblBackPackD:SetParent( AEICtr );
 	lblBackPackD:SetText( L["EWLblD"] );
 	lblBackPackD:SetSize( Constants.LABEL_WIDTH_NARROW, Constants.LABEL_HEIGHT_STANDARD );
@@ -107,7 +107,6 @@ function EIRefreshListBox()
 		EIitemLbl[i]:SetSize( 205, EIitemCtl[i]:GetHeight() );
 		EIitemLbl[i]:SetFont(Turbine.UI.Lotro.Font.TrajanPro12 );
 		EIitemLbl[i]:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
-		--EIitemLbl[i]:SetForeColor( Color["white"] );
 		
 		if itemEquipRef[i].Item == false then 
 			EIitemLbl[i]:SetForeColor( Color["red"] );

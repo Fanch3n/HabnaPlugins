@@ -1,7 +1,7 @@
 -- SharedStorage.lua
 
 import(AppDirD .. "UIHelpers")
-import(AppCtrD .. "SharedStorageToolTip")
+import(AppCtrD .. "StoredItems")
 import(AppDirD .. "ControlFactory")
 
 function UpdateSharedStorage()
@@ -18,31 +18,8 @@ _G.LoadPlayerSharedStorage = LoadPlayerSharedStorage
 function SavePlayerSharedStorage()
     if string.sub(PN, 1, 1) == "~" then return end;   --Ignore session play
 
-    local sspackSize = sspack:GetCapacity();
-    local sspackCount = sspack:GetCount();
-
-    _G.PlayerSharedStorage = {};
-
-    for ii = 1, sspackCount do
-        local ind = tostring(ii);
-        _G.PlayerSharedStorage[ind] = sspack:GetItem(ii);
-        local iteminfo = _G.PlayerSharedStorage[ind]:GetItemInfo();
-
-        _G.PlayerSharedStorage[ind].Q = tostring(iteminfo:GetQualityImageID());
-        _G.PlayerSharedStorage[ind].B = tostring(iteminfo:GetBackgroundImageID());
-        _G.PlayerSharedStorage[ind].U = tostring(iteminfo:GetUnderlayImageID());
-        _G.PlayerSharedStorage[ind].S = tostring(iteminfo:GetShadowImageID());
-        _G.PlayerSharedStorage[ind].I = tostring(iteminfo:GetIconImageID());
-        _G.PlayerSharedStorage[ind].T = tostring(iteminfo:GetName());
-        local tq = tostring(_G.PlayerSharedStorage[ind]:GetQuantity());
-        if tq == "1" then tq = ""; end
-        _G.PlayerSharedStorage[ind].N = tq;
-        _G.PlayerSharedStorage[ind].Z = tostring(sspackSize);
-    end
-
-    Turbine.PluginData.Save(
-        Turbine.DataScope.Server, "TitanBarSharedStorage", _G.PlayerSharedStorage
-    );
+    _G.PlayerSharedStorage = SaveableItems(sspack, sspack:GetCount(), sspack:GetCapacity());
+    Turbine.PluginData.Save(Turbine.DataScope.Server, "TitanBarSharedStorage", _G.PlayerSharedStorage);
 end
 
 function InitializeSharedStorage()
@@ -61,16 +38,14 @@ function InitializeSharedStorage()
         SetupControlInteraction({
             icon = SS["Icon"],
             controlTable = SS,
-            settingsSection = settings.SharedStorage,
             windowImportPath = AppCtrD .. "SharedStorageWindow",
             windowFunction = "frmSharedStorage",
             tooltipKey = "SS",
-            customTooltipHandler = ShowSharedToolTip
+            customTooltipHandler = function() ShowStoredItemsToolTip(_G.PlayerSharedStorage, L["SSnd"]) end
         })
 
-        -- Load data and register callbacks
-        LoadPlayerSharedStorage()
-
+        -- Register callbacks. The data was loaded at startup (frmMain): PluginData can only be
+        -- loaded synchronously while the plugin loads, and the control can be added later
         local ssData = _G.ControlData.SS
         ssData.callbacks = ssData.callbacks or {}
         local cb = AddCallback(sspack, "CountChanged",
@@ -86,9 +61,11 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
         id = "SS",
+        menuText = "MStorage",
+        freePeopleOnly = true,
+        icon = { only = true },
         settingsKey = "SharedStorage",
         hasWhere = false,
-        defaults = { show = false, x = 0, y = 0 },
         initFunc = InitializeSharedStorage
     })
 end

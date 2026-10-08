@@ -41,7 +41,7 @@ function RefreshWITTListBox()
 		end
 		for k,v in pairs(_G.currencies.list) do
 			if wttcur == L["M" .. v.name] then
-				ttw = _G.CurrencyData[v.name].Where
+				ttw = _G.ControlData[v.name].where
 				CtrIconCodeIs = v.icon
 				if wttcur == L["MDestinyPoints"] then
 					CtrQteIs = GetPlayerAttributes():GetDestinyPoints()
@@ -66,7 +66,6 @@ function RefreshWITTListBox()
 				local wiPosX, tmWidth = 0, 0;
 				local wmoney = GetPlayerAttributes():GetMoney();
 				local twmoney = {DecryptMoney(wmoney)};
-				--local twmoneyi = { 0x41007e7b, 0x41007e7c, 0x41007e7d }; --gold, silver, copper icon 27x21
 				for w = 1, 3 do
 					--**v Quantity v**
 					local lblQte = Turbine.UI.Label();
@@ -74,7 +73,6 @@ function RefreshWITTListBox()
 					lblQte:SetPosition( wiPosX+5, 0 );
 					lblQte:SetText( tostring(twmoney[w]) );
 					lblQte:SetSize( lblQte:GetTextLength() * NM, WITTCtr:GetHeight() );
-					--lblQte:SetForeColor( Color["green"] );
 					lblQte:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleRight );
 					tmWidth = tmWidth + lblQte:GetWidth()+5;
 					--lblQte:SetBackColor( Color["red"] ); -- debug purpose
@@ -110,7 +108,6 @@ function RefreshWITTListBox()
 				lblQte:SetPosition( 35, 0 );
 				lblQte:SetText( CtrQteIs );
 				lblQte:SetSize( lblQte:GetTextLength() * NM, WITTCtr:GetHeight() );
-				--lblQte:SetForeColor( Color["green"] );
 				lblQte:SetTextAlignment( Turbine.UI.ContentAlignment.MiddleLeft );
 				--lblQte:SetBackColor( Color["red"] ); -- debug purpose
 				--**^

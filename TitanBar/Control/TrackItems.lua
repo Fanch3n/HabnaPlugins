@@ -21,11 +21,10 @@ function InitializeTrackItems()
         SetupControlInteraction({
             icon = TI["Icon"],
             controlTable = TI,
-            settingsSection = settings.TrackItems,
             windowImportPath = AppCtrD .. "TrackItemsWindow",
             windowFunction = "frmTrackItemsWindow",
-            tooltipKey = "TI",                  -- Uses generic ShowTIToolTip? No, checked grep, usually tailored.
-            customTooltipHandler = ShowTIWindow -- Assuming this name based on pattern
+            tooltipKey = "TI",
+            customTooltipHandler = ShowTIWindow
         })
     end
 
@@ -36,9 +35,10 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
         id = "TI",
+        menuText = "MTI",
+        icon = { only = true },
         settingsKey = "TrackItems",
         hasWhere = false,
-        defaults = { show = false, x = 0, y = 0 },
         initFunc = InitializeTrackItems
     })
 end

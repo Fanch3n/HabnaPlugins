@@ -28,14 +28,10 @@ function frmShellCmd()
 		text = L["SCWTitle"],
 		width = windowWidth,
 		height = 50,
-		left = SCWLeft,
-		top = SCWTop,
+		position = WindowPositions.Shell,
 		config = {
 			settingsKey = "Shell",
 			windowGlobalVar = "wShellCmd",
-			onPositionChanged = function(left, top)
-				SCWLeft, SCWTop = left, top
-			end,
 			onClosing = function(sender, args)
 				opt_shellcmd:SetEnabled(true)
 				frmSC = nil

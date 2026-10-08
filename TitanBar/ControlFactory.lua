@@ -1,6 +1,5 @@
 -- ControlFactory.lua
 -- Factory functions for creating TitanBar controls consistently
--- Eliminates repetitive control setup code
 
 -- ============================================================================
 -- TITANBAR CONTROL CREATION
@@ -55,7 +54,6 @@ end
 -- Parameters:
 --   icon: The icon control to attach handlers to
 --   controlTable: The control's global table (controlId will be derived from ControlData)
---   settingsSection: The settings table section for this control
 --   controlId: Optional control identifier (will be auto-derived from controlTable if not provided)
 --   tooltipName: Optional tooltip identifier (defaults to controlId)
 --   windowImportPath: Optional import path (defaults to AppCtrD + controlId + "Window")
@@ -63,7 +61,6 @@ end
 function SetupControlInteraction(config)
 	local icon = config.icon
 	local controlTable = config.controlTable
-	local settingsSection = config.settingsSection
 
 	-- Derive controlId from controlTable by finding which ControlData entry references it
 	local controlId = config.controlId
@@ -104,7 +101,7 @@ function SetupControlInteraction(config)
 			tooltipShowFn = customTooltipHandler
 		else
 			tooltipShowFn = function()
-				TooltipManager.ShowStandard(tooltipName)
+				TooltipManager.ShowStandard(tooltipName, onLeftClick == nil)
 			end
 		end
 
@@ -215,7 +212,7 @@ function SetupControlInteraction(config)
 	end
 
 	-- Drag handlers
-	local dragHandlers = CreateDragHandlers(controlTable["Ctr"], settingsSection, controlId)
+	local dragHandlers = CreateDragHandlers(controlTable["Ctr"], controlId)
 	icon.MouseDown = dragHandlers.MouseDown
 	icon.MouseUp = dragHandlers.MouseUp
 end -- ============================================================================

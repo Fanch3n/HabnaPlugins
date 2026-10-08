@@ -144,7 +144,6 @@ function frmWalletWindow()
 
 	local WIlblLOTROPTS = Turbine.UI.Label();
 	WIlblLOTROPTS:SetParent( LPWCtr );
-	--WIlblLOTROPTS:SetFont( Turbine.UI.Lotro.Font.TrajanPro14 );
 	WIlblLOTROPTS:SetText( L["MLotroPoints"] );
 	WIlblLOTROPTS:SetPosition( 0, 2 );
 	WIlblLOTROPTS:SetSize( WIlblLOTROPTS:GetTextLength() * 7.5, 15 ); --Auto size with text lenght
@@ -192,13 +191,11 @@ function frmWalletWindow()
 		if wcur == L["MGSC"] then
 			_G.ControlData.Money = _G.ControlData.Money or {}
 			_G.ControlData.Money.where = SelIndex
-			settings.Money.W = string.format("%.0f", SelIndex);
 			if SelIndex == Constants.Position.TITANBAR then if not _G.ControlData.Money.show then ToggleControl("Money"); end
 			else if _G.ControlData.Money.show then ToggleControl("Money"); end end
 		elseif wcur == L["MLotroPoints"] then
 			_G.ControlData.LP = _G.ControlData.LP or {}
 			_G.ControlData.LP.where = SelIndex
-			settings.LOTROPoints.W = string.format("%.0f", SelIndex);
 			if SelIndex == Constants.Position.TITANBAR then
 				if not _G.ControlData.LP.show then
 					ToggleControl("LP")
@@ -229,20 +226,19 @@ function frmWalletWindow()
 			UpdateLOTROPoints()
 		else
 			local cur = _G.CurrencyLangMap[wcur]
-			_G.CurrencyData[cur].Where = SelIndex
-			settings[cur].W = string.format("%.0f", SelIndex)
+			_G.ControlData[cur].where = SelIndex
 			if SelIndex == Constants.Position.TITANBAR then
-				if not _G.CurrencyData[cur].IsVisible then
+				if not _G.ControlData[cur].show then
 					ShowHideCurrency(cur)
 				end
 			else
-				if _G.CurrencyData[cur].IsVisible then
+				if _G.ControlData[cur].show then
 					ShowHideCurrency(cur)
 				end
 			end
 		end
 
-		SaveSettings( false );
+		SaveSettings();
 	end
 
 	RefreshWIListBox();
@@ -301,7 +297,7 @@ function RefreshWIListBox()
 					WItxtLOTROPTS:Focus(); -- LOTRO Points
 					WIbutSave:SetPosition( WIWCtr:GetWidth()/2 - WIbutSave:GetWidth()/2, LPWCtr:GetTop()+LPWCtr:GetHeight()+10); -- LOTRO Points
 				else
-					tw = _G.CurrencyData[_G.CurrencyLangMap[wcur]].Where
+					tw = _G.ControlData[_G.CurrencyLangMap[wcur]].where
 				end
 
 				for k, v in pairs(WICBO) do

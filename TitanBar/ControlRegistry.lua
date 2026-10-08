@@ -82,35 +82,14 @@ end
 
 -- Registry structure for each control - maps ID to metadata
 local registry = {}
-
--- Helper function to get default X position for a control
-local function GetDefaultX(controlId)
-	if not Constants then return 0 end
-
-	if controlId == "Money" then
-		return Constants.DEFAULT_MONEY_X
-	elseif controlId == "PI" then
-		return Constants.DEFAULT_PLAYER_INFO_X
-	elseif controlId == "EI" then
-		return Constants.DEFAULT_EQUIP_INFO_X
-	elseif controlId == "DI" then
-		return Constants.DEFAULT_DURABILITY_INFO_X
-	elseif controlId == "PL" then
-		return TBWidth - Constants.DEFAULT_PLAYER_LOC_WIDTH
-	else
-		return 0
-	end
-end
+local registrationCount = 0
 
 -- Initialize all control data structures
 function _G.ControlRegistry.InitializeAll()
 	for id, config in pairs(registry) do
-		-- Apply default x positions based on Constants if not set
 		local defaults = config.defaults or {}
-		if defaults.x == nil then
-			defaults.x = GetDefaultX(id)
-		end
 		InitControlData(id, config.settingsKey, config.toggleFunc, config.hasWhere, defaults)
+		_G.ControlData[id].kind = config.kind
 	end
 end
 
@@ -131,7 +110,7 @@ function _G.ControlRegistry.ResetToDefaults()
 			data.colors.green = defaults.green or 0.3
 			data.colors.blue = defaults.blue or 0.3
 
-			data.location.x = defaults.x or GetDefaultX(id)
+			data.location.x = defaults.x or 0
 			data.location.y = defaults.y or 0
 		end
 	end
@@ -140,21 +119,29 @@ end
 -- Register a control dynamically
 function _G.ControlRegistry.Register(config)
 	local id = config.id
+	registrationCount = registrationCount + 1
 	registry[id] = {
+		order = registrationCount,
+		kind = config.kind or "control", -- "control" or "currency"
 		settingsKey = config.settingsKey or id,
 		toggleFunc = config.toggleFunc,
 		hasWhere = config.hasWhere or false,
-		defaults = config.defaults or {},
+		-- Standard controls get their defaults from settings.lua, currencies pass their own
+		defaults = config.defaults or GetControlDefaults(id) or {},
 		onShow = config.onShow,
-		onHide = config.onHide
+		onHide = config.onHide,
+		menuText = config.menuText, -- localization key of the entry in the TitanBar menu (none: not in the menu)
+		freePeopleOnly = config.freePeopleOnly, -- hidden in Monster Play
+		icon = config.icon, -- icon layout, see AdjustIcon()
+		tooltipHeader = config.tooltipHeader -- localization key of the header of the standard tooltip
 	}
 	-- Also store initFunc in defaults so InitControlData picks it up
 	registry[id].defaults.initFunc = config.initFunc
 
 	-- Initialize data immediately
 	local defaults = registry[id].defaults
-	if defaults.x == nil then defaults.x = GetDefaultX(id) end
 	InitControlData(id, registry[id].settingsKey, registry[id].toggleFunc, registry[id].hasWhere, defaults, config.onShow, config.onHide)
+	_G.ControlData[id].kind = registry[id].kind
 end
 
 -- Get registration metadata
@@ -176,7 +163,18 @@ function _G.ControlRegistry.GetAllIds()
 	return ids
 end
 
--- Helper function to iterate over all standard controls
+-- Iterate over all registered controls in the order they were registered (see main.lua),
+-- with their data and their registration metadata
+function _G.ControlRegistry.ForEachRegistered(callback)
+	local ids = {}
+	for id in pairs(registry) do table.insert(ids, id) end
+	table.sort(ids, function(a, b) return registry[a].order < registry[b].order end)
+	for _, id in ipairs(ids) do
+		callback(id, _G.ControlData[id], registry[id])
+	end
+end
+
+-- Helper function to iterate over all controls, currencies included
 function _G.ControlRegistry.ForEach(callback)
 	for id, data in pairs(_G.ControlData) do
 		callback(id, data)
@@ -193,7 +191,8 @@ function _G.ControlRegistry.SetToggleFunc(controlId, func)
 	end
 end
 
--- Helper to check if a control is a currency (uses different data structure)
+-- Helper to check if a control is a currency
 function _G.ControlRegistry.IsCurrency(controlId)
-	return _G.currencies and _G.currencies[controlId] ~= nil
+	local data = _G.ControlData[controlId]
+	return data ~= nil and data.kind == "currency"
 end

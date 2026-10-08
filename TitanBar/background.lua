@@ -4,10 +4,12 @@
 
 import(AppDirD .. "UIHelpers")
 
+local curAlpha, curSelAlpha, curSelRed, curSelGreen, curSelBlue
+
 function frmBackground()
 	sFrom = _G.sFromCtr;
-	curColor = {};
-	bClick = false;
+	local curColor = {};
+	local bClick = false;
 
 	import(AppDirD .. "WindowFactory")
 	
@@ -16,15 +18,11 @@ function frmBackground()
 		text = L["BWTitle"],
 		width = 400,
 		height = 210,
-		left = BGWLeft,
-		top = BGWTop,
+		position = WindowPositions.Background,
 		config = {
 			settingsKey = "Background",
 			windowGlobalVar = "wBackground",
 			formGlobalVar = "frmBackground",
-			onPositionChanged = function(left, top)
-				BGWLeft, BGWTop = left, top
-			end
 		}
 	})
 	wBackground.Opacity = 1
@@ -34,9 +32,7 @@ function frmBackground()
 
 	SetToAllCtr.CheckedChanged = function( sender, args )
 		BGWToAll = SetToAllCtr:IsChecked();
-		--if BGWToAll then ChangeColor(mColor); end
-		settings.Background.A = BGWToAll;
-		SaveSettings( false );
+		SaveSettings();
 	end
 	-- **^
 
@@ -44,10 +40,10 @@ function frmBackground()
 	local CurSetColorLbl = CreateTitleLabel(wBackground, L["BWCurSetColor"], 305, 35, nil, Color["rustedgold"], nil, 80, 30)
 	-- **^
 	-- **v Currently Selected color - box v**
-	curSelColorBorder = CreateControl(Turbine.UI.Label, wBackground, 305, 60, 73, 73);
+	local curSelColorBorder = CreateControl(Turbine.UI.Label, wBackground, 305, 60, 73, 73);
 	curSelColorBorder:SetBackColor( Color["white"] );
 
-	curSelColor = CreateControl(Turbine.UI.Label, curSelColorBorder, 1, 1, 71, 71);
+	local curSelColor = CreateControl(Turbine.UI.Label, curSelColorBorder, 1, 1, 71, 71);
 	
 	-- Set backcolor window setting to currently control color
 	if sFrom == "TitanBar" then
@@ -56,19 +52,12 @@ function frmBackground()
 		curSelGreen = bcGreen or 0.3
 		curSelBlue = bcBlue or 0.3
 	else
-		-- Try to get from ControlRegistry first
 		local data = _G.ControlRegistry.Get(sFrom)
 		if data then
 			curSelAlpha = data.colors.alpha or 0.3
 			curSelRed = data.colors.red or 0.3
 			curSelGreen = data.colors.green or 0.3
 			curSelBlue = data.colors.blue or 0.3
-		elseif _G.CurrencyData[sFrom] then
-			-- Fall back to currency data
-			curSelAlpha = _G.CurrencyData[sFrom].bcAlpha or 0.3
-			curSelRed = _G.CurrencyData[sFrom].bcRed or 0.3
-			curSelGreen = _G.CurrencyData[sFrom].bcGreen or 0.3
-			curSelBlue = _G.CurrencyData[sFrom].bcBlue or 0.3
 		end
 	end
 	
@@ -85,7 +74,7 @@ function frmBackground()
 		UpdateBCvariable();
 		
 		ChangeColor(curSelColor:GetBackColor());
-		SaveSettings( true );
+		SaveSettings();
 	end
 	-- **^
 	-- Create alpha label and slider.
@@ -174,7 +163,6 @@ function frmBackground()
 		local blockYvalue = (round(ColourPicker:GetHeight()/2));
 
 		curColor = Turbine.UI.Color();
-		--curColor.A = 1.0;
 		local myX = X;
 		local myY = Y;
 		local curRed = 0;
@@ -228,6 +216,7 @@ function frmBackground()
 		return curColor;
 	end
 
+	local mColor
 	ColourPicker.MouseMove = function( sender, args )
 		mColor = ColourPicker:GetColorFromCoord( args.X, args.Y );
 		BGWToAll = SetToAllCtr:IsChecked();
@@ -251,10 +240,8 @@ function frmBackground()
 	end
 
 	wBackground.MouseUp = function( sender, args )
-		settings.Background.L = string.format("%.0f", wBackground:GetLeft());
-		settings.Background.T = string.format("%.0f", wBackground:GetTop());
-		BGWLeft, BGWTop = wBackground:GetPosition();
-		SaveSettings( false );
+		WindowPositions.Background.left, WindowPositions.Background.top = wBackground:GetPosition();
+		SaveSettings();
 	end
 
 	wBackground.Closing = function( sender, args )
@@ -280,21 +267,13 @@ function UpdateBCvariable()
 	if BGWToAll then
 		bcAlpha, bcRed, bcGreen, bcBlue = curSelAlpha, curSelRed, curSelGreen, curSelBlue;
 		
-		-- Update all standard controls via ControlRegistry
+		-- Update all controls, currencies included
 		_G.ControlRegistry.ForEach(function(controlId, data)
 			data.colors.alpha = curSelAlpha
 			data.colors.red = curSelRed
 			data.colors.green = curSelGreen
 			data.colors.blue = curSelBlue
 		end)
-		
-		-- Update all currency controls
-		for k,v in pairs(_G.currencies.list) do
-			_G.CurrencyData[v.name].bcAlpha = curSelAlpha
-			_G.CurrencyData[v.name].bcRed = curSelRed
-			_G.CurrencyData[v.name].bcGreen = curSelGreen
-			_G.CurrencyData[v.name].bcBlue = curSelBlue
-		end
 	else
 		if sFrom == "TitanBar" then 
 			bcAlpha = curSelAlpha
@@ -302,19 +281,12 @@ function UpdateBCvariable()
 			bcGreen = curSelGreen
 			bcBlue = curSelBlue
 		else
-			-- Try to get from ControlRegistry first
 			local data = _G.ControlRegistry.Get(sFrom)
 			if data then
 				data.colors.alpha = curSelAlpha
 				data.colors.red = curSelRed
 				data.colors.green = curSelGreen
 				data.colors.blue = curSelBlue
-			elseif _G.CurrencyData[sFrom] then
-				-- Fall back to currency data
-				_G.CurrencyData[sFrom].bcAlpha = curSelAlpha
-				_G.CurrencyData[sFrom].bcRed = curSelRed
-				_G.CurrencyData[sFrom].bcGreen = curSelGreen
-				_G.CurrencyData[sFrom].bcBlue = curSelBlue
 			end
 		end
 	end

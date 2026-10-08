@@ -61,7 +61,6 @@ function InitializeDurabilityInfos()
         SetupControlInteraction({
             icon = DI["Lbl"],
             controlTable = DI,
-            settingsSection = settings.DurabilityInfos,
             windowImportPath = AppCtrD .. "DurabilityInfosWindow",
             windowFunction = "frmDurabilityInfosWindow",
             customTooltipHandler = ShowDIWindow
@@ -110,9 +109,10 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
         id = "DI",
+        menuText = "MDI",
+        freePeopleOnly = true,
         settingsKey = "DurabilityInfos",
         hasWhere = false,
-        defaults = { show = true, x = nil, y = 0 },
         initFunc = InitializeDurabilityInfos,
         onShow = OnShowDurabilityInfos
     })

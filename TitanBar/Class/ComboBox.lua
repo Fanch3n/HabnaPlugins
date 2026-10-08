@@ -29,7 +29,6 @@ function ComboBox:Constructor()
     Turbine.UI.Control.Constructor(self);
     
     self:SetBackColor(ComboBox.DisabledColor);
-    --self:SetZOrder(5);
     
     -- state
     self.dropped = false;
@@ -56,10 +55,8 @@ function ComboBox:Constructor()
     
     -- drop down window
     self.dropDownWindow = Turbine.UI.Window();
-	--self.dropDownWindow:SetParent(self);
     self.dropDownWindow:SetBackColor(ComboBox.DisabledColor);
     self.dropDownWindow:SetZOrder(20);
-	--self.dropDownWindow:SetMouseVisible(false);
     self.dropDownWindow:SetVisible(false);
     
     -- list scroll bar        
@@ -189,7 +186,6 @@ function ComboBox:SetSelection(value)
         local item = self.listBox:GetItem(i);
         if (item.value == value) then
             self:ItemSelected(i);
-            --self:FireEvent();
             break;
         end
     end
@@ -217,7 +213,6 @@ function ComboBox:SetEnabled(enabled)
     else
         self:CloseDropDown();
         self.label:SetForeColor(ComboBox.DisabledColor);
-        --self.arrow:SetBackground();--same as 0x41007e1a but disable (greyed)
     end
 end
 
@@ -238,7 +233,6 @@ function ComboBox:ShowDropDown()
         self.label:SetForeColor(ComboBox.SelectionColor);
         self.arrow:SetBackground(0x41007e19);
         local width, height = self:GetSize();
-        --width = width + 10;
         
         -- max size
         local maxItems = itemCount;
@@ -266,11 +260,6 @@ function ComboBox:ShowDropDown()
         self.scrollBar:SetSize(scrollSize, listHeight);
         self.scrollBar:SetPosition(width - 14, 2);
 
-        -- position
-        --local x, y = self:GetParent():PointToScreen(self:GetPosition());
-        --self.dropDownWindow:SetPosition(x, y + height + 2);
-		--self.dropDownWindow:SetPosition(
-        --    self.label:GetLeft()-2, self.label:GetTop()-2 + height + 2);
         self.dropDownWindow:SetVisible(true);
         
         -- store the open drop down

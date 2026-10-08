@@ -47,14 +47,11 @@ function HandleInfamyChat(sender, args)
                 break
             end
         end
-        settings.Infamy.P = string.format("%.0f", _G.ControlData.IF.points);
-        settings.Infamy.K = string.format("%.0f", _G.ControlData.IF.rank or 0);
-        SaveSettings(false);
+        SaveSettings();
         UpdateInfamy();
     end
 end
 
--- Moved from functions.lua
 function UpdateInfamy()
     -- Ensure dependencies
     if not (AdjustIcon and _G.ControlData.IF and _G.ControlData.IF.controls) then return end
@@ -72,11 +69,9 @@ function UpdateInfamy()
     end
 
     --Change Rank icon with infamy points
-    if IF["Icon"] and settings.Infamy and settings.Infamy.K then
-        local rankIndex = tonumber(settings.Infamy.K)
-        if rankIndex and InfIcon[rankIndex] then
-            IF["Icon"]:SetBackground(InfIcon[rankIndex]);
-        end
+    local rankIndex = _G.ControlData.IF and tonumber(_G.ControlData.IF.rank)
+    if IF["Icon"] and rankIndex and InfIcon[rankIndex] then
+        IF["Icon"]:SetBackground(InfIcon[rankIndex]);
     end
 
     AdjustIcon("IF");
@@ -96,7 +91,6 @@ function InitializeInfamy()
         SetupControlInteraction({
             icon = IF["Icon"],
             controlTable = IF,
-            settingsSection = settings.Infamy,
             windowImportPath = AppCtrD .. "InfamyWindow",
             windowFunction = "frmInfamyWindow",
             customTooltipHandler = ShowIFWindow
@@ -119,9 +113,10 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
         id = "IF",
+        menuText = "IFWTitle",
+        icon = { only = true },
         settingsKey = "Infamy",
         hasWhere = false,
-        defaults = { show = false, x = 0, y = 0 },
         initFunc = InitializeInfamy
     })
 end

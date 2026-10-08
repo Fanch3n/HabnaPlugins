@@ -8,6 +8,7 @@ function frmLOTROPointsWindow()
 	_G.ControlData.LP = _G.ControlData.LP or {}
 	_G.ControlData.LP.ui = _G.ControlData.LP.ui or {}
 	local ui = _G.ControlData.LP.ui
+	local buttonSave -- assigned below, used by the Enter key handler
 	local wLP = CreateControlWindow(
 		"LOTROPoints", "LP",
 		L["MLotroPoints"], 300, 80,

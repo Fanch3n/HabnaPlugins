@@ -6,6 +6,8 @@ function frmInfamyWindow()
 	import(AppDirD .. "WindowFactory")
 	import(AppDirD .. "UIHelpers")
 
+	local buttonSave -- assigned below, used by the Enter key handler
+
 	-- Create window via helper
 	local wIF = CreateControlWindow(
 		"Infamy", "IF",
@@ -52,7 +54,6 @@ function frmInfamyWindow()
 
 		if tonumber(parsed_text) == nil or string.find(parsed_text,"%.") ~= nil then
 			txtInfamy:SetText( string.sub( parsed_text, 1, string.len(parsed_text)-1 ) );
-			--txtInfamy:Focus();
 			return
 		elseif string.len(parsed_text) > 1 and string.sub(parsed_text,1,1) == "0" then
 			txtInfamy:SetText( string.sub( parsed_text, 2 ) );
@@ -60,7 +61,7 @@ function frmInfamyWindow()
 		end
 	end
 
-	local buttonSave = CreateAutoSizedButton(IFWCtr, L["PWSave"], txtInfamy:GetLeft()+txtInfamy:GetWidth()+5, txtInfamy:GetTop())
+	buttonSave = CreateAutoSizedButton(IFWCtr, L["PWSave"], txtInfamy:GetLeft()+txtInfamy:GetWidth()+5, txtInfamy:GetTop())
 
 	buttonSave.Click = function( sender, args )
 		local parsed_text = txtInfamy:GetText();
@@ -85,9 +86,7 @@ function frmInfamyWindow()
 			end
 		end
 
-		settings.Infamy.P = string.format("%.0f", _G.ControlData.IF.points);
-		settings.Infamy.K = string.format("%.0f", _G.ControlData.IF.rank or 0);
-		SaveSettings( false );
+		SaveSettings();
 
 		txtInfamy:Focus();
 

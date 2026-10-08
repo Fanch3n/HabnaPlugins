@@ -2,42 +2,17 @@
 -- Written by Habna
 -- Rewritten by many
 
+-- Defaults for new settings, set in LoadSettings()
+local tA, tR, tG, tB, tX, tY, tL, tT
+
 -- ============================================================================
 -- HELPER FUNCTIONS FOR LOADING SETTINGS
 -- ============================================================================
 
--- Load settings from file into ControlData structure
-local function LoadControlSettings(controlId, settingsSection)
-	local data = _G.ControlData[controlId]
-	if not data then return end
-	
-	-- Load visibility
-	data.show = settingsSection.V or false
-	
-	-- Load colors
-	data.colors.alpha = tonumber(settingsSection.A) or Constants.DEFAULT_ALPHA
-	data.colors.red = tonumber(settingsSection.R) or Constants.DEFAULT_RED
-	data.colors.green = tonumber(settingsSection.G) or Constants.DEFAULT_GREEN
-	data.colors.blue = tonumber(settingsSection.B) or Constants.DEFAULT_BLUE
-	
-	-- Load location
-	data.location.x = tonumber(settingsSection.X) or Constants.DEFAULT_X
-	data.location.y = tonumber(settingsSection.Y) or Constants.DEFAULT_Y
-	
-	-- Load window position
-	data.window.left = tonumber(settingsSection.L) or Constants.DEFAULT_WINDOW_LEFT
-	data.window.top = tonumber(settingsSection.T) or Constants.DEFAULT_WINDOW_TOP
-	
-	-- Load where (if applicable)
-	if data.where ~= nil and settingsSection.W then
-		data.where = tonumber(settingsSection.W)
-	end
-end
-
 -- Save ControlData to settings structure  
 local function SaveControlSettings(controlId, settingsSection)
 	local data = _G.ControlData[controlId]
-	if not data then return end
+	if not (data and data.colors) then return end
 	
 	settingsSection.V = data.show
 	settingsSection.A = Constants.FormatFloat(data.colors.alpha)
@@ -110,26 +85,6 @@ local function InitControlDefaults(sectionName, colorDefaults, posDefaults, wind
 	return section
 end
 
--- Load color values from a settings section into global variables
-local function LoadColors(section, alphaVar, redVar, greenVar, blueVar)
-	_G[alphaVar] = tonumber(section.A)
-	_G[redVar] = tonumber(section.R)
-	_G[greenVar] = tonumber(section.G)
-	_G[blueVar] = tonumber(section.B)
-end
-
--- Load position values from a settings section into global variables
-local function LoadPosition(section, xVar, yVar)
-	_G[xVar] = tonumber(section.X)
-	_G[yVar] = tonumber(section.Y)
-end
-
--- Load window position values from a settings section into global variables
-local function LoadWindowPosition(section, leftVar, topVar)
-	_G[leftVar] = tonumber(section.L)
-	_G[topVar] = tonumber(section.T)
-end
-
 -- ============================================================================
 -- HELPER FUNCTIONS FOR SAVING SETTINGS
 -- ============================================================================
@@ -154,22 +109,280 @@ local function SaveWindowPosition(section, left, top)
 	section.T = string.format("%.0f", top)
 end
 
--- Save standard control settings (visibility, colors, position, window position) - OLD VERSION
-local function SaveControlSettingsOld(sectionName, visible, alpha, red, green, blue, x, y, left, top)
-	settings[sectionName] = {}
-	settings[sectionName].V = visible
-	SaveColors(settings[sectionName], alpha, red, green, blue)
-	SavePosition(settings[sectionName], x, y)
-	if left and top then
-		SaveWindowPosition(settings[sectionName], left, top)
+-- ============================================================================
+-- SETTINGS OF THE CONTROLS
+-- ============================================================================
+-- One entry per control. Loading, saving and "Reset all settings" all work from this table.
+--   id: the ControlData / ControlRegistry id; section: the section in the settings file
+--   show, where, x: defaults of the standard fields (x can be a function for positions that depend on the bar width)
+--   noWindow: the control has no window, so no window position is stored (PlayerLoc uses L for its text)
+--   fields: the control's own settings, saved as section[key] and kept in ControlData[id][field]
+--     type: "bool" (the default), "int" (saved as a whole number), "float" (saved with 3 decimals) or "string"
+--     default: value of the field for new characters and after a reset (can be a function)
+--     invert: the saved value is the opposite of the field
+--     keepOnReset: "Reset all settings" keeps the current value
+local CONTROL_SETTINGS = {
+	{ id = "WI", section = "Wallet" },
+	{ id = "Money", section = "Money", show = true, where = Constants.Position.TITANBAR, x = Constants.DEFAULT_MONEY_X,
+		fields = {
+			{ key = "S", field = "stm", default = false }, -- Show total money of all characters on the control
+			{ key = "SS", field = "sss", default = true }, -- Show statistics of the session
+			{ key = "TS", field = "sts", default = true }, -- Show statistics of today
+		} },
+	{ id = "LP", section = "LOTROPoints", where = Constants.Position.NONE },
+	{ id = "BI", section = "BagInfos", show = true,
+		fields = {
+			{ key = "U", field = "used", default = true },
+			{ key = "M", field = "max", default = true },
+		} },
+	{ id = "PI", section = "PlayerInfos", x = Constants.DEFAULT_PLAYER_INFO_X, noWindow = true,
+		fields = {
+			{ key = "XP", field = "xp", type = "string", default = "0", keepOnReset = true },
+			{ key = "Layout", field = "layout", default = false, keepOnReset = true },
+		} },
+	{ id = "EI", section = "EquipInfos", show = true, x = Constants.DEFAULT_EQUIP_INFO_X, noWindow = true },
+	{ id = "DI", section = "DurabilityInfos", show = true, x = Constants.DEFAULT_DURABILITY_INFO_X,
+		fields = {
+			{ key = "I", field = "icon", default = true },
+			{ key = "N", field = "text", default = true },
+		} },
+	{ id = "PL", section = "PlayerLoc", show = true, x = function() return TBWidth - Constants.DEFAULT_PLAYER_LOC_WIDTH end, noWindow = true,
+		fields = {
+			{ key = "L", field = "text", type = "string", default = function() return L["PLMsg"] end, keepOnReset = true },
+		} },
+	{ id = "TI", section = "TrackItems" },
+	{ id = "IF", section = "Infamy",
+		fields = {
+			{ key = "F", field = "set", default = true, keepOnReset = true },
+			{ key = "P", field = "points", type = "int", default = 0, keepOnReset = true },
+			{ key = "K", field = "rank", type = "int", default = 0, keepOnReset = true },
+		} },
+	{ id = "VT", section = "Vault" },
+	{ id = "SS", section = "SharedStorage" },
+	{ id = "DN", section = "DayNight",
+		fields = {
+			{ key = "N", field = "next", default = true },
+			{ key = "S", field = "ts", type = "int", default = 10350, keepOnReset = true },
+		} },
+	{ id = "RP", section = "Reputation",
+		fields = {
+			{ key = "H", field = "showMax", default = false, invert = true }, -- saved as "hide max"
+		} },
+	{ id = "GT", section = "GameTime", show = true, x = function() return TBWidth - Constants.GAME_TIME_DEFAULT_OFFSET end,
+		fields = {
+			{ key = "H", field = "clock24h", default = false },
+			{ key = "S", field = "showST", default = false }, -- Show server time
+			{ key = "O", field = "showBT", default = false }, -- Show both server and real time
+			{ key = "M", field = "userGMT", type = "int", default = 0 },
+		} },
+}
+
+local function DefaultX(control)
+	if type(control.x) == "function" then return control.x() end
+	return control.x or 0
+end
+
+local function DefaultValue(field)
+	if type(field.default) == "function" then return field.default() end
+	return field.default
+end
+
+-- Value of a field as it is saved in the settings file
+local function SavedValue(field, value)
+	if value == nil then value = DefaultValue(field) end
+	if field.type == "int" then return Constants.FormatInt(tonumber(value) or DefaultValue(field)) end
+	if field.type == "float" then return Constants.FormatFloat(tonumber(value) or DefaultValue(field)) end
+	if field.type == "string" then return value end
+	if field.invert then return value ~= true end
+	return value == true
+end
+
+-- Value of a field as it is kept in ControlData
+local function LoadedValue(field, saved)
+	if field.type == "int" or field.type == "float" then return tonumber(saved) or DefaultValue(field) end
+	if field.type == "string" then return saved end
+	if field.invert then return saved ~= true end
+	return saved == true
+end
+
+-- Defaults of the standard fields of a control, used by ControlRegistry.Register()
+function GetControlDefaults(controlId)
+	for _, control in ipairs(CONTROL_SETTINGS) do
+		if control.id == controlId then
+			return { show = control.show or false, where = control.where, x = DefaultX(control), y = 0 }
+		end
 	end
 end
 
--- Create a new settings section and save window position
-local function SaveSectionWithWindowPos(sectionName, left, top)
-	settings[sectionName] = {}
-	SaveWindowPosition(settings[sectionName], left, top)
-	return settings[sectionName]
+-- ============================================================================
+-- LANGUAGE-INDEPENDENT VALUES
+-- ============================================================================
+
+-- PluginData writes numbers with the decimal separator of the game language (e.g. 1,5 in German),
+-- and no client can read such a file back. So only strings and booleans are saved.
+-- Returns a copy of t with all numbers (values and keys) turned into strings.
+function SaveableTable(t)
+	local copy = {}
+	for k, v in pairs(t) do
+		if type(k) == "number" then k = tostring(k) end
+		if type(v) == "number" then
+			v = tostring(v)
+		elseif type(v) == "table" then
+			v = SaveableTable(v)
+		end
+		copy[k] = v
+	end
+	return copy
+end
+
+-- Auto hide is saved as a code. Older versions saved the translated text of the option.
+local AUTO_HIDE_KEYS = { never = "OPAHD", always = "OPAHE", combat = "OPAHC" }
+local AUTO_HIDE_OLD_TEXTS = {
+	["Disabled"] = "never", ["D\195\169sactiver"] = "never", ["niemals"] = "never",
+	["Always"] = "always", ["Toujours"] = "always", ["immer"] = "always",
+	["Only in combat"] = "combat", ["Seulement en combat"] = "combat", ["Nur in der Schlacht"] = "combat",
+}
+
+-- Saved value (code or old text) -> text of the option in TitanBar's language, as used at runtime
+local function AutoHideText(saved)
+	local code = AUTO_HIDE_KEYS[saved] and saved or AUTO_HIDE_OLD_TEXTS[saved] or "never"
+	return L[AUTO_HIDE_KEYS[code]]
+end
+
+-- Text of the option -> code to save
+local function AutoHideCode(text)
+	for code, key in pairs(AUTO_HIDE_KEYS) do
+		if L[key] == text then return code end
+	end
+	return "never"
+end
+
+-- Icon size, saved as text by very old versions
+local ICON_SIZE_OLD_TEXTS = {
+	["Small (16x16)"] = Constants.ICON_SIZE_SMALL, ["Petit (16x16)"] = Constants.ICON_SIZE_SMALL, ["klein (16x16)"] = Constants.ICON_SIZE_SMALL,
+	["Large (32x32)"] = Constants.ICON_SIZE_LARGE, ["Grand (32x32)"] = Constants.ICON_SIZE_LARGE, ["Breit (32x32)"] = Constants.ICON_SIZE_LARGE,
+}
+
+-- The game languages, the current one first: the order in which files of older versions are taken over
+function GameLocalesCurrentFirst()
+	local order = { GLocale }
+	for _, locale in ipairs({ "en", "de", "fr" }) do
+		if locale ~= GLocale then table.insert(order, locale) end
+	end
+	return order
+end
+
+-- Loads the settings file. On the first start of a version with one file for all game languages,
+-- the file of the current game language is taken over, or else the file of another language.
+-- The old files are kept, so older TitanBar versions still find them.
+local function LoadSettingsFile()
+	local loaded = Turbine.PluginData.Load( Constants.SETTINGS_SCOPE, Constants.SETTINGS_NAME )
+	if loaded then return loaded end
+
+	for _, locale in ipairs(GameLocalesCurrentFirst()) do
+		local ok, old = pcall(Turbine.PluginData.Load, Constants.SETTINGS_SCOPE, Constants.GetSettingsName(locale))
+		if ok and type(old) == "table" then
+			-- TitanBar's language was the game language unless it was changed in the menu
+			if old.TitanBar and old.TitanBar.L == locale then old.TitanBar.L = "auto" end
+			return old
+		end
+	end
+end
+
+-- ============================================================================
+-- SETTINGS OF TITANBAR ITSELF
+-- ============================================================================
+-- Kept in global variables. Loading, saving and "Reset all settings" all work from these tables.
+
+-- Fields per section, like the fields of CONTROL_SETTINGS (key, type, default, keepOnReset), and:
+--   get, set: access to the variable that holds the value at runtime
+--   load, save: conversion between the saved value and the variable, instead of type
+local BAR_SETTINGS = {
+	TitanBar = {
+		{ key = "A", type = "float", default = Constants.DEFAULT_ALPHA, get = function() return bcAlpha end, set = function(v) bcAlpha = v end },
+		{ key = "R", type = "float", default = Constants.DEFAULT_RED, get = function() return bcRed end, set = function(v) bcRed = v end },
+		{ key = "G", type = "float", default = Constants.DEFAULT_GREEN, get = function() return bcGreen end, set = function(v) bcGreen = v end },
+		{ key = "B", type = "float", default = Constants.DEFAULT_BLUE, get = function() return bcBlue end, set = function(v) bcBlue = v end },
+		{ key = "W", type = "int", default = function() return screenWidth end, keepOnReset = true,
+			get = function() return TBWidth end, set = function(v) TBWidth = v end },
+		-- TitanBar's language, "auto": the game language
+		{ key = "L", type = "string", default = "auto", get = function() return TBLocaleChoice end, set = function(v) TBLocaleChoice = v end },
+		{ key = "H", type = "int", default = Constants.DEFAULT_TITANBAR_HEIGHT, get = function() return TBHeight end, set = function(v) TBHeight = v end },
+		{ key = "F", type = "int", default = Constants.DEFAULT_TITANBAR_FONT_ID, get = function() return _G.TBFont end, set = function(v) _G.TBFont = v end },
+		{ key = "T", type = "string", default = Constants.DEFAULT_TITANBAR_FONT_NAME, get = function() return TBFontT end, set = function(v) TBFontT = v end },
+		-- TitanBar at the top of the screen
+		{ key = "D", default = true, get = function() return TBTop end, set = function(v) TBTop = v end },
+		-- TitanBar was reloaded, and the window to open again after the reload ("Profile", "Font" or "TB" for none)
+		{ key = "Z", default = false, keepOnReset = true, get = function() return TBReloaded end, set = function(v) TBReloaded = v end },
+		{ key = "ZT", type = "string", keepOnReset = true, get = function() return TBReloadedText end, set = function(v) TBReloadedText = v end },
+	},
+	Options = {
+		-- Auto hide: the text of the option at runtime, saved as a code
+		{ key = "H", default = function() return L["OPAHD"] end, load = AutoHideText, save = AutoHideCode,
+			get = function() return TBAutoHide end, set = function(v) TBAutoHide = v end },
+		{ key = "I", type = "int", default = Constants.DEFAULT_ICON_SIZE, load = function(saved) return ICON_SIZE_OLD_TEXTS[saved] or tonumber(saved) end,
+			get = function() return TBIconSize end, set = function(v) TBIconSize = v end },
+	},
+	Background = {
+		-- The background window applies the color to all controls
+		{ key = "A", default = false, keepOnReset = true, get = function() return BGWToAll end, set = function(v) BGWToAll = v end },
+	},
+}
+
+-- Positions of TitanBar's own windows by settings section, { left = , top = }.
+-- The windows keep them up to date when they are moved (see CreateWindow's position).
+WindowPositions = {}
+local WINDOW_SECTIONS = { "Options", "Profile", "Shell", "Background" }
+
+local function LoadBarSettings(sectionName)
+	local section = EnsureSettingsSection(sectionName)
+	for _, field in ipairs(BAR_SETTINGS[sectionName]) do
+		if section[field.key] == nil then
+			if field.save then section[field.key] = field.save(DefaultValue(field)) else section[field.key] = SavedValue(field, nil) end
+		end
+		local value
+		if field.load then value = field.load(section[field.key]) else value = LoadedValue(field, section[field.key]) end
+		if value == nil then value = DefaultValue(field) end
+		field.set(value)
+		-- Older versions saved some settings differently, e.g. as translated text
+		if field.save then section[field.key] = field.save(value) end
+	end
+end
+
+local function SaveBarSettings()
+	for sectionName, fields in pairs(BAR_SETTINGS) do
+		local section = EnsureSettingsSection(sectionName)
+		for _, field in ipairs(fields) do
+			local value = field.get()
+			if field.save then section[field.key] = field.save(value) else section[field.key] = SavedValue(field, value) end
+		end
+	end
+end
+
+local function ResetBarSettings()
+	for _, fields in pairs(BAR_SETTINGS) do
+		for _, field in ipairs(fields) do
+			if not field.keepOnReset then
+				field.set(DefaultValue(field))
+			end
+		end
+	end
+end
+
+-- Size of the controls and the text multipliers, from TitanBar's height and font
+local function SetFontMetrics()
+	local tStrS = tonumber(string.sub( TBFontT, string.len(TBFontT) - 1, string.len(TBFontT) )); --Get Font Size
+	if TBHeight > Constants.DEFAULT_TITANBAR_HEIGHT and tStrS <= Constants.FONT_SIZE_THRESHOLD then
+		CTRHeight = Constants.DEFAULT_CONTROL_HEIGHT;
+	elseif TBHeight > Constants.DEFAULT_TITANBAR_HEIGHT and tStrS > Constants.FONT_SIZE_THRESHOLD then
+		CTRHeight = 2*tStrS;
+	else
+		CTRHeight = TBHeight;
+	end
+	local tStr = string.sub( TBFontT, 1, string.len(TBFontT) - 2 ); --Get Font name
+	if tStrS == nil then tStrS = 0; end
+	NM = _G.FontN[tStr][tStrS]; --Number multiplier
+	TM = _G.FontT[tStr][tStrS]; --Text multiplier
 end
 
 -- ============================================================================
@@ -177,293 +390,98 @@ end
 -- ============================================================================
 
 -- **v Load / update / set default settings v**
--- I'm confused as to what most of this is... Most of these strings should be in localization files, and I believe they are - so why are they here too?  Deprecated code that hasn't been cleaned up yet?
--- It's probably to solve the radix point problem. This can be solved with a combination of vindar_patch and string replacement in the future.
 function LoadSettings()
-	if GLocale == "de" then
-		settings = Turbine.PluginData.Load( Constants.SETTINGS_SCOPE, Constants.SETTINGS_NAME_DE );
-	elseif GLocale == "en" then
-		settings = Turbine.PluginData.Load( Constants.SETTINGS_SCOPE, Constants.SETTINGS_NAME_EN );
-	elseif GLocale == "fr" then
-		settings = Turbine.PluginData.Load( Constants.SETTINGS_SCOPE, Constants.SETTINGS_NAME_FR );
-	end
+	settings = LoadSettingsFile()
 	
-	tA, tR, tG, tB, tX, tY, tW = Constants.DEFAULT_ALPHA, Constants.DEFAULT_RED, Constants.DEFAULT_GREEN, Constants.DEFAULT_BLUE, Constants.DEFAULT_X, Constants.DEFAULT_Y, Constants.Position.NONE;
+	tA, tR, tG, tB, tX, tY = Constants.DEFAULT_ALPHA, Constants.DEFAULT_RED, Constants.DEFAULT_GREEN, Constants.DEFAULT_BLUE, Constants.DEFAULT_X, Constants.DEFAULT_Y;
 	tL, tT = Constants.DEFAULT_WINDOW_LEFT, Constants.DEFAULT_WINDOW_TOP;
 
+	---@type table<string, table>
 	settings = settings or {}
 
-	local titanBar = EnsureSettingsSection("TitanBar")
-	SetDefaultColors(titanBar, tA, tR, tG, tB)
-	titanBar.W = titanBar.W or Constants.FormatInt(screenWidth)
-	titanBar.L = titanBar.L or GLocale
-	titanBar.H = titanBar.H or Constants.FormatInt(Constants.DEFAULT_TITANBAR_HEIGHT)
-	titanBar.F = titanBar.F or Constants.FormatInt(Constants.DEFAULT_TITANBAR_FONT_ID)
-	titanBar.T = titanBar.T or Constants.DEFAULT_TITANBAR_FONT_NAME
-	titanBar.D = titanBar.D == nil and true or titanBar.D -- True ->TitanBar set to Top of the screen
-	titanBar.Z = titanBar.Z or false -- Titanbar was reloaded
-	--if settings.TitanBar.ZT == nil then settings.TitanBar.ZT = "TB"; end -- TitanBar was reloaded (text)
-	bcAlpha = tonumber(titanBar.A) or Constants.DEFAULT_ALPHA
-	bcRed = tonumber(titanBar.R) or Constants.DEFAULT_RED
-	bcGreen = tonumber(titanBar.G) or Constants.DEFAULT_GREEN
-	bcBlue = tonumber(titanBar.B) or Constants.DEFAULT_BLUE
-	TBWidth = tonumber(titanBar.W) or screenWidth
-	TBLocale = titanBar.L
+	LoadBarSettings("TitanBar")
+	TBLocale = (TBLocaleChoice == "auto") and GLocale or TBLocaleChoice
 	import (AppLocaleD..TBLocale)
-	TBHeight = tonumber(titanBar.H) or Constants.DEFAULT_TITANBAR_HEIGHT
-	_G.TBFont = tonumber(titanBar.F) or Constants.DEFAULT_TITANBAR_FONT_ID
-	TBFontT = titanBar.T
-	local tStrS = tonumber(string.sub( TBFontT, string.len(TBFontT) - 1, string.len(TBFontT) )); --Get Font Size
-	--write(tStrS);
-	if TBHeight > Constants.DEFAULT_TITANBAR_HEIGHT and tStrS <= Constants.FONT_SIZE_THRESHOLD then 
-		CTRHeight = Constants.DEFAULT_CONTROL_HEIGHT;
-	elseif TBHeight > Constants.DEFAULT_TITANBAR_HEIGHT and tStrS > Constants.FONT_SIZE_THRESHOLD then
-		CTRHeight = 2*tStrS;
-	else 
-		CTRHeight = TBHeight; 
+	SetFontMetrics()
+	LoadBarSettings("Options") -- needs the language: auto hide is kept as the text of the option
+	LoadBarSettings("Background")
+
+	for _, sectionName in ipairs(WINDOW_SECTIONS) do
+		local section = EnsureSettingsSection(sectionName)
+		SetDefaultWindowPosition(section, tL, tT)
+		WindowPositions[sectionName] = { left = tonumber(section.L), top = tonumber(section.T) }
 	end
-	--write(CTRHeight);
-	tStr = string.sub( TBFontT, 1, string.len(TBFontT) - 2 ); --Get Font name
-	--write(tStr);
-	if tStrS == nil then tStrS = 0; end
-	NM = _G.FontN[tStr][tStrS]; --Number multiplier
-	TM = _G.FontT[tStr][tStrS]; --Text multiplier
-	TBTop = titanBar.D
-	TBReloaded = titanBar.Z
-	TBReloadedText = titanBar.ZT
 
-	local options = EnsureSettingsSection("Options")
-	options.V = nil
-	SetDefaultWindowPosition(options, tL, tT)
-	options.H = options.H or L["OPAHD"]
-	options.I = options.I or Constants.FormatInt(Constants.DEFAULT_ICON_SIZE)
-	OPWLeft = tonumber(options.L)
-	OPWTop = tonumber(options.T)
-	
-	TBAutoHide = options.H
-	-- If user change language, Auto hide option not showing in proper language. Fix: Re-input correct word in variable.
-	if TBAutoHide == "Disabled" or TBAutoHide == "D\195\169sactiver" or TBAutoHide == "niemals" then TBAutoHide = L["OPAHD"]; end
-	if TBAutoHide == "Always" or TBAutoHide == "Toujours" or TBAutoHide == "immer" then TBAutoHide = L["OPAHE"]; end
-	if TBAutoHide == "Only in combat" or TBAutoHide == "Seulement en combat" or TBAutoHide == "Nur in der Schlacht" then TBAutoHide = L["OPAHC"]; end
+	-- Settings of older versions: shown state of the options and profile windows, the old bags window
+	settings.Options.V = nil
+	settings.Profile.V = nil
+	settings.BagInfosList = nil
 
-	TBIconSize = options.I
-	-- If user change language, icon disappear. Fix: Re-input correct word in variable.
-	if TBIconSize == "Small (16x16)" or TBIconSize == "Petit (16x16)" or TBIconSize == "klein (16x16)" then TBIconSize = L["OPISS"];
-	elseif TBIconSize == "Large (32x32)" or TBIconSize == "Grand (32x32)" or TBIconSize == "Breit (32x32)" then TBIconSize = L["OPISL"]; end
-	
+	-- Controls: fill in defaults for missing settings, and load the controls' own fields.
+	-- The standard fields are loaded by ControlRegistry when a control registers.
+	for _, control in ipairs(CONTROL_SETTINGS) do
+		local section = InitControlDefaults(control.section, nil, { x = DefaultX(control) }, not control.noWindow and {} or nil)
+		if section.V == nil then section.V = control.show or false end
+		if control.where then section.W = section.W or Constants.FormatInt(control.where) end
 
-	local profile = EnsureSettingsSection("Profile")
-	profile.V = nil
-	SetDefaultWindowPosition(profile, tL, tT)
-	PPWLeft = tonumber(profile.L)
-	PPWTop = tonumber(profile.T)
+		if control.fields then
+			_G.ControlData[control.id] = _G.ControlData[control.id] or {}
+			local data = _G.ControlData[control.id]
+			for _, field in ipairs(control.fields) do
+				if section[field.key] == nil then section[field.key] = SavedValue(field, nil) end
+				data[field.field] = LoadedValue(field, section[field.key])
+			end
+		end
+	end
 
-	local shell = EnsureSettingsSection("Shell")
-	SetDefaultWindowPosition(shell, tL, tT)
-	SCWLeft = tonumber(shell.L)
-	SCWTop = tonumber(shell.T)
-
-	local background = EnsureSettingsSection("Background")
-	SetDefaultWindowPosition(background, tL, tT)
-	background.A = background.A or false
-	BGWLeft = tonumber(background.L)
-	BGWTop = tonumber(background.T)
-	BGWToAll = background.A
-
-
-	-- Wallet control
-	local wallet = InitControlDefaults("Wallet", {}, {}, {})
-	wallet.V = wallet.V or false
-	LoadControlSettings("WI", wallet)
-
-
-	-- Money control
-	local money = InitControlDefaults("Money", {}, {x=Constants.DEFAULT_MONEY_X}, {})
-	money.V = money.V == nil and true or money.V
-	money.S = money.S or false --Show Total Money of all characters on TitanBar Money control
-	money.SS = money.SS == nil and true or money.SS --Show stats for session
-	money.TS = money.TS == nil and true or money.TS --Show stats for today
-	money.W = money.W or Constants.FormatInt(Constants.Position.TITANBAR)
-	LoadControlSettings("Money", money)
-	_G.ControlData.Money = _G.ControlData.Money or {}
-	_G.ControlData.Money.stm = money.S
-	_G.ControlData.Money.sss = money.SS
-	_G.ControlData.Money.sts = money.TS
-
-	-- LOTROPoints control
-	local lotroPoints = InitControlDefaults("LOTROPoints", {}, {}, {})
-	lotroPoints.V = lotroPoints.V or false
-	lotroPoints.W = lotroPoints.W or Constants.FormatInt(tW)
-	LoadControlSettings("LP", lotroPoints)
-	_G.ControlData.LP = _G.ControlData.LP or {}
-
-
-	-- BagInfos control
-	local bagInfos = InitControlDefaults("BagInfos", {}, {}, {})
-	bagInfos.V = bagInfos.V == nil and true or bagInfos.V
-	bagInfos.U = bagInfos.U == nil and true or bagInfos.U
-	bagInfos.M = bagInfos.M == nil and true or bagInfos.M
-	LoadControlSettings("BI", bagInfos)
-	_G.ControlData.BI = _G.ControlData.BI or {}
-	_G.ControlData.BI.used = bagInfos.U
-	_G.ControlData.BI.max = bagInfos.M
-
-
-	local bagInfosList = EnsureSettingsSection("BagInfosList")
-	SetDefaultWindowPosition(bagInfosList, tL, tT)
-	BLWLeft = tonumber(bagInfosList.L)
-	BLWTop = tonumber(bagInfosList.T)
-
-
-	-- PlayerInfos control
-	local playerInfos = InitControlDefaults("PlayerInfos", {}, {x=Constants.DEFAULT_PLAYER_INFO_X})
-	playerInfos.V = playerInfos.V or false
-	playerInfos.XP = playerInfos.XP or Constants.FormatInt(0)
-	playerInfos.Layout = playerInfos.Layout or false
-	LoadControlSettings("PI", playerInfos)
-	_G.ControlData.PI = _G.ControlData.PI or {}
-	_G.ControlData.PI.xp = playerInfos.XP
-	_G.ControlData.PI.layout = playerInfos.Layout
-	local piLayout = _G.ControlData.PI.layout
-	if not piLayout then
+	if not _G.ControlData.PI.layout then
 		_G.AlignLbl = Turbine.UI.ContentAlignment.MiddleLeft;
 		_G.AlignVal = Turbine.UI.ContentAlignment.MiddleRight;
 		_G.AlignOff = 0;
 		_G.AlignOffP = 5;
-	--  _G.AlignHead = Turbine.UI.ContentAlignment.MiddleLeft;
-	elseif piLayout then
+	else
 		_G.AlignLbl = Turbine.UI.ContentAlignment.MiddleRight;
 		_G.AlignVal = Turbine.UI.ContentAlignment.MiddleLeft;
 		_G.AlignOff = 5;
 		_G.AlignOffP = 0;
-	--	_G.AlignHead = Turbine.UI.ContentAlignment.MiddleCenter;
 	end
 
-	-- EquipInfos control
-	local equipInfos = InitControlDefaults("EquipInfos", {}, {x=Constants.DEFAULT_EQUIP_INFO_X})
-	equipInfos.V = equipInfos.V == nil and true or equipInfos.V
-	LoadControlSettings("EI", equipInfos)
-
-
-	-- DurabilityInfos control
-	local durabilityInfos = InitControlDefaults("DurabilityInfos", {}, {x=Constants.DEFAULT_DURABILITY_INFO_X}, {})
-	durabilityInfos.V = durabilityInfos.V == nil and true or durabilityInfos.V
-	durabilityInfos.I = durabilityInfos.I == nil and true or durabilityInfos.I
-	durabilityInfos.N = durabilityInfos.N == nil and true or durabilityInfos.N
-	LoadControlSettings("DI", durabilityInfos)
-	_G.ControlData.DI = _G.ControlData.DI or {}
-	_G.ControlData.DI.icon = durabilityInfos.I
-	_G.ControlData.DI.text = durabilityInfos.N
-
-
-	-- PlayerLoc control
-	local playerLoc = InitControlDefaults("PlayerLoc", {}, {x=screenWidth - Constants.DEFAULT_PLAYER_LOC_WIDTH})
-	playerLoc.V = playerLoc.V == nil and true or playerLoc.V
-	playerLoc.L = playerLoc.L or L["PLMsg"]
-	LoadControlSettings("PL", playerLoc)
-	_G.ControlData.PL = _G.ControlData.PL or {}
-	_G.ControlData.PL.text = playerLoc.L
-
-
-	-- TrackItems control
-	local trackItems = InitControlDefaults("TrackItems", {}, {}, {})
-	trackItems.V = trackItems.V or false
-	LoadControlSettings("TI", trackItems)
-
-
-	-- Infamy control
-	local infamy = InitControlDefaults("Infamy", {}, {}, {})
-	infamy.V = infamy.V or false
-	infamy.F = infamy.F == nil and true or infamy.F
-	infamy.P = infamy.P or Constants.FormatInt(0)
-	infamy.K = infamy.K or Constants.FormatInt(0)
-	LoadControlSettings("IF", infamy)
-	_G.ControlData.IF = _G.ControlData.IF or {}
-	_G.ControlData.IF.set = infamy.F
-	_G.ControlData.IF.points = tonumber(infamy.P) or 0
-	_G.ControlData.IF.rank = tonumber(infamy.K) or 0
-
-
-	-- Vault control
-	local vault = InitControlDefaults("Vault", {}, {}, {})
-	vault.V = vault.V or false
-	LoadControlSettings("VT", vault)
-
-
-	-- SharedStorage control
-	local sharedStorage = InitControlDefaults("SharedStorage", {}, {}, {})
-	sharedStorage.V = sharedStorage.V or false
-	LoadControlSettings("SS", sharedStorage)
-
-	-- DayNight control
-	local dayNight = InitControlDefaults("DayNight", {}, {}, {})
-	dayNight.V = dayNight.V or false
-	dayNight.N = dayNight.N == nil and true or dayNight.N
-	dayNight.S = dayNight.S or Constants.FormatInt(10350)
-	LoadControlSettings("DN", dayNight)
-	_G.ControlData.DN = _G.ControlData.DN or {}
-	_G.ControlData.DN.next = dayNight.N
-	_G.ControlData.DN.ts = tonumber(dayNight.S) or 0
-
-
-	-- Reputation control
-	local reputation = InitControlDefaults("Reputation", {}, {}, {})
-	reputation.V = reputation.V or false
-	reputation.H = reputation.H == nil and true or reputation.H
-	LoadControlSettings("RP", reputation)
-	_G.ControlData.RP = _G.ControlData.RP or {}
-	-- Legacy setting key: settings.Reputation.H stored "hide max". Runtime flag is now showMax.
-	_G.ControlData.RP.showMax = (reputation.H ~= true)
-
-
-	-- GameTime control
-	local gameTime = InitControlDefaults("GameTime", {}, {x=screenWidth - Constants.GAME_TIME_DEFAULT_OFFSET}, {})
-	gameTime.V = gameTime.V == nil and true or gameTime.V
-	gameTime.H = gameTime.H or false -- default to 12h format
-	gameTime.S = gameTime.S or false -- True = Show server time
-	gameTime.O = gameTime.O or false -- True = Show both server and real time
-	gameTime.M = gameTime.M or Constants.FormatInt(0)
-	LoadControlSettings("GT", gameTime)
-	_G.ControlData.GT = _G.ControlData.GT or {}
-	_G.ControlData.GT.clock24h = (gameTime.H == true)
-	_G.ControlData.GT.showST = (gameTime.S == true)
-	_G.ControlData.GT.showBT = (gameTime.O == true)
-	_G.ControlData.GT.userGMT = tonumber(gameTime.M) or 0
-	
 	for k,v in pairs(_G.currencies.list) do
 		CreateSettingsForCurrency(v)
 		LoadSettingsForCurrency(v.name)
 	end
 
-	SaveSettings( false );
+	WriteSettings();
 	
-	--if settings.TitanBar.W ~= screenWidth then ReplaceCtr(); end --Replace control if screen width as changed
 end
 -- **^
 
 function LoadSettingsForCurrency(name)
-	if _G.CurrencyData == nil then
-		_G.CurrencyData = {}
-	end
-	if _G.CurrencyData[name] == nil then
-		_G.CurrencyData[name] = {}
-	end
-	
-	local data = _G.CurrencyData[name]
+	_G.ControlRegistry.Register({
+		id = name,
+		kind = "currency",
+		hasWhere = true,
+		tooltipHeader = name .. "h",
+		freePeopleOnly = not _G.currencies.byName[name].visibleInMonsterPlay,
+		defaults = { show = false, where = Constants.Position.NONE, x = 0, y = 0 },
+		toggleFunc = function() ShowHideCurrency(name) end
+	})
+
+	local data = _G.ControlData[name]
 	local section = settings[name]
 	
-	data.IsVisible = section.V
-	data.bcAlpha = tonumber(section.A) or Constants.DEFAULT_ALPHA
-	data.bcRed = tonumber(section.R) or Constants.DEFAULT_RED
-	data.bcGreen = tonumber(section.G) or Constants.DEFAULT_GREEN
-	data.bcBlue = tonumber(section.B) or Constants.DEFAULT_BLUE
-	data.LocX = tonumber(section.X) or Constants.DEFAULT_X
-	data.LocY = tonumber(section.Y) or Constants.DEFAULT_Y
-	data.Where = tonumber(section.W) or Constants.Position.NONE
+	data.show = section.V
+	data.colors.alpha = tonumber(section.A) or Constants.DEFAULT_ALPHA
+	data.colors.red = tonumber(section.R) or Constants.DEFAULT_RED
+	data.colors.green = tonumber(section.G) or Constants.DEFAULT_GREEN
+	data.colors.blue = tonumber(section.B) or Constants.DEFAULT_BLUE
+	data.location.x = tonumber(section.X) or Constants.DEFAULT_X
+	data.location.y = tonumber(section.Y) or Constants.DEFAULT_Y
+	data.where = tonumber(section.W) or Constants.Position.NONE
 	
-	if data.Where == Constants.Position.NONE and data.IsVisible then
-		data.Where = Constants.Position.TITANBAR
-		section.W = Constants.FormatInt(data.Where)
+	if data.where == Constants.Position.NONE and data.show then
+		data.where = Constants.Position.TITANBAR
+		section.W = Constants.FormatInt(data.where)
 	end
 end
 
@@ -480,179 +498,68 @@ end
 
 
 -- **v Save settings v**
-function SaveSettings(str)
-	if str then --True: get all variable and save settings
-		settings = {}
-		
-		-- TitanBar
-		settings.TitanBar = {}
-		SaveColors(settings.TitanBar, bcAlpha, bcRed, bcGreen, bcBlue)
-		settings.TitanBar.W = Constants.FormatInt(TBWidth)
-		settings.TitanBar.L = TBLocale
-		settings.TitanBar.H = Constants.FormatInt(TBHeight)
-		settings.TitanBar.F = Constants.FormatInt(_G.TBFont)
-		settings.TitanBar.T = TBFontT
-		settings.TitanBar.D = TBTop
-		settings.TitanBar.Z = TBReloaded
-		settings.TitanBar.ZT = TBReloadedText
-		
-		-- Options
-		settings.Options = {}
-		SaveWindowPosition(settings.Options, OPWLeft, OPWTop)
-		settings.Options.H = TBAutoHide
-		settings.Options.I = Constants.FormatInt(TBIconSize)
-
-		-- Profile, Shell, Background
-		SaveSectionWithWindowPos("Profile", PPWLeft, PPWTop)
-		SaveSectionWithWindowPos("Shell", SCWLeft, SCWTop)
-		settings.Background = {}
-		SaveWindowPosition(settings.Background, BGWLeft, BGWTop)
-		settings.Background.A = BGWToAll
-
-		-- Wallet
-		if not settings.Wallet then settings.Wallet = {} end
-		SaveControlSettings("WI", settings.Wallet)
-
-		-- Money
-		if not settings.Money then settings.Money = {} end
-		SaveControlSettings("Money", settings.Money)
-		settings.Money.S = _G.ControlData.Money.stm
-		settings.Money.SS = _G.ControlData.Money.sss
-		settings.Money.TS = _G.ControlData.Money.sts
-
-		-- LOTROPoints
-		if not settings.LOTROPoints then settings.LOTROPoints = {} end
-		SaveControlSettings("LP", settings.LOTROPoints)
-		
-		-- BagInfos
-		if not settings.BagInfos then settings.BagInfos = {} end
-		SaveControlSettings("BI", settings.BagInfos)
-		settings.BagInfos.U = _G.ControlData.BI.used
-		settings.BagInfos.M = _G.ControlData.BI.max
-
-		SaveSectionWithWindowPos("BagInfosList", BLWLeft, BLWTop)
-
-		-- PlayerInfos
-		if not settings.PlayerInfos then settings.PlayerInfos = {} end
-		SaveControlSettings("PI", settings.PlayerInfos)
-		settings.PlayerInfos.XP = (_G.ControlData.PI and _G.ControlData.PI.xp) or Constants.FormatInt(0)
-		settings.PlayerInfos.Layout = (_G.ControlData.PI and _G.ControlData.PI.layout) or false
-
-		-- EquipInfos
-		if not settings.EquipInfos then settings.EquipInfos = {} end
-		SaveControlSettings("EI", settings.EquipInfos)
-		
-		-- DurabilityInfos
-		if not settings.DurabilityInfos then settings.DurabilityInfos = {} end
-		SaveControlSettings("DI", settings.DurabilityInfos)
-		settings.DurabilityInfos.I = _G.ControlData.DI.icon
-		settings.DurabilityInfos.N = _G.ControlData.DI.text
-	
-		-- PlayerLoc
-		if not settings.PlayerLoc then settings.PlayerLoc = {} end
-		SaveControlSettings("PL", settings.PlayerLoc)
-		settings.PlayerLoc.L = string.format(((_G.ControlData.PL and _G.ControlData.PL.text) or L["PLMsg"]))
-
-		-- TrackItems
-		if not settings.TrackItems then settings.TrackItems = {} end
-		SaveControlSettings("TI", settings.TrackItems)
-
-		-- Infamy
-		if not settings.Infamy then settings.Infamy = {} end
-		SaveControlSettings("IF", settings.Infamy)
-		settings.Infamy.F = (_G.ControlData.IF and _G.ControlData.IF.set) ~= false
-		settings.Infamy.P = Constants.FormatInt((_G.ControlData.IF and _G.ControlData.IF.points) or 0)
-		settings.Infamy.K = Constants.FormatInt((_G.ControlData.IF and _G.ControlData.IF.rank) or 0)
-
-		-- Vault
-		if not settings.Vault then settings.Vault = {} end
-		SaveControlSettings("VT", settings.Vault)
-		
-		-- SharedStorage
-		if not settings.SharedStorage then settings.SharedStorage = {} end
-		SaveControlSettings("SS", settings.SharedStorage)
-		
-		-- DayNight
-		if not settings.DayNight then settings.DayNight = {} end
-		SaveControlSettings("DN", settings.DayNight)
-		settings.DayNight.N = ((_G.ControlData.DN and _G.ControlData.DN.next) ~= false)
-		settings.DayNight.S = Constants.FormatInt(((_G.ControlData.DN and _G.ControlData.DN.ts) or 0))
-		
-		-- Reputation
-		if not settings.Reputation then settings.Reputation = {} end
-		SaveControlSettings("RP", settings.Reputation)
-		-- Persist legacy key as hideMax for backward compatibility.
-		settings.Reputation.H = ((_G.ControlData.RP and _G.ControlData.RP.showMax) ~= true)
-
-		-- GameTime
-		if not settings.GameTime then settings.GameTime = {} end
-		SaveControlSettings("GT", settings.GameTime)
-		settings.GameTime.H = (_G.ControlData.GT and _G.ControlData.GT.clock24h) == true
-		settings.GameTime.S = (_G.ControlData.GT and _G.ControlData.GT.showST) == true
-		settings.GameTime.O = (_G.ControlData.GT and _G.ControlData.GT.showBT) == true
-		settings.GameTime.M = Constants.FormatInt(((_G.ControlData.GT and tonumber(_G.ControlData.GT.userGMT)) or 0))
-				
-		for k,v in pairs(_G.currencies.list) do
-			SetSettings(v.name)
-		end
-
+-- Copies the runtime state into the settings table and writes it to disk.
+-- The sections are updated in place, so references to them (e.g. in drag handlers) stay valid.
+function SaveSettings()
+	SaveBarSettings()
+	for _, sectionName in ipairs(WINDOW_SECTIONS) do
+		local position = WindowPositions[sectionName]
+		SaveWindowPosition(EnsureSettingsSection(sectionName), position.left, position.top)
 	end
-	
-	if GLocale == "de" then Turbine.PluginData.Save( Turbine.DataScope.Character, "TitanBarSettingsDE", settings ); end
-	if GLocale == "en" then Turbine.PluginData.Save( Turbine.DataScope.Character, "TitanBarSettingsEN", settings ); end
-	if GLocale == "fr" then Turbine.PluginData.Save( Turbine.DataScope.Character, "TitanBarSettingsFR", settings ); end
+
+	-- Controls
+	for _, control in ipairs(CONTROL_SETTINGS) do
+		local section = EnsureSettingsSection(control.section)
+		SaveControlSettings(control.id, section)
+		local data = _G.ControlData[control.id] or {}
+		for _, field in ipairs(control.fields or {}) do
+			section[field.key] = SavedValue(field, data[field.field])
+		end
+	end
+
+	for k,v in pairs(_G.currencies.list) do
+		SetSettings(v.name)
+		-- The section under the name of old TitanBar versions was taken over when loading
+		if v.legacyTitanbarName then settings[v.legacyTitanbarName] = nil end
+	end
+
+	WriteSettings()
+end
+
+-- Writes the settings table to disk as it is, without taking over the runtime state
+-- (used while loading, and when a profile replaced the settings table)
+function WriteSettings()
+	Turbine.PluginData.Save( Constants.SETTINGS_SCOPE, Constants.SETTINGS_NAME, SaveableTable(settings) );
 end
 -- **^
 
+-- Currencies keep their own settings layout (no window position)
 function SetSettings(currencyName)
-	local data = _G.CurrencyData[currencyName]
-	settings[currencyName] = {}
-	settings[currencyName].V = data.IsVisible
-	SaveColors(settings[currencyName], data.bcAlpha, data.bcRed, data.bcGreen, data.bcBlue)
-	SavePosition(settings[currencyName], data.LocX, data.LocY)
-	settings[currencyName].W = Constants.FormatInt(data.Where)
+	local data = _G.ControlData[currencyName]
+	local section = EnsureSettingsSection(currencyName)
+	section.V = data.show
+	SaveColors(section, data.colors.alpha, data.colors.red, data.colors.green, data.colors.blue)
+	SavePosition(section, data.location.x, data.location.y)
+	section.W = Constants.FormatInt(data.where)
 end
 
 -- **v Reset All Settings v**
 function ResetSettings()
 	write( L["TBR"] );
-	TBLocale = "en";
-	
-	tA, tR, tG, tB, tX, tY, tW = 0.3, 0.3, 0.3, 0.3, 0, 0, 3;
-	tL, tT = 100, 100;
-	
-	TBHeight, _G.TBFont, TBFontT, TBTop, TBAutoHide, TBIconSize, bcAlpha, bcRed, bcGreen, bcBlue = Constants.DEFAULT_TITANBAR_HEIGHT, 1107296268, "TrajanPro14", true, L["OPAHC"], Constants.ICON_SIZE_LARGE, tA, tR, tG, tB;
-	
-	-- Reset all controls to defaults defined in ControlRegistry
+	ResetBarSettings()
+
+	-- Reset all controls (currencies included) to defaults defined in ControlRegistry
 	_G.ControlRegistry.ResetToDefaults()
-	
-	-- Reset control-specific settings that aren't in ControlData structure
-	_G.ControlData.Money.stm, _G.ControlData.Money.sss, _G.ControlData.Money.sts = false, true, true
-	_G.ControlData.BI.used, _G.ControlData.BI.max = true, true
-	_G.ControlData.DI.icon, _G.ControlData.DI.text = true, true
-	_G.ControlData.RP = _G.ControlData.RP or {}
-	_G.ControlData.RP.showMax = false
-	_G.ControlData.GT = _G.ControlData.GT or {}
-	_G.ControlData.GT.clock24h = false
-	_G.ControlData.GT.showST = false
-	_G.ControlData.GT.showBT = false
-	_G.ControlData.GT.userGMT = 0
-	_G.ControlData.DN = _G.ControlData.DN or {}
-	_G.ControlData.DN.next = true
-	
-	-- Reset currency controls
-	for k,v in pairs(_G.currencies.list) do
-		_G.CurrencyData[v.name].IsVisible = false
-		_G.CurrencyData[v.name].bcAlpha = tA
-		_G.CurrencyData[v.name].bcRed = tR
-		_G.CurrencyData[v.name].bcGreen = tG
-		_G.CurrencyData[v.name].bcBlue = tB
-		_G.CurrencyData[v.name].LocX = tX
-		_G.CurrencyData[v.name].LocY = tY
-		_G.CurrencyData[v.name].Where = tW
+
+	-- Reset the controls' own fields
+	for _, control in ipairs(CONTROL_SETTINGS) do
+		local data = _G.ControlData[control.id]
+		for _, field in ipairs(control.fields or {}) do
+			if not field.keepOnReset then data[field.field] = DefaultValue(field) end
+		end
 	end
-		
-	SaveSettings( true ); --True: Get & save all settings table to file. / False: only save settings table to file.
+
+	SaveSettings();
 	ReloadTitanBar();
 end
 -- **^
@@ -666,7 +573,7 @@ function ReplaceCtr()
 	TBWidth = GetBarWidth();
 	settings.TitanBar.W = string.format("%.0f", TBWidth);
 	
-	-- Update all standard controls
+	-- Update all controls, currencies included
 	_G.ControlRegistry.ForEach(function(controlId, data)
 		local settingsKey = data.settingsKey
 		if settings[settingsKey] and settings[settingsKey].X then
@@ -693,19 +600,7 @@ function ReplaceCtr()
 			end
 		end
 	end)
-	
-	-- Update currency controls
-	for k,v in pairs(_G.currencies.list) do
-		if settings[v.name] and settings[v.name].X then
-			local oldLocX = settings[v.name].X / oldBarWidth
-			_G.CurrencyData[v.name].LocX = oldLocX * TBWidth
-			settings[v.name].X = string.format("%.0f", _G.CurrencyData[v.name].LocX)
-			if _G.CurrencyData[v.name].IsVisible and _G.CurrencyData[v.name].Where == Constants.Position.TITANBAR then
-				_G.CurrencyData[v.name].Ctr:SetPosition(_G.CurrencyData[v.name].LocX, _G.CurrencyData[v.name].LocY)
-			end
-		end
-	end
 
-	SaveSettings( false );
+	SaveSettings();
 	write( L["TBSSCD"] );
 end

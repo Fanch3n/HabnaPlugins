@@ -171,6 +171,32 @@ function CreateSearchControl(parent, left, top, width, height, font, resources)
     if font then tb:SetFont(font) end
     tb:SetMultiline(false)
 
+    -- The LOTRO TextBox does not raise TextChanged for every edit (e.g. the Del key),
+    -- so while it has focus, compare the text every frame and raise the missed changes.
+    -- The window's handler is wrapped to remember the text it was last called with,
+    -- so edits that do raise TextChanged are not reported twice.
+    local lastText = tb:GetText()
+    local windowHandler
+    local function dispatch(sender, args)
+        lastText = tb:GetText()
+        if windowHandler then windowHandler(sender, args) end
+    end
+    tb.FocusGained = function(sender, args)
+        if tb.TextChanged ~= dispatch then
+            windowHandler = tb.TextChanged
+            tb.TextChanged = dispatch
+        end
+        lastText = tb:GetText()
+        tb:SetWantsUpdates(true)
+    end
+    tb.Update = function(sender, args)
+        if tb:GetText() ~= lastText then dispatch(tb, args) end
+    end
+    tb.FocusLost = function(sender, args)
+        tb.Update(sender, args)
+        tb:SetWantsUpdates(false)
+    end
+
     local del = Turbine.UI.Label()
     del:SetParent(container)
     del:SetPosition(width - 20, 0)
@@ -230,8 +256,10 @@ function CreateItemRow(parent, width, height, isPlayerItem, itemSpec)
         if itemSpec then
             local itemBG = Turbine.UI.Lotro.ItemControl(itemSpec)
             itemBG:SetParent(ctl)
-            itemBG:SetSize(Constants.ITEM_CONTROL_SIZE, Constants.ITEM_CONTROL_SIZE)
+            -- Keep the size of the ItemControl: making it smaller cuts off the right and bottom
+            -- of the red frame of unusable items
             itemBG:SetPosition(0, 0)
+            if itemBG:GetHeight() > height then ctl:SetHeight(itemBG:GetHeight()) end
         end
     else
         local itemBG = CreateControl(Turbine.UI.Control, ctl, 3, 3, 32, 32)
@@ -405,10 +433,8 @@ end
 -- Save control position to settings
 -- Parameters:
 --  control: the control to get position from
---  settingsTable: the settings table to update (e.g., settings.Wallet)
---  globalXVar: the global variable name for X position (e.g., "_G.WILocX")
---  globalYVar: the global variable name for Y position (e.g., "_G.WILocY")
-function SaveControlPosition(control, settingsTable, controlId)
+--  controlId: the control ID from ControlRegistry (e.g., "WI")
+function SaveControlPosition(control, controlId)
 	local x = control:GetLeft()
 	local y = control:GetTop()
 	
@@ -419,10 +445,7 @@ function SaveControlPosition(control, settingsTable, controlId)
 		data.location.y = y
 	end
 	
-	-- Update settings file
-	settingsTable.X = string.format("%.0f", x)
-	settingsTable.Y = string.format("%.0f", y)
-	SaveSettings(false)
+	SaveSettings()
 end
 
 -- Initialize drag operation on MouseDown
@@ -547,14 +570,13 @@ end
 -- Create standard MouseDown and MouseUp handlers for draggable controls
 -- Parameters:
 --  control: the control to drag (e.g., WI["Ctr"])
---  settingsTable: the settings table to save position to (e.g., settings.Wallet)
 --  controlId: the control ID from ControlRegistry (e.g., "WI")
 -- Returns: { MouseDown = function, MouseUp = function }
 -- Usage: 
---   local handlers = CreateDragHandlers(WI["Ctr"], settings.Wallet, "WI")
+--   local handlers = CreateDragHandlers(WI["Ctr"], "WI")
 --   WI["Icon"].MouseDown = handlers.MouseDown
 --   WI["Icon"].MouseUp = handlers.MouseUp
-function CreateDragHandlers(control, settingsTable, controlId)
+function CreateDragHandlers(control, controlId)
 	return {
 		MouseDown = function(sender, args)
 			if args.Button == Turbine.UI.MouseButton.Left then
@@ -564,7 +586,7 @@ function CreateDragHandlers(control, settingsTable, controlId)
 		MouseUp = function(sender, args)
 			control:SetZOrder(2)
 			_G.dragging = false
-			SaveControlPosition(control, settingsTable, controlId)
+			SaveControlPosition(control, controlId)
 		end
 	}
 end

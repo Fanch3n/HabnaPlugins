@@ -4,37 +4,6 @@
 
 
 function ImportCtr( value )
-    -- Resolve legacy aliases
-    -- MI was historically mapped to 'Money' internally after import
-    if value == "MI" then value = "Money" end
-
-    -- Lazy Loading Map: ID -> Filename (relative to AppCtrD)
-    local controlFiles = {
-        ["WI"]    = "Wallet",
-        ["Money"] = "MoneyInfos",
-        ["BI"]    = "BagInfos",
-        ["PI"]    = "PlayerInfos",
-        ["DI"]    = "DurabilityInfos",
-        ["EI"]    = "EquipInfos",
-        ["PL"]    = "PlayerLoc",
-        ["TI"]    = "TrackItems",
-        ["IF"]    = "Infamy",
-        ["DN"]    = "DayNight",
-        ["LP"]    = "LOTROPoints",
-        ["GT"]    = "GameTime",
-        ["VT"]    = "Vault",
-        ["SS"]    = "SharedStorage",
-        ["RP"]    = "Reputation"
-    }
-
-    -- If control is not initialized, try to import it first
-    if not (_G.ControlData[value] and _G.ControlData[value].initFunc) then
-        local fileName = controlFiles[value]
-        if fileName then
-            import(AppCtrD .. fileName)
-        end
-    end
-
     -- 1. Standard Controls (via ControlRegistry)
     local data = _G.ControlData[value]
     if data and data.initFunc then
@@ -53,16 +22,16 @@ function ImportCtr( value )
         return
     end
 
-    -- 2. Currencies (Legacy system)
-    if _G.CurrencyData and _G.CurrencyData[value] then
-        if _G.CurrencyData[value].Where == 1 then
+    -- 2. Currencies
+    if data and data.kind == "currency" then
+        if data.where == 1 then
             createCurrencyTable(value)
-            local ctr = _G.CurrencyData[value].Ctr
+            local ctr = data.controls.Ctr
             if ctr then
-                ctr:SetPosition(_G.CurrencyData[value].LocX, _G.CurrencyData[value].LocY)
+                ctr:SetPosition(data.location.x, data.location.y)
             end
         end
-        if _G.CurrencyData[value].Where ~= 3 then
+        if data.where ~= 3 then
             if value == "DestinyPoints" then
                 AddCallback(GetPlayerAttributes(), "DestinyPointsChanged", function(sender, args)
                     UpdateCurrencyDisplay("DestinyPoints")
@@ -79,18 +48,103 @@ function ImportCtr( value )
 
 end
 
+-- The item tracking list (ITL) is a list of { N = item name, L = game language, B, U, S, I = icons }.
+-- Items are tracked by their name, which is only known in the game language the item was ticked in:
+-- the game has no language-independent id for items. Items tracked in another language are kept
+-- and count again when the game runs in that language. The icons draw items that are not in the bags.
+-- One file for all game languages (since 1.53); older versions had one list per language.
+local TRACKING_LIST_NAME = "TitanBarPlayerItemTrackingList"
+
+-- The values of a saved list in their order (the keys are saved as text: "1", "2", ...)
+local function SavedList(saved)
+    local keys = {};
+    for k in pairs(saved) do table.insert(keys, k) end
+    table.sort(keys, function(a, b) return (tonumber(a) or 0) < (tonumber(b) or 0) end);
+    local list = {};
+    for _, k in ipairs(keys) do table.insert(list, saved[k]) end
+    return list
+end
+
+local function IsTrackedItem(entry)
+    return type(entry) == "table" and type(entry.N) == "string" and type(entry.L) == "string" and entry.I ~= nil
+end
+
+-- A list of an older version, { [name] = { Q, B, U, S, I } } for one game language
+local function OldTrackingList(old, locale)
+    local list = {};
+    for _, entry in ipairs(SavedList(old)) do
+        local name, icons;
+        if type(entry) == "table" then name, icons = next(entry) end
+        if type(name) == "string" and type(icons) == "table" and icons.I ~= nil then
+            table.insert(list, { N = name, L = locale, B = icons.B, U = icons.U, S = icons.S, I = icons.I });
+        end
+    end
+    return list
+end
+
 function LoadPlayerItemTrackingList()
-    local locale = "TitanBarPlayerItemTrackingList" .. GLocale:upper();
-    ITL = Turbine.PluginData.Load(Turbine.DataScope.Character, locale);
-    if ITL == nil then ITL = {}; end
+    ITL = {};
+    local loaded = Turbine.PluginData.Load(Turbine.DataScope.Character, TRACKING_LIST_NAME);
+    if loaded then
+        for _, entry in ipairs(SavedList(loaded)) do
+            if IsTrackedItem(entry) then table.insert(ITL, entry) end
+        end
+        return
+    end
+
+    -- First start of a version with one list: take over the lists of all game languages
+    for _, locale in ipairs(GameLocalesCurrentFirst()) do
+        local ok, old = pcall(Turbine.PluginData.Load, Turbine.DataScope.Character, TRACKING_LIST_NAME .. locale:upper());
+        if ok and type(old) == "table" then
+            for _, entry in ipairs(OldTrackingList(old, locale)) do table.insert(ITL, entry) end
+        end
+    end
+    SavePlayerItemTrackingList(ITL);
+end
+
+-- The tracked items of the current game language
+function TrackedItemsOfLanguage()
+    local list = {};
+    for _, entry in ipairs(ITL) do
+        if entry.L == GLocale then table.insert(list, entry) end
+    end
+    return list
+end
+
+function IsItemTracked(name)
+    for _, entry in ipairs(ITL) do
+        if entry.L == GLocale and entry.N == name then return true end
+    end
+    return false
+end
+
+function TrackItem(item)
+    local itemInfo = item:GetItemInfo();
+    TrackEntry({
+        N = itemInfo:GetName(),
+        L = GLocale,
+        B = tostring(itemInfo:GetBackgroundImageID()),
+        U = tostring(itemInfo:GetUnderlayImageID()),
+        S = tostring(itemInfo:GetShadowImageID()),
+        I = tostring(itemInfo:GetIconImageID()),
+    });
+end
+
+-- Tracks an entry of the list again (an item that is not in the bags)
+function TrackEntry(entry)
+    table.insert(ITL, entry);
+    SavePlayerItemTrackingList(ITL);
+end
+
+function UntrackItem(name)
+    for i = #ITL, 1, -1 do
+        if ITL[i].L == GLocale and ITL[i].N == name then table.remove(ITL, i) end
+    end
+    SavePlayerItemTrackingList(ITL);
 end
 
 function SavePlayerItemTrackingList(ITL)
-    local newt = {};
-    for k, v in pairs(ITL) do newt[tostring(k)] = v; end
-    ITL = newt;
-    local locale = "TitanBarPlayerItemTrackingList" .. GLocale:upper();
-    Turbine.PluginData.Save(Turbine.DataScope.Character, locale, ITL);
+    Turbine.PluginData.Save(Turbine.DataScope.Character, TRACKING_LIST_NAME, SaveableTable(ITL));
 end
 
 function LoadPlayerMoney()
@@ -110,9 +164,7 @@ function LoadPlayerMoney()
 	_G.ControlData.Money.scma = wallet[PN].ShowToAll
 
 
-    --Convert wallet
-    --Removed 2017-02-07 (after 2012-08-18)
-    --Restored 2017-10-02 (was causing "Invalid Data Scope" bug)
+    --Convert wallets of very old versions (Gold, Silver and Copper instead of Money)
     local tGold, tSilver, tCopper, bOk;
     for k,v in pairs(wallet) do
         if wallet[k].Gold ~= nil then
@@ -246,77 +298,23 @@ end
 
 
 
-
-
-function LoadPlayerBags()
-    PlayerBags = Turbine.PluginData.Load(
-        Turbine.DataScope.Server, "TitanBarBags");
-    if PlayerBags == nil then PlayerBags = {}; end
-    if PlayerBags[PN] == nil then PlayerBags[PN] = {}; end
-end
-
-function SavePlayerBags()
-    if string.sub( PN, 1, 1 ) == "~" then return end; --Ignore session play
-
-    backpackSize = backpack:GetSize();
-
-    PlayerBags[PN] = {};
-    ii=1;
-    for i = 1, backpackSize do
-
-        local items = backpack:GetItem( i );
-
-        if items ~= nil then
-            local ind = tostring(ii);
-            PlayerBags[PN][ind] = items;
-            local iteminfo = PlayerBags[PN][ind]:GetItemInfo();
-
-            --local sc = Turbine.UI.Lotro.Shortcut( items );
-            --PlayerBags[PN][ind].C = sc:GetData();
-
-            PlayerBags[PN][ind].Q = tostring(iteminfo:GetQualityImageID());
-            PlayerBags[PN][ind].B = tostring(iteminfo:GetBackgroundImageID());
-            PlayerBags[PN][ind].U = tostring(iteminfo:GetUnderlayImageID());
-            PlayerBags[PN][ind].S = tostring(iteminfo:GetShadowImageID());
-            PlayerBags[PN][ind].I = tostring(iteminfo:GetIconImageID());
-            PlayerBags[PN][ind].T = tostring(iteminfo:GetName());
-            local tq = tostring(PlayerBags[PN][ind]:GetQuantity());
-            if tq == "1" then tq = ""; end
-            PlayerBags[PN][ind].N = tq;
-            PlayerBags[PN][ind].Z = tostring(backpackSize);
-
-            ii = ii +1;
-        end
-    end
-
-    Turbine.PluginData.Save(
-        Turbine.DataScope.Server, "TitanBarBags", PlayerBags);
-    --[[
-    Turbine.PluginData.Save(Turbine.DataScope.Server, "TitanBarSharedStorage",
-        PlayerBags[PN]); --Debug purpose since i dont have a shared storage
-    --]]
-end
-
-
-
-
-
 function UpdateCurrency(currency_display)
     if _G.Debug then write("UpdateCurrency:" ..currency_display); end
     local currency_name = _G.CurrencyLangMap[currency_display]
     if _G.Debug and not currency_name then write("Currency not supported!"); end
-    if currency_name and _G.CurrencyData[currency_name].IsVisible then
+    if currency_name and _G.ControlData[currency_name].show then
         UpdateCurrencyDisplay(currency_name)
     end
 end
 
 function SetCurrencyToZero(str)
     for _, currency in pairs(_G.currencies.list) do
-        if str == L["M" .. currency.name] and _G.CurrencyData[currency.name].IsVisible then
-            if _G.CurrencyData[currency.name].IsVisible then
-                if _G.CurrencyData[currency.name].Where == 1 then
-                    _G.CurrencyData[currency.name].Lbl:SetText("0");
-                    _G.CurrencyData[currency.name].Lbl:SetSize(_G.CurrencyData[currency.name].Lbl:GetTextLength() * NM, CTRHeight );
+        local data = _G.ControlData[currency.name]
+        if str == L["M" .. currency.name] and data.show then
+            if data.show then
+                if data.where == 1 then
+                    data.controls.Lbl:SetText("0");
+                    data.controls.Lbl:SetSize(data.controls.Lbl:GetTextLength() * NM, CTRHeight );
                     AdjustIcon(currency.name);
                 end
             end
@@ -326,11 +324,12 @@ end
 
 function SetCurrencyFromZero(str, amount)
     for _, currency in pairs(_G.currencies.list) do
-        if str == L["M" .. currency.name] and _G.CurrencyData[currency.name].IsVisible then
-            if _G.CurrencyData[currency.name].IsVisible then
-                if _G.CurrencyData[currency.name].Where == 1 then
-                    _G.CurrencyData[currency.name].Lbl:SetText(amount);
-                    _G.CurrencyData[currency.name].Lbl:SetSize(_G.CurrencyData[currency.name].Lbl:GetTextLength() * NM, CTRHeight );
+        local data = _G.ControlData[currency.name]
+        if str == L["M" .. currency.name] and data.show then
+            if data.show then
+                if data.where == 1 then
+                    data.controls.Lbl:SetText(amount);
+                    data.controls.Lbl:SetSize(data.controls.Lbl:GetTextLength() * NM, CTRHeight );
                     AdjustIcon(currency.name);
                 end
             end

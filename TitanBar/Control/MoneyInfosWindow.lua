@@ -43,8 +43,7 @@ function frmMoneyInfosWindow()
 
 	allCharCB.CheckedChanged = function( sender, args )
 		moneyData.stm = allCharCB:IsChecked();
-		settings.Money.S = moneyData.stm;
-		SaveSettings( false );
+		SaveSettings();
 		UpdateMoney();
 	end
 
@@ -71,8 +70,7 @@ function frmMoneyInfosWindow()
 
 	sssCB.CheckedChanged = function(sender, args)
 		moneyData.sss = sssCB:IsChecked();
-		settings.Money.SS = moneyData.sss;
-		SaveSettings(false);
+		SaveSettings();
 	end
 
 	local stsCB = CreateAutoSizedCheckBox(window, L["MIWSTS"], 0, 0, moneyData.sts)
@@ -80,8 +78,7 @@ function frmMoneyInfosWindow()
 
 	stsCB.CheckedChanged = function( sender, args )
 		moneyData.sts = stsCB:IsChecked();
-		settings.Money.TS = moneyData.sts;
-		SaveSettings( false );
+		SaveSettings();
 	end
 
 	RefreshMIListBox();
@@ -107,9 +104,7 @@ function RefreshMIListBox()
 	local a = {};
     for n in pairs(wallet) do table.insert(a, n) end
     table.sort(a);
-    --for i,n in ipairs(a) do write(n) end --degug purpose
 
-	--for k,v in pairs(wallet) do
 	for i = 1, #a do
 		if a[i] == Player:GetName() then
 			if wallet[a[i]].Show then 
@@ -142,7 +137,6 @@ function RefreshMIListBox()
 	local LineCtr = Turbine.UI.Control();
 	LineCtr:SetParent( miListBox );
 	LineCtr:SetSize( miListBox:GetWidth(), 7 );
-	--LineCtr:SetBlendMode( Turbine.UI.BlendMode.AlphaBlend );
 
 	local LineLbl = Turbine.UI.Label();
 	LineLbl:SetParent( LineCtr );
@@ -158,7 +152,6 @@ function RefreshMIListBox()
 	MITTShowData(miListBox, L["MIWTotal"], (GoldTot*100000+SilverTot*100+CopperTot), Color["white"], Color["white"]);
   MIPosY = MIPosY + 19;
 	
-	miListBox:AddItem( TotMoneyCtr );
 	MIPosY = MIPosY + 19;
 	miListBox:SetHeight( MIPosY );
 

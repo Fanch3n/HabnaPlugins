@@ -9,18 +9,7 @@ function ToggleControl(id)
 	-- Toggle state
 	controlData.show = not controlData.show
 
-	-- Update Settings
-	local regData = _G.ControlRegistry.Get(id)
-	if regData and regData.settingsKey then
-		if not settings[regData.settingsKey] then settings[regData.settingsKey] = {} end
-		settings[regData.settingsKey].V = controlData.show
-		-- Preserving 'Where' if it exists (some existing functions do this)
-		if controlData.where ~= nil then
-			settings[regData.settingsKey].W = string.format("%.0f", controlData.where or Constants.Position.NONE)
-		end
-	end
-
-	SaveSettings(false)
+	SaveSettings()
 
 	-- Handle UI Update
 	if controlData.show then
@@ -36,8 +25,6 @@ function ToggleControl(id)
 		-- Custom OnShow Hook
 		if controlData.onShow then controlData.onShow() end
 		
-		-- Special case for Equipment callbacks (removed from legacy functions but logic was complex)
-		-- Since Equipment Infos logic is quite specific (callbacks added in Toggle), we might need to handle EI/DI separately or move logic to Initialize
 	else
 		-- Cleanup Callbacks
 		if controlData.callbacks then
@@ -103,33 +90,32 @@ function UnloadTitanBar()
 	Turbine.PluginManager.LoadPlugin('TitanBar Unloader');  --workaround
 end
 
-function ReloadTitanBar()
-	settings.TitanBar.Z = true;
-	SaveSettings(false);
+-- reason: window to reopen after the reload ("Profile" or "Font"), nil for none
+-- newSettings: settings table to reload with instead of the current state (a profile)
+function ReloadTitanBar(reason, newSettings)
+	TBReloaded = true;
+	TBReloadedText = reason or "TB";
+	if newSettings then
+		settings = newSettings;
+		settings.TitanBar.Z = TBReloaded;
+		settings.TitanBar.ZT = TBReloadedText;
+		WriteSettings();
+	else
+		SaveSettings();
+	end
 	Turbine.PluginManager.LoadPlugin('TitanBar Reloader');  --workaround
 end
 
-function AboutTitanBar()
-	--write( "TitanBar: About!" );
-	--Turbine.PluginManager.ShowAbouts(Plugins.TitanBar); -- Add this when About is available
-	--Turbine.PluginManager.ShowOptions(Plugins.TitanBar); --This will open plugin manager and show TitanBar options (THIS IS AN EXAMLPE)
-end
-
 function ShowHideCurrency(currency)
-	_G.CurrencyData[currency].IsVisible = not _G.CurrencyData[currency].IsVisible
-	settings[currency].V = _G.CurrencyData[currency].IsVisible
-	settings[currency].W = string.format("%.0f", _G.CurrencyData[currency].Where);
-	SaveSettings(false);
+	local data = _G.ControlData[currency]
+	data.show = not data.show
+	SaveSettings();
 	ImportCtr(currency);
 
 	if _G.Debug then write("ShowHideCurrency:" .. currency); end
-	if _G.CurrencyData[currency].IsVisible then
-		_G.CurrencyData[currency].Ctr:SetBackColor(Turbine.UI.Color(
-			_G.CurrencyData[currency].bcAlpha,
-			_G.CurrencyData[currency].bcRed,
-			_G.CurrencyData[currency].bcGreen,
-			_G.CurrencyData[currency].bcBlue
-		))
+	if data.show then
+		local colors = data.colors
+		data.controls.Ctr:SetBackColor(Turbine.UI.Color(colors.alpha, colors.red, colors.green, colors.blue))
 	end
-	_G.CurrencyData[currency].Ctr:SetVisible(_G.CurrencyData[currency].IsVisible);
+	data.controls.Ctr:SetVisible(data.show);
 end

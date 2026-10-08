@@ -20,22 +20,24 @@ Add a new currency:
 --- The second can be the name of the currency (without spaces or special characters) and then an "h".
 --- Important: The name (value) behind the first text name has to be exactly the name in the game (and most of the times singular). Otherwise it won't work.
 
-- Add currency in 'main.lua'
--- Search for "PlayerAlign == 1" and add the item to the MenuItem array. The position in that array defines the order in which the currencies are listed.
--- Add the currency to the CurrencyLangMap
-
 - Add currency in Currencies.lua
+-- The position in the list defines the order in which the currencies are listed in the wallet.
+-- 'name' must match the localization key without the leading "M".
+-- Set 'visibleInMonsterPlay' to true if the currency should also be available in Monster Play.
+-- Add currency to the language files
 
 
-To add a new control (from Technical_13):
-- Add  text names to the 'de', 'en', and 'fr' localization files
-- Add control in 'menu.lua'
-- Add control in 'functions.lua', in 'functionsCtr.lua', 'functionsMenuControl.lua, & in 'functionsMenu.lua'
-- Add control in 'settings.lua'
-- Add control in 'frmOptions.lua'
-- Add control in 'background.lua'
-- Add control shell command in 'main.lua'
-- Add control file in control directory
+To add a new control:
+- Add the control file to the Control directory. It registers itself with _G.ControlRegistry.Register({...}):
+-- id, settingsKey, hasWhere, initFunc (creates the control), optional onShow/onHide
+-- menuText: localization key of its entry in the TitanBar menu (leave out if it has no menu entry)
+-- freePeopleOnly = true if it is hidden in Monster Play
+-- icon: how AdjustIcon places its icon, see AdjustIcon() in 'functions.lua'
+- Import the file in 'main.lua'. The order of these imports is the order in the TitanBar menu.
+- Add its settings (section, defaults and own fields) to CONTROL_SETTINGS in 'settings.lua'
+- If it uses the standard tooltip, add its header to 'TooltipManager.lua'
+- Add its text names to the 'de', 'en', and 'fr' localization files
+- Check with tools/compare_settings.py that existing settings files still load the same
 
 
 HelloWorld-Plugin
