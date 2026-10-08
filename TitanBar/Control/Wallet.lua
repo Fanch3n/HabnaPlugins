@@ -44,6 +44,8 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
 	_G.ControlRegistry.Register({
 		id = "WI",
+		menuText = "MBag",
+		icon = { only = true },
 		settingsKey = "Wallet",
 		hasWhere = false,
 		initFunc = InitializeWallet

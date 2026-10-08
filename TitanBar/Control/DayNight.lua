@@ -136,6 +136,8 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
 	_G.ControlRegistry.Register({
 		id = "DN",
+		menuText = "MDayNight",
+		icon = { dy = 1 },
 		settingsKey = "DayNight",
 		hasWhere = false,
 		initFunc = InitializeDayNight

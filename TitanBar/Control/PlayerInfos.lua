@@ -131,6 +131,8 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
         id = "PI",
+        menuText = "MPI",
+        icon = { dx = 3 },
         settingsKey = "PlayerInfos",
         hasWhere = false,
         initFunc = InitializePlayerInfos

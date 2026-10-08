@@ -109,6 +109,8 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
         id = "DI",
+        menuText = "MDI",
+        freePeopleOnly = true,
         settingsKey = "DurabilityInfos",
         hasWhere = false,
         initFunc = InitializeDurabilityInfos,

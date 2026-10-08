@@ -85,6 +85,9 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
         id = "SS",
+        menuText = "MStorage",
+        freePeopleOnly = true,
+        icon = { only = true },
         settingsKey = "SharedStorage",
         hasWhere = false,
         initFunc = InitializeSharedStorage

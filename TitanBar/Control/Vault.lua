@@ -87,6 +87,9 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
         id = "VT",
+        menuText = "MVault",
+        freePeopleOnly = true,
+        icon = { only = true },
         settingsKey = "Vault",
         hasWhere = false,
         initFunc = InitializeVault

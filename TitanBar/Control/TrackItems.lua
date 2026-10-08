@@ -35,6 +35,8 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
         id = "TI",
+        menuText = "MTI",
+        icon = { only = true },
         settingsKey = "TrackItems",
         hasWhere = false,
         initFunc = InitializeTrackItems

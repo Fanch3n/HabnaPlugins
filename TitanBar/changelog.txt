@@ -6,6 +6,7 @@ Version 1.53 (October ??, 2026)
 - Simplified adding currencies: Just add them to Currencies.lua and language files, no code changes
 - Fixed changing colour of all controls not applying to hidden controls
 - Fixed dropdowns in options menu closing unintentionally
+- Fixed an error when the money window is opened before the tooltip is displayed at least once
 - Fixed rare case where changed positions are not saved
 - Refactored saving and loading settings, hopefully a step towards language-independent saves
 =================================================

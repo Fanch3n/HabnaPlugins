@@ -5,42 +5,34 @@
 
 --**v Functions for the menu of control v**
 --**v Unload control v**
+-- Hide a control and take it off the TitanBar
+local function Unload(controlId, data)
+	if data.where ~= nil then
+		data.where = Constants.Position.NONE
+	end
+	if data.toggleFunc then
+		data.toggleFunc()
+	else
+		ToggleControl(controlId)
+	end
+	if data.ui and data.ui.menuItem then
+		data.ui.menuItem:SetChecked(false)
+	end
+end
+
 function UnloadControl( value )
 	if _G.Debug then write("UnloadControl "..value); end
-    -- Remove all controls from TitanBar:
+	-- Remove all controls from TitanBar:
 	if value == "applyToAllControls" then
-		-- Unload all controls, currencies included
+		-- All controls, currencies included
 		_G.ControlRegistry.ForEach(function(controlId, data)
-			if data.show then
-				-- Set where to hidden if control has that property
-				if data.where ~= nil then
-					data.where = 3
-				end
-				-- Call toggle function to hide
-				if data.toggleFunc then
-					data.toggleFunc()
-				end
-				-- Uncheck option if available
-				if data.ui and data.ui.menuItem then
-					data.ui.menuItem:SetChecked(false)
-				end
-			end
+			if data.show then Unload(controlId, data) end
 		end)
-		
-    -- Remove just the selected control from TitanBar
+
+	-- Remove just the selected control from TitanBar
 	elseif value == "applyToThis" then
 		local data = _G.ControlRegistry.Get(_G.sFromCtr)
-		if data then
-			if data.where ~= nil then
-				data.where = 3
-			end
-			if data.toggleFunc then
-				data.toggleFunc()
-			end
-			if data.ui.menuItem then
-				data.ui.menuItem:SetChecked(false)
-			end
-		end
+		if data and data.show then Unload(_G.sFromCtr, data) end
 	end
 
 	TB["win"].MouseLeave();

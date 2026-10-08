@@ -359,6 +359,9 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
 	_G.ControlRegistry.Register({
 		id = "RP",
+		menuText = "MReputation",
+		freePeopleOnly = true,
+		icon = { only = true, dy = 2 },
 		settingsKey = "Reputation",
 		hasWhere = false,
 		initFunc = InitializeReputation

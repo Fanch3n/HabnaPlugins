@@ -24,13 +24,17 @@ function UpdateMoney()
 		_G.ControlData.Money.controls["GLbl"]:SetSize(_G.ControlData.Money.controls["GLbl"]:GetTextLength() * NM, CTRHeight);
 		--Auto size with text length
 		_G.ControlData.Money.controls["SLbl"]:SetSize(4 * NM, CTRHeight);  --Auto size with text length
-		_G.ControlData.Money.controls["CLbl"]:SetSize(3 * NM, CTRHeight);  --Auto size with text length	_G.ControlData.Money.controls[ "GLblT" ]:SetVisible( showTotal );
-		_G.ControlData.Money.controls["GLbl"]:SetVisible(not showTotal); _G.ControlData.Money.controls["SLblT"]:SetVisible(
-		showTotal);
-		_G.ControlData.Money.controls["SLbl"]:SetVisible(not showTotal);
+		_G.ControlData.Money.controls["CLbl"]:SetSize(3 * NM, CTRHeight);  --Auto size with text length
 
+		-- Either the money of this character or the total of all characters (*LblT)
+		_G.ControlData.Money.controls["GLblT"]:SetVisible(showTotal);
+		_G.ControlData.Money.controls["GLbl"]:SetVisible(not showTotal);
+		_G.ControlData.Money.controls["SLblT"]:SetVisible(showTotal);
+		_G.ControlData.Money.controls["SLbl"]:SetVisible(not showTotal);
 		_G.ControlData.Money.controls["CLblT"]:SetVisible(showTotal);
-		_G.ControlData.Money.controls["CLbl"]:SetVisible(not showTotal); if showTotal then  --Add Total Money on TitanBar Money control.
+		_G.ControlData.Money.controls["CLbl"]:SetVisible(not showTotal);
+
+		if showTotal then  --Add Total Money on TitanBar Money control.
 			local strData = L["MIWTotal"] .. ": ";
 			local strData1 = string.format("%.0f", GoldTot);
 			local strData2 = L["You"] .. _G.ControlData.Money.controls["GLbl"]:GetText();
@@ -97,7 +101,7 @@ function UpdateMoney()
 		Turbine.PluginData.Save(
 			Turbine.DataScope.Server, "TitanBarPlayerWalletStats", walletStats);
 	end
-	AdjustIcon("MI");
+	AdjustIcon("Money");
 end
 
 -- vvv Moved from functionsCtr.lua (Heridan) vvv
@@ -356,10 +360,28 @@ function InitializeMoneyInfos()
 	UpdateMoney()
 end
 
+-- Lays out the gold, silver and copper parts of the control (icon layout for AdjustIcon)
+local function LayoutMoneyIcons(iconTop)
+	local controls = _G.ControlData.Money.controls
+	local t = ""
+	if _G.ControlData.Money.stm == true then t = "T"; end
+	local p = { "G", "S", "C" }; --prefix for Gold, Silver, Copper controls
+	local setleft = 0;
+	for i = 1,3 do
+		local index = p[i] .. "Lbl" .. t;
+		controls[p[i] .. "Ctr"]:SetLeft(setleft);
+		local getright = controls[index]:GetLeft() + controls[index]:GetWidth();
+		LayoutIcon( controls[p[i] .. "Icon"], controls[p[i] .. "Ctr"], getright - 4, iconTop + 1, getright + TBIconSize );
+		setleft = controls[p[i].."Ctr"]:GetLeft() + controls[p[i].."Ctr"]:GetWidth();
+	end
+	controls[ "Ctr" ]:SetSize(controls["GCtr"]:GetWidth() + controls["SCtr"]:GetWidth() + controls["CCtr"]:GetWidth(), CTRHeight );
+end
+
 -- Self-registration
 if _G.ControlRegistry and _G.ControlRegistry.Register then
 	_G.ControlRegistry.Register({
 		id = "Money",
+		icon = { layout = LayoutMoneyIcons },
 		settingsKey = "Money",
 		hasWhere = true,
 		initFunc = InitializeMoneyInfos

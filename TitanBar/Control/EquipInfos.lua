@@ -83,6 +83,9 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
         id = "EI",
+        menuText = "MEI",
+        freePeopleOnly = true,
+        icon = { only = true },
         settingsKey = "EquipInfos",
         hasWhere = false,
         initFunc = InitializeEquipInfos,

@@ -167,35 +167,18 @@ function frmMain()
 				end
 		end
 	else
-		-- Disable infos not useful in Monster Play
-		_G.ControlData.DI.show, _G.ControlData.EI.show = false, false
-		_G.ControlData.VT.show, _G.ControlData.SS.show = false, false
-		_G.ControlData.RP.show = false
-		for _,cur in pairs(_G.currencies.list) do
-			if not cur.visibleInMonsterPlay then
-				_G.ControlData[cur.name].show = false
-			end
-		end
+		-- Disable controls and currencies that are only useful for the Free People
+		_G.ControlRegistry.ForEachRegistered(function(id, data, meta)
+			if meta.freePeopleOnly then data.show = false end
+		end)
 
 		if PlayerWalletSize ~= nil or PlayerWalletSize ~= 0 then
-			-- if _G.ControlData.WI.show then ImportCtr( "WI" ); end
 			for _,cur in pairs(_G.currencies.list) do
 				if cur.visibleInMonsterPlay and _G.ControlData[cur.name].where ~= 3 then ImportCtr(cur.name); end
 			end
 			if ((_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "LP" ); end
 		end
 	end
-
-	-- Handled by ControlRegistry.ForEach in main.lua
-	-- if _G.ControlData.WI.show then ImportCtr( "WI" ); end
-	-- if ((_G.ControlData.Money and _G.ControlData.Money.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "MI" ); end
-	if _G.ControlData.TI.show then ImportCtr( "TI" ); end --Track Items
-	if _G.ControlData.IF.show then ImportCtr( "IF" ); end --Infamy/Renown
-	if _G.ControlData.VT.show then ImportCtr( "VT" ); end --Vault
-	if _G.ControlData.SS.show then ImportCtr( "SS" ); end --SharedStorage
-	if _G.ControlData.DN.show then ImportCtr( "DN" ); end --Day & Night time
-	if _G.ControlData.RP.show then ImportCtr( "RP" ); end --Reputation Points
-	-- if ((_G.ControlData.LP and _G.ControlData.LP.where) or Constants.Position.NONE) ~= Constants.Position.NONE then ImportCtr( "LP" ); end --LOTRO Points
 
 	--**v Workaround for the ItemRemoved that fires before the backpack was updated (Turbine API issue) v**
 	ItemRemovedTimer = Turbine.UI.Control();
@@ -206,12 +189,6 @@ function frmMain()
 	end
 	--**
 	
-	-- BagInfos handled by ControlRegistry.ForEach
-	-- if _G.ControlData.BI.show then ImportCtr( "BI" );	end
-	-- if _G.ControlData.PI.show then ImportCtr( "PI" ); end
-	if _G.ControlData.PL.show then ImportCtr( "PL" ); end
-	-- if _G.ControlData.GT.show then ImportCtr( "GT" ); end
-
 	AddCallback(
 		PlayerWallet,
 		"ItemAdded",
@@ -238,9 +215,6 @@ function frmMain()
 		if _G.ControlData.DI.show then UpdateDurabilityInfos(); end
 		ItemUnEquippedTimer:SetWantsUpdates(false);
 	end
-	
-	if _G.ControlData.EI.show then ImportCtr( "EI" ); end
-	if _G.ControlData.DI.show then ImportCtr( "DI" ); end
 	
 	--**v Run these functions at-startup only once because if TitanBar is loaded with in-game plugin manager some controls do not update properly v**
 	OneTimer = Turbine.UI.Control();

@@ -82,6 +82,7 @@ end
 
 -- Registry structure for each control - maps ID to metadata
 local registry = {}
+local registrationCount = 0
 
 -- Initialize all control data structures
 function _G.ControlRegistry.InitializeAll()
@@ -118,7 +119,9 @@ end
 -- Register a control dynamically
 function _G.ControlRegistry.Register(config)
 	local id = config.id
+	registrationCount = registrationCount + 1
 	registry[id] = {
+		order = registrationCount,
 		kind = config.kind or "control", -- "control" or "currency"
 		settingsKey = config.settingsKey or id,
 		toggleFunc = config.toggleFunc,
@@ -126,7 +129,10 @@ function _G.ControlRegistry.Register(config)
 		-- Standard controls get their defaults from settings.lua, currencies pass their own
 		defaults = config.defaults or GetControlDefaults(id) or {},
 		onShow = config.onShow,
-		onHide = config.onHide
+		onHide = config.onHide,
+		menuText = config.menuText, -- localization key of the entry in the TitanBar menu (none: not in the menu)
+		freePeopleOnly = config.freePeopleOnly, -- hidden in Monster Play
+		icon = config.icon -- icon layout, see AdjustIcon()
 	}
 	-- Also store initFunc in defaults so InitControlData picks it up
 	registry[id].defaults.initFunc = config.initFunc
@@ -154,6 +160,17 @@ function _G.ControlRegistry.GetAllIds()
 		table.insert(ids, id)
 	end
 	return ids
+end
+
+-- Iterate over all registered controls in the order they were registered (see main.lua),
+-- with their data and their registration metadata
+function _G.ControlRegistry.ForEachRegistered(callback)
+	local ids = {}
+	for id in pairs(registry) do table.insert(ids, id) end
+	table.sort(ids, function(a, b) return registry[a].order < registry[b].order end)
+	for _, id in ipairs(ids) do
+		callback(id, _G.ControlData[id], registry[id])
+	end
 end
 
 -- Helper function to iterate over all controls, currencies included

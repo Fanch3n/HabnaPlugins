@@ -61,20 +61,13 @@ local function CreateControlMenuItem(id, label, toggleFunc)
 	return item
 end
 
--- Menu Items
-local opt_WI = CreateControlMenuItem("WI", L["MBag"])
-local opt_BI = CreateControlMenuItem("BI", L["MBI"])
-local opt_PI = CreateControlMenuItem("PI", L["MPI"])
-local opt_EI = CreateControlMenuItem("EI", L["MEI"])
-local opt_DI = CreateControlMenuItem("DI", L["MDI"])
-local opt_PL = CreateControlMenuItem("PL", L["MPL"])
-local opt_TI = CreateControlMenuItem("TI", L["MTI"])
-local opt_IF = CreateControlMenuItem("IF", L["IFWTitle"])
-local opt_GT = CreateControlMenuItem("GT", L["MGT"])
-local opt_VT = CreateControlMenuItem("VT", L["MVault"])
-local opt_SS = CreateControlMenuItem("SS", L["MStorage"])
-local opt_DN = CreateControlMenuItem("DN", L["MDayNight"])
-local opt_RP = CreateControlMenuItem("RP", L["MReputation"])
+-- Menu items of the controls, in the order they were registered (see main.lua)
+local controlMenuItems = {}
+_G.ControlRegistry.ForEachRegistered(function(id, data, meta)
+	if meta.menuText and (PlayerAlign == 1 or not meta.freePeopleOnly) then
+		table.insert(controlMenuItems, CreateControlMenuItem(id, L[meta.menuText]))
+	end
+end)
 
 opt_options = Turbine.UI.MenuItem(L["MOP"]);
 opt_options.Click = function( sender, args ) import (AppDirD.."frmOptions"); frmOptions(); opt_options:SetEnabled( false ); end
@@ -102,19 +95,7 @@ opt_about.Click = function( sender, args ) AboutTitanBar(); end
 
 
 
-TitanBarMenu.items:Add(opt_WI);
-TitanBarMenu.items:Add(opt_BI);
-TitanBarMenu.items:Add(opt_PI);
-if PlayerAlign == 1 then TitanBarMenu.items:Add(opt_EI); end -- only show if in Free People mode
-if PlayerAlign == 1 then TitanBarMenu.items:Add(opt_DI); end -- only show if in Free People mode
-TitanBarMenu.items:Add(opt_PL);
-TitanBarMenu.items:Add(opt_TI);
-TitanBarMenu.items:Add(opt_IF);
-TitanBarMenu.items:Add(opt_GT);
-if PlayerAlign == 1 then TitanBarMenu.items:Add(opt_VT); end -- only show if in Free People mode
-if PlayerAlign == 1 then TitanBarMenu.items:Add(opt_SS); end -- only show if in Free People mode
-TitanBarMenu.items:Add(opt_DN);
-if PlayerAlign == 1 then TitanBarMenu.items:Add(opt_RP); end -- only show if in Free People mode
+for _, item in ipairs(controlMenuItems) do TitanBarMenu.items:Add(item); end
 TitanBarMenu.items:Add(opt_line);
 TitanBarMenu.items:Add(opt_options);
 TitanBarMenu.items:Add(option_backcolor);

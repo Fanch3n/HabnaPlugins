@@ -111,6 +111,8 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
 	_G.ControlRegistry.Register({
 		id = "GT",
+		menuText = "MGT",
+		icon = false,
 		settingsKey = "GameTime",
 		hasWhere = false,
 		initFunc = InitializeGameTime

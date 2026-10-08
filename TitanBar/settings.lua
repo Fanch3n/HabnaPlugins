@@ -363,6 +363,7 @@ function LoadSettingsForCurrency(name)
 		id = name,
 		kind = "currency",
 		hasWhere = true,
+		freePeopleOnly = not _G.currencies.byName[name].visibleInMonsterPlay,
 		defaults = { show = false, where = Constants.Position.NONE, x = 0, y = 0 },
 		toggleFunc = function() ShowHideCurrency(name) end
 	})

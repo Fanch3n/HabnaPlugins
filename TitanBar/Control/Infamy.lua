@@ -114,6 +114,8 @@ end
 if _G.ControlRegistry and _G.ControlRegistry.Register then
     _G.ControlRegistry.Register({
         id = "IF",
+        menuText = "IFWTitle",
+        icon = { only = true },
         settingsKey = "Infamy",
         hasWhere = false,
         initFunc = InitializeInfamy

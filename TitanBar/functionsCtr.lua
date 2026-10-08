@@ -4,37 +4,6 @@
 
 
 function ImportCtr( value )
-    -- Resolve legacy aliases
-    -- MI was historically mapped to 'Money' internally after import
-    if value == "MI" then value = "Money" end
-
-    -- Lazy Loading Map: ID -> Filename (relative to AppCtrD)
-    local controlFiles = {
-        ["WI"]    = "Wallet",
-        ["Money"] = "MoneyInfos",
-        ["BI"]    = "BagInfos",
-        ["PI"]    = "PlayerInfos",
-        ["DI"]    = "DurabilityInfos",
-        ["EI"]    = "EquipInfos",
-        ["PL"]    = "PlayerLoc",
-        ["TI"]    = "TrackItems",
-        ["IF"]    = "Infamy",
-        ["DN"]    = "DayNight",
-        ["LP"]    = "LOTROPoints",
-        ["GT"]    = "GameTime",
-        ["VT"]    = "Vault",
-        ["SS"]    = "SharedStorage",
-        ["RP"]    = "Reputation"
-    }
-
-    -- If control is not initialized, try to import it first
-    if not (_G.ControlData[value] and _G.ControlData[value].initFunc) then
-        local fileName = controlFiles[value]
-        if fileName then
-            import(AppCtrD .. fileName)
-        end
-    end
-
     -- 1. Standard Controls (via ControlRegistry)
     local data = _G.ControlData[value]
     if data and data.initFunc then
