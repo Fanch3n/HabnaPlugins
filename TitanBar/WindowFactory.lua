@@ -12,6 +12,15 @@ local DEFAULT_WINDOW_CONFIG = {
 
 import(AppDirD .. "UIHelpers")
 
+-- Moves a window back onto the screen, e.g. after the resolution or the UI scale was changed
+local function KeepOnScreen(window)
+    local width, height = GetScaledSize(window)
+    local left, top = window:GetPosition()
+    local newLeft = math.max(0, math.min(left, screenWidth - width))
+    local newTop = math.max(0, math.min(top, screenHeight - height))
+    if newLeft ~= left or newTop ~= top then window:SetPosition(newLeft, newTop) end
+end
+
 -- windowSettings: text, width, height, config, and the position as left and top,
 -- or as position: a table { left, top } that is kept up to date when the window is moved (see WindowPositions)
 function CreateWindow(windowSettings)
@@ -33,6 +42,8 @@ function CreateWindow(windowSettings)
         window:SetPosition(windowSettings.left, windowSettings.top)
     end
     window:SetSize(windowSettings.width, windowSettings.height)
+    KeepOnScreen(window)
+    if position then position.left, position.top = window:GetPosition() end
     window:SetWantsKeyEvents(true)
     window:SetVisible(true)
     window:Activate()

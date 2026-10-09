@@ -191,10 +191,16 @@ function TitanBarCommand:Execute(command, arguments)
 		return parts
 	end
 
+	-- Clicking a control in the menu opens the menu again where it was (see menu.lua)
+	local function ShowMenu()
+		mouseXPos, mouseYPos = Turbine.UI.Display.GetMousePosition()
+		TitanBarMenu:ShowMenu()
+	end
+
 	local commands = {
 		-- options menu
-		[L["SCa1"]] = function() TitanBarMenu:ShowMenu() end,
-		["opt"]     = function() TitanBarMenu:ShowMenu() end,
+		[L["SCa1"]] = ShowMenu,
+		["opt"]     = ShowMenu,
 
 		[L["SCa2"]] = UnloadTitanBar, ["u"]  = UnloadTitanBar,
 		[L["SCa3"]] = ReloadTitanBar, ["r"]  = ReloadTitanBar,

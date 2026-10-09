@@ -71,7 +71,7 @@ function frmReputationWindow()
     local function RPFilter(filter)
         local f = filter
         if f == nil then f = RPFiltertxt:GetText() or "" end
-        f = string.lower(f)
+        f = UTF8Lower(f)
 
         local listBox = ui.RPListBox
         if not listBox then return end
@@ -79,7 +79,7 @@ function frmReputationWindow()
         for i = 1, count do
             local row = listBox:GetItem(i)
             if row and row.repLbl and row.repLbl:GetText() then
-                local name = string.lower(row.repLbl:GetText())
+                local name = UTF8Lower(row.repLbl:GetText())
                 if string.find(name, f, 1, true) == nil then
                     row:SetHeight(0)
                 else

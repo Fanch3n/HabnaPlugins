@@ -91,7 +91,7 @@ end
 function ApplySearch()
     local ui = _G.ControlData.TI and _G.ControlData.TI.ui
     if not ui then return end
-    local searchTerm = string.lower(ui.SearchTextBox:GetText());
+    local searchTerm = UTF8Lower(ui.SearchTextBox:GetText());
 
     if (ui.searchText ~= searchTerm) then
         ui.searchText = searchTerm;
@@ -154,7 +154,7 @@ function ShowStackableItems()
 
 	for i = 1, size do
 		if item[i] ~= "zEmpty" and item[i].Stackable then -- Only show stackable item
-			if not ui.searchText or string.find(string.lower( item[i].Name ), ui.searchText, 1, true) then
+			if not ui.searchText or string.find(UTF8Lower( item[i].Name ), ui.searchText, 1, true) then
 				-- Use CreateItemRow for player item
 				local row = CreateItemRow(nil, ui.ListBox:GetWidth(), 35, true, item[i])
 				itemCtl[i] = row.Container
@@ -209,7 +209,7 @@ function ShowStackableItems()
 		if item[ii] ~= "zEmpty" then inBags[item[ii].Name] = true end
 	end
 	for _, entry in ipairs(TrackedItemsOfLanguage()) do
-		if ui.showMissing:IsChecked() and not inBags[entry.N] and (not ui.searchText or string.find(string.lower( entry.N ), ui.searchText, 1, true)) then
+		if ui.showMissing:IsChecked() and not inBags[entry.N] and (not ui.searchText or string.find(UTF8Lower( entry.N ), ui.searchText, 1, true)) then
 			local row = CreateItemRow(nil, ui.ListBox:GetWidth(), 35, false, { B = entry.B, U = entry.U, S = entry.S, I = entry.I, N = "0" })
 			row.ItemQuantity:SetForeColor( Color["red"] )
 			local label = row.ItemLabel
