@@ -17,12 +17,28 @@ function frmTrackItemsWindow()
 	local ui = _G.ControlData.TI.ui
 	ui.itemState = {} -- Track per-item selection state
 
+	-- The rows show the items themselves, which are gone when they leave the bags: the list is built again
+	-- when the bags change. ItemRemoved fires before the backpack was updated (Turbine API issue),
+	-- so that rebuild waits one frame.
+	local delayedRefresh = Turbine.UI.Control()
+	delayedRefresh.Update = function(sender, args)
+		delayedRefresh:SetWantsUpdates(false)
+		CheckForStackableItems()
+	end
+	local onItemAdded = function(sender, args) CheckForStackableItems() end
+	local onItemRemoved = function(sender, args) delayedRefresh:SetWantsUpdates(true) end
+	AddCallback(backpack, "ItemAdded", onItemAdded)
+	AddCallback(backpack, "ItemRemoved", onItemRemoved)
+
 	-- Create window via helper
 	local wTI = CreateControlWindow(
 		"BagInfos", "TI",
 		L["BIIL"], 390, 498,
 		{
 			onClosing = function(sender, args)
+				RemoveCallback(backpack, "ItemAdded", onItemAdded)
+				RemoveCallback(backpack, "ItemRemoved", onItemRemoved)
+				delayedRefresh:SetWantsUpdates(false)
 				_G.ControlData.TI.ui = { control = nil, optCheckbox = nil }
 			end
 		}
@@ -113,6 +129,7 @@ end
 function SetEmptyTrackList()
 	local ui = _G.ControlData.TI and _G.ControlData.TI.ui
 	if not ui then return end
+	ui.ListBox:ClearItems();
 	local itemCtl = Turbine.UI.Control();
 	itemCtl:SetSize( ui.ListBox:GetWidth(), 35 );
 
@@ -227,5 +244,6 @@ function ShowStackableItems()
 	ui.ListBox:SetHeight( ui.ListBoxBorder:GetHeight() - 4 );
 	ui.ListBoxScrollBar:SetHeight( ui.ListBox:GetHeight() );
 	ui.showMissing:SetTop( ui.ListBoxBorder:GetTop() + ui.ListBoxBorder:GetHeight() + 6 );
+	ui.showMissing:SetVisible( true );
 	ui.window:SetHeight( ui.showMissing:GetTop() + ui.showMissing:GetHeight() + 15 );
 end
