@@ -202,7 +202,7 @@ function CreateStoredItemsWindow(config)
 	end
 
 	local function AddRow(item, name, owner, isLive)
-		if searchText and not string.find(string.lower(name), searchText, 1, true) then return end
+		if searchText and not string.find(UTF8Lower(name), searchText, 1, true) then return end
 		local row = CreateItemRow(nil, listBox:GetWidth(), 35, isLive, item)
 		row.ItemLabel:SetText(name)
 		if owner then row.ItemLabel:AppendText(" (" .. owner .. ")") end
@@ -273,7 +273,7 @@ function CreateStoredItemsWindow(config)
 	end
 
 	search.TextBox.TextChanged = function(sender, args)
-		searchText = string.lower(search.TextBox:GetText())
+		searchText = UTF8Lower(search.TextBox:GetText())
 		if searchText == "" then searchText = nil end
 		Refresh()
 	end

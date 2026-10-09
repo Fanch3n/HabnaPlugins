@@ -1,6 +1,14 @@
 This is a replacement for TitanBar v1.35 by Duriel which replaced v1.34.00 by Technical-13 which replaced v1.29.00 by Thorondor which replaced v1.24 by Habana.
 
 If you notice an error, please send me a pm or post it on the boards.
+
+=================================================
+Version 1.54 (October 09, 2026)
+- Added toggle to switch between tracking and not tracking items with quantity 0
+- Search now ignores upper/lower case for characters like Umlauts, accented characters and Cyrillic letters
+- Fixed icon disappearing from tracked item list when stack is removed from inventory
+- Fixed Wallet search breaking when using certain characters
+- Fixed Options menu closing after click when opened by chat command
 =================================================
 Version 1.53 (October 09, 2026)
 - Settings are no longer separate per language: You can change your language without having to configure TitanBar again.

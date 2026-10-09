@@ -150,7 +150,10 @@ local CONTROL_SETTINGS = {
 		fields = {
 			{ key = "L", field = "text", type = "string", default = function() return L["PLMsg"] end, keepOnReset = true },
 		} },
-	{ id = "TI", section = "TrackItems" },
+	{ id = "TI", section = "TrackItems",
+		fields = {
+			{ key = "M", field = "showMissing", default = true }, -- Show tracked items that are not in the bags
+		} },
 	{ id = "IF", section = "Infamy",
 		fields = {
 			{ key = "F", field = "set", default = true, keepOnReset = true },

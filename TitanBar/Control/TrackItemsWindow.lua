@@ -17,12 +17,28 @@ function frmTrackItemsWindow()
 	local ui = _G.ControlData.TI.ui
 	ui.itemState = {} -- Track per-item selection state
 
+	-- The rows show the items themselves, which are gone when they leave the bags: the list is built again
+	-- when the bags change. ItemRemoved fires before the backpack was updated (Turbine API issue),
+	-- so that rebuild waits one frame.
+	local delayedRefresh = Turbine.UI.Control()
+	delayedRefresh.Update = function(sender, args)
+		delayedRefresh:SetWantsUpdates(false)
+		CheckForStackableItems()
+	end
+	local onItemAdded = function(sender, args) CheckForStackableItems() end
+	local onItemRemoved = function(sender, args) delayedRefresh:SetWantsUpdates(true) end
+	AddCallback(backpack, "ItemAdded", onItemAdded)
+	AddCallback(backpack, "ItemRemoved", onItemRemoved)
+
 	-- Create window via helper
 	local wTI = CreateControlWindow(
 		"BagInfos", "TI",
 		L["BIIL"], 390, 498,
 		{
 			onClosing = function(sender, args)
+				RemoveCallback(backpack, "ItemAdded", onItemAdded)
+				RemoveCallback(backpack, "ItemRemoved", onItemRemoved)
+				delayedRefresh:SetWantsUpdates(false)
 				_G.ControlData.TI.ui = { control = nil, optCheckbox = nil }
 			end
 		}
@@ -61,13 +77,21 @@ function frmTrackItemsWindow()
 	ui.ListBox:SetMaxColumns(1);
 	ConfigureListBox(ui.ListBox, 1, Turbine.UI.Orientation.Horizontal, Color["black"])
 
+	local tiData = _G.ControlData.TI
+	ui.showMissing = CreateAutoSizedCheckBox(wTI, L["TIMissing"], 30, 0, tiData.showMissing ~= false)
+	ui.showMissing.CheckedChanged = function(sender, args)
+		tiData.showMissing = ui.showMissing:IsChecked()
+		SaveSettings()
+		ShowStackableItems()
+	end
+
 	CheckForStackableItems();
 end
 
 function ApplySearch()
     local ui = _G.ControlData.TI and _G.ControlData.TI.ui
     if not ui then return end
-    local searchTerm = string.lower(ui.SearchTextBox:GetText());
+    local searchTerm = UTF8Lower(ui.SearchTextBox:GetText());
 
     if (ui.searchText ~= searchTerm) then
         ui.searchText = searchTerm;
@@ -97,13 +121,15 @@ function CheckForStackableItems()
 		end
 	end
 	
-	if bFound then ShowStackableItems();
+	-- Tracked items that are not in the bags are listed too, so they can be untracked
+	if bFound or #TrackedItemsOfLanguage() > 0 then ShowStackableItems();
 	else SetEmptyTrackList(); end
 end
 
 function SetEmptyTrackList()
 	local ui = _G.ControlData.TI and _G.ControlData.TI.ui
 	if not ui then return end
+	ui.ListBox:ClearItems();
 	local itemCtl = Turbine.UI.Control();
 	itemCtl:SetSize( ui.ListBox:GetWidth(), 35 );
 
@@ -114,6 +140,7 @@ function SetEmptyTrackList()
 	ui.ListBox:SetPosition( ui.ListBoxBorder:GetLeft() + 2, ui.ListBoxBorder:GetTop() + 2 );
 	ui.ListBox:SetHeight( lblmgs:GetHeight() );
 	ui.ListBoxScrollBar:SetVisible( false );
+	ui.showMissing:SetVisible( false );
 
 	ui.ListBox:AddItem( itemCtl );
 	ui.window:SetHeight( itemCtl:GetHeight() + 85 );
@@ -127,7 +154,7 @@ function ShowStackableItems()
 
 	for i = 1, size do
 		if item[i] ~= "zEmpty" and item[i].Stackable then -- Only show stackable item
-			if not ui.searchText or string.find(string.lower( item[i].Name ), ui.searchText, 1, true) then
+			if not ui.searchText or string.find(UTF8Lower( item[i].Name ), ui.searchText, 1, true) then
 				-- Use CreateItemRow for player item
 				local row = CreateItemRow(nil, ui.ListBox:GetWidth(), 35, true, item[i])
 				itemCtl[i] = row.Container
@@ -182,7 +209,7 @@ function ShowStackableItems()
 		if item[ii] ~= "zEmpty" then inBags[item[ii].Name] = true end
 	end
 	for _, entry in ipairs(TrackedItemsOfLanguage()) do
-		if not inBags[entry.N] and (not ui.searchText or string.find(string.lower( entry.N ), ui.searchText, 1, true)) then
+		if ui.showMissing:IsChecked() and not inBags[entry.N] and (not ui.searchText or string.find(UTF8Lower( entry.N ), ui.searchText, 1, true)) then
 			local row = CreateItemRow(nil, ui.ListBox:GetWidth(), 35, false, { B = entry.B, U = entry.U, S = entry.S, I = entry.I, N = "0" })
 			row.ItemQuantity:SetForeColor( Color["red"] )
 			local label = row.ItemLabel
@@ -216,5 +243,7 @@ function ShowStackableItems()
 	ui.ListBox:SetPosition( ui.ListBoxBorder:GetLeft() + 2, ui.ListBoxBorder:GetTop() + 2 );
 	ui.ListBox:SetHeight( ui.ListBoxBorder:GetHeight() - 4 );
 	ui.ListBoxScrollBar:SetHeight( ui.ListBox:GetHeight() );
-	ui.window:SetHeight( 498 );
+	ui.showMissing:SetTop( ui.ListBoxBorder:GetTop() + ui.ListBoxBorder:GetHeight() + 6 );
+	ui.showMissing:SetVisible( true );
+	ui.window:SetHeight( ui.showMissing:GetTop() + ui.showMissing:GetHeight() + 15 );
 end

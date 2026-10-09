@@ -157,6 +157,69 @@ end
 
 -- Create a search control: a TextBox with a delete icon to clear it.
 -- Returns { TextBox = tb, DelIcon = del, Container = container }
+-- Lower case of a UTF-8 text, for searches that ignore case (string.lower only changes A-Z).
+-- Covers the Latin letters with accents, Greek, Cyrillic and Armenian. Lua 5.1 has no UTF-8 support,
+-- so the characters are decoded here: Unicode keeps most capitals at a fixed distance from their
+-- small letters, or right before them.
+local function LowerCodePoint(c)
+	if c >= 0xC0 and c <= 0xDE and c ~= 0xD7 then return c + 0x20 end -- Latin-1: À-Þ (not ×)
+	if c >= 0x100 and c <= 0x17F then -- Latin Extended-A: capital and small letter in pairs
+		if c == 0x130 then return 0x69 end -- İ
+		if c == 0x178 then return 0xFF end -- Ÿ
+		if (c >= 0x139 and c <= 0x148) or (c >= 0x179 and c <= 0x17E) then
+			if c % 2 == 1 then return c + 1 end
+		elseif c ~= 0x138 and c ~= 0x149 and c ~= 0x17F and c % 2 == 0 then
+			return c + 1
+		end
+		return c
+	end
+	if c >= 0x386 and c <= 0x3AB then -- Greek
+		if c == 0x386 then return 0x3AC end
+		if c >= 0x388 and c <= 0x38A then return c + 0x25 end
+		if c == 0x38C then return 0x3CC end
+		if c == 0x38E or c == 0x38F then return c + 0x3F end
+		if c >= 0x391 and c ~= 0x3A2 then return c + 0x20 end
+		return c
+	end
+	if c >= 0x400 and c <= 0x40F then return c + 0x50 end -- Cyrillic: Ѐ-Џ
+	if c >= 0x410 and c <= 0x42F then return c + 0x20 end -- Cyrillic: А-Я
+	if (c >= 0x460 and c <= 0x481) or (c >= 0x48A and c <= 0x4BF) or (c >= 0x4D0 and c <= 0x52F) then
+		if c % 2 == 0 then return c + 1 end
+		return c
+	end
+	if c == 0x4C0 then return 0x4CF end
+	if c >= 0x4C1 and c <= 0x4CE then
+		if c % 2 == 1 then return c + 1 end
+		return c
+	end
+	if c >= 0x531 and c <= 0x556 then return c + 0x30 end -- Armenian
+	if c == 0x1E9E then return 0xDF end -- ẞ
+	if (c >= 0x1E00 and c <= 0x1E95) or (c >= 0x1EA0 and c <= 0x1EFF) then -- Latin Extended Additional (Vietnamese, ...)
+		if c % 2 == 0 then return c + 1 end
+	end
+	return c
+end
+
+local function Encode(c)
+	if c < 0x80 then return string.char(c) end
+	if c < 0x800 then return string.char(0xC0 + math.floor(c / 0x40), 0x80 + c % 0x40) end
+	return string.char(0xE0 + math.floor(c / 0x1000), 0x80 + math.floor(c / 0x40) % 0x40, 0x80 + c % 0x40)
+end
+
+function UTF8Lower(text)
+	if not text then return "" end
+	text = string.lower(text)
+	text = string.gsub(text, "[\194-\223][\128-\191]", function(ch)
+		local a, b = string.byte(ch, 1, 2)
+		return Encode(LowerCodePoint((a - 0xC0) * 0x40 + (b - 0x80)))
+	end)
+	text = string.gsub(text, "\225[\184-\187][\128-\191]", function(ch) -- U+1E00-U+1EFF
+		local a, b, c = string.byte(ch, 1, 3)
+		return Encode(LowerCodePoint((a - 0xE0) * 0x1000 + (b - 0x80) * 0x40 + (c - 0x80)))
+	end)
+	return text
+end
+
 function CreateSearchControl(parent, left, top, width, height, font, resources)
     height = height or 18
     local container = Turbine.UI.Control()

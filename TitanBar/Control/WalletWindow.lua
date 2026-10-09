@@ -68,10 +68,10 @@ function frmWalletWindow()
 	local function WIFilter()
 		local wiListBox = ui.WIListBox
 		if not wiListBox then return end
-		local filterText = string.lower(WIFiltertxt:GetText() or "");
+		local filterText = UTF8Lower(WIFiltertxt:GetText() or "");
 		for i = 1, wiListBox:GetItemCount() do
 			local row = wiListBox:GetItem(i);
-			if string.find(string.lower(row.curLbl:GetText()), filterText) == nil then
+			if string.find(UTF8Lower(row.curLbl:GetText()), filterText, 1, true) == nil then
 				row:SetHeight(0);
 			else
 				row:SetHeight(20);
