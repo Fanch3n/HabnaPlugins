@@ -695,6 +695,7 @@ L[ "BIT" ] = "Aktiviert / deaktiviert ein Element";
 L[ "BIUsed" ] = " Freie Taschenpl\195\164tze anzeigen";
 L[ "BIMax" ] = " Taschenpl\195\164tze gesamt anzeigen";
 L[ "BIMsg" ] = "Es wurde kein stapelbares Element gefunden.";
+L[ "TIMissing" ] = " Weiterhin anzeigen, wenn Anzahl 0 ist";
 
 -- Equipment Infos control
 L[ "EIh" ] = "Punkte Eures Equipments";

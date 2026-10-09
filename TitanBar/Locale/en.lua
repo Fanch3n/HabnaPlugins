@@ -695,6 +695,7 @@ L[ "BIT" ] = "Select / unselect an item"
 L[ "BIUsed" ] = " Show used over free slots";
 L[ "BIMax" ] = " Show total bag slots";
 L[ "BIMsg" ] = "No stackable item was found in your bag!"
+L[ "TIMissing" ] = " Show tracked items that are not in your bag";
 
 -- Equipment Infos control
 L[ "EIh" ] = "Points for all your equipment";

@@ -25,8 +25,19 @@ function TIRefreshListBox()
 	TITTListBox:ClearItems();
 	TITTPosY = 35;
 
-	-- Items tracked in another game language can't be found by name, they are not shown
-	local tracked = TrackedItemsOfLanguage();
+	-- Items tracked in another game language can't be found by name, they are not shown.
+	-- Quantity of all stacks in the backpack; tracked items that are not there show 0, if the option is on.
+	local showMissing = _G.ControlData.TI.showMissing ~= false;
+	local tracked = {};
+	for _, entry in ipairs(TrackedItemsOfLanguage()) do
+		local total, found = 0, false;
+		for ii = 1, backpack:GetSize() do
+			local item = backpack:GetItem( ii );
+			if item ~= nil and item:GetName() == entry.N then total = total + item:GetQuantity(); found = true; end
+		end
+		if found or showMissing then table.insert(tracked, { entry = entry, total = total }) end
+	end
+
 	if #tracked == 0 then
 		local lblName = Turbine.UI.Label();
 		lblName:SetParent( _G.ToolTipWin );
@@ -40,13 +51,8 @@ function TIRefreshListBox()
 
 		TITTPosY = TITTPosY + 35;
 	else
-		for _, entry in ipairs(tracked) do
-			-- Quantity of all stacks in the backpack; tracked items that are not there show 0
-			local total = 0;
-			for ii = 1, backpack:GetSize() do
-				local item = backpack:GetItem( ii );
-				if item ~= nil and item:GetName() == entry.N then total = total + item:GetQuantity(); end
-			end
+		for _, shown in ipairs(tracked) do
+			local entry, total = shown.entry, shown.total;
 
 			--**v Control of all data v**
 			local BITTCtr = Turbine.UI.Control();

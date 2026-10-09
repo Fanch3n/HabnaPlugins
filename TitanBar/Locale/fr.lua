@@ -695,6 +695,7 @@ L[ "BIT" ] = "S\195\169lectionner / d\195\169s\195\169lectionner un article"
 L[ "BIUsed" ] = " Afficher espaces occup\195\169es, sinon libres";
 L[ "BIMax" ] = " Afficher le total d'espaces";
 L[ "BIMsg" ] = "Aucun article empilable n'a \195\169t\195\169 trouv\195\169!"
+L[ "TIMissing" ] = " Afficher les articles suivis absents des sacs";
 
 -- Equipment Infos control
 L[ "EIh" ] = "Points pour tous les \195\169quipements";
